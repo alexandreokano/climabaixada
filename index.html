@@ -155,7 +155,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <body>
 <div class="wrap">
 <header>
-  <div><h1 class="brand-title"><img class="brand-logo" src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyM3JnQYTzcsfvSE6KDA6FVsm0.png?Expires=1794425253&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=abb9lwfG5SxtNCyAR3rrUaMdjDKkDsLCU61Ka9El1MmXJ6OA~T2BqySh6nSnOcvmJZSngU9Ah1YdPRNBF4Y6WIxdvnnFolSvHxSP1tiF2bKoeGUZTAndBrjSncgUF7XE7k0U~FcSh0lNEb5Kmb0ToFh3ZKny1JvirpLuQ9FLdjeaoi7iv2WrnKnR0t04J1hZVW-NGiNvBnpbYk~mM45F5hfm~WiQxkoIyq0rHDHmYkCETQ8o6T3Wb2gMIMPAqYuWfddEvILJiH2BznMvgXkuqapX~rm7c5msF20yd1lSXz9rSB2FHYyIIG4JPwspH-I8cCqi-2399g4Ijs7xjWJaBw__" alt="Logo Clima Baixada"><span>Clima Baixada · Painel Interativo</span></h1><div class="sub">Santos · São Vicente · Guarujá · Praia Grande</div></div>
+  <div><h1 class="brand-title"><img class="brand-logo" src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyM3JnQYTzcsfvSE6KDA6FVsm0.png?Expires=1794425253&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=abb9lwfG5SxtNCyAR3rrUaMdjDKkDsLCU61Ka9El1MmXJ6OA~T2BqySh6nSnOcvmJZSngU9Ah1YdPRNBF4Y6WIxdvnnFolSvHxSP1tiF2bKoeGUZTAndBrjSncgUF7XE7k0U~FcSh0lNEb5Kmb0ToFh3ZKny1JvirpLuQ9FLdjeaoi7iv2WrnKnR0t04J1hZVW-NGiNvBnpbYk~mM45F5hfm~WiQxkoIyq0rHDHmYkCETQ8o6T3Wb2gMIMPAqYuWfddEvILJiH2BznMvgXkuqapX~rm7c5msF20yd1lSXz9rSB2FHYyIIG4JPwspH-I8cCqi-2399g4Ijs7xjWJaBw__" alt="Logo Clima Baixada"><span>Clima Baixada · Painel Interativo</span></h1><div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div></div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status">⏳ buscando dados ao vivo…</span>
     <button id="help" class="on">❓ Como usar</button><button id="reload" title="Atualizar">🔄</button><button id="theme" title="Tema">🌓</button>
@@ -210,7 +210,9 @@ const PLACES={
  'Santos':[['Ponta da Praia',-23.985,-46.300,1],['Aparecida',-23.980,-46.313,1],['Embaré',-23.975,-46.322,1],['Boqueirão',-23.973,-46.329,1],['Gonzaga',-23.970,-46.335,1],['Pompeia',-23.971,-46.343,1],['José Menino',-23.972,-46.355,1],['Marapé',-23.965,-46.320,0],['Vila Mathias',-23.950,-46.330,0],['Centro',-23.935,-46.326,0],['Campo Grande',-23.961,-46.340,0],['Macuco',-23.956,-46.318,0]],
  'São Vicente':[['Itararé',-23.972,-46.383,1],['Gonzaguinha',-23.970,-46.395,1],['Ilha Porchat',-23.980,-46.385,1],['Prainha',-23.981,-46.392,1],['Milionários',-23.974,-46.404,1],['Praia da Divisa',-23.980,-46.415,1],['Centro',-23.963,-46.392,0],['Vila Valença',-23.954,-46.400,0]],
  'Praia Grande':[['Boqueirão',-24.012,-46.415,1],['Guilhermina',-24.020,-46.435,1],['Aviação',-24.026,-46.450,1],['Tupi',-24.032,-46.465,1],['Caiçara',-24.040,-46.485,1],['Ocian',-24.048,-46.500,1],['Mirim',-24.060,-46.525,1],['Solemar',-24.070,-46.540,1],['Sítio do Campo',-24.015,-46.460,0]],
- 'Guarujá':[['Pitangueiras',-23.993,-46.256,1],['Astúrias',-23.999,-46.263,1],['Enseada',-23.990,-46.240,1],['Tombo',-24.008,-46.270,1],['Perequê',-23.940,-46.185,1],['Vicente de Carvalho',-23.939,-46.279,0],['Centro',-23.990,-46.258,0]]
+ 'Guarujá':[['Pitangueiras',-23.993,-46.256,1],['Astúrias',-23.999,-46.263,1],['Enseada',-23.990,-46.240,1],['Tombo',-24.008,-46.270,1],['Perequê',-23.940,-46.185,1],['Vicente de Carvalho',-23.939,-46.279,0],['Centro',-23.990,-46.258,0]],
+ 'Bertioga':[['Indaiá',-23.845,-46.115,1],['Enseada',-23.830,-46.095,1],['São Lourenço',-23.793,-46.050,1],['Itaguaré',-23.775,-46.020,1],['Centro',-23.854,-46.138,0]],
+ 'Itanhaém':[['Boca da Barra',-24.180,-46.792,1],['Prainha (Pescadores)',-24.186,-46.797,1],['Sonho',-24.192,-46.803,1],['Praião (Centro)',-24.172,-46.778,1],['Cibratel I',-24.215,-46.822,1]]
 };
 
 /* ============ ESTADO ============ */
@@ -680,7 +682,32 @@ const cur=()=>{const p=PLACES[S.city][S.pl];return{n:p[0],la:p[1],lo:p[2],m:p[3]
 function onPlace(){sv();S.live={};S.cptec={};S.cptecOk=undefined;S.hover=null;render();loadLive()}
 function nosea(){const P=cur();return `<div class="card y"><h3>🏙️ ${P.n} não tem mar</h3><div>Esta aba usa ondas, maré e correntes, que só valem para bairros de praia (marcados com 🌊 no seletor). Escolha um deles, por exemplo Aparecida, Gonzaguinha ou Pitangueiras, ou use a aba <b>🌤️ Meu Dia</b> para ver o tempo no seu bairro.</div></div>`}
 function locNote(){const P=cur();return P.city=='Santos'&&P.m?'':`<div class="note">📍 <b>${P.n} (${P.city})</b>: a avaliação manual do Capitão, a tábua de maré (aproximada) e o boletim CETESB consultado são de Santos. Aqui valem os dados ao vivo do local. ${P.m?'':'Bairro sem mar: ondas e maré não se aplicam.'}</div>`}
-function localWarn(){return S.city=='Santos'?'':`<div class="warn">⚠️ Percursos, picos e pontos citados nesta aba (Canal 6, Fortaleza da Barra, Deck do Pescador) e a maré são de Santos. Em ${S.city}, use só os dados ao vivo e as regras do semáforo, e peça orientação local.</div>`}
+function localWarn(){return S.city=='Santos'?'':guiaLocal()+`<div class="warn">⚠️ Percursos, picos e pontos citados nesta aba (Canal 6, Fortaleza da Barra, Deck do Pescador) e a maré são de Santos. Em ${S.city}, use só os dados ao vivo e as regras do semáforo, e peça orientação local.</div>`}
+const GUIA={
+ 'Bertioga':{r:[
+  ['🛶 Caiaque iniciante','Indaiá (Praia da Enseada): enseada abrigada, sem ondas','🟢'],
+  ['🛶 Caiaque na foz + 🏄 surfe (swell L/SE)','Foz e Praia de Itaguaré. Acesso seco pelo bairro São Lourenço (Av. Eng. Durval Gago Lourenço → Rua Manoel José Pinto). Foz calma só com mar pequeno; o mar aberto é para surfistas experientes.','🟡'],
+  ['🏄 Surfe','Praia da Enseada (trecho Sesc/Marazul)','🟡'],
+  ['🏄 Surfe','Píer de São Lourenço (atenção à correnteza em dias de ressaca)','🟡'],
+  ['🚫 Evitar','Canal de Bertioga / Forte São João (balsas, correnteza e água imprópria) e entrada pelo km 205 (exige travessia do rio)','🔴']
+ ],a:[
+  'Para iniciante no caiaque, fique no Indaiá. Não embarque no Canal de Bertioga.',
+  'Itaguaré fica em parque estadual (Restinga de Bertioga): respeite as regras de uso.'
+ ]},
+ 'Itanhaém':{r:[
+  ['🛶 Caiaque iniciante e 🎣 pesca de barranco','Boca da Barra / Rio Itanhaém (acesso pela Alameda Emídio de Souza, sem ondas) e Píer de Pesca (Roteiro dos Pescadores)','🟢'],
+  ['🏄 Surfe (ondulação de Leste + terral SO)','Prainha / Praia dos Pescadores (Av. Anchieta, altura do nº 173)','🟡'],
+  ['🏄 Surfe (onda regular 0,5–1 m, swell SE + terral NE)','Praião (trechos Mahalo / Satélite), Praia do Sonho e Cibratel I','🟢'],
+  ['🚫 Evitar','Garganta da Barra na vazante (efeito canal), Pedra do Carioca (batida forte de ondas) e trilha do Morro do Sapucaitava (Praia da Saudade) com equipamento','🔴']
+ ],a:[
+  'Vazante com vento sul na barra: correnteza saindo do rio contra a ondulação.',
+  'Confirme o endereço do Píer de Pesca no mapa antes de colocar no GPS.'
+ ]}
+};
+function guiaLocal(){
+  const g=GUIA[S.city];if(!g)return '';
+  return `<div class="card y"><h3>📍 Guia local · ${S.city}</h3><div class="t"><table><tr><th>Atividade</th><th>Ponto / acesso</th><th>Nível</th></tr>${g.r.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}</table></div><ul style="margin-top:8px">${g.a.map(x=>`<li>${x}</li>`).join('')}</ul>${how('Use o guia para escolher o ponto e o semáforo por hora para escolher o horário. Colete salva-vidas, apito e sinalização visual são obrigatórios no caiaque.')}<div class="note">As regras de vento e ondas são calibradas com referência na Baía de Santos. A maré é aproximada (tábua de Santos) e a balneabilidade aparece como <b>sem dados</b>: consulte o boletim vigente da CETESB antes de entrar na água.</div></div>`;
+}
 const SEA=f=>()=>!cur().m?nosea():localWarn()+f();
 function period(di,a,b,ic,nm){
   const H=[];for(let h=a;h<b;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push(o)}
@@ -827,7 +854,7 @@ const VIEWS={meudia,jogo,esportes};
 function esportes(){
   const di=S.day,D=DAYS[di],sub=S.sub||'surfe';
   const nav=subtabs();
-  if(sub=='resumo')return cur().m?locNote()+resumo():nosea()+nav;
+  if(sub=='resumo')return cur().m?locNote()+guiaLocal()+resumo():nosea()+nav;
   if(sub=='praia')return nav+praia();
   if(!cur().m)return nav+nosea();
   const v=sub=='surfe'?D.s:D.k;
@@ -887,7 +914,7 @@ function praia(){
   <div class="locsel" style="margin:10px 0"><div class="pick"><label>📍 Município ▾</label><select id="p_city"><option value="">Todos os municípios</option>${Object.keys(CETESB).map(c=>`<option ${c==S.pc?'selected':''}>${c}</option>`).join('')}</select></div><div class="pick"><label>🏖️ Praia ▾</label><select id="p_beach"><option value="">Todas as praias</option>${BEACHES.filter(b=>!S.pc||b.c==S.pc).map(b=>`<option value="${b.id}" ${String(b.id)==S.pb?'selected':''}>${b.n}${S.pc?'':' ('+b.c+')'}</option>`).join('')}</select></div></div>
   <div class="row">${b('all','Todas')}${b('ok','Próprias para banho')}${b('perto','Próximas a mim')}</div>
   ${S.pmsg?`<div class="note">${S.pmsg}</div>`:''}
-  <div class="note">Fonte: CETESB, boletim de 05/11 (próximo em 12/11). Guarujá e Praia Grande ainda não foram consultados. Chuva e ressaca recentes podem piorar o resultado.</div></div>
+  <div class="note">Fonte: CETESB, boletim de 05/11 (próximo em 12/11). Guarujá, Praia Grande, Bertioga e Itanhaém ainda não foram consultados (sem dados). Chuva e ressaca recentes podem piorar o resultado.</div></div>
   <div id="plist">${praiaList()}</div>
   ${how('🟢 própria: pode entrar na água, com cuidado. 🔴 imprópria: não entre nem engula água. Toque no cartão da praia para ver temperatura da água e condição do mar. Depois de chuva forte, evite entrar mesmo em praia própria.')}
   <div class="note">Veja o boletim oficial em <a style="color:var(--acc)" href="https://cetesb.sp.gov.br/praias" target="_blank" rel="noopener">cetesb.sp.gov.br/praias</a>.</div>`;
