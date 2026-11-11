@@ -1,15 +1,32 @@
 {
-  "name": "Clima Baixada",
+  "name": "Clima Baixada · Painel Interativo",
   "short_name": "Clima Baixada",
-  "start_url": "./",
+  "description": "Vento, ondas, marés, balneabilidade e pesca para a Baixada Santista.",
+  "lang": "pt-BR",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0b1b2b",
-  "theme_color": "#0b1b2b",
-  "lang": "pt-BR",
+  "orientation": "portrait",
+  "background_color": "#0b2a4a",
+  "theme_color": "#0b2a4a",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
-
