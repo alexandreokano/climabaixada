@@ -41,7 +41,10 @@ header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:s
 h1{margin:0;font-size:1.8rem;line-height:1.15}
 .brand-title{display:flex;align-items:center;gap:10px}
 .brand-logo{width:56px;height:56px;object-fit:contain;flex:0 0 auto;border-radius:10px;background:#fff;padding:2px}
-.sub{color:var(--mut);font-size:.8rem}
+.sub{color:var(--mut);font-size:.8rem;flex:1 1 220px}
+.banner{flex:0 0 100%;width:100%;aspect-ratio:5/2;height:auto;object-fit:cover;object-position:center 34%;border-radius:14px;display:block;border:2px solid var(--bd,#7aa2c4)}
+@media (max-width:600px){.banner{aspect-ratio:16/9;object-position:center}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 button,.btn{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);border-radius:10px;padding:8px 12px;text-decoration:none;display:inline-block}
 button.on{background:var(--acc);color:#04202f;border-color:var(--acc);font-weight:600}
 #days{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
@@ -155,7 +158,9 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <body>
 <div class="wrap">
 <header>
-  <div><h1 class="brand-title"><img class="brand-logo" src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyM3JnQYTzcsfvSE6KDA6FVsm0.png?Expires=1794425253&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=abb9lwfG5SxtNCyAR3rrUaMdjDKkDsLCU61Ka9El1MmXJ6OA~T2BqySh6nSnOcvmJZSngU9Ah1YdPRNBF4Y6WIxdvnnFolSvHxSP1tiF2bKoeGUZTAndBrjSncgUF7XE7k0U~FcSh0lNEb5Kmb0ToFh3ZKny1JvirpLuQ9FLdjeaoi7iv2WrnKnR0t04J1hZVW-NGiNvBnpbYk~mM45F5hfm~WiQxkoIyq0rHDHmYkCETQ8o6T3Wb2gMIMPAqYuWfddEvILJiH2BznMvgXkuqapX~rm7c5msF20yd1lSXz9rSB2FHYyIIG4JPwspH-I8cCqi-2399g4Ijs7xjWJaBw__" alt="Logo Clima Baixada"><span>Clima Baixada · Painel Interativo</span></h1><div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div></div>
+  <h1 class="sr">Clima Baixada · Painel Interativo</h1>
+  <img class="banner" src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyXf05CA7SxmuOsqYY1KQGYa4d.jpg?Expires=1794430980&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=iAuvgDub5gA0NGTF84VzGHJ6GNoVd~mVsWFAQv4CHlCASshqxZdi-eYqqQOYA8r9bMJhxovjcGOJcQCnko~aqWDoIijvFKLSm8TSnN8gXhm3VJEquez4B-yb-UhpZTI9n7fa922DN5m12mClxh538NOUGvmk2-E0-EaEc3hsCuQhvwfg3fjbni3q2evBtFsERldz34BZVrRn2SXF9zNdYd6DlqGD87RDI3wicCvmI0hm14M5w4saq7bxrZE5JU1vb~yXGY0wMa8RPwiughVeseP3Eq-hbjKk01t-hHaMmwGRCEwpO3mimMrFzso~6AxOQ~gTpncNytVOUhSnJgykWA__" onerror="this.onerror=null;this.src='banner-panoramico.jpg'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
+  <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status">⏳ buscando dados ao vivo…</span>
     <button id="help" class="on">❓ Como usar</button><button id="reload" title="Atualizar">🔄</button><button id="theme" title="Tema">🌓</button>
@@ -849,7 +854,7 @@ const SUBS=[['resumo','📋 Resumo Geral'],['surfe','🏄 Surf'],['caiaque','�
 const FISH='<svg width="13" height="18" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
 TICON.esportes='🏄🚣'+FISH;
 const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
-TICON.jogo='<img src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyM49bhIVwq6hNKcZx37pMeqMj.png?Expires=1794425260&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=YchzwG2ox5gpDW-vKE-FRvWPm2CspXSDa0yGIjGKXSBo5qA6D84osCI5mv0lKxj0QdOiUvzmgNb3xLASBJi8QujuJWY8twDJMH1dtc29PqWHfJZFG71mFqDQrGA2LBG6QZEfOXKwIWeNCGN7IVnMkze8hQyZxcGBm73V7VoDavs3rtYESs3X5DjJiHHbV4bmTARd6Ye22Ls5hqZjMy4eqbWlHTF~NylVpB1Y-wIIokD653LWTRLlRdZvScE-geMMakut9ZNxibxMJ0XpEOj1vHEN4uTBGrJL65rlmjo9m8mkq~HvG7bsE0OtPDUAPAGB9XL831UVX-~t3DP5YuqWXQ__" alt="" style="height:26px;width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
+TICON.jogo='<img src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyM49bhIVwq6hNKcZx37pMeqMj.png?Expires=1794429048&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=C3NDcgRDzz6oo6nH~4XeRK5ZMdfbyB35PTivyV2BrnBKE3csmou-3rRfyzJ9Mxlprz7ClnjHsAZDUfhtbAGeADyynV7rJ4NOuop9ZdLu3unaoBhQdJAD3PsDIpzU-JQIbNyvXLOQfHPn3IT4X0wvU41hgprfAgRw5nVoFP0qXurC2YkP-5C30kfWMRlzvtZFTuK-MyWLd0j~7DDfOEbCjnlbIKu5lBUS68eA55HEA38-pu3MR~C7gaCOGw56CqvKRtF89mnNa9rdUFx3BfZhy9FJm1l0X4AdbDXHuJwk1pCUXqXAqTskxKbjvW49NSqTjxW8uPhtE41DsfLyR9cRvQ__" alt="" style="height:26px;width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
 const VIEWS={meudia,jogo,esportes};
 function esportes(){
   const di=S.day,D=DAYS[di],sub=S.sub||'surfe';
