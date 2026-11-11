@@ -46,6 +46,10 @@ h1{margin:0;font-size:1.8rem;line-height:1.15}
 @media (max-width:600px){.banner{aspect-ratio:5/2;object-position:center 40%}}
 @media (min-width:601px){.banner{aspect-ratio:3/1;object-position:center 42%}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+h1.brand{flex:0 0 100%;text-align:center;margin:4px 0 2px;font-size:clamp(1.6rem,7vw,2.8rem);font-weight:800;letter-spacing:.16em;line-height:1.1;color:var(--txt)}
+h1.brand span{color:var(--acc)}
+h1.brand::after{content:"";display:block;height:4px;width:140px;margin:8px auto 0;border-radius:4px;background:linear-gradient(90deg,transparent,var(--acc),transparent)}
+@media (min-width:900px){.grid.five{grid-template-columns:repeat(5,1fr);gap:8px}.grid.five .card{padding:12px 9px}.grid.five .big{font-size:1.05rem}.grid.five h3{font-size:.9rem}}
 button,.btn{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);border-radius:10px;padding:8px 12px;text-decoration:none;display:inline-block}
 button.on{background:var(--acc);color:#04202f;border-color:var(--acc);font-weight:600}
 #days{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
@@ -159,8 +163,9 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <body>
 <div class="wrap">
 <header>
-  <h1 class="sr">Clima Baixada · Painel Interativo</h1>
+  
   <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasYs7i63aOfQQYwJA6od2ff1.jpg?Expires=1794435357&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=IeQbpSuNPUmzMt0HFC3E1TR17rTbvXYjFObHjtCYxw-DyijDyj9Q8QsRvlQscu0ubaij6uTZ50QrSUemEGPQw8jLAgjRSGW6NgpniaV6e67vDBEmhmWirX0wTSEJeX-SgeGGLCEmlL6HQdSHzHk9RbKOSS8VQhaQMJUfP1Q6Q0Dual8K1s7YS6iTw7Hd8EbBZUV0Oh23naI4s5XmB-bApMkdBr9EdbiVXjQTAnjrtSUXSTOqznWwo1nyj26E8u--HMW3lxcob12euHO--cGBTX5wb7SccQJ5JPx6v2KvjuqCH-MgtfE5U6K~bnIhH-~HUSeGLLlnaYZLVBEffog6Rg__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
+  <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
   <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status">⏳ buscando dados ao vivo…</span>
@@ -540,6 +545,12 @@ function chartsOld(di){
 
 /* ============ TELAS ============ */
 const how=t=>`<div class="how"><b>💡 Para decidir:</b> ${t}</div>`;
+function pescaTxt(di){
+  const v=dayTides(di).map(e=>(e.t=='A'?'alta ':'baixa ')+hm(e.ms)).join(', ');
+  const c=/^sem/i.test(DAYS[di].chuva)?'':' Com chuva, redobre a atenção a raios.';
+  return ' <b>Pesca</b>: de terra, com as melhores janelas ±1 h das viradas de maré'+(v?' ('+v+')':'')+'; o robalo costuma aproveitar essas viradas.'+c;
+}
+const fmt=di=>String(DAYS[di].txt).replace(/\b(Caiaque|Surfe)\b/gi,'<b>$&</b>')+(DAYS[di].k==3?'':pescaTxt(di));
 function people(di){
   const D=DAYS[di],H=[];
   for(let h=6;h<=21;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push({...o,h})}
@@ -567,10 +578,10 @@ function cptecNote(di){
 function resumo(){
   const di=S.day,D=DAYS[di],kw=bestRun(di,x=>x.k),sw=bestRun(di,x=>x.s);
   const wtxt=w=>!w?'sem dados ao vivo':w.l==2?'🔴 nenhum horário seguro hoje':`${EMO[w.l]} ${w.txt}${w.l==1?' (com cautela)':''}`;
-  return `<div class="card ${COL[D.k]}"><h2>🏄🛶🎣⚓ Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão da Baixada</h3><div>${D.txt}</div>
+  return `<div class="card ${COL[D.k]}"><h2>🏄🛶🎣⚓ Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão da Baixada</h3><div>${fmt(di)}</div>
   <div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>
   ${subtabs()}<div class="note">ℹ️ <b>Este é o Resumo Geral do mar.</b> Para mais detalhes de uma atividade específica, toque na aba correspondente logo acima: <b>🏄 Surf</b> (picos e correntes), <b>🛶 Caiaque</b> (hora a hora e percurso), <b>🎣 Pesca</b> (viradas de maré e peixes), <b>⚓ Tráfego marítimo</b> (navios) e <b>🏖️ Como está a praia hoje?</b> (balneabilidade).</div>
-  <div class="grid">
+  <div class="grid five">
    <div class="card ${COL[D.k]}"><h3>🛶 Caiaque (manual)</h3><div class="big">${EMO[D.k]} ${LBL[D.k]}</div><div class="mut">⏰ Melhor horário hoje: ${wtxt(kw)}</div></div>
    <div class="card ${COL[D.s]}"><h3>🏄 Surfe (manual)</h3><div class="big">${EMO[D.s]} ${['FAVORÁVEL','ALERTA','NÃO SURFE','SEM AVALIAÇÃO'][D.s]}</div><div class="mut">⏰ Melhor horário hoje: ${wtxt(sw)}</div></div>
    <div class="card y"><h3>🎣 Pesca</h3><div class="big">🟡 De terra</div><div class="mut">Veja a aba Pesca para as viradas de maré.</div></div>
@@ -864,7 +875,7 @@ function esportes(){
   if(sub=='praia')return nav+praia();
   if(!cur().m)return nav+nosea();
   const v=sub=='surfe'?D.s:D.k;
-  const head=sub=='trafego'?'':`<div class="card ${COL[v]}"><h3>${EMO[v]} Avaliação do Capitão da Baixada · ${D.lbl}</h3><div>${D.txt}</div><div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>`;
+  const head=sub=='trafego'?'':`<div class="card ${COL[v]}"><h3>${EMO[v]} Avaliação do Capitão da Baixada · ${D.lbl}</h3><div>${fmt(di)}</div><div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>`;
   const body={surfe,caiaque,pesca,trafego}[sub]();
   const extra=(sub=='surfe'||sub=='caiaque')?cptecNote(di)+`<div class="card"><h3>📈 Gráficos do dia <small class="mut">(passe o mouse ou toque)</small></h3>${charts(di)}</div>`:'';
   return nav+locNote()+head+localWarn()+body+extra+(sub=='caiaque'?checklist():'');
