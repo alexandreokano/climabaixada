@@ -161,6 +161,12 @@ input,select{border-color:var(--bd)}
 #tour .gl{padding:8px 0;border-bottom:1px solid var(--line)}
 body.touring{padding-bottom:60vh}
 html.big{font-size:22px}
+.kw-caiaque{color:#2dd4bf}.kw-surfe{color:#fb923c}.kw-pesca{color:#c084fc}
+body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.light .kw-pesca{color:#7e22ce}
+.jimg{float:right;height:76px;width:auto;margin:0 0 8px 12px;border-radius:10px;background:#fff;padding:3px}
+.games{clear:both;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
+.games button{width:100%;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px 10px;white-space:normal;text-align:center;line-height:1.35;font-size:.95rem}
+.games button b{font-size:1.02rem}
 footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 </style>
 </head>
@@ -552,9 +558,10 @@ const how=t=>`<div class="how"><b>💡 Para decidir:</b> ${t}</div>`;
 function pescaTxt(di){
   const v=dayTides(di).map(e=>(e.t=='A'?'alta ':'baixa ')+hm(e.ms)).join(', ');
   const c=/^sem/i.test(DAYS[di].chuva)?'':' Com chuva, redobre a atenção a raios.';
-  return ' <b>Pesca</b>: de terra, com as melhores janelas ±1 h das viradas de maré'+(v?' ('+v+')':'')+'; o robalo costuma aproveitar essas viradas.'+c;
+  return ' Pesca: de terra, com as melhores janelas ±1 h das viradas de maré'+(v?' ('+v+')':'')+'; o robalo costuma aproveitar essas viradas.'+c;
 }
-const fmt=di=>String(DAYS[di].txt).replace(/\b(Caiaque|Surfe)\b/gi,'<b>$&</b>')+(DAYS[di].k==3?'':pescaTxt(di));
+const hl=s=>s.replace(/\b(caiaque|surfe|pesca)\b/gi,m=>`<b class="kw-${m.toLowerCase()}">${m}</b>`);
+const fmt=di=>hl(String(DAYS[di].txt)+(DAYS[di].k==3?'':pescaTxt(di)));
 function people(di){
   const D=DAYS[di],H=[];
   for(let h=6;h<=21;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push({...o,h})}
@@ -846,9 +853,9 @@ function jogo(){
       }
     }
   }
-  return `<div class="card"><h2>⚽ Jogo do Santos · tempo na Vila Belmiro</h2>
+  return `<div class="card"><img class="jimg" src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasfgF3FYeO3XHgJ0biZ7zX7T.png?Expires=1794435357&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=H5JslxdkL8OLIIp0Qwpj1eQ~CliJmCMkvUDy4ikwTsw1ZtcImTyhogKtBJ46BQenPWdCw5sKhth9Y7CXUUIJhPSL4PbtuxzQqE8vqMHIQK0WfQL55n0EmC~7sl3XOxnmTX~GKZnodaB8POKUFpPcH8bM3I~DDhttEHd9a-SJL7J6PDm5kRHvhUWbgvAAjDFkpBQReUzGqDy~Ki17KgJaiNE6aQYo03L19VGfycgqehC9USf0qEGrNHqoV8~pgXWd4dS8y7PAvZsdg-fmZbehBhvWeATeUzwR2c4JKVVsB2Ul--sgpUHzhp4hMgEGC5I80rf9mTJBSKgZL1Wt1dLArA__" alt=""><h2>⚽ Jogo do Santos · tempo na Vila Belmiro</h2>
   <h3>🏟️ Próximos jogos na Vila Belmiro</h3>
-  <div class="row">${JOGOS.map((j,i)=>`<button data-g="${i}" class="${g.date==j.date?'on':''}">${j.lbl} · Santos x ${j.opp}</button>`).join('')}</div>
+  <div class="games">${JOGOS.map((j,i)=>`<button data-g="${i}" class="${g.date==j.date?'on':''}"><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Toque em um jogo para ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, use os links abaixo e digite a data.</div>
   <div class="row">
     <a class="btn" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Jogos no ge</a>
