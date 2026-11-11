@@ -16,13 +16,23 @@ h1{margin:0;font-size:1.4rem}
 .sub{color:var(--mut);font-size:.8rem}
 button,.btn{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);border-radius:10px;padding:8px 12px;text-decoration:none;display:inline-block}
 button.on{background:var(--acc);color:#04202f;border-color:var(--acc);font-weight:600}
+#days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+#days button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.15;font-size:.85rem;white-space:nowrap}
 nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+#tabs{display:grid;grid-template-columns:repeat(3,1fr)}
+#tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.15;font-size:.8rem;text-align:center}
 .badge{font-size:.78rem;padding:5px 10px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
 .card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:14px;border-top:4px solid var(--acc)}
 .card.g{border-top-color:var(--g)}.card.y{border-top-color:var(--y)}.card.r{border-top-color:var(--r)}
 .card h3,.card h2{margin:0 0 8px;font-size:1.02rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:14px}
 .grid .card{margin:0}
+.per{grid-template-columns:repeat(3,1fr);gap:6px}
+.per .card{padding:10px 4px;text-align:center}
+.per h3{font-size:.95rem;margin:0 0 4px}
+.per h3 small{display:block;font-size:.72rem;font-weight:400}
+.per .big{font-size:1.05rem;margin-bottom:4px}
+.per .pl{font-size:.78rem;color:var(--mut);line-height:1.5}
 .big{font-size:1.4rem;font-weight:700;margin-bottom:4px}
 ul{margin:0;padding-left:18px;color:var(--mut);font-size:.88rem;line-height:1.55}
 .mut{color:var(--mut);font-size:.82rem}
@@ -66,21 +76,52 @@ body.light input,body.light select{background:#fff}
 .opt label{display:flex;gap:8px;align-items:center;color:var(--txt);font-size:.92rem;padding:4px 0}
 .opt input{width:auto}
 .locsel{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:10px}
+.pick select{border:2px solid var(--acc);font-weight:600;cursor:pointer}
+.hook{background:linear-gradient(135deg,rgba(56,189,248,.28),rgba(56,189,248,.05));border-radius:12px;padding:12px 14px;margin:0 0 12px}
+.hook h3{margin:0;font-size:1.3rem;line-height:1.25}
+.hook .mut{margin-top:4px}
+.pick label{color:var(--acc);font-weight:600}
+.tabwrap{position:relative;margin-bottom:10px}
+.tabwrap nav{margin-bottom:0}
+#pop{position:absolute;left:0;right:0;top:100%;margin-top:6px;z-index:50}
+.pop{background:var(--card);border:2px solid var(--acc);border-radius:14px;padding:8px;box-shadow:0 14px 34px rgba(0,0,0,.55);display:grid;gap:6px}
+.pop button{width:100%;text-align:left;padding:12px 14px;font-size:1rem}
+#tour{position:fixed;inset:0;z-index:1000;display:none}
+#tour.on{display:block}
+#tour .dim{position:absolute;inset:0;background:rgba(0,0,0,.72)}
+#tour.hasspot .dim{display:none}
+#tour:not(.hasspot) .spot{display:none}
+#tour .spot{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(0,0,0,.72),0 0 0 4px #facc15;pointer-events:none}
+#tour .tb{position:absolute;left:0;right:0;bottom:0;max-height:55vh;overflow:auto;background:var(--card);color:var(--txt);border-top:5px solid #facc15;border-radius:18px 18px 0 0;padding:16px 16px 22px;font-size:1.1rem;line-height:1.55;box-shadow:0 -10px 30px rgba(0,0,0,.5)}
+#tour h3{margin:0 0 8px;font-size:1.3rem}
+#tour p{margin:6px 0}
+#tour .tp{color:var(--acc);font-weight:700;font-size:.95rem}
+#tour .bar{height:8px;background:var(--line);border-radius:6px;margin:6px 0 10px;overflow:hidden}
+#tour .bar i{display:block;height:100%;background:var(--acc)}
+#tour .tr{display:flex;gap:10px;margin-top:12px}
+#tour .tr button,#tour .tcol button{flex:1;min-height:54px;font-size:1.05rem;font-weight:700;padding:8px}
+#tour .tcol{display:grid;gap:10px;margin:10px 0}
+#tour .tcol button{text-align:left;padding:10px 14px}
+#tour .tcol button{white-space:nowrap;font-size:clamp(.75rem,3.9vw,1.05rem);padding:10px 10px}
+#tour button:disabled{opacity:.35}
+#tour .gl{padding:8px 0;border-bottom:1px solid var(--line)}
+body.touring{padding-bottom:60vh}
+html.big{font-size:22px}
 footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-  <div><h1>⚓ Capitão Santos · Painel interativo</h1><div class="sub">Baixada Santista · Santos · São Vicente · Guarujá · Praia Grande</div></div>
-  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+  <div><h1>⚓ Capitão Santos · Painel interativo</h1><div class="sub">Santos · São Vicente · Guarujá · Praia Grande</div></div>
+  <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status">⏳ buscando dados ao vivo…</span>
-    <button id="reload" title="Atualizar">🔄</button><button id="theme" title="Tema">🌓</button>
+    <button id="help" class="on">❓ Como usar</button><button id="reload" title="Atualizar">🔄</button><button id="theme" title="Tema">🌓</button>
   </div>
 </header>
 <div id="loc" class="locsel"></div>
 <nav id="days"></nav>
-<nav id="tabs"></nav>
+<div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
 <main id="view"></main>
 <footer>
   Ao vivo: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 05/11) e avaliação manual do Capitão (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta).<br>
@@ -128,7 +169,7 @@ const PLACES={
 /* ============ ESTADO ============ */
 const EMO=['🟢','🟡','🔴'],COL=['g','y','r'],LBL=['FAVORÁVEL','ALERTA','NÃO NAVEGUE'];
 const todayStr=new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
-let S={day:Math.max(0,DAYS.findIndex(d=>d.date>=todayStr)),tab:'meudia',city:'Santos',pl:1,live:{},hover:null,filter:'all',stamp:'',chk:{}};
+let S={day:Math.max(0,DAYS.findIndex(d=>d.date>=todayStr)),tab:'meudia',sub:'surfe',pf:'all',q:'',city:'Santos',pl:1,live:{},hover:null,filter:'all',stamp:'',chk:{}};
 const $=id=>document.getElementById(id);
 const KEY='capsantos.v1';
 function ld(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}}
@@ -167,7 +208,7 @@ async function loadLive(){
   if(m.status=='fulfilled'){const h=m.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),wh:h.wave_height[i],wp:h.wave_period[i],wdir:h.wave_direction[i]}});n++}
   S.live=L;S.stamp=new Date().toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
   S.cptecOk=cp.status=='fulfilled'&&cp.value>0;
-  $('status').textContent=(n>=(P.m?2:1)?`🟢 ao vivo · ${S.stamp}`:n==1?`🟡 parcial · ${S.stamp}`:'🟠 offline · dados fixos')+(P.city!='Santos'?'':S.cptecOk?' · CPTEC ✓':' · CPTEC ✗');
+  $('status').textContent=(n>=(P.m?2:1)?`🟢 ao vivo · ${S.stamp}`:n==1?`🟡 parcial · ${S.stamp}`:'🟠 offline · dados fixos');
   render();
 }
 const CPTEC_ID=4748;
@@ -485,7 +526,7 @@ function pesca(){
   <div class="mut" style="margin-top:6px">A janela é regra prática da região, não previsão de pesca confirmada.</div>${how('O peixe costuma comer mais na virada da maré, quando a água se mexe. Escolha a janela da tabela que cair em hora 🟢 do mar. Se for pescar de caiaque, volte antes do vento da tarde.')}<div class="mut"> Com ondas altas, pesque de terra e fique longe das pedras molhadas.</div></div>
   <div class="card"><h3>🐟 Espécies prováveis</h3><div class="t"><table><tr><th>Peixe</th><th>Onde / quando</th></tr>${SPECIES.map(s=>`<tr><td>${s[0]}</td><td>${s[1]}</td></tr>`).join('')}</table></div></div>`;
 }
-function agua(){
+function aguaOld(){
   const f=S.filter,btn=(k,t)=>`<button data-f="${k}" class="${f==k?'on':''}">${t}</button>`;
   let rows='';
   Object.entries(CETESB).forEach(([c,list])=>list.forEach(([n,st])=>{
@@ -523,39 +564,13 @@ function checklist(){
 }
 
 /* ============ ALERTAS WHATSAPP ============ */
-const WA_DONO='5513000000000'; /* TROCAR pelo seu número: 55 + DDD + número */
-const REGIOES=['Baixada inteira','Santos · Ponta da Praia/Barra','Santos · Aparecida/Canal 6','Santos · Embaré/Boqueirão/Gonzaga','Santos · José Menino/Quebra-Mar','São Vicente · Itararé/Gonzaguinha','São Vicente · Ilha Porchat/Prainha','São Vicente · Milionários/Divisa','Guarujá · Pitangueiras/Astúrias','Guarujá · Enseada','Guarujá · Tombo','Guarujá · Perequê/Barra','Praia Grande · Boqueirão/Guilhermina','Praia Grande · Caiçara/Ocian','Praia Grande · Mirim/Solemar'];
+const CANAL_URL='https://whatsapp.com/channel/0029Vb9aMtp0gcfAN4amaC2l';
 function alertas(){
-  const reg=REGIOES.map(r=>`<option>${r}</option>`).join('');
-  const tp=['Clima geral','Caiaque','Surfe','Pesca','Balneabilidade'].map((t,i)=>`<label><input type="checkbox" class="a_tp" value="${t}" ${i==0?'checked':''}> ${t}</label>`).join('');
-  return `<div class="card"><h3>📲 Receber previsão no WhatsApp</h3>
-  <div class="note">Este formulário <b>não envia a previsão sozinho</b>: ele gera um pedido de cadastro que chega no WhatsApp do administrador. O envio automático nos horários escolhidos depende de servidor e API oficial do WhatsApp, ainda não ativos.</div>
-  <div class="aform">
-    <div><label>Nome (opcional)</label><input id="a_nome" type="text" placeholder="Seu nome"></div>
-    <div><label>Seu WhatsApp (DDD + número)</label><input id="a_tel" type="tel" placeholder="13 99999-9999"></div>
-    <div><label>Região</label><select id="a_reg">${reg}</select></div>
-    <div><label>Dias</label><select id="a_dias"><option>Todos os dias</option><option>Segunda a sexta</option><option>Fins de semana</option></select></div>
-  </div>
-  <label>Horários de recebimento (até 3)</label>
-  <div class="aform"><input id="a_h1" type="time" value="06:00"><input id="a_h2" type="time"><input id="a_h3" type="time"></div>
-  <label>O que receber</label>
-  <div class="opt">${tp}</div>
-  <div class="opt" style="margin-top:8px"><label><input type="checkbox" id="a_ok"> Autorizo o contato por WhatsApp para envio de previsões (LGPD). Posso cancelar a qualquer momento respondendo SAIR.</label></div>
-  <button id="wsend" class="on" style="margin-top:8px">Gerar pedido de cadastro</button>
-  <div id="aout" style="margin-top:12px"></div></div>`;
-}
-function alertaRun(){
-  const out=$('aout'),tel=$('a_tel').value.replace(/\D/g,'');
-  const tp=[...document.querySelectorAll('.a_tp:checked')].map(x=>x.value);
-  const hs=['a_h1','a_h2','a_h3'].map(i=>$(i).value).filter(Boolean);
-  const err=m=>{out.innerHTML=`<div class="warn">${m}</div>`};
-  if(tel.length<10||tel.length>11)return err('Informe seu WhatsApp com DDD (10 ou 11 dígitos).');
-  if(!tp.length)return err('Escolha ao menos um tipo de previsão.');
-  if(!hs.length)return err('Informe ao menos um horário.');
-  if(!$('a_ok').checked)return err('É preciso autorizar o contato para continuar.');
-  const msg=`CADASTRO CLIMA BAIXADA\nNome: ${$('a_nome').value||'-'}\nWhatsApp: ${tel}\nRegião: ${$('a_reg').value}\nPrevisão: ${tp.join(', ')}\nHorários: ${hs.join(', ')}\nDias: ${$('a_dias').value}\nConsentimento LGPD: sim`;
-  const url='https://wa.me/'+WA_DONO+'?text='+encodeURIComponent(msg);
-  out.innerHTML=`<div class="note">Pedido pronto. Toque no botão e envie a mensagem no WhatsApp para concluir.</div><a class="btn" href="${url}" target="_blank" rel="noopener">📲 Abrir WhatsApp</a>`;
+  return `<div class="card g"><h3>📲 Canal Clima Baixada no WhatsApp</h3>
+  <div class="cid"><div>Receba o resumo do tempo, do mar e das praias da Baixada Santista direto no seu WhatsApp, sem precisar abrir o painel.</div></div>
+  <div class="row"><a class="btn on" href="${CANAL_URL}" target="_blank" rel="noopener" style="font-weight:600">📲 Entrar no canal</a></div>
+  ${how('Toque em "Entrar no canal", depois em "Seguir". Para não perder avisos, ative o sininho do canal. Seu número de telefone não aparece para outros seguidores.')}
+  <div class="note">As postagens são feitas manualmente pelo administrador, em geral uma vez ao dia. Não substituem este painel nem as orientações oficiais (Marinha, Defesa Civil 199, Bombeiros 193). Para sair, basta deixar de seguir o canal.</div><div class="row"><button id="tinst2">📲 Quer um ícone na tela do celular? Veja como</button></div></div>`;
 }
 
 /* ============ LOCAL, MEU DIA, JOGO DO SANTOS ============ */
@@ -570,7 +585,7 @@ function period(di,a,b,ic,nm){
   if(!H.length)return `<div class="card"><h3>${ic} ${nm}</h3><div class="mut">sem previsão ao vivo</div></div>`;
   const tmin=Math.min(...H.map(x=>x.tp)),tmax=Math.max(...H.map(x=>x.tp)),pm=Math.round(Math.max(...H.map(x=>x.pp||0))),rm=H.reduce((s,x)=>s+(x.rain||0),0),g=Math.max(...H.map(x=>x.wg||0))*1.852;
   const l=(pm>=60||rm>=2)?'r':pm>=30?'y':'g';
-  return `<div class="card ${l}"><h3>${ic} ${nm} <small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><ul><li>☔ chuva: até ${pm}% · ${rm.toFixed(1)} mm</li><li>💨 rajadas até ${g.toFixed(0)} km/h</li></ul></div>`;
+  return `<div class="card ${l}"><h3>${ic} ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">☔ ${pm}% · ${rm.toFixed(1).replace('.',',')} mm<br>💨 ${g.toFixed(0)} km/h</div></div>`;
 }
 function meudia(){
   const di=S.day,P=cur(),bn=(CETESB[P.city]||[]).find(x=>x[0].startsWith(P.n));
@@ -579,12 +594,12 @@ function meudia(){
   const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 05/11).':'🔴 Água imprópria para banho (CETESB, boletim de 05/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
   const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar agitado: ondas até ${wmax.toFixed(1)} m. Banho só rente à areia e perto do salva-vidas.`:wmax>1?`🌊 Mar mexido: ondas até ${wmax.toFixed(1)} m. Crianças e idosos só na beira.`:`🌊 Mar calmo: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
   return `<div class="card"><h2>🌤️ Meu Dia · ${P.n}, ${P.city} · ${DAYS[di].lbl}</h2>${people(di)}</div>
-  <div class="grid">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>
+  <div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>
   ${vai()}<div class="card"><h3>🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com mar calmo, entre na água só perto do salva-vidas e confira a bandeira do dia. Se a praia estiver 🔴, prefira passear na areia.':'Para ver praia, troque o bairro para um marcado com 🌊.')}</div>
-  <div class="note">Previsão de modelo, não certeza. Para temporal, alertas e emergências, consulte a Defesa Civil (199) e o Corpo de Bombeiros (193).</div>`;
+  <div class="note">Previsão de modelo, não certeza. Para temporal, alertas e emergências, consulte a Defesa Civil (199) e o Corpo de Bombeiros (193).</div>`+alertas();
 }
 /* ============ VAI PRA ONDE? ============ */
-const oriS=()=>S.ori||{city:S.city,pl:S.pl};
+const oriS=()=>S.ori&&S.ori.city?S.ori:{city:S.city,pl:S.pl};
 const fcKey=p=>p[1]+','+p[2];
 async function loadFc(p){
   const k=fcKey(p);if(S.fc[k]!==undefined)return;S.fc[k]=0;
@@ -627,14 +642,12 @@ function vaiTxt(so,sd,on,dn,di){
 function vai(){
   if(!S.fc)S.fc={};
   const di=S.day,os=oriS(),o=PLACES[os.city][os.pl],d=S.dest?PLACES[S.dest.city][S.dest.pl]:null;
-  const opts=(arr,sel)=>arr.map((p,i)=>`<option value="${i}" ${i==sel?'selected':''}>${p[0]}</option>`).join('');
-  const cts=(sel,ph)=>(ph?`<option value="" ${sel?'':'selected'}>— escolha o município —</option>`:'')+Object.keys(PLACES).map(c=>`<option ${c==sel?'selected':''}>${c}</option>`).join('');
-  const orig=S.ori
-   ?`<div class="note">📍 Você mudou a origem. Ajuste o local de onde está saindo:</div><div class="locsel"><div><label>Município de origem</label><select id="o_city">${cts(os.city,0)}</select></div><div><label>Bairro de origem</label><select id="o_pl">${opts(PLACES[os.city],os.pl)}</select></div></div><button id="oriOk">↩ Usar o local do topo (${PLACES[S.city][S.pl][0]})</button>`
-   :`<div class="cid"><div>📍 <b>Origem: ${o[0]} (${os.city})</b>, o local escolhido no topo. Está em outro lugar? <button id="oriChg">Mudar a origem</button></div></div>`;
-  const dst=`<div class="locsel" style="margin-top:8px"><div><label>🎯 Município de destino</label><select id="d_city">${cts(S.dest?S.dest.city:'',1)}</select></div>${S.dest?`<div><label>Bairro de destino</label><select id="d_pl">${opts(PLACES[S.dest.city],S.dest.pl)}</select></div>`:''}</div>`;
+  const grp=(sel,ph)=>(ph?`<option value="" ${sel?'':'selected'}>— escolha o destino —</option>`:'')+Object.keys(PLACES).map(c=>`<optgroup label="${c}">${PLACES[c].map((p,i)=>{const v=c+'|'+i;return `<option value="${v}" ${v==sel?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`}).join('')}</optgroup>`).join('');
+  const orig=`<div class="pick"><label>📍 De onde você sai? ▾</label><select id="o_sel">${grp(os.city+'|'+os.pl,0)}</select></div>${S.ori?`<button id="oriOk" style="margin-top:8px">↩ Usar o local do topo (${PLACES[S.city][S.pl][0]})</button>`:`<div class="mut" style="margin-top:6px">Por padrão vale o local escolhido no topo. Toque na lista para mudar.</div>`}`;
+  const dst=`<div class="pick" style="margin-top:8px"><label>🎯 Para onde vai? ▾</label><select id="d_sel">${grp(S.dest?S.dest.city+'|'+S.dest.pl:'',1)}</select></div>`;
   let res='<div class="note">Escolha o município e o bairro para onde vai. O painel compara o tempo de lá com o daqui, por exemplo: "vai chover lá, embora aqui não esteja chovendo".</div>';
-  if(d){
+  if(S.ori&&!S.ori.city)res='<div class="note">Escolha o município de origem para comparar com o destino. Enquanto isso, vale o local do topo.</div>';
+  else if(d){
     const g=p=>{const m=S.fc[fcKey(p)];return m===null?null:!m?0:wsum(m,di)};
     const so=g(o),sd=g(d);
     if(d[1]==o[1]&&d[2]==o[2])res='<div class="note">O destino é igual à origem: veja a previsão nos cartões acima.</div>';
@@ -642,9 +655,10 @@ function vai(){
     else if(!so||!sd)res='<div class="warn">Sem previsão para este dia em um dos locais. Toque em 🔄 no topo ou escolha outro dia.</div>';
     else res=vaiTxt(so,sd,o[0],d[0],di);
   }
-  return `<div class="card"><h3>🧭 Vai pra onde?</h3>${orig}${dst}</div>${res}`;
+  return `<div class="card"><div class="hook"><h3>🧭 Vai pra onde? Será que vai chover lá?</h3><div class="mut">☔ Planeje antes de sair de casa!</div></div>${orig}${dst}</div>${res}`;
 }
 
+const JOGOS=[{date:'2026-11-23',time:'21:00',opp:'Grêmio',lbl:'Seg 23/11 · 21h00'},{date:'2026-12-02',time:'21:30',opp:'Botafogo',lbl:'Qua 02/12 · 21h30'}];
 const VB={la:-23.952,lo:-46.339};
 async function loadVB(){
   try{
@@ -683,7 +697,9 @@ function jogo(){
     }
   }
   return `<div class="card"><h2>⚽ Jogo do Santos · tempo na Vila Belmiro</h2>
-  <div class="note">Este painel não tem a tabela de jogos carregada e não inventa datas. Consulte o próximo jogo nos links abaixo e digite aqui.</div>
+  <h3>🏟️ Próximos jogos na Vila Belmiro</h3>
+  <div class="row">${JOGOS.map((j,i)=>`<button data-g="${i}" class="${g.date==j.date?'on':''}">${j.lbl} · Santos x ${j.opp}</button>`).join('')}</div>
+  <div class="note">Toque em um jogo para ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, use os links abaixo e digite a data.</div>
   <div class="row">
     <a class="btn" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Jogos no ge</a>
     <a class="btn" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
@@ -697,27 +713,106 @@ function jogo(){
 }
 
 /* ============ NAVEGAÇÃO ============ */
-const TABS=[['meudia','🌤️ Meu Dia'],['jogo','⚽ Jogo do Santos'],['resumo','🏄🛶🎣 Esportes no Mar'],['caiaque','🛶 Caiaque'],['trafego','⚓ Tráfego'],['surfe','🏄 Surfe'],['pesca','🎣 Pesca'],['agua','🧪 Água'],['calc','🧮 Calculadora'],['chk','✅ Checklist'],['alerta','📲 Alertas']];
-const VIEWS={meudia,jogo,resumo:()=>!cur().m?nosea():locNote()+resumo(),caiaque:SEA(caiaque),trafego:SEA(trafego),surfe:SEA(surfe),pesca:SEA(pesca),agua,calc,chk:checklist,alerta:alertas};
+const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Esportes no Mar'],['jogo','⚽ Jogo do Santos']];
+const TICON={meudia:'☀️☁️🌧️',esportes:'🏄🚣🐟'};
+const SUBS=[['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Tráfego marítimo'],['praia','🏖️ Como está a praia hoje?']];
+const FISH='<svg width="13" height="18" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
+TICON.esportes='🏄🚣'+FISH;
+TICON.jogo='🥅⚽';
+const VIEWS={meudia,jogo,esportes};
+function esportes(){
+  const di=S.day,D=DAYS[di],sub=S.sub||'surfe';
+  const cs=SUBS.find(s=>s[0]==sub),nav=`<div style="margin-bottom:10px"><span class="badge">Seção: ${cs[1]}</span></div>`;
+  if(sub=='praia')return nav+praia();
+  if(!cur().m)return nav+nosea();
+  const v=sub=='surfe'?D.s:D.k;
+  const head=sub=='trafego'?'':`<div class="card ${COL[v]}"><h3>${EMO[v]} Avaliação do Capitão · ${D.lbl}</h3><div>${D.txt}</div><div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>`;
+  const body={surfe,caiaque,pesca,trafego}[sub]();
+  const extra=(sub=='surfe'||sub=='caiaque')?cptecNote(di)+`<div class="card"><h3>📈 Gráficos do dia <small class="mut">(passe o mouse ou toque)</small></h3>${charts(di)}</div>`:'';
+  return nav+locNote()+head+localWarn()+body+extra+(sub=='caiaque'?checklist():'');
+}
+const norm=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const dist=(a,b,c,d)=>{const r=Math.PI/180,x=(d-b)*r*Math.cos((a+c)/2*r),y=(c-a)*r;return 6371*Math.hypot(x,y)};
+const BEACHES=(()=>{const o=[];Object.entries(CETESB).forEach(([c,l])=>l.forEach(([n,st])=>{const p=PLACES[c].find(x=>n.startsWith(x[0])||x[0].startsWith(n));o.push({id:o.length,n,c,st,la:p?p[1]:null,lo:p?p[2]:null})}));return o})();
+function locate(){
+  if(!navigator.geolocation){S.pmsg='Seu navegador não permite localização.';S.pf='all';return}
+  S.pmsg='Obtendo sua localização…';
+  navigator.geolocation.getCurrentPosition(p=>{S.pos=[p.coords.latitude,p.coords.longitude];S.pmsg='';render()},()=>{S.pmsg='Não consegui sua localização. Libere a permissão no navegador.';S.pf='all';render()},{timeout:8000});
+}
+async function loadSea(b){
+  if(b.la==null)return;S.sea=S.sea||{};const k=b.la+','+b.lo;if(S.sea[k]!==undefined)return;S.sea[k]=0;
+  try{
+    const j=await getJ('https://marine-api.open-meteo.com/v1/marine?latitude='+(b.la-0.06).toFixed(3)+'&longitude='+(b.lo+0.03).toFixed(3)+'&hourly=wave_height,sea_surface_temperature&timezone=America%2FSao_Paulo&forecast_days=2');
+    const i=j.hourly.time.indexOf(todayStr+'T'+pad(Math.floor(nowH()))+':00');
+    S.sea[k]=i<0?null:{wh:j.hourly.wave_height[i],wt:j.hourly.sea_surface_temperature[i]};
+  }catch(e){S.sea[k]=null}
+  render();
+}
+function beachDetail(b){
+  const ok=b.st==0,k=b.la==null?null:b.la+','+b.lo,s=k&&S.sea?S.sea[k]:undefined;
+  let tw='sem dados agora',mar='sem dados agora';
+  if(b.la!=null&&(s===undefined||s===0)){tw=mar='carregando…'}
+  else if(s){
+    if(s.wt!=null)tw=`${s.wt.toFixed(0)}°C (${s.wt<20?'fresca':s.wt<25?'agradável':'morna'})`;
+    if(s.wh!=null)mar=`${s.wh<0.5?'Calmo, com ondas baixas':s.wh<1?'Pouco agitado':s.wh<1.5?'Mexido':'Agitado'} · ondas de cerca de ${s.wh.toFixed(1)} m`;
+  }
+  return `<div class="cid" style="margin-top:10px"><div><b>Condição atual:</b> ${ok?'Liberada para banho':'Banho não recomendado'}</div>
+  <div><b>Balneabilidade:</b> ${ok?'Própria':'Imprópria'} (CETESB, boletim de 05/11; o próximo sai em 12/11)</div>
+  <div><b>Temperatura da água:</b> ${tw}</div><div><b>Condição do mar:</b> ${mar}</div>
+  <div>💡 Mesmo em praia própria, entre perto do posto de salva-vidas e confira a bandeira do dia. Chuva forte recente pode piorar a qualidade da água.</div></div>
+  <div class="mut">Temperatura e ondas são estimativas de modelo (Open-Meteo), não medições no local.</div>`;
+}
+function praiaList(){
+  let L=BEACHES.filter(b=>(!S.pc||b.c==S.pc)&&(!S.pb||String(b.id)==S.pb));
+  if(S.pf=='ok')L=L.filter(b=>b.st==0);
+  if(S.pf=='perto'&&S.pos)L=L.map(b=>({...b,km:b.la==null?null:dist(S.pos[0],S.pos[1],b.la,b.lo)})).sort((a,b)=>(a.km??1e9)-(b.km??1e9));
+  if(!L.length)return '<div class="note">Nenhuma praia encontrada com esse filtro.</div>';
+  return L.map(b=>{
+    const ok=b.st==0,open=S.open==String(b.id);
+    return `<div class="card ${ok?'g':'r'}"><button data-pb="${b.id}" style="width:100%;text-align:left;background:none;border:0;color:inherit;padding:0">
+    <h3>🏖️ ${b.n} <small class="mut">${b.c}/SP${b.km!=null?' · '+b.km.toFixed(1)+' km de você':''}</small></h3>
+    <div class="big">${ok?'🟢 Própria para banho':'🔴 Imprópria para banho'}</div>
+    <div class="mut">${ok?'Água dentro do padrão da CETESB. Entre perto do salva-vidas e confira a bandeira.':'Banho não recomendado. A qualidade da água não está adequada. Evite o contato.'}</div>
+    <div class="mut" style="margin-top:4px">${open?'▲ ocultar detalhes':'▼ ver detalhes'}</div></button>${open?beachDetail(b):''}</div>`;
+  }).join('');
+}
+function praia(){
+  const b=(k,t)=>`<button data-pf="${k}" class="${S.pf==k?'on':''}">${t}</button>`;
+  return `<div class="card"><h2>🏖️ Como está a praia hoje?</h2><div class="mut">Saiba a qualidade da água antes de sair de casa.</div>
+  <div class="locsel" style="margin:10px 0"><div class="pick"><label>📍 Município ▾</label><select id="p_city"><option value="">Todos os municípios</option>${Object.keys(CETESB).map(c=>`<option ${c==S.pc?'selected':''}>${c}</option>`).join('')}</select></div><div class="pick"><label>🏖️ Praia ▾</label><select id="p_beach"><option value="">Todas as praias</option>${BEACHES.filter(b=>!S.pc||b.c==S.pc).map(b=>`<option value="${b.id}" ${String(b.id)==S.pb?'selected':''}>${b.n}${S.pc?'':' ('+b.c+')'}</option>`).join('')}</select></div></div>
+  <div class="row">${b('all','Todas')}${b('ok','Próprias para banho')}${b('perto','Próximas a mim')}</div>
+  ${S.pmsg?`<div class="note">${S.pmsg}</div>`:''}
+  <div class="note">Fonte: CETESB, boletim de 05/11 (próximo em 12/11). Guarujá e Praia Grande ainda não foram consultados. Chuva e ressaca recentes podem piorar o resultado.</div></div>
+  <div id="plist">${praiaList()}</div>
+  ${how('🟢 própria: pode entrar na água, com cuidado. 🔴 imprópria: não entre nem engula água. Toque no cartão da praia para ver temperatura da água e condição do mar. Depois de chuva forte, evite entrar mesmo em praia própria.')}
+  <div class="note">Veja o boletim oficial em <a style="color:var(--acc)" href="https://cetesb.sp.gov.br/praias" target="_blank" rel="noopener">cetesb.sp.gov.br/praias</a>.</div>`;
+}
+
+
 function render(){
   const CT=Object.keys(PLACES);
-  $('loc').innerHTML=`<div><label>📍 Município</label><select id="s_city">${CT.map(c=>`<option ${c==S.city?'selected':''}>${c}</option>`).join('')}</select></div><div><label>🏘️ Bairro (🌊 = tem mar · 🏙️ = só tempo)</label><select id="s_pl">${PLACES[S.city].map((p,i)=>`<option value="${i}" ${i==S.pl?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`).join('')}</select></div>`;
+  $('loc').innerHTML=`<div><label>📍 Município</label><select id="s_city">${CT.map(c=>`<option ${c==S.city?'selected':''}>${c}</option>`).join('')}</select></div><div><label>🏘️ Bairro</label><select id="s_pl">${PLACES[S.city].map((p,i)=>`<option value="${i}" ${i==S.pl?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`).join('')}</select></div>`;
   if(S.tab=='jogo'&&S.vb===undefined&&!S.vbBusy){S.vbBusy=1;loadVB()}
   if(S.tab=='meudia')ensureFc();
-  $('days').innerHTML=DAYS.map((d,i)=>`<button data-d="${i}" class="${i==S.day?'on':''}">${EMO[d.k]} ${d.lbl}</button>`).join('');
-  $('tabs').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}">${t[1]}</button>`).join('');
+  $('days').innerHTML=DAYS.map((d,i)=>`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${EMO[d.k]}</span><span>${d.lbl}</span></button>`).join('');
+  $('tabs').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"><span style="white-space:nowrap;letter-spacing:1px;display:inline-flex;align-items:center;justify-content:center;gap:3px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}${t[0]=='esportes'?' ▾':''}</span></button>`).join('');
+  $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}">${s[1]}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Este dia já passou: os dados manuais estão desatualizados. Peça um novo "?" ao Capitão.</div>':'';
   $('view').innerHTML=old+VIEWS[S.tab]();
-  if(S.tab=='calc')calcRun();
+  /* sem calculadora */
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
 }
 document.addEventListener('click',e=>{
+  if(S.menu&&!e.target.closest('.tabwrap')){S.menu=false;render()}
   const c=e.target.closest('.strip div');
   if(c){updateHover(+c.dataset.h+.5);return}
   const b=e.target.closest('button');
   if(!b)return;
   if(b.dataset.d!=null){S.day=+b.dataset.d;S.hover=null;render()}
-  else if(b.dataset.t){S.tab=b.dataset.t;S.hover=null;render()}
+  else if(b.dataset.t){const t=b.dataset.t;S.menu=t=='esportes'?(S.tab=='esportes'?!S.menu:true):false;S.tab=t;S.hover=null;render()}
+  else if(b.dataset.s){S.sub=b.dataset.s;S.menu=false;S.hover=null;render()}
+  else if(b.dataset.pf){S.pf=b.dataset.pf;if(S.pf=='perto'&&!S.pos)locate();render()}
+  else if(b.dataset.pb!=null){S.open=S.open==b.dataset.pb?null:b.dataset.pb;if(S.open!=null)loadSea(BEACHES[+S.open]);render()}
   else if(b.dataset.f){S.filter=b.dataset.f;render()}
   else if(b.id=='reload'){S.vb=undefined;S.vbBusy=0;S.fc={};loadLive()}
   else if(b.id=='theme')document.body.classList.toggle('light');
@@ -731,29 +826,131 @@ document.addEventListener('click',e=>{
   else if(b.id=='chkreset'){S.chk={};render()}
   else if(b.id=='oriChg'){S.ori={city:S.city,pl:S.pl};sv();render()}
   else if(b.id=='oriOk'){S.ori=null;sv();render()}
-  else if(b.id=='wsend')alertaRun();
   else if(b.id=='mapTry'){S.map=1;render()}
+  else if(b.id=='tinst2'){openTour('inst')}
+  else if(b.dataset.g!=null){const j=JOGOS[+b.dataset.g];S.game={date:j.date,time:j.time,opp:j.opp};render()}
 });
-document.addEventListener('input',e=>{if(e.target.closest('.form'))calcRun()});
+document.addEventListener('input',e=>{if(e.target.id=='q_praia'){S.q=e.target.value;const l=$('plist');if(l)l.innerHTML=praiaList()}});
 document.addEventListener('change',e=>{
   if(e.target.matches('.chk input')){S.chk[e.target.dataset.i]=e.target.checked;render()}
   if(e.target.id=='s_city'){S.city=e.target.value;S.pl=0;onPlace();return}
   if(e.target.id=='s_pl'){S.pl=+e.target.value;onPlace();return}
+  if(e.target.id=='o_sel'){const q=e.target.value.split('|');S.ori={city:q[0],pl:+q[1]};sv();render();return}
+  if(e.target.id=='d_sel'){const q=e.target.value.split('|');S.dest=e.target.value?{city:q[0],pl:+q[1]}:null;sv();render();return}
   if(e.target.id=='d_city'){S.dest=e.target.value?{city:e.target.value,pl:0}:null;sv();render();return}
   if(e.target.id=='d_pl'&&S.dest){S.dest.pl=+e.target.value;sv();render();return}
   if(e.target.id=='o_city'){S.ori={city:e.target.value,pl:0};sv();render();return}
-  if(e.target.id=='o_pl'&&S.ori){S.ori.pl=+e.target.value;sv();render();return}
+  if(e.target.id=='o_pl'){S.ori=S.ori||{city:S.city,pl:S.pl};S.ori.pl=+e.target.value;sv();render();return}
   if(e.target.id=='g_date'){(S.game=S.game||{}).date=e.target.value;render();return}
   if(e.target.id=='g_time'){(S.game=S.game||{}).time=e.target.value;render();return}
   if(e.target.id=='g_opp'){(S.game=S.game||{}).opp=e.target.value;render();return}
-  if(e.target.closest('.form'))calcRun();
+  if(e.target.id=='p_city'){S.pc=e.target.value;S.pb='';S.open=null;render();return}
+  if(e.target.id=='p_beach'){S.pb=e.target.value;S.open=S.pb||null;if(S.pb)loadSea(BEACHES[+S.pb]);render();return}
 });
 $('view').addEventListener('pointermove',e=>{
   const sv=e.target.closest('svg.chart');if(!sv)return;
   const r=sv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;
   updateHover(Math.max(0,Math.min(23.99,(px-PL)/(W-PL-PR)*24)));
 });
+/* ============ TUTORIAL SIMPLES (sem voz) ============ */
+const GL=[
+ ['Nó','Medida de velocidade do vento no mar. 10 nós equivalem a cerca de 18 km/h.'],
+ ['Rajada','Pancada de vento curta e mais forte que o vento médio. É ela que vira o caiaque.'],
+ ['Enchente','Maré subindo: a água do mar entra.'],
+ ['Vazante','Maré descendo: a água sai pelo canal. Com vento sul forte, é o momento mais perigoso na barra.'],
+ ['Preamar e baixa-mar','Preamar é a maré mais alta. Baixa-mar é a mais baixa.'],
+ ['Efeito canal','Encontro da correnteza que sai do estuário com a ondulação do mar. Cria ondas perigosas na Fortaleza da Barra e no Deck do Pescador.'],
+ ['Período da onda','Segundos entre uma onda e a seguinte. Menos de 6 s: mar bagunçado. Mais de 8 s: ondas mais organizadas.'],
+ ['Corrente de retorno','Faixa de água escura e agitada que puxa para longe da praia. Não lute contra: nade de lado, paralelo à areia.'],
+ ['Terral e vento do mar','Terral vem da terra e deixa a onda arrumada para o surfe. Vento do mar bagunça a onda.'],
+ ['Barra','Entrada do canal do porto de Santos, por onde passam os navios.'],
+ ['Balneabilidade','Se a água está própria ou imprópria para banho, medida pela CETESB.'],
+ ['Leash','Cordinha que prende a prancha ou o remo a você.']
+];
+const q1=s=>document.querySelector(s);
+const TP1=()=>{S.tab='meudia';S.menu=false;S.hover=null};
+const TPS=sub=>()=>{S.tab='esportes';S.sub=sub;S.menu=false;S.hover=null};
+const TST=[
+ {t:'Bem-vindo ao Capitão Santos! ⚓',x:'Este painel mostra o <b>tempo</b>, o <b>mar</b> e as <b>praias</b> da Baixada Santista. Quer um passeio rápido? Toque em <b>Próximo</b>. Você pode parar quando quiser em <b>Pular</b>, e rever depois no botão <b>❓ Como usar</b>.',tg:null,pre:TP1},
+ {t:'📍 Escolha onde você está',x:'Aqui você escolhe o <b>município</b> e o <b>bairro</b>. Tudo muda conforme o lugar. Bairros com 🌊 têm praia e mostram ondas e maré. Bairros com 🏙️ mostram só o tempo.',tg:'#loc',pre:TP1},
+ {t:'🔘 Os botões do topo',x:'<b>🟢 ao vivo + hora</b>: mostra que os dados estão atualizados e a que horas foram buscados. Se aparecer 🟡 ou 🟠, alguma fonte falhou: use com mais cuidado.<br><b>🔄 Atualizar</b>: busca de novo o tempo, o mar e a previsão. Toque se a tela ficou parada há muito tempo.<br><b>🌓 Tema</b>: troca entre fundo escuro e claro. O fundo claro ajuda a ler sob sol forte.',tg:'#hdr',pre:TP1},
+ {t:'📅 Escolha o dia',x:'Estes 5 botões são os próximos 5 dias. A bolinha mostra como está o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia.',tg:'#days',pre:TP1},
+ {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Mostra se está quente ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai.<br><b>🌊 Esportes no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias.<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro.',tg:'#tabs',pre:TP1},
+ {t:'🌤️ Meu Dia',x:'Diz em palavras simples se está <b>quente ou frio</b>, se precisa de <b>guarda-chuva</b> e se o <b>vento</b> está forte. Mais abaixo vêm manhã, tarde e noite.',tg:'#view .card',pre:TP1},
+ {t:'🧭 Vai pra onde? Será que vai chover lá?',x:'Escolha de onde você sai e para onde vai. O painel compara o tempo dos dois lugares e avisa, por exemplo: “vai chover lá, embora aqui não esteja chovendo”. <b>Planeje antes de sair de casa!</b>',tg:()=>{const h=q1('.hook');return h&&h.parentElement},pre:TP1},
+ {t:'🌊 Esportes no Mar',x:'Ao tocar nesta aba abre um <b>menu</b> com 5 opções: Surf, Caiaque, Pesca, Tráfego marítimo e Como está a praia hoje?. Toque na que você quiser.',tg:()=>q1('#pop .pop')||q1('.tabwrap'),pre:()=>{S.tab='esportes';S.menu=true;S.hover=null}},
+ {t:'🚦 Semáforo por hora',x:'Cada quadradinho é uma hora do dia, da meia-noite às 23h. <b>Verde</b>: pode ir. <b>Amarelo</b>: cuidado. <b>Vermelho</b>: não vá. Cores apagadas são a noite. Toque num quadradinho para ver vento, onda e maré daquela hora. <b>Regra de ouro:</b> só saia se toda a sua remada estiver verde.',tg:'#view .strip',pre:TPS('caiaque')},
+ {t:'📈 Gráficos do dia',x:'As linhas mostram como o vento, as ondas e a maré mudam durante o dia. Procure as horas em que a linha fica na <b>faixa verde</b>. A linha amarela tracejada escrita “agora” marca a hora atual. Se a <b>rajada</b> passar de 20 nós, não navegue.',tg:'#view svg.chart',pre:TPS('caiaque')},
+ {t:'⚓ Tráfego marítimo',x:'Navios grandes demoram a parar e não enxergam caiaques. Os botões abrem mapas ao vivo dos navios. A faixa amarela mostra quando há mais movimento. <b>Nunca cruze o canal de navegação.</b>',tg:'#view .card',pre:TPS('trafego')},
+ {t:'🏖️ Como está a praia hoje?',x:'Escolha o município e a praia nas listas. <b>🟢 Própria</b>: pode entrar na água. <b>🔴 Imprópria</b>: não entre nem engula água. Toque no cartão da praia para ver temperatura da água e condição do mar.',tg:'#p_city',pre:TPS('praia')},
+ {t:'📲 Canal no WhatsApp e segurança',x:'No fim da aba Meu Dia há o <b>Canal Clima Baixada</b>: toque em “Entrar no canal” e depois em “Seguir”. Lembre: o painel é uma <b>previsão</b>, não uma certeza. Em dúvida, não saia, e olhe o mar antes de entrar. Emergências: Bombeiros 193, Defesa Civil 199.',tg:'#view>.card:last-child',pre:TP1}
+];
+const T={on:0,i:0,mode:'menu'};
+const tourEl=document.createElement('div');
+tourEl.id='tour';
+tourEl.innerHTML='<div class="dim"></div><div class="spot"></div><div class="tb" id="tb"></div>';
+document.body.appendChild(tourEl);
+function tget(){const s=TST[T.i].tg;if(!s)return null;try{return typeof s=='function'?s():q1(s)}catch(e){return null}}
+function tourPos(){
+  if(!T.on||T.mode!='step')return;
+  const el=tget(),sp=tourEl.querySelector('.spot');
+  if(!el){tourEl.classList.remove('hasspot');return}
+  const r=el.getBoundingClientRect();
+  if(!r.width&&!r.height){tourEl.classList.remove('hasspot');return}
+  sp.style.left=(r.left-6)+'px';sp.style.top=(r.top-6)+'px';sp.style.width=(r.width+12)+'px';sp.style.height=(r.height+12)+'px';
+  tourEl.classList.add('hasspot');
+}
+function tourDraw(){
+  const tb=$('tb');let h='';
+  tourEl.classList.remove('hasspot');
+  if(T.mode=='menu'){
+    h=`<h3>❓ Como usar o painel</h3><div class="tcol"><button id="tgo">🧭 Passeio guiado, passo a passo</button><button id="tgl">📖 Palavras difíceis (glossário)</button><button id="tinst" class="one">📲 Instalar o app (crie um ícone no celular)</button><button id="tbig">🔠 Letra maior / menor</button><button id="tclose">Fechar</button></div>`;
+  }else if(T.mode=='inst'){
+    h=`<h3>📲 Instalar no celular</h3><p>Crie um ícone na tela do celular para abrir o painel com um toque, sem digitar o endereço.</p><div class="gl"><b>🤖 Android (Chrome)</b><br>1. Abra o painel no <b>Chrome</b>.<br>2. Toque nos <b>três pontinhos ⋮</b>, no canto de cima.<br>3. Toque em <b>Adicionar à tela inicial</b> (ou <b>Instalar app</b>).<br>4. Toque em <b>Adicionar</b>.</div><div class="gl"><b>🍎 iPhone (Safari)</b><br>1. Abra o painel no <b>Safari</b> (em outros navegadores não funciona).<br>2. Toque no botão <b>Compartilhar</b> (quadrado com seta para cima), embaixo da tela.<br>3. Role e toque em <b>Adicionar à Tela de Início</b>.<br>4. Toque em <b>Adicionar</b>.</div><p class="mut">O ícone aparece na tela inicial, junto dos outros aplicativos. Se abriu o link dentro do WhatsApp, toque em "Abrir no navegador" antes de começar.</p><div class="tr"><button id="tmenu">⬅ Voltar</button><button id="tclose">Fechar</button></div>`;
+  }else if(T.mode=='gl'){
+    h=`<h3>📖 Palavras difíceis</h3>${GL.map(g=>`<div class="gl"><b>${g[0]}:</b> ${g[1]}</div>`).join('')}<div class="tr"><button id="tmenu">⬅ Voltar</button><button id="tclose">Fechar</button></div>`;
+  }else{
+    const s=TST[T.i],n=TST.length;
+    h=`<div class="tp">Passo ${T.i+1} de ${n}</div><div class="bar"><i style="width:${(T.i+1)/n*100}%"></i></div><h3>${s.t}</h3><p>${s.x}</p><div class="tr"><button id="tprev" ${T.i==0?'disabled':''}>⬅ Voltar</button><button id="tnext" class="on">${T.i==n-1?'✔ Concluir':'Próximo ➡'}</button></div><div class="tr"><button id="tclose">Pular passeio</button></div>`;
+  }
+  tb.innerHTML=h;
+}
+function tourGo(i){
+  T.i=Math.max(0,Math.min(TST.length-1,i));T.mode='step';
+  TST[T.i].pre();render();tourDraw();
+  const el=tget();
+  if(el){const r=el.getBoundingClientRect();window.scrollTo({top:Math.max(0,window.scrollY+r.top-90)})}
+  else window.scrollTo({top:0});
+  setTimeout(tourPos,60);
+}
+function openTour(mode){
+  T.on=1;T.mode=mode;tourEl.classList.add('on');document.body.classList.add('touring');
+  if(mode=='step')tourGo(0);else tourDraw();
+}
+function closeTour(){
+  T.on=0;tourEl.classList.remove('on','hasspot');document.body.classList.remove('touring');
+  S.menu=false;render();
+  try{localStorage.setItem('capsantos.tour','1')}catch(e){}
+}
+tourEl.addEventListener('click',e=>{
+  e.stopPropagation();
+  const b=e.target.closest('button');if(!b)return;
+  const id=b.id;
+  if(id=='tgo')tourGo(0);
+  else if(id=='tgl'){T.mode='gl';tourDraw()}
+  else if(id=='tinst'){T.mode='inst';tourDraw()}
+  else if(id=='tmenu'){T.mode='menu';tourDraw()}
+  else if(id=='tbig'){document.documentElement.classList.toggle('big')}
+  else if(id=='tprev')tourGo(T.i-1);
+  else if(id=='tnext'){if(T.i>=TST.length-1)closeTour();else tourGo(T.i+1)}
+  else if(id=='tclose')closeTour();
+});
+$('help').addEventListener('click',()=>openTour('menu'));
+window.addEventListener('scroll',tourPos,{passive:true});
+window.addEventListener('resize',tourPos);
+setInterval(tourPos,500);
 render();loadLive();
+try{if(!localStorage.getItem('capsantos.tour'))setTimeout(()=>{if(!T.on)openTour('step')},1500)}catch(e){}
 </script>
 </body>
 </html>
