@@ -3,7 +3,7 @@
 <head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Capitão Santos – Painel interativo</title>
+<title>Clima Baixada – Painel interativo</title>
 <style>
 :root{--bg1:#0b1b2b;--bg2:#06101a;--card:#12293f;--txt:#e8f1f8;--mut:#8fa8bd;--line:#1f3b57;--g:#2ecc71;--y:#f1c40f;--r:#e74c3c;--acc:#38bdf8}
 body.light{--bg1:#eef5fb;--bg2:#dbe8f3;--card:#fff;--txt:#10283d;--mut:#516b82;--line:#d3e0ec;--acc:#0b78b8}
@@ -86,11 +86,17 @@ body.light input,body.light select{background:#fff}
 #pop{position:absolute;left:0;right:0;top:100%;margin-top:6px;z-index:50}
 .pop{background:var(--card);border:2px solid var(--acc);border-radius:14px;padding:8px;box-shadow:0 14px 34px rgba(0,0,0,.55);display:grid;gap:6px}
 .pop button{width:100%;text-align:left;padding:12px 14px;font-size:1rem}
-:root{--hl:#ffb020}
-body.light{--hl:#d97706}
+:root{--hl:#ffb020;--bd:#7aa2c4}
+body.light{--hl:#d97706;--bd:#4f6f8a}
 button:focus-visible,a.btn:focus-visible,input:focus-visible,select:focus-visible{outline:4px solid var(--hl);outline-offset:2px}
 input:focus,select:focus{border-color:var(--hl);box-shadow:0 0 0 4px rgba(255,176,32,.45)}
 button.on:not(#help){box-shadow:0 0 0 3px var(--hl)}
+button,.btn{border:2px solid var(--bd)}
+button.on{border-color:var(--hl)}
+#tour button{border:2px solid var(--bd)}
+#tour button.on{border-color:var(--hl)}
+.badge{border:2px solid var(--bd)}
+input,select{border-color:var(--bd)}
 .strip div.sel{outline:3px solid var(--hl);outline-offset:1px;position:relative;z-index:1}
 .subtabs{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
 .subtabs button{flex:1 1 auto;padding:10px 12px;font-size:.85rem;text-align:center}
@@ -99,7 +105,7 @@ button.on:not(#help){box-shadow:0 0 0 3px var(--hl)}
 #tour .dim{position:absolute;inset:0;background:rgba(0,0,0,.72)}
 #tour.hasspot .dim{display:none}
 #tour:not(.hasspot) .spot{display:none}
-#tour .spot{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(0,0,0,.72),0 0 0 4px #facc15;pointer-events:none}
+#tour .spot{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(0,0,0,.72),0 0 0 6px #ffb020;pointer-events:none}
 #tour .tb{position:absolute;left:0;right:0;bottom:0;max-height:55vh;overflow:auto;background:var(--card);color:var(--txt);border-top:5px solid #facc15;border-radius:18px 18px 0 0;padding:16px 16px 22px;font-size:1.1rem;line-height:1.55;box-shadow:0 -10px 30px rgba(0,0,0,.5)}
 #tour h3{margin:0 0 8px;font-size:1.3rem}
 #tour p{margin:6px 0}
@@ -121,7 +127,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <body>
 <div class="wrap">
 <header>
-  <div><h1>⚓ Capitão Santos · Painel interativo</h1><div class="sub">Santos · São Vicente · Guarujá · Praia Grande</div></div>
+  <div><h1>⚓ Clima Baixada · Painel Interativo</h1><div class="sub">Santos · São Vicente · Guarujá · Praia Grande</div></div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status">⏳ buscando dados ao vivo…</span>
     <button id="help" class="on">❓ Como usar</button><button id="reload" title="Atualizar">🔄</button><button id="theme" title="Tema">🌓</button>
@@ -132,7 +138,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
 <main id="view"></main>
 <footer>
-  Ao vivo: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 05/11) e avaliação manual do Capitão (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), atualizada em 11/11 às 09h30 e cobrindo até 15/11.<br>
+  Ao vivo: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 05/11) e avaliação manual do Capitão da Baixada (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), atualizada em 11/11 às 09h30 e cobrindo até 15/11.<br>
   Previsão de modelo não é certeza e não substitui seu julgamento nem as orientações oficiais (Marinha, Defesa Civil, Bombeiros). Confira a arrebentação a olho antes de entrar na água.
 </footer>
 </div>
@@ -226,7 +232,7 @@ function validade(em,drift){
   return{st:h>48?'vencida':h>24?'velha':'ok',h:Math.max(0,h),msg:h>48?'avaliação com mais de 48 h':''};
 }
 function greyIf(){
-  if(['vencida','indisp','relogio'].includes(AVAL.st))DAYS.forEach(d=>{d.k=3;d.s=3;d.txt='Sem avaliação válida do Capitão. Valem só os dados ao vivo (indicativos). Na dúvida, não saia.';d.vento=d.ondas=d.chuva='–'});
+  if(['vencida','indisp','relogio'].includes(AVAL.st))DAYS.forEach(d=>{d.k=3;d.s=3;d.txt='Sem avaliação válida do Capitão da Baixada. Valem só os dados ao vivo (indicativos). Na dúvida, não saia.';d.vento=d.ondas=d.chuva='–'});
 }
 function reval(){
   const v=CUR_BAD?{st:'indisp',msg:'arquivo dados.json corrompido ou incompleto'}:validade(CUR_EM,CUR_DRIFT);
@@ -235,11 +241,12 @@ function reval(){
   greyIf();return mudou;
 }
 function avalBox(){
+  if(S.tab=='meudia')return '<div class="note">👨‍👩‍👧 <b>Conselho da Mamãe e do Papai!</b></div>';
   const a=AVAL;if(a.st=='carregando')return '';
   const f=a.em?new Date(a.em).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'–';
-  if(a.st=='ok')return `<div class="note">🕒 Avaliação do Capitão feita em ${f} (${a.fonte}), há ${Math.floor(a.h)} h.</div>`;
-  if(a.st=='velha')return `<div class="warn">⚠️ <b>Avaliação antiga:</b> feita em ${f}, há ${Math.floor(a.h)} h. Peça atualização ao Capitão e use com mais cautela.</div>`;
-  return `<div class="warn">⚪ <b>Dados do Capitão indisponíveis</b> (${a.msg}). Cinza significa sem avaliação válida, nunca "seguro". Valem só os dados ao vivo; na dúvida, não saia.</div>`;
+  if(a.st=='ok')return `<div class="note">🕒 Avaliação do Capitão da Baixada feita em ${f} (${a.fonte}), há ${Math.floor(a.h)} h.</div>`;
+  if(a.st=='velha')return `<div class="warn">⚠️ <b>Avaliação antiga:</b> feita em ${f}, há ${Math.floor(a.h)} h. Peça atualização ao Capitão da Baixada e use com mais cautela.</div>`;
+  return `<div class="warn">⚪ <b>Dados do Capitão da Baixada indisponíveis</b> (${a.msg}). Cinza significa sem avaliação válida, nunca "seguro". Valem só os dados ao vivo; na dúvida, não saia.</div>`;
 }
 async function loadDados(){
   CUR_BAD=false;
@@ -524,7 +531,7 @@ function cptecNote(di){
 function resumo(){
   const di=S.day,D=DAYS[di],kw=bestRun(di,x=>x.k),sw=bestRun(di,x=>x.s);
   const wtxt=w=>!w?'sem dados ao vivo':w.l==2?'🔴 nenhum horário seguro hoje':`${EMO[w.l]} ${w.txt}${w.l==1?' (com cautela)':''}`;
-  return `<div class="card ${COL[D.k]}"><h2>🏄🛶🎣⚓ Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão</h3><div>${D.txt}</div>
+  return `<div class="card ${COL[D.k]}"><h2>🏄🛶🎣⚓ Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão da Baixada</h3><div>${D.txt}</div>
   <div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>
   ${subtabs()}<div class="note">ℹ️ <b>Este é o Resumo Geral do mar.</b> Para mais detalhes de uma atividade específica, toque na aba correspondente logo acima: <b>🏄 Surf</b> (picos e correntes), <b>🛶 Caiaque</b> (hora a hora e percurso), <b>🎣 Pesca</b> (viradas de maré e peixes), <b>⚓ Tráfego marítimo</b> (navios) e <b>🏖️ Como está a praia hoje?</b> (balneabilidade).</div>
   <div class="grid">
@@ -534,7 +541,7 @@ function resumo(){
    <div class="card r"><h3>🧪 Balneabilidade</h3><div class="big">🔴 Santos impróprio</div><div class="mut">CETESB 05/11 · próximo boletim 12/11</div></div>
    <div class="card y"><h3>⚓ Tráfego</h3><div class="big">🟡 Atenção</div><div class="mut">Mais manobras ±2 h das viradas de maré. Fique fora do canal.</div></div>
   </div>
-  ${cptecNote(di)}<div class="note">⏰ <b>Melhor horário</b> é a maior sequência de horas seguras entre 5h e 17h, calculada com vento, ondas e chuva ao vivo. Pode divergir do veredito do Capitão, que cruza mais fontes. Se divergirem, vale o mais conservador.</div>
+  ${cptecNote(di)}<div class="note">⏰ <b>Melhor horário</b> é a maior sequência de horas seguras entre 5h e 17h, calculada com vento, ondas e chuva ao vivo. Pode divergir do veredito do Capitão da Baixada, que cruza mais fontes. Se divergirem, vale o mais conservador.</div>
   <div class="card"><h3>📈 Passe o mouse (ou toque) nos gráficos</h3><div class="info" id="hinfo">Aponte para um horário.</div>${how('Use a linha do tempo para escolher a melhor hora: procure o período em que vento, rajada e onda ficam juntos na faixa verde. A caixa acima mostra os valores da hora em que você tocar.')}${charts(di)}</div>`;
 }
 function caiaque(){
@@ -796,7 +803,7 @@ function esportes(){
   if(sub=='praia')return nav+praia();
   if(!cur().m)return nav+nosea();
   const v=sub=='surfe'?D.s:D.k;
-  const head=sub=='trafego'?'':`<div class="card ${COL[v]}"><h3>${EMO[v]} Avaliação do Capitão · ${D.lbl}</h3><div>${D.txt}</div><div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>`;
+  const head=sub=='trafego'?'':`<div class="card ${COL[v]}"><h3>${EMO[v]} Avaliação do Capitão da Baixada · ${D.lbl}</h3><div>${D.txt}</div><div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>`;
   const body={surfe,caiaque,pesca,trafego}[sub]();
   const extra=(sub=='surfe'||sub=='caiaque')?cptecNote(di)+`<div class="card"><h3>📈 Gráficos do dia <small class="mut">(passe o mouse ou toque)</small></h3>${charts(di)}</div>`:'';
   return nav+locNote()+head+localWarn()+body+extra+(sub=='caiaque'?checklist():'');
@@ -867,7 +874,7 @@ function render(){
   $('days').innerHTML=DAYS.map((d,i)=>d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${EMO[d.k]}</span><span>${d.lbl}</span></button>`).join('');
   $('tabs').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"><span style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}">${s[1]}</button>`).join('')}</div>`:'';
-  const old=DAYS[S.day].date<todayStr?'<div class="note">Este dia já passou: os dados manuais estão desatualizados. Peça um novo "?" ao Capitão.</div>':'';
+  const old=DAYS[S.day].date<todayStr?'<div class="note">Este dia já passou: os dados manuais estão desatualizados. Peça um novo "?" ao Capitão da Baixada.</div>':'';
   $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
   /* sem calculadora */
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
@@ -941,14 +948,14 @@ const q1=s=>document.querySelector(s);
 const TP1=()=>{S.tab='meudia';S.menu=false;S.hover=null};
 const TPS=sub=>()=>{S.tab='esportes';S.sub=sub;S.menu=false;S.hover=null};
 const TST=[
- {t:'Bem-vindo ao Capitão Santos! ⚓',x:'Este painel mostra o <b>tempo</b>, o <b>mar</b> e as <b>praias</b> da Baixada Santista. Quer um passeio rápido? Toque em <b>Próximo</b>. Você pode parar quando quiser em <b>Pular</b>, e rever depois no botão <b>❓ Como usar</b>.',tg:null,pre:TP1},
+ {t:'Bem-vindo ao Clima Baixada! ⚓',x:'Este painel mostra o <b>tempo</b>, o <b>mar</b> e as <b>praias</b> da Baixada Santista. Quer um passeio rápido? Toque em <b>Próximo</b>. Você pode parar quando quiser em <b>Pular</b>, e rever depois no botão <b>❓ Como usar</b>.',tg:null,pre:TP1},
  {t:'📍 Escolha onde você está',x:'Aqui você escolhe o <b>município</b> e o <b>bairro</b>. Tudo muda conforme o lugar. Bairros com 🌊 têm praia e mostram ondas e maré. Bairros com 🏙️ mostram só o tempo.',tg:'#loc',pre:TP1},
  {t:'🔘 Os botões do topo',x:'<b>🟢 ao vivo + hora</b>: mostra que os dados estão atualizados e a que horas foram buscados. Se aparecer 🟡 ou 🟠, alguma fonte falhou: use com mais cuidado.<br><b>🔄 Atualizar</b>: busca de novo o tempo, o mar e a previsão. Toque se a tela ficou parada há muito tempo.<br><b>🌓 Tema</b>: troca entre fundo escuro e claro. O fundo claro ajuda a ler sob sol forte.',tg:'#hdr',pre:TP1},
  {t:'📅 Escolha o dia',x:'Estes botões mostram os próximos dias. A bolinha mostra como está o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia.',tg:'#days',pre:TP1},
- {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Mostra se está quente ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai.<br><b>🌊 Esportes no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias.<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro.',tg:'#tabs',pre:TP1},
- {t:'🌤️ Meu Dia',x:'Diz em palavras simples se está <b>quente ou frio</b>, se precisa de <b>guarda-chuva</b> e se o <b>vento</b> está forte. Mais abaixo vêm manhã, tarde e noite.',tg:'#view .card',pre:TP1},
+ {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Pense nela como alguém que quer o seu bem antes de você sair de casa: avisa se vai fazer calor ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai. 💙<br><b>🌊 Esportes no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias, o Capitão da Baixada vai te deixar informado!<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro.',tg:'#tabs',pre:TP1},
+ {t:'🌤️ Meu Dia',x:'Lembra quando você ia sair de casa e sempre alguém dizia <i>“Não esqueça de levar a blusa!”</i> ou <i>“Parece que vai chover! Leva o guarda-chuva!”</i>? É isso que o aviso <b>Conselho da Mamãe e do Papai!</b> faz por você. Em palavras simples, diz se está <b>quente ou frio</b>, se precisa de <b>guarda-chuva</b> e se o <b>vento</b> está forte. Mais abaixo vêm os períodos do dia com previsões para <b>manhã</b>, <b>tarde</b> e <b>noite</b>. Vá tranquilo, o Clima Baixada cuidará de você. 🤗',tg:'#view .card',pre:TP1},
  {t:'🧭 Vai pra onde? Será que vai chover lá?',x:'Escolha de onde você sai e para onde vai. O painel compara o tempo dos dois lugares e avisa, por exemplo: “vai chover lá, embora aqui não esteja chovendo”. <b>Planeje antes de sair de casa!</b>',tg:()=>{const h=q1('.hook');return h&&h.parentElement},pre:TP1},
- {t:'🌊 Esportes no Mar',x:'Ao tocar nesta aba você já vê o <b>Resumo Geral</b> com o texto do Capitão. Logo abaixo ficam as abas <b>Surf, Caiaque, Pesca, Tráfego marítimo e Como está a praia hoje?</b>. Toque na que quiser para ver os detalhes.',tg:()=>q1('.subtabs')||q1('.tabwrap'),pre:()=>{S.tab='esportes';S.sub='resumo';S.menu=false;S.hover=null}},
+ {t:'🌊 Esportes no Mar',x:'Ao tocar nesta aba você já vê o <b>Resumo Geral</b> com o texto do Capitão da Baixada. Logo abaixo ficam as abas <b>Surf, Caiaque, Pesca, Tráfego marítimo e Como está a praia hoje?</b>. Toque na que quiser para ver os detalhes.',tg:()=>q1('.subtabs')||q1('.tabwrap'),pre:()=>{S.tab='esportes';S.sub='resumo';S.menu=false;S.hover=null}},
  {t:'🚦 Semáforo por hora',x:'Cada quadradinho é uma hora do dia, da meia-noite às 23h. <b>Verde</b>: pode ir. <b>Amarelo</b>: cuidado. <b>Vermelho</b>: não vá. Cores apagadas são a noite. Toque num quadradinho para ver vento, onda e maré daquela hora. <b>Regra de ouro:</b> só saia se toda a sua remada estiver verde.',tg:'#view .strip',pre:TPS('caiaque')},
  {t:'📈 Gráficos do dia',x:'As linhas mostram como o vento, as ondas e a maré mudam durante o dia. Procure as horas em que a linha fica na <b>faixa verde</b>. A linha amarela tracejada escrita “agora” marca a hora atual. Se a <b>rajada</b> passar de 20 nós, não navegue.',tg:'#view svg.chart',pre:TPS('caiaque')},
  {t:'⚓ Tráfego marítimo',x:'Navios grandes demoram a parar e não enxergam caiaques. Os botões abrem mapas ao vivo dos navios. A faixa amarela mostra quando há mais movimento. <b>Nunca cruze o canal de navegação.</b>',tg:'#view .card',pre:TPS('trafego')},
