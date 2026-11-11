@@ -44,7 +44,7 @@ h1{margin:0;font-size:1.8rem;line-height:1.15}
 .sub{color:var(--mut);font-size:.8rem;flex:1 1 220px}
 .banner{flex:0 0 100%;width:100%;aspect-ratio:34/10;height:auto;object-fit:cover;object-position:center 38%;border-radius:14px;display:block;border:2px solid var(--bd,#7aa2c4)}
 @media (max-width:600px){.banner{aspect-ratio:5/2;object-position:center 40%}}
-@media (min-width:601px){.banner{aspect-ratio:21/9;object-position:center 75%}}
+@media (min-width:601px){.banner{aspect-ratio:21/9;object-position:center 65%}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 button,.btn{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);border-radius:10px;padding:8px 12px;text-decoration:none;display:inline-block}
 button.on{background:var(--acc);color:#04202f;border-color:var(--acc);font-weight:600}
@@ -160,7 +160,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <div class="wrap">
 <header>
   <h1 class="sr">Clima Baixada · Painel Interativo</h1>
-  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasYs7i63aOfQQYwJA6od2ff1.jpg?Expires=1794432568&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=PWSafUStZqWuOzafLFbeHXpeEmH-hQ1VGR21A5DqGHdDvJw-U6QwjeoktaY9v7RwYlkZVPItoLi3qRPlNncwOoE8v8utI1ENCiWTobnhE5ZO8uwZlCXx43Ip1VnUOX4fo1~SNlYhBznCxlrA9BOxNTCTY3gKhgmZxRSvvMn8pUPugJnbZ~9fpE7gVfpIcQ9atsnS~ormRZUFTMEToSu3m4ensGYTw6Ckm~9LODzDgResGtaecLQSIbUQC6FC9M6i4excd01NljEzuWzjtwXvzinUdAIhtuHRYMLpaF1ZE~pZdJ2UOzRA2vFDwj9Dipcq4lPkKiGkT7ww~telkOR3Zg__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
+  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasYs7i63aOfQQYwJA6od2ff1.jpg?Expires=1794435357&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=IeQbpSuNPUmzMt0HFC3E1TR17rTbvXYjFObHjtCYxw-DyijDyj9Q8QsRvlQscu0ubaij6uTZ50QrSUemEGPQw8jLAgjRSGW6NgpniaV6e67vDBEmhmWirX0wTSEJeX-SgeGGLCEmlL6HQdSHzHk9RbKOSS8VQhaQMJUfP1Q6Q0Dual8K1s7YS6iTw7Hd8EbBZUV0Oh23naI4s5XmB-bApMkdBr9EdbiVXjQTAnjrtSUXSTOqznWwo1nyj26E8u--HMW3lxcob12euHO--cGBTX5wb7SccQJ5JPx6v2KvjuqCH-MgtfE5U6K~bnIhH-~HUSeGLLlnaYZLVBEffog6Rg__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
   <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status">⏳ buscando dados ao vivo…</span>
@@ -855,7 +855,7 @@ const SUBS=[['resumo','📋 Resumo Geral'],['surfe','🏄 Surf'],['caiaque','�
 const FISH='<svg width="13" height="18" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
 TICON.esportes='🏄🚣'+FISH;
 const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
-TICON.jogo='<img src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasfgF3FYeO3XHgJ0biZ7zX7T.png?Expires=1794432569&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=pPf0APRW37uyXLvuMp4BLxDgtNyDc6yGtLrchwFA8m89ckM9sVyoJ4SLyn4S~SX6UpyMjdkBYaKOm7ST~K3TKmDH3Ujum0yUb7SGN0p68fZKNcVBwhqh0jExXbYklSo2CPxYrNjAb09YxJzrNemXhtApCZYMlCAEJYcOHtn1d8QyXmRJlJbX482omHNc~0fkTp4MvYTlxyX5rp6BDq~dsHLj3PWr5fmO9pTYsiTUubgVGjdMf596ycjq8Ecl4IyAEnpHnbFeEGyxMzspxV-eNAmQqsdW-6nM0JbY4MGLAf18x26GG2Prur3fnIOMoTxK85giY3wneu2HKRNMjd5rVg__" alt="" style="height:26px;width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
+TICON.jogo='<img src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasfgF3FYeO3XHgJ0biZ7zX7T.png?Expires=1794435357&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=H5JslxdkL8OLIIp0Qwpj1eQ~CliJmCMkvUDy4ikwTsw1ZtcImTyhogKtBJ46BQenPWdCw5sKhth9Y7CXUUIJhPSL4PbtuxzQqE8vqMHIQK0WfQL55n0EmC~7sl3XOxnmTX~GKZnodaB8POKUFpPcH8bM3I~DDhttEHd9a-SJL7J6PDm5kRHvhUWbgvAAjDFkpBQReUzGqDy~Ki17KgJaiNE6aQYo03L19VGfycgqehC9USf0qEGrNHqoV8~pgXWd4dS8y7PAvZsdg-fmZbehBhvWeATeUzwR2c4JKVVsB2Ul--sgpUHzhp4hMgEGC5I80rf9mTJBSKgZL1Wt1dLArA__" alt="" style="height:26px;width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
 const VIEWS={meudia,jogo,esportes};
 function esportes(){
   const di=S.day,D=DAYS[di],sub=S.sub||'surfe';
