@@ -16,14 +16,14 @@ h1{margin:0;font-size:1.4rem}
 .sub{color:var(--mut);font-size:.8rem}
 button,.btn{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);border-radius:10px;padding:8px 12px;text-decoration:none;display:inline-block}
 button.on{background:var(--acc);color:#04202f;border-color:var(--acc);font-weight:600}
-#days{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+#days{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
 #days button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.15;font-size:.85rem;white-space:nowrap}
 nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 #tabs{display:grid;grid-template-columns:repeat(3,1fr)}
 #tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.15;font-size:.8rem;text-align:center}
 .badge{font-size:.78rem;padding:5px 10px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
 .card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:14px;border-top:4px solid var(--acc)}
-.card.g{border-top-color:var(--g)}.card.y{border-top-color:var(--y)}.card.r{border-top-color:var(--r)}
+.card.g{border-top-color:var(--g)}.card.y{border-top-color:var(--y)}.card.r{border-top-color:var(--r)}.card.n{border-top-color:#94a3b8}
 .card h3,.card h2{margin:0 0 8px;font-size:1.02rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:14px}
 .grid .card{margin:0}
@@ -124,7 +124,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
 <main id="view"></main>
 <footer>
-  Ao vivo: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 05/11) e avaliação manual do Capitão (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta).<br>
+  Ao vivo: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 05/11) e avaliação manual do Capitão (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), atualizada em 11/11 às 09h30 e cobrindo até 15/11.<br>
   Previsão de modelo não é certeza e não substitui seu julgamento nem as orientações oficiais (Marinha, Defesa Civil, Bombeiros). Confira a arrebentação a olho antes de entrar na água.
 </footer>
 </div>
@@ -134,24 +134,29 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 const TZ='-03:00';
 const ev=(d,hm,t,h)=>({ms:new Date(`2026-11-${d}T${hm}:00${TZ}`).getTime(),t,h});
 const TIDES=[ev('09','20:38','B',0.01),ev('10','02:19','A',1.39),ev('10','08:25','B',0.42),ev('10','14:57','A',1.21),ev('10','21:17','B',0.03),
- ev('11','02:49','A',1.36),ev('11','08:55','B',0.44),ev('11','15:16','A'),ev('11','22:02','B'),
- ev('12','03:25','A'),ev('12','09:19','B'),ev('12','15:29','A'),ev('12','22:51','B'),
- ev('13','04:08','A'),ev('13','09:57','B'),ev('13','15:14','A'),ev('13','23:49','B'),ev('14','04:57','A',1.19)];
+ ev('11','02:49','A',1.36),ev('11','08:55','B',0.44),ev('11','15:16','A',1.17),ev('11','22:02','B',0.09),
+ ev('12','03:25','A',1.32),ev('12','09:19','B',0.47),ev('12','15:29','A',1.11),ev('12','22:51','B',0.18),
+ ev('13','04:08','A',1.26),ev('13','09:57','B',0.52),ev('13','15:14','A',1.05),ev('13','23:49','B',0.26),
+ ev('14','04:57','A',1.19),ev('14','10:27','B',0.59),ev('14','15:02','A',1.01),
+ ev('15','00:53','B',0.33),ev('15','05:53','A',1.12),ev('15','11:02','B',0.67),ev('15','15:14','A',0.95),ev('15','18:44','B',0.81),ev('15','20:46','A',0.83),
+ ev('16','01:59','B',0.36),ev('16','07:01','A',1.06)];
 const LAST_TIDE=TIDES[TIDES.length-1].ms;
 
-const DAYS=[
+let DAYS=[
  {date:'2026-11-10',lbl:'Ter 10',k:1,s:0,vento:'Manhã 4–7 km/h; tarde E 22–25 km/h, rajadas até 43',ondas:'0,6–0,9 m (Marinha: 1–2 m)',chuva:'sem chuva',
   txt:'Melhor dia da semana. Vento fraco de manhã; à tarde as rajadas passam de 20 nós. Caiaque só até ~08h30; surfe 06h–09h30 nos Canais 4 e 6.'},
- {date:'2026-11-11',lbl:'Qua 11',k:1,s:1,vento:'N calmo (2 km/h) de manhã; E 14–16 km/h à tarde',ondas:'~1,0 m · 6,6 s',chuva:'sem chuva',
-  txt:'Manhã calma, mas ondas próximas de 1 m com período curto (6,6 s). Caiaque só de manhã e olhando a arrebentação.'},
- {date:'2026-11-12',lbl:'Qui 12',k:1,s:1,vento:'Calmo de manhã; S ~17 km/h em algum horário',ondas:'~1,0 m · 7,4 s',chuva:'11 mm (87%)',
-  txt:'Chuva volta. Risco de raios e vento S: evite caiaque se houver trovoada. Surfe 05h–10h.'},
- {date:'2026-11-13',lbl:'Sex 13',k:1,s:1,vento:'Fraco (2–6 km/h)',ondas:'pequena, ondulação longa 12–13 s',chuva:'passageira (1,8 mm)',
-  txt:'Mar pequeno e vento fraco, porém com chuva passageira. Dados divergentes entre fontes.'},
- {date:'2026-11-14',lbl:'Sáb 14',k:1,s:1,vento:'sem dado',ondas:'sem dado',chuva:'sem chuva',
-  txt:'Dados insuficientes: avaliação conservadora. Reavalie de manhã.'}
+ {date:'2026-11-11',lbl:'Qua 11',k:1,s:1,vento:'N 4 km/h de manhã; SE/ESE 8–10 km/h à tarde (rajadas até 14)',ondas:'0,5–1,0 m (fontes divergem) · 6,6–7 s',chuva:'sem chuva',
+  txt:'Manhã calma com terral, mas ondas entre 0,5 e 1,0 m conforme a fonte e período curto (6,6 s). Caiaque só de manhã, perto da praia, olhando a arrebentação. Surfe 05h–10h nos Canais 4 e 6. Vazante até 08h55.'},
+ {date:'2026-11-12',lbl:'Qui 12',k:1,s:1,vento:'Fraco: 3–5 km/h de manhã (ONO); SE ~13 km/h ao longo do dia',ondas:'0,4–1,0 m · 7,3–7,5 s',chuva:'4,6 a 11 mm (fontes divergem)',
+  txt:'Vento fraco e mar parecido com o de hoje, mas com chuva. Vazante das 03h25 às 09h19 sem vento sul forte previsto. Evite caiaque se houver trovoada. Surfe 05h–10h.'},
+ {date:'2026-11-13',lbl:'Sex 13',k:1,s:0,vento:'Fraco (6–8 km/h; S ~10 km/h)',ondas:'0,3–0,7 m · 7,2 s',chuva:'garoa (~4 mm)',
+  txt:'Mar pequeno e vento fraco: bom para iniciantes. A garoa e o risco de raios pedem atenção. Surfe 06h–09h; baixa-mar às 09h57.'},
+ {date:'2026-11-14',lbl:'Sáb 14',k:1,s:1,vento:'Fraco (S ~11 km/h, ~6 nós)',ondas:'0,2 m · 12 s (muito pequeno)',chuva:'garoa (~6 mm)',
+  txt:'Mar quase sem ondas: bom para caiaque, fraco para surfe. Garoa prevista; o vento sul fraco com vazante (04h57–10h27) fica abaixo de 12 nós.'},
+ {date:'2026-11-15',lbl:'Dom 15',k:0,s:1,vento:'Fraco: 4–6 km/h de manhã; S/SE 6–8 km/h à tarde',ondas:'0,2–0,3 m de manhã; 0,4–0,6 m no fim da tarde · 11–16 s',chuva:'sem chuva (nublado)',
+  txt:'Melhor dia para caiaque da semana: vento fraco, mar pequeno e sem chuva. Surfe com pouca onda; a ondulação longa cresce no fim da tarde. Vazante das 05h53 às 11h02 com vento fraco. Só duas fontes cobrem este dia: reavalie na véspera.'}
 ];
-const CETESB={
+let CETESB={
  'Santos':[['Ponta da Praia',2],['Aparecida',2],['Embaré',2],['Boqueirão',2],['Gonzaga',2],['Pompeia',2],['José Menino',2]],
  'São Vicente':[['Praia da Divisa',2],['Milionários',2],['Gonzaguinha',2],['Itararé (Posto 2)',0],['Ilha Porchat',0],['Prainha',0]]
 };
@@ -167,7 +172,7 @@ const PLACES={
 };
 
 /* ============ ESTADO ============ */
-const EMO=['🟢','🟡','🔴'],COL=['g','y','r'],LBL=['FAVORÁVEL','ALERTA','NÃO NAVEGUE'];
+const EMO=['🟢','🟡','🔴','⚪'],COL=['g','y','r','n'],LBL=['FAVORÁVEL','ALERTA','NÃO NAVEGUE','SEM AVALIAÇÃO'];
 const todayStr=new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
 let S={day:Math.max(0,DAYS.findIndex(d=>d.date>=todayStr)),tab:'meudia',sub:'surfe',pf:'all',q:'',city:'Santos',pl:1,live:{},hover:null,filter:'all',stamp:'',chk:{}};
 const $=id=>document.getElementById(id);
@@ -193,6 +198,58 @@ function tideAt(ms){
 }
 const dayTides=di=>TIDES.filter(e=>new Date(e.ms).toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'})==DAYS[di].date);
 const inWin=ms=>ms>LAST_TIDE+2*3600000?null:TIDES.some(e=>Math.abs(e.ms-ms)<=2*3600000);
+
+/* ============ DADOS DO CAPITÃO (dados.json) ============ */
+const BACKUP_AVAL='2026-11-11T09:30:00-03:00';
+let AVAL={st:'carregando'},CUR_EM=BACKUP_AVAL,CUR_FONTE='cópia embutida',CUR_DRIFT=null,CUR_BAD=false;
+function dadosOk(j){
+  if(!j||typeof j!='object'||!Array.isArray(j.dias)||!j.dias.length||!j.cetesb||typeof j.cetesb!='object')return false;
+  if(typeof j.avaliado_em!='string'||isNaN(Date.parse(j.avaliado_em)))return false;
+  const k=v=>Number.isInteger(v)&&v>=0&&v<=2;
+  return j.dias.every(d=>d&&/^\d{4}-\d{2}-\d{2}$/.test(d.date)&&typeof d.lbl=='string'&&k(d.k)&&k(d.s)&&typeof d.txt=='string'&&typeof d.vento=='string'&&typeof d.ondas=='string'&&typeof d.chuva=='string')
+   &&Object.keys(j.cetesb).every(c=>PLACES[c]&&Array.isArray(j.cetesb[c])&&j.cetesb[c].every(p=>Array.isArray(p)&&typeof p[0]=='string'&&k(p[1])));
+}
+function validade(em,drift){
+  const t=Date.parse(em);
+  if(isNaN(t))return{st:'indisp',msg:'avaliação sem data válida'};
+  if(drift!=null&&Math.abs(drift)>1800000)return{st:'relogio',msg:'o relógio do aparelho difere do servidor em mais de 30 min; validade não calculada'};
+  const h=(Date.now()-t)/3600000;
+  if(h<-0.5)return{st:'relogio',msg:'a data da avaliação está no futuro; confira o relógio do aparelho'};
+  return{st:h>48?'vencida':h>24?'velha':'ok',h:Math.max(0,h),msg:h>48?'avaliação com mais de 48 h':''};
+}
+function greyIf(){
+  if(['vencida','indisp','relogio'].includes(AVAL.st))DAYS.forEach(d=>{d.k=3;d.s=3;d.txt='Sem avaliação válida do Capitão. Valem só os dados ao vivo (indicativos). Na dúvida, não saia.';d.vento=d.ondas=d.chuva='–'});
+}
+function reval(){
+  const v=CUR_BAD?{st:'indisp',msg:'arquivo dados.json corrompido ou incompleto'}:validade(CUR_EM,CUR_DRIFT);
+  const mudou=AVAL.st!=v.st;
+  AVAL={em:CUR_BAD?null:CUR_EM,fonte:CUR_BAD?'dados.json inválido':CUR_FONTE,...v};
+  greyIf();return mudou;
+}
+function avalBox(){
+  const a=AVAL;if(a.st=='carregando')return '';
+  const f=a.em?new Date(a.em).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'–';
+  if(a.st=='ok')return `<div class="note">🕒 Avaliação do Capitão feita em ${f} (${a.fonte}), há ${Math.floor(a.h)} h.</div>`;
+  if(a.st=='velha')return `<div class="warn">⚠️ <b>Avaliação antiga:</b> feita em ${f}, há ${Math.floor(a.h)} h. Peça atualização ao Capitão e use com mais cautela.</div>`;
+  return `<div class="warn">⚪ <b>Dados do Capitão indisponíveis</b> (${a.msg}). Cinza significa sem avaliação válida, nunca "seguro". Valem só os dados ao vivo; na dúvida, não saia.</div>`;
+}
+async function loadDados(){
+  CUR_BAD=false;
+  try{
+    const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);
+    const r=await fetch('dados.json?t='+Date.now(),{cache:'no-store',signal:c.signal});clearTimeout(to);
+    if(!r.ok)throw 0;
+    const d=r.headers.get('Date'),sv=d?Date.parse(d):NaN;
+    CUR_DRIFT=isNaN(sv)?null:sv-Date.now();
+    let j=null;try{j=await r.json()}catch(e){}
+    if(dadosOk(j)){DAYS=j.dias;CETESB=j.cetesb;BEACHES=mkBeaches();S.pb='';S.open=null;CUR_EM=j.avaliado_em;CUR_FONTE='dados.json'}
+    else CUR_BAD=true;
+  }catch(e){}
+  reval();
+  S.day=Math.max(0,DAYS.findIndex(d=>d.date>=todayStr));
+  render();
+}
+reval();
 
 /* ============ DADOS AO VIVO ============ */
 async function getJ(u){const c=new AbortController();const t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw 0;return await r.json()}finally{clearTimeout(t)}}
@@ -462,7 +519,7 @@ function resumo(){
   <div class="note">ℹ️ <b>Esta aba é um resumão do mar.</b> Aqui você vê só o veredito geral e o melhor horário de cada atividade. Para informações detalhadas, abra a aba da atividade: <b>🛶 Caiaque</b> (hora a hora e percurso), <b>🏄 Surfe</b> (picos e correntes), <b>🎣 Pesca</b> (viradas de maré e peixes), <b>⚓ Tráfego</b> (navios) e <b>🧪 Água</b> (balneabilidade).</div>
   <div class="grid">
    <div class="card ${COL[D.k]}"><h3>🛶 Caiaque (manual)</h3><div class="big">${EMO[D.k]} ${LBL[D.k]}</div><div class="mut">⏰ Melhor horário hoje: ${wtxt(kw)}</div></div>
-   <div class="card ${COL[D.s]}"><h3>🏄 Surfe (manual)</h3><div class="big">${EMO[D.s]} ${['FAVORÁVEL','ALERTA','NÃO SURFE'][D.s]}</div><div class="mut">⏰ Melhor horário hoje: ${wtxt(sw)}</div></div>
+   <div class="card ${COL[D.s]}"><h3>🏄 Surfe (manual)</h3><div class="big">${EMO[D.s]} ${['FAVORÁVEL','ALERTA','NÃO SURFE','SEM AVALIAÇÃO'][D.s]}</div><div class="mut">⏰ Melhor horário hoje: ${wtxt(sw)}</div></div>
    <div class="card y"><h3>🎣 Pesca</h3><div class="big">🟡 De terra</div><div class="mut">Veja a aba Pesca para as viradas de maré.</div></div>
    <div class="card r"><h3>🧪 Balneabilidade</h3><div class="big">🔴 Santos impróprio</div><div class="mut">CETESB 05/11 · próximo boletim 12/11</div></div>
    <div class="card y"><h3>⚓ Tráfego</h3><div class="big">🟡 Atenção</div><div class="mut">Mais manobras ±2 h das viradas de maré. Fique fora do canal.</div></div>
@@ -733,7 +790,7 @@ function esportes(){
 }
 const norm=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const dist=(a,b,c,d)=>{const r=Math.PI/180,x=(d-b)*r*Math.cos((a+c)/2*r),y=(c-a)*r;return 6371*Math.hypot(x,y)};
-const BEACHES=(()=>{const o=[];Object.entries(CETESB).forEach(([c,l])=>l.forEach(([n,st])=>{const p=PLACES[c].find(x=>n.startsWith(x[0])||x[0].startsWith(n));o.push({id:o.length,n,c,st,la:p?p[1]:null,lo:p?p[2]:null})}));return o})();
+const mkBeaches=()=>{const o=[];Object.entries(CETESB).forEach(([c,l])=>l.forEach(([n,st])=>{const p=PLACES[c].find(x=>n.startsWith(x[0])||x[0].startsWith(n));o.push({id:o.length,n,c,st,la:p?p[1]:null,lo:p?p[2]:null})}));return o};let BEACHES=mkBeaches();
 function locate(){
   if(!navigator.geolocation){S.pmsg='Seu navegador não permite localização.';S.pf='all';return}
   S.pmsg='Obtendo sua localização…';
@@ -794,11 +851,11 @@ function render(){
   $('loc').innerHTML=`<div><label>📍 Município</label><select id="s_city">${CT.map(c=>`<option ${c==S.city?'selected':''}>${c}</option>`).join('')}</select></div><div><label>🏘️ Bairro</label><select id="s_pl">${PLACES[S.city].map((p,i)=>`<option value="${i}" ${i==S.pl?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`).join('')}</select></div>`;
   if(S.tab=='jogo'&&S.vb===undefined&&!S.vbBusy){S.vbBusy=1;loadVB()}
   if(S.tab=='meudia')ensureFc();
-  $('days').innerHTML=DAYS.map((d,i)=>`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${EMO[d.k]}</span><span>${d.lbl}</span></button>`).join('');
+  $('days').innerHTML=DAYS.map((d,i)=>d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${EMO[d.k]}</span><span>${d.lbl}</span></button>`).join('');
   $('tabs').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"><span style="white-space:nowrap;letter-spacing:1px;display:inline-flex;align-items:center;justify-content:center;gap:3px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}${t[0]=='esportes'?' ▾':''}</span></button>`).join('');
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}">${s[1]}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Este dia já passou: os dados manuais estão desatualizados. Peça um novo "?" ao Capitão.</div>':'';
-  $('view').innerHTML=old+VIEWS[S.tab]();
+  $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
   /* sem calculadora */
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
 }
@@ -814,7 +871,7 @@ document.addEventListener('click',e=>{
   else if(b.dataset.pf){S.pf=b.dataset.pf;if(S.pf=='perto'&&!S.pos)locate();render()}
   else if(b.dataset.pb!=null){S.open=S.open==b.dataset.pb?null:b.dataset.pb;if(S.open!=null)loadSea(BEACHES[+S.open]);render()}
   else if(b.dataset.f){S.filter=b.dataset.f;render()}
-  else if(b.id=='reload'){S.vb=undefined;S.vbBusy=0;S.fc={};loadLive()}
+  else if(b.id=='reload'){S.vb=undefined;S.vbBusy=0;S.fc={};loadLive();loadDados()}
   else if(b.id=='theme')document.body.classList.toggle('light');
   else if(b.id=='fillh'){
     const h=Math.floor(S.hover??8),o=obs(S.day,h),t=tideAt(msAt(S.day,h+.5));
@@ -874,7 +931,7 @@ const TST=[
  {t:'Bem-vindo ao Capitão Santos! ⚓',x:'Este painel mostra o <b>tempo</b>, o <b>mar</b> e as <b>praias</b> da Baixada Santista. Quer um passeio rápido? Toque em <b>Próximo</b>. Você pode parar quando quiser em <b>Pular</b>, e rever depois no botão <b>❓ Como usar</b>.',tg:null,pre:TP1},
  {t:'📍 Escolha onde você está',x:'Aqui você escolhe o <b>município</b> e o <b>bairro</b>. Tudo muda conforme o lugar. Bairros com 🌊 têm praia e mostram ondas e maré. Bairros com 🏙️ mostram só o tempo.',tg:'#loc',pre:TP1},
  {t:'🔘 Os botões do topo',x:'<b>🟢 ao vivo + hora</b>: mostra que os dados estão atualizados e a que horas foram buscados. Se aparecer 🟡 ou 🟠, alguma fonte falhou: use com mais cuidado.<br><b>🔄 Atualizar</b>: busca de novo o tempo, o mar e a previsão. Toque se a tela ficou parada há muito tempo.<br><b>🌓 Tema</b>: troca entre fundo escuro e claro. O fundo claro ajuda a ler sob sol forte.',tg:'#hdr',pre:TP1},
- {t:'📅 Escolha o dia',x:'Estes 5 botões são os próximos 5 dias. A bolinha mostra como está o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia.',tg:'#days',pre:TP1},
+ {t:'📅 Escolha o dia',x:'Estes botões mostram os próximos dias. A bolinha mostra como está o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia.',tg:'#days',pre:TP1},
  {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Mostra se está quente ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai.<br><b>🌊 Esportes no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias.<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro.',tg:'#tabs',pre:TP1},
  {t:'🌤️ Meu Dia',x:'Diz em palavras simples se está <b>quente ou frio</b>, se precisa de <b>guarda-chuva</b> e se o <b>vento</b> está forte. Mais abaixo vêm manhã, tarde e noite.',tg:'#view .card',pre:TP1},
  {t:'🧭 Vai pra onde? Será que vai chover lá?',x:'Escolha de onde você sai e para onde vai. O painel compara o tempo dos dois lugares e avisa, por exemplo: “vai chover lá, embora aqui não esteja chovendo”. <b>Planeje antes de sair de casa!</b>',tg:()=>{const h=q1('.hook');return h&&h.parentElement},pre:TP1},
@@ -949,7 +1006,8 @@ $('help').addEventListener('click',()=>openTour('menu'));
 window.addEventListener('scroll',tourPos,{passive:true});
 window.addEventListener('resize',tourPos);
 setInterval(tourPos,500);
-render();loadLive();
+setInterval(()=>{if(reval())render()},300000);
+render();loadLive();loadDados();
 try{if(!localStorage.getItem('capsantos.tour'))setTimeout(()=>{if(!T.on)openTour('step')},1500)}catch(e){}
 </script>
 </body>
