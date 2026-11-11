@@ -3,7 +3,7 @@
   "short_name": "Clima Baixada",
   "description": "Vento, ondas, marés, balneabilidade e pesca para a Baixada Santista.",
   "lang": "pt-BR",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

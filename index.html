@@ -1053,6 +1053,7 @@ window.addEventListener('scroll',tourPos,{passive:true});
 window.addEventListener('resize',tourPos);
 setInterval(tourPos,500);
 setInterval(()=>{if(reval())render()},300000);
+if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 render();loadLive();loadDados();
 try{if(!localStorage.getItem('capsantos.tour'))setTimeout(()=>{if(!T.on)openTour('step')},1500)}catch(e){}
 </script>
