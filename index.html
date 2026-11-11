@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Capitão Santos – Painel interativo</title>
@@ -19,7 +19,7 @@ button.on{background:var(--acc);color:#04202f;border-color:var(--acc);font-weigh
 #days{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
 #days button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.15;font-size:.85rem;white-space:nowrap}
 nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-#tabs{display:grid;grid-template-columns:repeat(3,1fr)}
+#tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 #tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.15;font-size:.8rem;text-align:center}
 .badge{font-size:.78rem;padding:5px 10px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
 .card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:14px;border-top:4px solid var(--acc)}
@@ -86,6 +86,14 @@ body.light input,body.light select{background:#fff}
 #pop{position:absolute;left:0;right:0;top:100%;margin-top:6px;z-index:50}
 .pop{background:var(--card);border:2px solid var(--acc);border-radius:14px;padding:8px;box-shadow:0 14px 34px rgba(0,0,0,.55);display:grid;gap:6px}
 .pop button{width:100%;text-align:left;padding:12px 14px;font-size:1rem}
+:root{--hl:#ffb020}
+body.light{--hl:#d97706}
+button:focus-visible,a.btn:focus-visible,input:focus-visible,select:focus-visible{outline:4px solid var(--hl);outline-offset:2px}
+input:focus,select:focus{border-color:var(--hl);box-shadow:0 0 0 4px rgba(255,176,32,.45)}
+button.on:not(#help){box-shadow:0 0 0 3px var(--hl)}
+.strip div.sel{outline:3px solid var(--hl);outline-offset:1px;position:relative;z-index:1}
+.subtabs{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.subtabs button{flex:1 1 auto;padding:10px 12px;font-size:.85rem;text-align:center}
 #tour{position:fixed;inset:0;z-index:1000;display:none}
 #tour.on{display:block}
 #tour .dim{position:absolute;inset:0;background:rgba(0,0,0,.72)}
@@ -174,7 +182,7 @@ const PLACES={
 /* ============ ESTADO ============ */
 const EMO=['🟢','🟡','🔴','⚪'],COL=['g','y','r','n'],LBL=['FAVORÁVEL','ALERTA','NÃO NAVEGUE','SEM AVALIAÇÃO'];
 const todayStr=new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
-let S={day:Math.max(0,DAYS.findIndex(d=>d.date>=todayStr)),tab:'meudia',sub:'surfe',pf:'all',q:'',city:'Santos',pl:1,live:{},hover:null,filter:'all',stamp:'',chk:{}};
+let S={day:Math.max(0,DAYS.findIndex(d=>d.date>=todayStr)),tab:'meudia',sub:'resumo',pf:'all',q:'',city:'Santos',pl:1,live:{},hover:null,filter:'all',stamp:'',chk:{}};
 const $=id=>document.getElementById(id);
 const KEY='capsantos.v1';
 function ld(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}}
@@ -446,6 +454,8 @@ function infoHTML(di,h){
 function updateHover(h){
   S.hover=h;
   document.querySelectorAll('svg.chart').forEach(sv=>{const l=sv.querySelector('.xh');const x=PL+h/24*(W-PL-PR);l.setAttribute('x1',x);l.setAttribute('x2',x);l.setAttribute('opacity',1)});
+  document.querySelectorAll('.strip div.sel').forEach(e=>e.classList.remove('sel'));
+  const sc=document.querySelector('.strip div[data-h="'+Math.floor(h)+'"]');if(sc)sc.classList.add('sel');
   const b=$('hinfo');if(b)b.innerHTML=infoHTML(S.day,h);
 }
 function dayChartData(di){
@@ -516,7 +526,7 @@ function resumo(){
   const wtxt=w=>!w?'sem dados ao vivo':w.l==2?'🔴 nenhum horário seguro hoje':`${EMO[w.l]} ${w.txt}${w.l==1?' (com cautela)':''}`;
   return `<div class="card ${COL[D.k]}"><h2>🏄🛶🎣⚓ Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão</h3><div>${D.txt}</div>
   <div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>
-  <div class="note">ℹ️ <b>Esta aba é um resumão do mar.</b> Aqui você vê só o veredito geral e o melhor horário de cada atividade. Para informações detalhadas, abra a aba da atividade: <b>🛶 Caiaque</b> (hora a hora e percurso), <b>🏄 Surfe</b> (picos e correntes), <b>🎣 Pesca</b> (viradas de maré e peixes), <b>⚓ Tráfego</b> (navios) e <b>🧪 Água</b> (balneabilidade).</div>
+  ${subtabs()}<div class="note">ℹ️ <b>Este é o Resumo Geral do mar.</b> Para mais detalhes de uma atividade específica, toque na aba correspondente logo acima: <b>🏄 Surf</b> (picos e correntes), <b>🛶 Caiaque</b> (hora a hora e percurso), <b>🎣 Pesca</b> (viradas de maré e peixes), <b>⚓ Tráfego marítimo</b> (navios) e <b>🏖️ Como está a praia hoje?</b> (balneabilidade).</div>
   <div class="grid">
    <div class="card ${COL[D.k]}"><h3>🛶 Caiaque (manual)</h3><div class="big">${EMO[D.k]} ${LBL[D.k]}</div><div class="mut">⏰ Melhor horário hoje: ${wtxt(kw)}</div></div>
    <div class="card ${COL[D.s]}"><h3>🏄 Surfe (manual)</h3><div class="big">${EMO[D.s]} ${['FAVORÁVEL','ALERTA','NÃO SURFE','SEM AVALIAÇÃO'][D.s]}</div><div class="mut">⏰ Melhor horário hoje: ${wtxt(sw)}</div></div>
@@ -772,14 +782,17 @@ function jogo(){
 /* ============ NAVEGAÇÃO ============ */
 const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Esportes no Mar'],['jogo','⚽ Jogo do Santos']];
 const TICON={meudia:'☀️☁️🌧️',esportes:'🏄🚣🐟'};
-const SUBS=[['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Tráfego marítimo'],['praia','🏖️ Como está a praia hoje?']];
+function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}">${s[1]}</button>`).join('')}</div>`}
+const SUBS=[['resumo','📋 Resumo Geral'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Tráfego marítimo'],['praia','🏖️ Como está a praia hoje?']];
 const FISH='<svg width="13" height="18" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
 TICON.esportes='🏄🚣'+FISH;
-TICON.jogo='🥅⚽';
+const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
+TICON.jogo=KICK;
 const VIEWS={meudia,jogo,esportes};
 function esportes(){
   const di=S.day,D=DAYS[di],sub=S.sub||'surfe';
-  const cs=SUBS.find(s=>s[0]==sub),nav=`<div style="margin-bottom:10px"><span class="badge">Seção: ${cs[1]}</span></div>`;
+  const nav=subtabs();
+  if(sub=='resumo')return cur().m?locNote()+resumo():nosea()+nav;
   if(sub=='praia')return nav+praia();
   if(!cur().m)return nav+nosea();
   const v=sub=='surfe'?D.s:D.k;
@@ -852,7 +865,7 @@ function render(){
   if(S.tab=='jogo'&&S.vb===undefined&&!S.vbBusy){S.vbBusy=1;loadVB()}
   if(S.tab=='meudia')ensureFc();
   $('days').innerHTML=DAYS.map((d,i)=>d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${EMO[d.k]}</span><span>${d.lbl}</span></button>`).join('');
-  $('tabs').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"><span style="white-space:nowrap;letter-spacing:1px;display:inline-flex;align-items:center;justify-content:center;gap:3px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}${t[0]=='esportes'?' ▾':''}</span></button>`).join('');
+  $('tabs').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"><span style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}">${s[1]}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Este dia já passou: os dados manuais estão desatualizados. Peça um novo "?" ao Capitão.</div>':'';
   $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
@@ -866,7 +879,7 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('button');
   if(!b)return;
   if(b.dataset.d!=null){S.day=+b.dataset.d;S.hover=null;render()}
-  else if(b.dataset.t){const t=b.dataset.t;S.menu=t=='esportes'?(S.tab=='esportes'?!S.menu:true):false;S.tab=t;S.hover=null;render()}
+  else if(b.dataset.t){const t=b.dataset.t;S.menu=false;S.tab=t;if(t=='esportes')S.sub='resumo';S.hover=null;render()}
   else if(b.dataset.s){S.sub=b.dataset.s;S.menu=false;S.hover=null;render()}
   else if(b.dataset.pf){S.pf=b.dataset.pf;if(S.pf=='perto'&&!S.pos)locate();render()}
   else if(b.dataset.pb!=null){S.open=S.open==b.dataset.pb?null:b.dataset.pb;if(S.open!=null)loadSea(BEACHES[+S.open]);render()}
@@ -935,7 +948,7 @@ const TST=[
  {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Mostra se está quente ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai.<br><b>🌊 Esportes no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias.<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro.',tg:'#tabs',pre:TP1},
  {t:'🌤️ Meu Dia',x:'Diz em palavras simples se está <b>quente ou frio</b>, se precisa de <b>guarda-chuva</b> e se o <b>vento</b> está forte. Mais abaixo vêm manhã, tarde e noite.',tg:'#view .card',pre:TP1},
  {t:'🧭 Vai pra onde? Será que vai chover lá?',x:'Escolha de onde você sai e para onde vai. O painel compara o tempo dos dois lugares e avisa, por exemplo: “vai chover lá, embora aqui não esteja chovendo”. <b>Planeje antes de sair de casa!</b>',tg:()=>{const h=q1('.hook');return h&&h.parentElement},pre:TP1},
- {t:'🌊 Esportes no Mar',x:'Ao tocar nesta aba abre um <b>menu</b> com 5 opções: Surf, Caiaque, Pesca, Tráfego marítimo e Como está a praia hoje?. Toque na que você quiser.',tg:()=>q1('#pop .pop')||q1('.tabwrap'),pre:()=>{S.tab='esportes';S.menu=true;S.hover=null}},
+ {t:'🌊 Esportes no Mar',x:'Ao tocar nesta aba você já vê o <b>Resumo Geral</b> com o texto do Capitão. Logo abaixo ficam as abas <b>Surf, Caiaque, Pesca, Tráfego marítimo e Como está a praia hoje?</b>. Toque na que quiser para ver os detalhes.',tg:()=>q1('.subtabs')||q1('.tabwrap'),pre:()=>{S.tab='esportes';S.sub='resumo';S.menu=false;S.hover=null}},
  {t:'🚦 Semáforo por hora',x:'Cada quadradinho é uma hora do dia, da meia-noite às 23h. <b>Verde</b>: pode ir. <b>Amarelo</b>: cuidado. <b>Vermelho</b>: não vá. Cores apagadas são a noite. Toque num quadradinho para ver vento, onda e maré daquela hora. <b>Regra de ouro:</b> só saia se toda a sua remada estiver verde.',tg:'#view .strip',pre:TPS('caiaque')},
  {t:'📈 Gráficos do dia',x:'As linhas mostram como o vento, as ondas e a maré mudam durante o dia. Procure as horas em que a linha fica na <b>faixa verde</b>. A linha amarela tracejada escrita “agora” marca a hora atual. Se a <b>rajada</b> passar de 20 nós, não navegue.',tg:'#view svg.chart',pre:TPS('caiaque')},
  {t:'⚓ Tráfego marítimo',x:'Navios grandes demoram a parar e não enxergam caiaques. Os botões abrem mapas ao vivo dos navios. A faixa amarela mostra quando há mais movimento. <b>Nunca cruze o canal de navegação.</b>',tg:'#view .card',pre:TPS('trafego')},
