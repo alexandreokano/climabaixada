@@ -34,7 +34,7 @@
 :root{--bg1:#0b1b2b;--bg2:#06101a;--card:#12293f;--txt:#e8f1f8;--mut:#8fa8bd;--line:#1f3b57;--g:#2ecc71;--y:#f1c40f;--r:#e74c3c;--acc:#38bdf8}
 body.light{--bg1:#eef5fb;--bg2:#dbe8f3;--card:#fff;--txt:#10283d;--mut:#516b82;--line:#d3e0ec;--acc:#0b78b8}
 *{box-sizing:border-box}
-html{font-size:18px}
+html{font-size:22px}
 body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--txt);padding:16px;min-height:100vh}
 .wrap{max-width:1100px;margin:auto}
 header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -1345,10 +1345,11 @@ const TST=[
  {t:'🏖️ Como tá a praia hoje?',x:'Escolha o município e a praia nas listas. <b>🟢 Própria</b>: pode entrar na água. <b>🔴 Imprópria</b>: não entre nem engula água. Toque no cartão da praia para ver temperatura da água e condição do mar.',tg:'#p_city',pre:TPS('praia')},
  {t:'📲 Canal no WhatsApp e segurança',x:'No fim da aba Meu Dia há o <b>Canal Clima Baixada</b>: toque em “Entrar no canal” e depois em “Seguir”. Lembre: o painel é uma <b>previsão</b>, não uma certeza. Na dúvida, não sai, e olha o mar antes de entrar. Emergências: Bombeiros 193, Defesa Civil 199.',tg:'#view>.card:last-child',pre:TP1}
 ];
-let FS=18;
-try{const q=+localStorage.getItem('capsantos.fs');if(q>=14&&q<=26)FS=q}catch(e){}
+const FS_BIG=22;
+let FS=FS_BIG;
+try{const q=+localStorage.getItem('capsantos.fs2');if(q>=14&&q<=26)FS=q}catch(e){}
 document.documentElement.style.fontSize=FS+'px';
-function setFs(v){FS=Math.max(14,Math.min(26,v));document.documentElement.style.fontSize=FS+'px';try{localStorage.setItem('capsantos.fs',FS)}catch(e){}setTimeout(tourPos,60)}
+function setFs(v){FS=Math.max(14,Math.min(26,v));document.documentElement.style.fontSize=FS+'px';try{localStorage.setItem('capsantos.fs2',FS)}catch(e){}setTimeout(tourPos,60)}
 const nohelp=()=>{try{return !!localStorage.getItem('capsantos.nohelp')}catch(e){return false}};
 const T={on:0,i:0,mode:'menu'};
 const tourEl=document.createElement('div');
@@ -1389,6 +1390,7 @@ function tourGo(i){
   setTimeout(tourPos,60);
 }
 function openTour(mode){
+  if(FS<FS_BIG)setFs(FS_BIG);
   T.on=1;T.mode=mode;tourEl.classList.add('on');document.body.classList.add('touring');
   if(mode=='step')tourGo(0);else tourDraw();
 }
