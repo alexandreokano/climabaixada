@@ -176,7 +176,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <div class="wrap">
 <header>
   
-  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasYs7i63aOfQQYwJA6od2ff1.jpg?Expires=1794489589&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=IsW0Z7~hCyv1lXHrHOEMhEsxMkFY3~tbogpk3eB3tnWHtt4MdIyLz7yKzR64jzzjNxJyPAfwkp4DRwxs2MdpJEOvvl2y-eWF12FC7cD644LtN76r7CPufXbDDqlGSC9-1Qgomfm3IUN6ttG8QdoHzMsv-fVCBsDdXn~tEHftUVfYnPfzqo7q7JMHbdl8iyTgwR1EWDb2qMaS89w5hO~G27KCTXneTkEI7Cv5TNto6UeB9sJvl5ZpB3a-X8g~1pXduJUmTJGSjXRre0xuwxI2J1~e8ikf0D-J1Il4gMQf9q4~xwKRHHDlZj6C4jswVWYeDgkovqbiLyFVkNxiMW9vtw__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
+  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='canvas-asset:banner-panoramico.jpg'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
   <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
   <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
@@ -864,7 +864,7 @@ function jogo(){
       }
     }
   }
-  return `<div class="card"><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M0XGaFmTdqMCkIbffzs87LMWnM.png?Expires=1794491963&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=pOfmgB9pdIksugYMYqrzGLHgxlIkF42U4xzcUEW1SP71pHoG5MfJr7TGvo5ednj4wNO8I3VLpa4PK-AKwG6al~2MrJlLnLv0DvPDTTD7QssrIyTCeQPcKLx6VBhdlW2Q-IpQTFN6SWOFcoBAHYU-9Jy-U0PpSnvE57O68iJiW0t2rQdCBwoJy1ZpyDZSM3L73Id0~1ZptmhHotWNbofPlu7HfJCQFTz~UraRx~D6UiFTyXgHDyUGC9vcZgGWRRzEyg1vhNRCxFdj8rMPlyBOrTbKNG~aKgue0KOZ49-Va4mjXhcJO6hGZ0p3blz60sY37Cxqm7YnhWj9dtiCc7Sgdg__'" alt=""><h2>⚽ Jogo do Santos · tempo na Vila Belmiro</h2>
+  return `<div class="card"><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""><h2>⚽ Jogo do Santos · tempo na Vila Belmiro</h2>
   <h3>🏟️ Próximos jogos na Vila Belmiro</h3>
   <div class="games">${JOGOS.map((j,i)=>`<button data-g="${i}" class="${g.date==j.date?'on':''}"><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Toque em um jogo para ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, use os links abaixo e digite a data.</div>
@@ -936,7 +936,7 @@ function esportes(){
   if(sub=='praia')return nav+praia();
   if(!cur().m)return nav+nosea();
   const v=sub=='surfe'?D.s:D.k;
-  const head=sub=='trafego'?'':`<div class="card ${COL[v]}"><h3>${EMO[v]} Avaliação do Capitão da Baixada · ${D.lbl}</h3><div>${fmt(di)}</div><div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>`;
+  const head='';
   const body={surfe,caiaque,pesca,trafego}[sub]();
   const extra=(sub=='surfe'||sub=='caiaque')?cptecNote(di)+`<div class="card"><h3>📈 Gráficos do dia <small class="mut">(passe o mouse ou toque)</small></h3>${charts(di)}</div>`:'';
   return nav+locNote()+head+localWarn()+body+extra+(sub=='caiaque'?checklist():'');
