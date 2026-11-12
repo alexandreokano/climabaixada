@@ -138,6 +138,13 @@ button.on{border-color:var(--hl)}
 .badge{border:2px solid var(--bd)}
 #hdr button,#hdr .badge{min-height:40px;display:inline-flex;align-items:center;justify-content:center;line-height:1.2}
 #hdr button{padding-left:16px;padding-right:16px;text-align:center;white-space:nowrap}
+@media (max-width:600px){
+#hdr{flex:0 0 100%;flex-wrap:nowrap;gap:3px;justify-content:space-between;font-size:clamp(9.5px,2.9vw,14px)}
+#hdr button,#hdr .badge{font-size:1em;min-height:34px;padding:0 5px;border-width:1.5px;flex:0 0 auto;white-space:nowrap}
+#hdr .badge{flex:1 1 auto;min-width:0;padding:0 7px;overflow:hidden;text-overflow:ellipsis}
+#hdr #help{padding:0 7px}
+#hdr #fsm,#hdr #fsp,#hdr #reload,#hdr #theme{min-width:28px;padding:0 4px}
+}
 input,select{border-color:var(--bd)}
 .strip div.sel{outline:3px solid var(--hl);outline-offset:1px;position:relative;z-index:1}
 .subtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
@@ -181,7 +188,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <div class="wrap">
 <header>
   
-  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M0uxAzvzqh2wQ55e9CkuqT8Inq.jpg?Expires=1794503649&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=OwDY8~qAJHF8SQ39LWX2cOiwrYbcAM7TNNUVvVck3XYc5y1TZYDixZy3H17a2X4HkkQbUFn7HguYid3xSiMRfOINRq-p4vht9~DOKLgNNjeLgqsxNZ52rwfffj2oH6WuOn-QVxFo3ixSLzYl30KfmcqvLD3OGcdaVXDils8cmZrsKn42QkTj2QK0Amckq6UfE9dVrFqO~qYQ4ArRBH5PRf9-9P23caVTlGDDrMHFToAjAE9aIMvrf86WwVwINarFG6uNmtUsRdIO9bAINP3ubwO3TxDVxz8IG76q-VX2jq--NOs1tN5kU4rvVkcHqsPMgVFuVQRGXAXxTT0Ys7wuCg__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
+  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M0uxAzvzqh2wQ55e9CkuqT8Inq.jpg?Expires=1794507886&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=oNH9AvIlBVVkKXVV39gfbxQ5SjEemLWyd6hmLJ3My~mvVLAk75SIfHEymGzjAHF5O2-QOUFWaJ72UBecEP6qDMKBGIM~NRtkbZrgwfm9x6x1A94AwXY3Nj13cLOCm5ZaJgFEeXCyWQ1yZaicZWnHjgxv8CFrfvCOuorPHfMK4Q3uVFT~k5cGLiDdAAsINe0pRzdCsee5ZlGvowc-AUSODsBZARtRAdRf2~rHYOcVi2Pd-BMHDjY0BUQchGRgL3xq0JRlYeRqTIeSf74o-FPVn7L1CGN0iqA3APgVXOaMowbqE-ASYW0NEGWpCzK~kVFaMHVL-UVcdancugYo0r9W2Q__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
   <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
   <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
@@ -193,6 +200,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <nav id="days"></nav>
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
 <main id="view"></main>
+<div class="row"><a class="btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener" style="flex:1 1 100%;text-align:center;font-weight:600;background:var(--acc);color:#04202f;border-color:var(--acc)">💬 Sua opinião vale muito!</a></div>
 <footer>
   Ao vivo: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 05/11) e avaliação manual do Capitão da Baixada (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), com data e hora da última atualização exibidas na própria aba (arquivo dados.json).<br>
   Previsão de modelo não é certeza e não substitui seu julgamento nem as orientações oficiais (Marinha, Defesa Civil, Bombeiros). Confira a arrebentação a olho antes de entrar na água.
