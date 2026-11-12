@@ -11,8 +11,8 @@
 <link rel="manifest" href="manifest.json">
 
 <!-- Ícones -->
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=3">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=4">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Clima Baixada">
@@ -363,6 +363,14 @@ async function loadCptec(){
   return ok;
 }
 const obs=(di,h)=>S.live[`${DAYS[di].date}T${pad(h)}:00`]||null;
+function dayIcon(di){
+  const H=[];for(let h=6;h<=21;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push(o)}
+  if(!H.length)return '❔';
+  const pm=Math.max(...H.map(x=>x.pp||0)),rm=H.reduce((s,x)=>s+(x.rain||0),0),cc=H.reduce((s,x)=>s+(x.cc||0),0)/H.length;
+  if(pm>=60||rm>=2)return '🌧️';
+  if(pm>=30||rm>=0.3)return '🌦️';
+  return cc<25?'☀️':cc<55?'🌤️':cc<80?'⛅':'☁️';
+}
 
 /* ============ REGRAS DO CAPITÃO ============ */
 function kayakV(o,tide){
@@ -572,12 +580,13 @@ function people(di){
    hot=H.reduce((b,x)=>(x.ap??x.tp)>(b.ap??b.tp)?x:b,H[0]),amax=hot.ap??hot.tp,
    pm=Math.round(mx(x=>x.pp||0)),rm=H.reduce((s,x)=>s+(x.rain||0),0),rh=H.filter(x=>x.rain>=0.3),
    gm=mx(x=>x.wg||0)*1.852,cg=Math.max(0,...H.filter(x=>x.h<=9||(x.h>=17&&x.h<=19)).map(x=>x.wg||0))*1.852;
-  const temp=amax>=32?'🥵 Calor forte':amax>=28?'☀️ Quente':amax>=22?'🙂 Agradável':amax>=18?'🧥 Fresco':'🥶 Frio';
-  const vest=amax>=28?'Roupa leve, protetor solar e garrafa de água.':amax>=22?'Roupa leve; leve um casaquinho para a noite.':'Leve um casaco.';
+  const tl=tmax>=33?['🥵','Calor forte']:tmax>=29?['☀️','Quente']:tmax>=22?['🙂','Agradável']:tmax>=18?['🧥','Fresco']:['🥶','Frio'],rainy=pm>=60||rm>=2,temp=(rainy&&tmax<33?'🌦️':tl[0])+' '+tl[1]+(rainy?', com chuva':''),feel=amax-tmax>=3?` A sensação pode chegar a ${amax.toFixed(0)}°C às ${pad(hot.h)}h.`:'',vest=rainy?(tmax>=29?'Roupa leve e guarda-chuva.':'Roupa leve, um casaquinho e guarda-chuva.'):tmax>=29?'Roupa leve, protetor solar e garrafa de água.':tmax>=22?'Roupa leve; um casaquinho para a noite.':'Leve um casaco.';
+      const temp0=amax>=32?'🥵 Calor forte':amax>=28?'☀️ Quente':amax>=22?'🙂 Agradável':amax>=18?'🧥 Fresco':'🥶 Frio';
+  const vest0=amax>=28?'Roupa leve, protetor solar e garrafa de água.':amax>=22?'Roupa leve; leve um casaquinho para a noite.':'Leve um casaco.';
   const rt=(pm>=60||rm>=2)?`☔ Leve guarda-chuva: a chance de chuva chega a ${pm}%${(()=>{const b=H.reduce((a,x)=>(x.pp||0)>(a.pp||0)?x:a,H[0]);return ' por volta das '+pad(b.h)+'h'})()}${rm>=0.3?`, com cerca de ${rm.toFixed(1)} mm previstos no dia`:', mas a previsão é de pouca água (garoa ou chuva fraca)'}${rh.length?` (entre ${pad(rh[0].h)}h e ${pad(rh[rh.length-1].h)}h)`:''}.`
    :pm>=30?`🌂 Pode chover: chance de até ${pm}%. Um guarda-chuva pequeno na bolsa ajuda.`:`😎 Sem guarda-chuva: chance de chuva baixa (até ${pm}%).`;
   const wt=(gm>=45?'💨 Ventania':gm>=30?'💨 Venta bastante':gm>=20?'🍃 Brisa firme':'🍃 Vento fraco')+`: rajadas até ${gm.toFixed(0)} km/h no dia. No ponto de ônibus (6h–9h e 17h–19h) chegam a cerca de ${cg.toFixed(0)} km/h${cg>=30?': sensação mais fresca, cuidado com guarda-chuva e chapéu.':'.'}`;
-  return `<div class="cid"><div><b>${temp}:</b> mín ${tmin.toFixed(0)}°C · máx ${tmax.toFixed(0)}°C · sensação até ${amax.toFixed(0)}°C às ${pad(hot.h)}h. ${vest}</div><div><b>${rt}</b></div><div><b>${wt}</b></div></div><div class="mut">Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}. Previsão de modelo, não certeza. Período considerado: 6h às 21h.</div>`;
+  return `<div class="cid"><div><b>${temp}:</b> mín ${tmin.toFixed(0)}°C · máx ${tmax.toFixed(0)}°C.${feel} ${vest}</div><div><b>${rt}</b></div><div><b>${wt}</b></div></div><div class="mut">Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}. Previsão de modelo, não certeza. Período considerado: 6h às 21h.</div>`;
 }
 function cptecNote(di){
   if(S.city!='Santos')return '';
@@ -880,7 +889,46 @@ const FISH='<svg width="13" height="18" viewBox="0 0 24 34" style="display:block
 TICON.esportes='🏄🚣'+FISH;
 const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
 TICON.jogo='<img src="edu-silhueta.png" onerror="this.onerror=null;this.src=\'canvas-asset:edu-silhueta.png\'" alt="" style="height:26px;width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
-const VIEWS={meudia,jogo,esportes};
+/* ============ NOTÍCIAS (só das duas fontes autorizadas) ============ */
+const NEWS_SRC=[
+ {n:'Diário do Peixe',site:'https://www.diariodopeixe.com.br/',feed:'https://www.diariodopeixe.com.br/feed/'},
+ {n:'Santos FC (site oficial)',site:'https://www.santosfc.com.br/es/noticias/',feed:null}
+];
+const escH=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const newsOk=u=>typeof u=='string'&&(u.startsWith('https://www.diariodopeixe.com.br/')||u.startsWith('https://www.santosfc.com.br/'));
+async function feedItems(s){
+  const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);
+  try{
+    const r=await fetch(s.feed,{signal:c.signal});if(!r.ok)return[];
+    const x=new DOMParser().parseFromString(await r.text(),'text/xml');
+    return [...x.querySelectorAll('item')].slice(0,5).map(e=>{
+      const g=k=>e.querySelector(k)?.textContent?.trim()||'';
+      const d=new Date(g('pubDate'));
+      return{f:s.n,t:g('title'),u:g('link'),d:isNaN(d)?'':d.toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'})};
+    }).filter(i=>i.t&&newsOk(i.u));
+  }catch(e){return[]}finally{clearTimeout(to)}
+}
+async function loadNews(){
+  let it=[],upd=null;
+  try{
+    const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);
+    const r=await fetch('noticias.json?t='+Date.now(),{cache:'no-store',signal:c.signal});clearTimeout(to);
+    if(r.ok){const j=await r.json();
+      if(j&&Array.isArray(j.itens)){upd=j.atualizado_em||null;j.itens.forEach(x=>{if(x&&typeof x.titulo=='string'&&newsOk(x.url))it.push({f:String(x.fonte||''),t:x.titulo,u:x.url,d:x.data?String(x.data):''})})}}
+  }catch(e){}
+  if(!it.length){const r=await Promise.all(NEWS_SRC.filter(s=>s.feed).map(feedItems));it=r.flat()}
+  S.news={it,upd};render();
+}
+function noticias(){
+  const n=S.news;
+  const links=NEWS_SRC.map(s=>`<a class="btn" href="${s.site}" target="_blank" rel="noopener">📰 ${s.n}</a>`).join('');
+  let body;
+  if(n===undefined)body='<div class="note">⏳ Buscando manchetes…</div>';
+  else if(!n.it.length)body='<div class="note">Não consegui carregar as manchetes aqui dentro do painel: os sites podem bloquear a leitura direta pelo navegador (CORS) ou não oferecer feed público. Nada foi inventado: use os botões para ler no site de origem.</div>';
+  else body=`<div class="cid">${n.it.map(x=>`<div><a style="color:var(--acc)" href="${escH(x.u)}" target="_blank" rel="noopener">${escH(x.t)}</a><div class="mut">${escH(x.f)}${x.d?' · '+escH(x.d):''}</div></div>`).join('')}</div><div class="mut">Manchetes copiadas dos sites de origem${n.upd?', atualizadas em '+escH(n.upd):''}. Toque para ler a matéria completa no site.</div>`;
+  return `<div class="card"><h2>📰 Notícias do Santos</h2>${body}<div class="row">${links}</div></div>`;
+}
+const VIEWS={meudia,jogo:()=>jogo()+noticias(),esportes};
 function esportes(){
   const di=S.day,D=DAYS[di],sub=S.sub||'surfe';
   const nav=subtabs();
@@ -955,8 +1003,9 @@ function render(){
   const CT=Object.keys(PLACES);
   $('loc').innerHTML=`<div><label>📍 Município</label><select id="s_city">${CT.map(c=>`<option ${c==S.city?'selected':''}>${c}</option>`).join('')}</select></div><div><label>🏘️ Bairro</label><select id="s_pl">${PLACES[S.city].map((p,i)=>`<option value="${i}" ${i==S.pl?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`).join('')}</select></div>`;
   if(S.tab=='jogo'&&S.vb===undefined&&!S.vbBusy){S.vbBusy=1;loadVB()}
+  if(S.tab=='jogo'&&S.news===undefined&&!S.newsBusy){S.newsBusy=1;loadNews()}
   if(S.tab=='meudia')ensureFc();
-  $('days').innerHTML=DAYS.map((d,i)=>d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${EMO[d.k]}</span><span>${d.lbl}</span></button>`).join('');
+  $('days').innerHTML=DAYS.map((d,i)=>d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span></button>`).join('');
   $('tabs').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"><span style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}">${s[1]}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Este dia já passou: os dados manuais estão desatualizados. Peça um novo "?" ao Capitão da Baixada.</div>':'';
@@ -976,7 +1025,7 @@ document.addEventListener('click',e=>{
   else if(b.dataset.pf){S.pf=b.dataset.pf;if(S.pf=='perto'&&!S.pos)locate();render()}
   else if(b.dataset.pb!=null){S.open=S.open==b.dataset.pb?null:b.dataset.pb;if(S.open!=null)loadSea(BEACHES[+S.open]);render()}
   else if(b.dataset.f){S.filter=b.dataset.f;render()}
-  else if(b.id=='reload'){S.vb=undefined;S.vbBusy=0;S.fc={};loadLive();loadDados()}
+  else if(b.id=='reload'){S.vb=undefined;S.vbBusy=0;S.news=undefined;S.newsBusy=0;S.fc={};loadLive();loadDados()}
   else if(b.id=='theme')document.body.classList.toggle('light');
   else if(b.id=='fsm')setFs(FS-2);
   else if(b.id=='fsp')setFs(FS+2);
@@ -1038,7 +1087,7 @@ const TST=[
  {t:'Bem-vindo ao Clima Baixada! ⚓',x:'Este painel mostra o <b>tempo</b>, o <b>mar</b> e as <b>praias</b> da Baixada Santista. Quer um passeio rápido? Toque em <b>Próximo</b>. Você pode parar quando quiser em <b>Pular</b>, e rever depois no botão <b>❓ Como usar</b>.',tg:null,pre:TP1},
  {t:'📍 Escolha onde você está',x:'Aqui você escolhe o <b>município</b> e o <b>bairro</b>. Tudo muda conforme o lugar. Bairros com 🌊 têm praia e mostram ondas e maré. Bairros com 🏙️ mostram só o tempo.',tg:'#loc',pre:TP1},
  {t:'🔘 Os botões do topo',x:'<b>🟢 ao vivo + hora</b>: mostra que os dados estão atualizados e a que horas foram buscados. Se aparecer 🟡 ou 🟠, alguma fonte falhou: use com mais cuidado.<br><b>🔄 Atualizar</b>: busca de novo o tempo, o mar e a previsão. Toque se a tela ficou parada há muito tempo.<br><b>🌓 Tema</b>: troca entre fundo escuro e claro. O fundo claro ajuda a ler sob sol forte.',tg:'#hdr',pre:TP1},
- {t:'📅 Escolha o dia',x:'Estes botões mostram os próximos dias. A bolinha mostra como está o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia.',tg:'#days',pre:TP1},
+ {t:'📅 Escolha o dia',x:'Estes botões mostram os próximos dias. Em <b>Meu Dia</b> o desenho mostra o tempo (sol, nuvem, chuva); em <b>Esportes no Mar</b> a bolinha mostra o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia.',tg:'#days',pre:TP1},
  {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Pense nela como alguém que quer o seu bem antes de você sair de casa: avisa se vai fazer calor ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai. 💙<br><b>🌊 Esportes no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias, o Capitão da Baixada vai te deixar informado!<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro.',tg:'#tabs',pre:TP1},
  {t:'🌤️ Meu Dia',x:'Lembra quando você ia sair de casa e sempre alguém dizia <i>“Não esqueça de levar a blusa!”</i> ou <i>“Parece que vai chover! Leva o guarda-chuva!”</i>? É isso que o aviso <b>Conselho da Mamãe e do Papai!</b> faz por você. Em palavras simples, diz se está <b>quente ou frio</b>, se precisa de <b>guarda-chuva</b> e se o <b>vento</b> está forte. Mais abaixo vêm os períodos do dia com previsões para <b>manhã</b>, <b>tarde</b> e <b>noite</b>. Vá tranquilo, o Clima Baixada cuidará de você. 🤗',tg:'#view .card',pre:TP1},
  {t:'🧭 Vai pra onde? Será que vai chover lá?',x:'Escolha de onde você sai e para onde vai. O painel compara o tempo dos dois lugares e avisa, por exemplo: “vai chover lá, embora aqui não esteja chovendo”. <b>Planeje antes de sair de casa!</b>',tg:()=>{const h=q1('.hook');return h&&h.parentElement},pre:TP1},
