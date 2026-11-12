@@ -184,6 +184,11 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 .mom{background:linear-gradient(135deg,rgba(56,189,248,.22),rgba(251,146,60,.18));border:2px solid var(--acc);border-radius:14px;padding:12px 14px;margin:8px 0;font-size:.98rem;line-height:1.55}
 .mom .mh{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;font-size:1.1rem}
 .mom .mh span{font-size:1.6rem}
+#days{overflow-x:auto;grid-auto-columns:minmax(48px,1fr);padding:4px 3px}
+#days button .cf{font-size:.5rem;letter-spacing:1px;line-height:1;opacity:.85}
+.conf{border-left:4px solid var(--acc);background:rgba(56,189,248,.1);border-radius:8px;padding:8px 10px;margin:8px 0;font-size:.9rem;line-height:1.45}
+.conf.c1{border-left-color:var(--g)}.conf.c2{border-left-color:var(--y)}.conf.c3{border-left-color:#fb923c}
+.conf small{display:block;color:var(--mut);font-size:.78rem;margin-top:3px}
 footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 </style>
 </head>
@@ -191,7 +196,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <div class="wrap">
 <header>
   
-  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M0uxAzvzqh2wQ55e9CkuqT8Inq.jpg?Expires=1794507886&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=oNH9AvIlBVVkKXVV39gfbxQ5SjEemLWyd6hmLJ3My~mvVLAk75SIfHEymGzjAHF5O2-QOUFWaJ72UBecEP6qDMKBGIM~NRtkbZrgwfm9x6x1A94AwXY3Nj13cLOCm5ZaJgFEeXCyWQ1yZaicZWnHjgxv8CFrfvCOuorPHfMK4Q3uVFT~k5cGLiDdAAsINe0pRzdCsee5ZlGvowc-AUSODsBZARtRAdRf2~rHYOcVi2Pd-BMHDjY0BUQchGRgL3xq0JRlYeRqTIeSf74o-FPVn7L1CGN0iqA3APgVXOaMowbqE-ASYW0NEGWpCzK~kVFaMHVL-UVcdancugYo0r9W2Q__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
+  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M0uxAzvzqh2wQ55e9CkuqT8Inq.jpg?Expires=1794511934&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=eUXR-d~dy8iZ7JA12YMXXXgsf8vAejMy586CB66ol2TLa~vV7nBn8P2JG2o40USLAQGqZmQZLAuT9Y6ovmQJcEFvj3SfEEyGNVOul-dP8ANBvkKl1IHkVXGT6cSZkdZ8nyUlj0~qseUDAgUEy5NkcZ8~hWt4A7DRT2shka1DtUx1Nh4AJpkXZEbHUvRRP7S8zhNOrIc9FSSiSOSq8mEI3dRFDv-rwli6BMKmHWi5JNMCgYiqNoX6uMqvY~90fCiiA9N-9gnYhsRMYOklqeYmSFjdqj0nBmOBbIvclNSZxCF3hNUphRQoHCUYq9X-aeAQWtgeBuiz3y23pBYY7j~Eww__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
   <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
   <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
@@ -335,11 +340,40 @@ async function loadDados(){
 }
 reval();
 
+/* ============ PREVISÃO ESTENDIDA (10 dias) E CONFIANÇA ============ */
+function dayOff(di){return Math.round((Date.parse(DAYS[di].date+'T12:00:00Z')-Date.parse(todayStr+'T12:00:00Z'))/86400000)}
+function conf(di){const o=dayOff(di);return o<=2?{n:1,dots:'●●●',t:'alta'}:o<=5?{n:2,dots:'●●○',t:'média'}:{n:3,dots:'●○○',t:'baixa'}}
+function extDays(){
+  const have=new Set(DAYS.map(d=>d.date)),W=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  for(let i=0;i<10;i++){
+    const t=new Date(Date.parse(todayStr+'T12:00:00Z')+i*86400000),ds=t.toISOString().slice(0,10);
+    if(have.has(ds))continue;
+    DAYS.push({date:ds,lbl:W[t.getUTCDay()]+' '+ds.slice(8),k:3,s:3,ext:1,vento:'–',ondas:'–',chuva:'–',txt:'Sem avaliação manual do Capitão da Baixada para este dia (previsão distante). Vale só a tendência do tempo em Meu Dia.'});
+  }
+  DAYS.sort((a,b)=>a.date<b.date?-1:1);
+  S.day=Math.max(0,DAYS.findIndex(d=>d.date>=todayStr));
+}
+function confBox(di){
+  const c=conf(di);
+  const tx=['Previsão detalhada: de hoje a 2 dias à frente os modelos costumam acertar bem os horários de chuva, o vento e a temperatura.','Boa para planejar, mas horários de chuva e vento podem mudar. Confira de novo na véspera.','Só tendência: a partir de 6 dias o erro cresce muito, principalmente em chuva e vento. Por isso mostramos menos detalhes.'][c.n-1];
+  return `<div class="conf c${c.n}"><b>${c.dots} Confiança ${c.t}</b> · ${tx}<small>Pontinhos nos botões dos dias: ●●● alta (hoje a +2 dias) · ●●○ média (+3 a +5) · ●○○ baixa (+6 a +9).</small></div>`;
+}
+function tendencia(di){
+  const a=pst(di,6,21);
+  if(!a)return '<div class="cid"><div>🌡️ Sem previsão ao vivo para este dia.</div></div>';
+  let hp=false;for(let h=6;h<=21;h++){const o=obs(di,h);if(o&&o.pp!=null)hp=true}
+  const wet=a.rm>=2||(hp&&a.pm>=60&&a.rm>=0.3);
+  const tr=wet?'☔ Tendência de dia chuvoso':(a.rm>=0.3||(hp&&a.pm>=30))?'🌦️ Chuva possível':'😎 Tendência de tempo firme';
+  const rn=a.rm>=0.3?`volume previsto de cerca de ${volTxt(a.rm)} no dia${hp?` e chance de até ${a.pm}%`:''}`:hp&&a.pm>=40?`ameaça de chuva (chance de até ${a.pm}%), mas com volume previsto de ${volTxt(a.rm)}`:'chuva improvável';
+  return `<div class="cid"><div><b>${tr}.</b> Temperatura em torno de ${Math.round(a.tmin)} a ${Math.round(a.tmax)}°C; ${rn}.</div></div><div class="mut">Para datas distantes mostramos só a tendência do dia, sem horários, períodos nem vento. Os detalhes aparecem conforme a data se aproxima. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div>`;
+}
+extDays();
+
 /* ============ DADOS AO VIVO ============ */
 async function getJ(u){const c=new AbortController();const t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw 0;return await r.json()}finally{clearTimeout(t)}}
 async function loadLive(){
   $('status').textContent='⏳ buscando dados ao vivo…';
-  const P=cur(),F='https://api.open-meteo.com/v1/forecast?latitude='+P.la+'&longitude='+P.lo+'&hourly=wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,temperature_2m,apparent_temperature,precipitation_probability,cloud_cover&wind_speed_unit=kn&timezone=America%2FSao_Paulo&forecast_days=7';
+  const P=cur(),F='https://api.open-meteo.com/v1/forecast?latitude='+P.la+'&longitude='+P.lo+'&hourly=wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,temperature_2m,apparent_temperature,precipitation_probability,cloud_cover&wind_speed_unit=kn&timezone=America%2FSao_Paulo&forecast_days=10';
   const M='https://marine-api.open-meteo.com/v1/marine?latitude='+(P.la-0.06).toFixed(3)+'&longitude='+(P.lo+0.03).toFixed(3)+'&hourly=wave_height,wave_period,wave_direction&timezone=America%2FSao_Paulo&forecast_days=7';
   const L={};let n=0;
   const tk=S.tk=(S.tk||0)+1;
@@ -815,9 +849,9 @@ function meudia(){
   for(let h=6;h<=17;h++){const o=obs(di,h);if(o&&o.wh!=null){has=true;wmax=Math.max(wmax,o.wh)}}
   const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 05/11).':'🔴 Água imprópria para banho (CETESB, boletim de 05/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
   const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar agitado: ondas até ${wmax.toFixed(1)} m. Banho só rente à areia e perto do salva-vidas.`:wmax>1?`🌊 Mar mexido: ondas até ${wmax.toFixed(1)} m. Crianças e idosos só na beira.`:`🌊 Mar calmo: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
-  return `<div class="card"><h2>🌤️ Meu Dia · ${P.n}, ${P.city} · ${DAYS[di].lbl}</h2>${people(di)}</div>
-  <div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>
-  <div class="mut" style="margin:-6px 0 12px">☔ chance de chover no período · 💧 quantidade de água prevista. Chance alta com volume quase zero significa ameaça de chuva, mas pouca água.</div>
+  return `<div class="card"><h2>🌤️ Meu Dia · ${P.n}, ${P.city} · ${DAYS[di].lbl}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
+  ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
+  ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px">☔ chance de chover no período · 💧 quantidade de água prevista. Chance alta com volume quase zero significa ameaça de chuva, mas pouca água.</div>`}
   ${vai()}<div class="card"><h3>🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com mar calmo, entre na água só perto do salva-vidas e confira a bandeira do dia. Se a praia estiver 🔴, prefira passear na areia.':'Para ver praia, troque o bairro para um marcado com 🌊.')}</div>
   <div class="note">Previsão de modelo, não certeza. Para temporal, alertas e emergências, consulte a Defesa Civil (199) e o Corpo de Bombeiros (193).</div>`+alertas();
 }
@@ -827,7 +861,7 @@ const fcKey=p=>p[1]+','+p[2];
 async function loadFc(p){
   const k=fcKey(p);if(S.fc[k]!==undefined)return;S.fc[k]=0;
   try{
-    const j=await getJ('https://api.open-meteo.com/v1/forecast?latitude='+p[1]+'&longitude='+p[2]+'&hourly=temperature_2m,precipitation_probability,precipitation,wind_gusts_10m&timezone=America%2FSao_Paulo&forecast_days=7');
+    const j=await getJ('https://api.open-meteo.com/v1/forecast?latitude='+p[1]+'&longitude='+p[2]+'&hourly=temperature_2m,precipitation_probability,precipitation,wind_gusts_10m&timezone=America%2FSao_Paulo&forecast_days=10');
     const h=j.hourly,m={};
     h.time.forEach((t,i)=>{m[t]={tp:h.temperature_2m[i],pp:h.precipitation_probability[i],rain:h.precipitation[i],wg:h.wind_gusts_10m[i]}});
     S.fc[k]=m;
@@ -1061,7 +1095,8 @@ function render(){
   if(S.tab=='jogo'&&S.vb===undefined&&!S.vbBusy){S.vbBusy=1;loadVB()}
   if(S.tab=='jogo'&&S.news===undefined&&!S.newsBusy){S.newsBusy=1;loadNews()}
   if(S.tab=='meudia')ensureFc();
-  $('days').innerHTML=DAYS.map((d,i)=>d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span></button>`).join('');
+  if(S.tab!='meudia'&&DAYS[S.day]&&DAYS[S.day].ext)S.day=DAYS.reduce((a,d,i)=>d.ext?a:i,0);
+  $('days').innerHTML=DAYS.map((d,i)=>d.ext&&S.tab!='meudia'?'':d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span>${S.tab=='meudia'?`<span class="cf">${conf(i).dots}</span>`:''}</button>`).join('');
   $('tabs').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"><span style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}">${s[1]}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Este dia já passou: os dados manuais estão desatualizados. Peça um novo "?" ao Capitão da Baixada.</div>':'';
@@ -1144,7 +1179,7 @@ const TST=[
  {t:'Bem-vindo ao Clima Baixada! ⚓',x:'Este painel mostra o <b>tempo</b>, o <b>mar</b> e as <b>praias</b> da Baixada Santista. Quer um passeio rápido? Toque em <b>Próximo</b>. Você pode parar quando quiser em <b>Pular</b>, e rever depois no botão <b>❓ Como usar</b>.',tg:null,pre:TP1},
  {t:'📍 Escolha onde você está',x:'Aqui você escolhe o <b>município</b> e o <b>bairro</b>. Tudo muda conforme o lugar. Bairros com 🌊 têm praia e mostram ondas e maré. Bairros com 🏙️ mostram só o tempo.',tg:'#loc',pre:TP1},
  {t:'🔘 Os botões do topo',x:'<b>🟢 ao vivo + hora</b>: mostra que os dados estão atualizados e a que horas foram buscados. Se aparecer 🟡 ou 🟠, alguma fonte falhou: use com mais cuidado.<br><b>🔄 Atualizar</b>: busca de novo o tempo, o mar e a previsão. Toque se a tela ficou parada há muito tempo.<br><b>🌓 Tema</b>: troca entre fundo escuro e claro. O fundo claro ajuda a ler sob sol forte.',tg:'#hdr',pre:TP1},
- {t:'📅 Escolha o dia',x:'Estes botões mostram os próximos dias. Em <b>Meu Dia</b> o desenho mostra o tempo (sol, nuvem, chuva); em <b>Esportes no Mar</b> a bolinha mostra o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia.',tg:'#days',pre:TP1},
+ {t:'📅 Escolha o dia',x:'Estes botões mostram os próximos dias. Em <b>Meu Dia</b> o desenho mostra o tempo (sol, nuvem, chuva); em <b>Esportes no Mar</b> a bolinha mostra o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia. Em Meu Dia há 10 dias; os pontinhos mostram a confiança da previsão: quanto mais longe o dia, menor a confiança e menos detalhes.',tg:'#days',pre:TP1},
  {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Pense nela como alguém que quer o seu bem antes de você sair de casa: avisa se vai fazer calor ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai. 💙<br><b>🌊 Esportes no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias, o Capitão da Baixada vai te deixar informado!<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro e, pelo botão <b>📰 Últimas notícias do Peixe</b>, as manchetes e vídeos do Santos.',tg:'#tabs',pre:TP1},
  {t:'🌤️ Meu Dia',x:'Lembra quando você ia sair de casa e sempre alguém dizia <i>“Não esqueça de levar a blusa!”</i> ou <i>“Parece que vai chover! Leva o guarda-chuva!”</i>? É isso que o aviso <b>Conselho da Mamãe e do Papai!</b> faz por você. Em palavras simples, diz se está <b>quente ou frio</b>, se precisa de <b>guarda-chuva</b> e se o <b>vento</b> está forte. Mais abaixo vêm os períodos do dia com previsões para <b>manhã</b>, <b>tarde</b> e <b>noite</b>. Vá tranquilo, o Clima Baixada cuidará de você. 🤗',tg:'#view .card',pre:TP1},
  {t:'🧭 Vai pra onde? Será que vai chover lá?',x:'Escolha de onde você sai e para onde vai. O painel compara o tempo dos dois lugares e avisa, por exemplo: “vai chover lá, embora aqui não esteja chovendo”. <b>Planeje antes de sair de casa!</b>',tg:()=>{const h=q1('.hook');return h&&h.parentElement},pre:TP1},
