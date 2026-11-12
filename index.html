@@ -57,8 +57,10 @@ button.on{background:var(--acc);color:#04202f;border-color:var(--acc);font-weigh
 #days button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.15;font-size:.85rem;white-space:nowrap}
 nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 #tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-#tabs button{height:84px;min-width:0;overflow:hidden}
-#tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.15;font-size:.8rem;text-align:center}
+#tabs button{min-height:112px;min-width:0;overflow:hidden}
+#tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.2;font-size:1.05rem;font-weight:700;text-align:center;white-space:normal}
+#tabs button>span:first-child{font-size:1.6rem;line-height:1.1}
+@media (min-width:700px){#tabs button{font-size:1.25rem;min-height:120px}#tabs button>span:first-child{font-size:1.9rem}}
 .badge{font-size:.78rem;padding:5px 10px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
 .card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:14px;border-top:4px solid var(--acc)}
 .card.g{border-top-color:var(--g)}.card.y{border-top-color:var(--y)}.card.r{border-top-color:var(--r)}.card.n{border-top-color:#94a3b8}
@@ -135,13 +137,14 @@ button.on{border-color:var(--hl)}
 #tour button.on{border-color:var(--hl)}
 .badge{border:2px solid var(--bd)}
 #hdr button,#hdr .badge{min-height:40px;display:inline-flex;align-items:center;justify-content:center;line-height:1.2}
+#hdr button{padding-left:16px;padding-right:16px;text-align:center;white-space:nowrap}
 input,select{border-color:var(--bd)}
 .strip div.sel{outline:3px solid var(--hl);outline-offset:1px;position:relative;z-index:1}
 .subtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
-.subtabs button{aspect-ratio:1/1;width:100%;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px;font-size:.78rem;line-height:1.2;text-align:center;white-space:normal;overflow:hidden;overflow-wrap:break-word}
-.subtabs button .ic{font-size:1.7rem;line-height:1}
+.subtabs button{min-height:116px;width:100%;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px 4px;font-size:.95rem;font-weight:700;line-height:1.2;text-align:center;white-space:normal;overflow:hidden;overflow-wrap:break-word}
+.subtabs button .ic{font-size:2rem;line-height:1}
 .subtabs button.on:not(#help){box-shadow:inset 0 0 0 3px var(--hl)}
-@media (min-width:700px){.subtabs{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.subtabs button{font-size:.85rem}}
+@media (min-width:700px){.subtabs{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.subtabs button{font-size:1.1rem;min-height:130px}}
 #tour{position:fixed;inset:0;z-index:1000;display:none}
 #tour.on{display:block}
 #tour .dim{position:absolute;inset:0;background:rgba(0,0,0,.72)}
@@ -169,6 +172,8 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 .games{clear:both;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
 .games button{width:100%;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px 10px;white-space:normal;text-align:center;line-height:1.35;font-size:.95rem}
 .games button b{font-size:1.02rem}
+.row .lk{flex:1 1 calc(50% - 6px);min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;line-height:1.25}
+#noticias-sec{scroll-margin-top:12px}
 footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 </style>
 </head>
@@ -176,7 +181,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <div class="wrap">
 <header>
   
-  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='canvas-asset:banner-panoramico.jpg'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
+  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M0uxAzvzqh2wQ55e9CkuqT8Inq.jpg?Expires=1794503649&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=OwDY8~qAJHF8SQ39LWX2cOiwrYbcAM7TNNUVvVck3XYc5y1TZYDixZy3H17a2X4HkkQbUFn7HguYid3xSiMRfOINRq-p4vht9~DOKLgNNjeLgqsxNZ52rwfffj2oH6WuOn-QVxFo3ixSLzYl30KfmcqvLD3OGcdaVXDils8cmZrsKn42QkTj2QK0Amckq6UfE9dVrFqO~qYQ4ArRBH5PRf9-9P23caVTlGDDrMHFToAjAE9aIMvrf86WwVwINarFG6uNmtUsRdIO9bAINP3ubwO3TxDVxz8IG76q-VX2jq--NOs1tN5kU4rvVkcHqsPMgVFuVQRGXAXxTT0Ys7wuCg__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
   <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
   <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
@@ -295,7 +300,7 @@ function reval(){
 }
 function avalBox(){
   if(S.tab=='meudia')return '<div class="note">👨‍👩‍👧 <b>Conselho da Mamãe e do Papai!</b></div>';
-  const a=AVAL;if(a.st=='carregando')return '';
+  const a=AVAL;if(a.st=='carregando'||S.tab=='jogo'||S.tab=='noticias')return '';
   const f=a.em?new Date(a.em).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'–';
   if(a.st=='ok')return `<div class="note">🕒 Avaliação do Capitão da Baixada feita em ${f} (${a.fonte}), há ${Math.floor(a.h)} h.</div>`;
   if(a.st=='velha')return `<div class="warn">⚠️ <b>Avaliação antiga:</b> feita em ${f}, há ${Math.floor(a.h)} h. Peça atualização ao Capitão da Baixada e use com mais cautela.</div>`;
@@ -869,20 +874,21 @@ function jogo(){
   <div class="games">${JOGOS.map((j,i)=>`<button data-g="${i}" class="${g.date==j.date?'on':''}"><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Toque em um jogo para ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, use os links abaixo e digite a data.</div>
   <div class="row">
-    <a class="btn" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Jogos no ge</a>
-    <a class="btn" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
-    <a class="btn" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener">🔎 Buscar no Google</a>
+    <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Jogos no ge</a>
+    <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
+    <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener">🔎 Buscar no Google</a>
+    <button id="goNews" class="lk">📰 Últimas notícias do Peixe</button>
   </div>
   <div class="aform">
     <div><label>Data do jogo</label><input id="g_date" type="date" value="${g.date||''}"></div>
     <div><label>Hora do início</label><input id="g_time" type="time" value="${g.time||''}"></div>
     <div><label>Adversário (opcional)</label><input id="g_opp" type="text" placeholder="Ex.: Palmeiras" value="${g.opp||''}"></div>
-  </div></div>${res}`;
+  </div></div>${res}${newsSec()}`;
 }
 
 /* ============ NAVEGAÇÃO ============ */
 const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Esportes no Mar'],['jogo','⚽ Jogo do Santos']];
-const TICON={meudia:'☀️☁️🌧️',esportes:'🏄🚣🐟'};
+const TICON={meudia:'☀️☁️🌧️',esportes:'🏄🚣🐟',noticias:'📰'};
 function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"><span class="ic">${s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
 const SUBS=[['resumo','📋 Resumo Geral'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Tráfego marítimo'],['praia','🏖️ Como está a praia hoje?']];
 const FISH='<svg width="13" height="18" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
@@ -919,16 +925,16 @@ async function loadNews(){
   if(!it.length){const r=await Promise.all(NEWS_SRC.filter(s=>s.feed).map(feedItems));it=r.flat()}
   S.news={it,upd};render();
 }
-function noticias(){
+function newsSec(){
   const n=S.news;
   const links=NEWS_SRC.map(s=>`<a class="btn" href="${s.site}" target="_blank" rel="noopener">📰 ${s.n}</a>`).join('');
   let body;
   if(n===undefined)body='<div class="note">⏳ Buscando manchetes…</div>';
   else if(!n.it.length)body='<div class="note">Não consegui carregar as manchetes aqui dentro do painel: os sites podem bloquear a leitura direta pelo navegador (CORS) ou não oferecer feed público. Nada foi inventado: use os botões para ler no site de origem.</div>';
   else body=`<div class="cid">${n.it.map(x=>`<div><a style="color:var(--acc)" href="${escH(x.u)}" target="_blank" rel="noopener">${escH(x.t)}</a><div class="mut">${escH(x.f)}${x.d?' · '+escH(x.d):''}</div></div>`).join('')}</div><div class="mut">Manchetes copiadas dos sites de origem${n.upd?', atualizadas em '+escH(n.upd):''}. Toque para ler a matéria completa no site.</div>`;
-  return `<div class="card"><h2>📰 Notícias do Santos</h2>${body}<div class="row">${links}</div></div>`;
+  return `<div class="card" id="noticias-sec"><h2>📰 Últimas notícias do Peixe</h2>${body}<div class="row">${links}</div></div>`;
 }
-const VIEWS={meudia,jogo:()=>jogo()+noticias(),esportes};
+const VIEWS={meudia,jogo,esportes};
 function esportes(){
   const di=S.day,D=DAYS[di],sub=S.sub||'surfe';
   const nav=subtabs();
@@ -1040,6 +1046,7 @@ document.addEventListener('click',e=>{
   else if(b.id=='oriChg'){S.ori={city:S.city,pl:S.pl};sv();render()}
   else if(b.id=='oriOk'){S.ori=null;sv();render()}
   else if(b.id=='mapTry'){S.map=1;render()}
+  else if(b.id=='goNews'){const n=$('noticias-sec');if(n)n.scrollIntoView({behavior:'smooth',block:'start'})}
   else if(b.id=='tinst2'){openTour('inst')}
   else if(b.dataset.g!=null){const j=JOGOS[+b.dataset.g];S.game={date:j.date,time:j.time,opp:j.opp};render()}
 });
@@ -1088,7 +1095,7 @@ const TST=[
  {t:'📍 Escolha onde você está',x:'Aqui você escolhe o <b>município</b> e o <b>bairro</b>. Tudo muda conforme o lugar. Bairros com 🌊 têm praia e mostram ondas e maré. Bairros com 🏙️ mostram só o tempo.',tg:'#loc',pre:TP1},
  {t:'🔘 Os botões do topo',x:'<b>🟢 ao vivo + hora</b>: mostra que os dados estão atualizados e a que horas foram buscados. Se aparecer 🟡 ou 🟠, alguma fonte falhou: use com mais cuidado.<br><b>🔄 Atualizar</b>: busca de novo o tempo, o mar e a previsão. Toque se a tela ficou parada há muito tempo.<br><b>🌓 Tema</b>: troca entre fundo escuro e claro. O fundo claro ajuda a ler sob sol forte.',tg:'#hdr',pre:TP1},
  {t:'📅 Escolha o dia',x:'Estes botões mostram os próximos dias. Em <b>Meu Dia</b> o desenho mostra o tempo (sol, nuvem, chuva); em <b>Esportes no Mar</b> a bolinha mostra o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia.',tg:'#days',pre:TP1},
- {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Pense nela como alguém que quer o seu bem antes de você sair de casa: avisa se vai fazer calor ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai. 💙<br><b>🌊 Esportes no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias, o Capitão da Baixada vai te deixar informado!<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro.',tg:'#tabs',pre:TP1},
+ {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Pense nela como alguém que quer o seu bem antes de você sair de casa: avisa se vai fazer calor ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai. 💙<br><b>🌊 Esportes no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias, o Capitão da Baixada vai te deixar informado!<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro e, pelo botão <b>📰 Últimas notícias do Peixe</b>, as manchetes e vídeos do Santos.',tg:'#tabs',pre:TP1},
  {t:'🌤️ Meu Dia',x:'Lembra quando você ia sair de casa e sempre alguém dizia <i>“Não esqueça de levar a blusa!”</i> ou <i>“Parece que vai chover! Leva o guarda-chuva!”</i>? É isso que o aviso <b>Conselho da Mamãe e do Papai!</b> faz por você. Em palavras simples, diz se está <b>quente ou frio</b>, se precisa de <b>guarda-chuva</b> e se o <b>vento</b> está forte. Mais abaixo vêm os períodos do dia com previsões para <b>manhã</b>, <b>tarde</b> e <b>noite</b>. Vá tranquilo, o Clima Baixada cuidará de você. 🤗',tg:'#view .card',pre:TP1},
  {t:'🧭 Vai pra onde? Será que vai chover lá?',x:'Escolha de onde você sai e para onde vai. O painel compara o tempo dos dois lugares e avisa, por exemplo: “vai chover lá, embora aqui não esteja chovendo”. <b>Planeje antes de sair de casa!</b>',tg:()=>{const h=q1('.hook');return h&&h.parentElement},pre:TP1},
  {t:'🌊 Esportes no Mar',x:'Ao tocar nesta aba você já vê o <b>Resumo Geral</b> com o texto do Capitão da Baixada. Logo abaixo ficam as abas <b>Surf, Caiaque, Pesca, Tráfego marítimo e Como está a praia hoje?</b>. Toque na que quiser para ver os detalhes.',tg:()=>q1('.subtabs')||q1('.tabwrap'),pre:()=>{S.tab='esportes';S.sub='resumo';S.menu=false;S.hover=null}},
