@@ -230,6 +230,19 @@ body.light .mi{background:rgba(255,255,255,.6)}
 #apop p{margin:6px 0}
 #apop .ar{display:grid;gap:10px;margin-top:14px}
 #apop .ar button{min-height:52px;font-weight:700;white-space:normal}
+#apop .ab{max-height:92vh;overflow:auto}
+#apop .apact{font-size:1.15rem;font-weight:700;line-height:1.4;margin:4px 0 8px}
+#apop .apr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#apop label{margin-top:10px}
+.mc{display:flex;gap:8px;margin:10px 0 4px;align-items:flex-start}
+.mcl{display:flex;flex-direction:column;justify-content:space-between;font-size:.72rem;color:var(--mut);height:64px}
+.mcb{display:flex;gap:5px;flex:1;border-left:2px dashed var(--line);padding-left:6px}
+.mcc{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center}
+.mcc .bw{height:64px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.mcc i{display:block;width:70%;max-width:18px;border-radius:4px 4px 0 0;background:#38bdf8}
+.mcc i.lo{background:#7dd3fc;opacity:.7}
+.mcc i.hi{background:#2563eb}
+.mcc span{font-size:.7rem;color:var(--mut);margin-top:3px}
 </style>
 </head>
 <body>
@@ -1423,17 +1436,113 @@ const ALK='capsantos.alerta',NOK='capsantos.noalert',alertMem={};
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return alertMem[k]||null}}
 function lsSet(k,v){alertMem[k]=v;try{localStorage.setItem(k,v)}catch(e){}}
 function maybeAlert(){
-  if(lsGet(NOK)||lsGet(ALK)==todayStr||$('apop')||T.on)return;
+  if(lsGet(NOK)||lsGet(ALK)==todayStr||$('apop')||T.on||Date.now()<soneca())return;
   const di=DAYS.findIndex(d=>d.date==todayStr);if(di<0)return;
   const a=pst(di,6,21);if(!a)return;
-  const chuva=a.rm>=1||(a.pm>=60&&a.rm>=0.3),vento=a.gm>=45;
+  const L=lims(),chuva=chuvaRule(a,L.c),vento=a.gm>=L.g;
   if(!chuva&&!vento)return;
-  const r=resumoDia(di),el=document.createElement('div');
+  const r=resumoDia(di);
+  let st=Math.floor(Date.now()/3600000)*3600000;
+  for(let k=0;k<12;k++){const q=S.live[hkey(Date.now()+k*3600000)];if(q&&q.rain>=0.3){st+=Math.max(0,k-1)*3600000;break}}
+  popAviso({kind:'dia',tit:`⚠️ Aviso do Capitão · ${cur().n}`,acao:fraseAcao(a,chuva,vento),res:r,rows:chuva?rowsChuva(st):null,chuva,vento,pl:null,
+    fonte:`Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}. Previsão de modelo, não certeza.`});
+}
+/* ============ AVISO: frase de ação, mini gráfico, botões e "chuva agora" ============ */
+const LIMK='capsantos.lim',SNZ='capsantos.soneca',AGK='capsantos.agora';
+function lims(){
+  let o={};try{o=JSON.parse(lsGet(LIMK)||'{}')}catch(e){}
+  if(!o||typeof o!='object')o={};
+  return{c:['sens','padrao','forte'].includes(o.c)?o.c:'padrao',g:[30,45,60].includes(o.g)?o.g:45};
+}
+function soneca(){return +lsGet(SNZ)||0}
+function chuvaRule(a,c){return c=='sens'?a.rm>=0.3:c=='forte'?a.rm>=5:(a.rm>=1||(a.pm>=60&&a.rm>=0.3))}
+function fraseAcao(a,chuva,vento){
+  const nh=nowH(),x=[];
+  if(chuva){
+    if(a.r0==null)x.push('☔ Pode chover hoje: leve o guarda-chuva.');
+    else if(a.r1<=nh)x.push(`☔ A chuva prevista para hoje (${pad(a.r0)}h às ${pad(a.r1)}h) já passou. Olhe o céu antes de sair.`);
+    else if(a.r0<=nh)x.push(`☔ Chuva agora, até cerca das ${pad(a.r1)}h: leve capa ou guarda-chuva.`);
+    else x.push(`☔ Vai chover por volta das ${pad(a.r0)}h: leve o guarda-chuva.`);
+  }
+  if(vento)x.push(`💨 Rajadas de até ${a.gm.toFixed(0)} km/h: ${a.gm>=37?'no mar, rajada acima de 20 nós, não navegue.':'segure o chapéu!'}`);
+  return x.join('<br>');
+}
+function rowsChuva(from){
+  const R=[];
+  for(let k=0;k<6;k++){const ms=from+k*3600000,o=S.live[hkey(ms)];if(o&&o.rain!=null)R.push({h:+hkey(ms).slice(11,13),mm:o.rain})}
+  return R.length>=3?R:null;
+}
+function miniChuva(R){
+  const mx=Math.max(3,...R.map(r=>r.mm));
+  return `<div class="mc" role="img" aria-label="Chuva prevista nas próximas horas"><div class="mcl"><span>Elevado</span><span>Baixo</span></div><div class="mcb">${R.map(r=>`<div class="mcc"><div class="bw"><i class="${r.mm>=3?'hi':r.mm<0.3?'lo':''}" style="height:${Math.max(5,Math.round(r.mm/mx*100))}%" title="${pad(r.h)}h: ${r.mm.toFixed(1)} mm"></i></div><span>${pad(r.h)}h</span></div>`).join('')}</div></div><div class="mut">Barras: chuva prevista por hora (topo = 3 mm/h ou mais).</div>`;
+}
+function apMain(o){
+  return `<div class="ab"><h3>${o.tit}</h3><div class="apact">${o.acao}</div>${o.res?`<p>${o.res}</p>`:''}${o.rows?miniChuva(o.rows):''}${o.extra?`<p>${o.extra}</p>`:''}<p class="mut">${o.fonte}</p>${o.saved?'<p class="mut">✔ Preferências salvas. Valem a partir do próximo aviso.</p>':''}<div class="ar"><div class="apr"><button id="ap_ver">Ver detalhes ›</button><button id="ap_pers">⚙️ Personalizar</button></div><button id="ap_zzz">⏰ Soneca de 1 h</button><button id="ap_ok" class="on">Valeu, tô ligado!</button><button id="ap_no">Tô na correria! Não me mande mais!</button></div></div>`;
+}
+function apPers(){
+  const L=lims(),op=(v,c,t)=>`<option value="${v}" ${v==c?'selected':''}>${t}</option>`;
+  return `<div class="ab"><h3>⚙️ Personalizar avisos</h3><label>☔ Avisar de chuva quando…</label><select id="ap_c">${op('sens',L.c,'Qualquer chuva prevista (mais avisos)')}${op('padrao',L.c,'Chuva relevante (padrão)')}${op('forte',L.c,'Só chuva forte (5 mm ou mais no dia)')}</select><label>💨 Avisar de rajadas a partir de…</label><select id="ap_g">${op(30,L.g,'30 km/h (mais avisos)')}${op(45,L.g,'45 km/h (padrão)')}${op(60,L.g,'60 km/h (só ventania)')}</select><p class="mut">Vale para o aviso do dia e para o aviso de "chuva agora". As preferências ficam só neste aparelho.</p><div class="ar"><button id="ap_save" class="on">Salvar</button><button id="ap_back">Voltar</button></div></div>`;
+}
+function apVer(o){
+  if(o.pl&&(o.pl.city!=S.city||o.pl.i!=S.pl)){S.city=o.pl.city;S.pl=o.pl.i;onPlace()}
+  S.tab=(o.vento&&!o.chuva&&cur().m)?'esportes':'meudia';
+  if(S.tab=='esportes')S.sub='resumo';
+  S.menu=false;S.hover=null;S.ten=false;
+  const di=DAYS.findIndex(d=>d.date==todayStr);if(di>=0)S.day=di;
+  render();
+  const v=$('view');if(v)v.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function popAviso(o){
+  if($('apop'))return;
+  const el=document.createElement('div');
   el.id='apop';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');
-  el.innerHTML=`<div class="ab"><h3>⚠️ Aviso do Capitão · ${cur().n}</h3>${r?`<p>${r}</p>`:''}${chuva?'<p>☔ Leve capa ou guarda-chuva.</p>':''}${vento?`<p>💨 Rajadas de até ${a.gm.toFixed(0)} km/h. Segura o chapéu!</p>`:''}<p class="mut">Previsão de modelo, não certeza.</p><div class="ar"><button id="ap_ok" class="on">Valeu, tô ligado!</button><button id="ap_no">Tô na correria! Não me mande mais!</button></div></div>`;
+  el.innerHTML=apMain(o);
+  el.addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    e.stopPropagation();
+    const id=b.id;
+    if(id=='ap_ok'){if(o.kind=='dia')lsSet(ALK,todayStr);el.remove()}
+    else if(id=='ap_no'){lsSet(NOK,'1');el.remove()}
+    else if(id=='ap_zzz'){lsSet(SNZ,String(Date.now()+3600000));el.remove();setTimeout(()=>{maybeAlert();agoraCheck()},3600000+2000)}
+    else if(id=='ap_ver'){if(o.kind=='dia')lsSet(ALK,todayStr);el.remove();apVer(o)}
+    else if(id=='ap_pers'){el.innerHTML=apPers()}
+    else if(id=='ap_back'){el.innerHTML=apMain(o)}
+    else if(id=='ap_save'){
+      lsSet(LIMK,JSON.stringify({c:$('ap_c').value,g:Number($('ap_g').value)}));
+      o.saved=1;el.innerHTML=apMain(o);
+    }
+  });
   document.body.appendChild(el);
-  $('ap_ok').addEventListener('click',()=>{lsSet(ALK,todayStr);el.remove()});
-  $('ap_no').addEventListener('click',()=>{lsSet(NOK,'1');el.remove()});
+}
+async function agoraCheck(){
+  if(S.agBusy||lsGet(NOK)||$('apop')||T.on||Date.now()<soneca()||!navigator.geolocation||!navigator.permissions)return;
+  if(Date.now()-(+lsGet(AGK)||0)<7200000)return;
+  S.agBusy=1;
+  try{
+    const pr=await navigator.permissions.query({name:'geolocation'});
+    if(pr.state!='granted'){S.agBusy=0;return}
+  }catch(e){S.agBusy=0;return}
+  navigator.geolocation.getCurrentPosition(async p=>{
+    try{
+      let best=null;
+      Object.keys(PLACES).forEach(c=>PLACES[c].forEach((q,i)=>{const k=dist(p.coords.latitude,p.coords.longitude,q[1],q[2]);if(!best||k<best.k)best={c,i,k}}));
+      if(!best||best.k>25)return;
+      const q=PLACES[best.c][best.i],
+        j=await getJ('https://api.open-meteo.com/v1/forecast?latitude='+q[1]+'&longitude='+q[2]+'&hourly=precipitation&timezone=America%2FSao_Paulo&forecast_days=2'),
+        h=j.hourly,i0=h.time.indexOf(hkey(Date.now()));
+      if(i0<0)return;
+      const mm=h.precipitation[i0],thr={sens:0.1,padrao:0.3,forte:2}[lims().c];
+      if(mm==null||mm<thr||$('apop')||T.on||lsGet(NOK))return;
+      const rows=[];
+      for(let k=0;k<6;k++){const i=i0+k;if(i<h.time.length)rows.push({h:+h.time[i].slice(11,13),mm:h.precipitation[i]||0})}
+      const fim=rows.findIndex(r=>r.mm<0.3);
+      const extra=fim>0?`Pelo modelo, a chuva perde força por volta das ${pad(rows[fim].h)}h.`:fim<0?'Pelo modelo, a chuva continua nas próximas 6 h.':'';
+      const at=new Date().toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
+      lsSet(AGK,String(Date.now()));
+      popAviso({kind:'agora',tit:`🌧️ Chuva perto de você · ${q[0]}`,acao:`☔ Chuva prevista para agora em ${q[0]} (${best.c}): não esqueça o guarda-chuva.`,res:'',rows,extra,chuva:true,vento:false,pl:{city:best.c,i:best.i},
+        fonte:`Previsão horária de modelo (Open-Meteo, às ${at}), não é radar: pode não estar chovendo no seu ponto exato. Sua posição só serviu para achar o bairro mais próximo (a cerca de ${best.k.toFixed(1)} km) e não foi guardada nem enviada.`});
+    }catch(e){}finally{S.agBusy=0}
+  },()=>{S.agBusy=0},{timeout:10000,maximumAge:300000});
 }
 /* ============ LOCALIZAÇÃO OPCIONAL (só no "Vai pra onde?") ============ */
 function useGps(){
@@ -1516,6 +1625,7 @@ function habCheck(){
   $('hp_off').addEventListener('click',()=>{habSwitch();el.remove()});
 }
 recHabit();setTimeout(habCheck,4000);setInterval(habCheck,60000);
+setTimeout(agoraCheck,6000);setInterval(agoraCheck,600000);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 render();loadLive();loadDados();
 if(!nohelp())setTimeout(()=>{if(!T.on)openTour('menu')},1500);
