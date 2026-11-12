@@ -1,16 +1,21 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
 const OUT = process.env.OUT || 'noticias.json';
-const MAX = 6;
 const UA = 'Mozilla/5.0 (compatible; ClimaBaixadaBot/1.0; +https://climabaixada.com.br/)';
+const YT = id => 'https://www.youtube.com/feeds/videos.xml?channel_id=' + id;
 
+// max = quantos itens guardar por fonte; bloqueia = URLs que não valem como notícia
 const SOURCES = [
-  { fonte: 'Diário do Peixe', base: 'https://www.diariodopeixe.com.br/',
-    wp: 'https://www.diariodopeixe.com.br/wp-json/wp/v2/posts?per_page=' + MAX + '&_fields=title,link,date_gmt',
-    rss: 'https://www.diariodopeixe.com.br/feed/',
-    html: 'https://www.diariodopeixe.com.br/' },
-  { fonte: 'Santos FC (site oficial)', base: 'https://www.santosfc.com.br/',
-    html: 'https://www.santosfc.com.br/es/noticias/' }
+  { fonte: 'Diário do Peixe', base: 'https://www.diariodopeixe.com.br/', max: 6,
+    bloqueia: /\/colunas\//i,
+    rss: 'https://www.diariodopeixe.com.br/noticias/feed/',
+    html: 'https://www.diariodopeixe.com.br/noticias/' },
+  { fonte: 'Santos FC (YouTube)', base: 'https://www.youtube.com/', max: 3,
+    rss: YT('UC0uRT_armQXqds_rjTjqJ0g') },
+  { fonte: 'De Olho no Peixe (YouTube)', base: 'https://www.youtube.com/', max: 3,
+    rss: YT('UCL_RLyuLhW-pvDb8a7cIhWw') },
+  { fonte: 'Diário do Peixe (YouTube)', base: 'https://www.youtube.com/', max: 3,
+    rss: YT('UC-6BRAVobi7q0paklYjgW3Q') }
 ];
 
 async function get(url) {
@@ -37,18 +42,22 @@ const fmtDate = d => {
   return isNaN(x) ? '' : x.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
 };
 
-const okUrl = (u, base) => {
-  try { const a = new URL(u), b = new URL(base); return a.protocol === 'https:' && a.hostname === b.hostname; }
-  catch { return false; }
+const okUrl = (u, s) => {
+  try {
+    const a = new URL(u), b = new URL(s.base);
+    return a.protocol === 'https:' && a.hostname === b.hostname && !(s.bloqueia && s.bloqueia.test(a.pathname));
+  } catch { return false; }
 };
 
-function fromWp(text) {
-  const arr = JSON.parse(text);
-  return arr.map(p => ({ titulo: decode(p.title && p.title.rendered), url: p.link, data: p.date_gmt ? fmtDate(p.date_gmt + 'Z') : '' }));
-}
-
+// Lê RSS (<item>) e Atom (<entry>, usado pelo YouTube)
 function fromRss(xml) {
   const tag = (s, n) => { const m = s.match(new RegExp('<' + n + '[^>]*>([\\s\\S]*?)</' + n + '>')); return m ? decode(m[1]) : ''; };
+  if (/<entry[\s>]/.test(xml)) {
+    return [...xml.matchAll(/<entry[\s>][\s\S]*?<\/entry>/g)].map(m => {
+      const l = m[0].match(/<link[^>]*href="([^"]+)"/);
+      return { titulo: tag(m[0], 'title'), url: l ? l[1] : '', data: fmtDate(tag(m[0], 'published')) };
+    });
+  }
   return [...xml.matchAll(/<item[\s>][\s\S]*?<\/item>/g)].map(m => ({
     titulo: tag(m[0], 'title'), url: tag(m[0], 'link'), data: fmtDate(tag(m[0], 'pubDate'))
   }));
@@ -69,26 +78,25 @@ function fromHtml(html, pageUrl) {
   return out;
 }
 
-function limpar(lista, fonte, base) {
+function limpar(lista, s) {
   const vistos = new Set(), res = [];
   for (const i of lista) {
-    if (!i.titulo || !okUrl(i.url, base) || vistos.has(i.url)) continue;
+    if (!i.titulo || !okUrl(i.url, s) || vistos.has(i.url)) continue;
     vistos.add(i.url);
-    res.push({ fonte, titulo: i.titulo, url: i.url, data: i.data || '' });
-    if (res.length >= MAX) break;
+    res.push({ fonte: s.fonte, titulo: i.titulo, url: i.url, data: i.data || '' });
+    if (res.length >= s.max) break;
   }
   return res;
 }
 
 async function buscar(s) {
   const tentativas = [
-    s.wp && (async () => fromWp(await get(s.wp))),
     s.rss && (async () => fromRss(await get(s.rss))),
     s.html && (async () => fromHtml(await get(s.html), s.html))
   ].filter(Boolean);
   for (const t of tentativas) {
     try {
-      const itens = limpar(await t(), s.fonte, s.base);
+      const itens = limpar(await t(), s);
       if (itens.length) return itens;
     } catch (e) { console.warn('::warning::' + s.fonte + ': ' + e.message); }
   }
@@ -104,7 +112,7 @@ for (const s of SOURCES) {
   let novos = await buscar(s);
   if (!novos.length) {
     falhas++;
-    novos = antigo.itens.filter(i => i && i.fonte === s.fonte && okUrl(i.url, s.base));
+    novos = antigo.itens.filter(i => i && i.fonte === s.fonte && okUrl(i.url, s)).slice(0, s.max);
     console.warn('::warning::Sem manchetes novas de ' + s.fonte + '; mantendo as anteriores (' + novos.length + ').');
   }
   itens.push(...novos);
@@ -118,4 +126,3 @@ if (JSON.stringify(itens) === JSON.stringify(antigo.itens)) { console.log('Sem m
 const atualizado_em = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
 await writeFile(OUT, JSON.stringify({ atualizado_em, itens }, null, 2) + '\n');
 console.log('Gravado ' + OUT + ' com ' + itens.length + ' manchetes.');
-
