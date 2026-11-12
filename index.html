@@ -134,6 +134,7 @@ button.on{border-color:var(--hl)}
 #tour button{border:2px solid var(--bd)}
 #tour button.on{border-color:var(--hl)}
 .badge{border:2px solid var(--bd)}
+#hdr button,#hdr .badge{min-height:40px;display:inline-flex;align-items:center;justify-content:center;line-height:1.2}
 input,select{border-color:var(--bd)}
 .strip div.sel{outline:3px solid var(--hl);outline-offset:1px;position:relative;z-index:1}
 .subtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
@@ -175,12 +176,12 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 <div class="wrap">
 <header>
   
-  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasYs7i63aOfQQYwJA6od2ff1.jpg?Expires=1794435357&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=IeQbpSuNPUmzMt0HFC3E1TR17rTbvXYjFObHjtCYxw-DyijDyj9Q8QsRvlQscu0ubaij6uTZ50QrSUemEGPQw8jLAgjRSGW6NgpniaV6e67vDBEmhmWirX0wTSEJeX-SgeGGLCEmlL6HQdSHzHk9RbKOSS8VQhaQMJUfP1Q6Q0Dual8K1s7YS6iTw7Hd8EbBZUV0Oh23naI4s5XmB-bApMkdBr9EdbiVXjQTAnjrtSUXSTOqznWwo1nyj26E8u--HMW3lxcob12euHO--cGBTX5wb7SccQJ5JPx6v2KvjuqCH-MgtfE5U6K~bnIhH-~HUSeGLLlnaYZLVBEffog6Rg__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
+  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasYs7i63aOfQQYwJA6od2ff1.jpg?Expires=1794489589&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=IsW0Z7~hCyv1lXHrHOEMhEsxMkFY3~tbogpk3eB3tnWHtt4MdIyLz7yKzR64jzzjNxJyPAfwkp4DRwxs2MdpJEOvvl2y-eWF12FC7cD644LtN76r7CPufXbDDqlGSC9-1Qgomfm3IUN6ttG8QdoHzMsv-fVCBsDdXn~tEHftUVfYnPfzqo7q7JMHbdl8iyTgwR1EWDb2qMaS89w5hO~G27KCTXneTkEI7Cv5TNto6UeB9sJvl5ZpB3a-X8g~1pXduJUmTJGSjXRre0xuwxI2J1~e8ikf0D-J1Il4gMQf9q4~xwKRHHDlZj6C4jswVWYeDgkovqbiLyFVkNxiMW9vtw__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
   <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
   <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status">⏳ buscando dados ao vivo…</span>
-    <button id="help" class="on">❓ Como usar</button><button id="reload" title="Atualizar">🔄</button><button id="theme" title="Tema">🌓</button>
+    <button id="help">❓ Como usar</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar">🔄</button><button id="theme" title="Tema">🌓</button>
   </div>
 </header>
 <div id="loc" class="locsel"></div>
@@ -813,7 +814,7 @@ function vai(){
     else if(!so||!sd)res='<div class="warn">Sem previsão para este dia em um dos locais. Toque em 🔄 no topo ou escolha outro dia.</div>';
     else res=vaiTxt(so,sd,o[0],d[0],di);
   }
-  return `<div class="card"><div class="hook"><h3>🧭 Vai pra onde? Será que vai chover lá?</h3><div class="mut">☔ Planeje antes de sair de casa!</div></div>${orig}${dst}</div>${res}`;
+  return `<div class="card"><div class="hook"><h3>🧭 Vai pra onde? Será que vai chover lá?</h3><div class="mut">☔ Planeje antes de ir para não passar perrengue!</div></div>${orig}${dst}</div>${res}`;
 }
 
 const JOGOS=[{date:'2026-11-23',time:'21:00',opp:'Grêmio',lbl:'Seg 23/11 · 21h00'},{date:'2026-12-02',time:'21:30',opp:'Botafogo',lbl:'Qua 02/12 · 21h30'}];
@@ -854,7 +855,7 @@ function jogo(){
       }
     }
   }
-  return `<div class="card"><img class="jimg" src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasfgF3FYeO3XHgJ0biZ7zX7T.png?Expires=1794435357&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=H5JslxdkL8OLIIp0Qwpj1eQ~CliJmCMkvUDy4ikwTsw1ZtcImTyhogKtBJ46BQenPWdCw5sKhth9Y7CXUUIJhPSL4PbtuxzQqE8vqMHIQK0WfQL55n0EmC~7sl3XOxnmTX~GKZnodaB8POKUFpPcH8bM3I~DDhttEHd9a-SJL7J6PDm5kRHvhUWbgvAAjDFkpBQReUzGqDy~Ki17KgJaiNE6aQYo03L19VGfycgqehC9USf0qEGrNHqoV8~pgXWd4dS8y7PAvZsdg-fmZbehBhvWeATeUzwR2c4JKVVsB2Ul--sgpUHzhp4hMgEGC5I80rf9mTJBSKgZL1Wt1dLArA__" alt=""><h2>⚽ Jogo do Santos · tempo na Vila Belmiro</h2>
+  return `<div class="card"><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M0XGaFmTdqMCkIbffzs87LMWnM.png?Expires=1794491963&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=pOfmgB9pdIksugYMYqrzGLHgxlIkF42U4xzcUEW1SP71pHoG5MfJr7TGvo5ednj4wNO8I3VLpa4PK-AKwG6al~2MrJlLnLv0DvPDTTD7QssrIyTCeQPcKLx6VBhdlW2Q-IpQTFN6SWOFcoBAHYU-9Jy-U0PpSnvE57O68iJiW0t2rQdCBwoJy1ZpyDZSM3L73Id0~1ZptmhHotWNbofPlu7HfJCQFTz~UraRx~D6UiFTyXgHDyUGC9vcZgGWRRzEyg1vhNRCxFdj8rMPlyBOrTbKNG~aKgue0KOZ49-Va4mjXhcJO6hGZ0p3blz60sY37Cxqm7YnhWj9dtiCc7Sgdg__'" alt=""><h2>⚽ Jogo do Santos · tempo na Vila Belmiro</h2>
   <h3>🏟️ Próximos jogos na Vila Belmiro</h3>
   <div class="games">${JOGOS.map((j,i)=>`<button data-g="${i}" class="${g.date==j.date?'on':''}"><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Toque em um jogo para ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, use os links abaixo e digite a data.</div>
@@ -878,7 +879,7 @@ const SUBS=[['resumo','📋 Resumo Geral'],['surfe','🏄 Surf'],['caiaque','�
 const FISH='<svg width="13" height="18" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
 TICON.esportes='🏄🚣'+FISH;
 const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
-TICON.jogo='<img src="https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3LyasfgF3FYeO3XHgJ0biZ7zX7T.png?Expires=1794435357&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=H5JslxdkL8OLIIp0Qwpj1eQ~CliJmCMkvUDy4ikwTsw1ZtcImTyhogKtBJ46BQenPWdCw5sKhth9Y7CXUUIJhPSL4PbtuxzQqE8vqMHIQK0WfQL55n0EmC~7sl3XOxnmTX~GKZnodaB8POKUFpPcH8bM3I~DDhttEHd9a-SJL7J6PDm5kRHvhUWbgvAAjDFkpBQReUzGqDy~Ki17KgJaiNE6aQYo03L19VGfycgqehC9USf0qEGrNHqoV8~pgXWd4dS8y7PAvZsdg-fmZbehBhvWeATeUzwR2c4JKVVsB2Ul--sgpUHzhp4hMgEGC5I80rf9mTJBSKgZL1Wt1dLArA__" alt="" style="height:26px;width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
+TICON.jogo='<img src="edu-silhueta.png" onerror="this.onerror=null;this.src=\'canvas-asset:edu-silhueta.png\'" alt="" style="height:26px;width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
 const VIEWS={meudia,jogo,esportes};
 function esportes(){
   const di=S.day,D=DAYS[di],sub=S.sub||'surfe';
@@ -977,6 +978,8 @@ document.addEventListener('click',e=>{
   else if(b.dataset.f){S.filter=b.dataset.f;render()}
   else if(b.id=='reload'){S.vb=undefined;S.vbBusy=0;S.fc={};loadLive();loadDados()}
   else if(b.id=='theme')document.body.classList.toggle('light');
+  else if(b.id=='fsm')setFs(FS-2);
+  else if(b.id=='fsp')setFs(FS+2);
   else if(b.id=='fillh'){
     const h=Math.floor(S.hover??8),o=obs(S.day,h),t=tideAt(msAt(S.day,h+.5));
     if(o&&o.ws!=null){$('i_ws').value=Math.round(o.ws);$('i_wg').value=Math.round(o.wg??0);$('i_wh').value=(o.wh??0).toFixed(1);$('i_wp').value=Math.round(o.wp??0);
@@ -1046,6 +1049,11 @@ const TST=[
  {t:'🏖️ Como está a praia hoje?',x:'Escolha o município e a praia nas listas. <b>🟢 Própria</b>: pode entrar na água. <b>🔴 Imprópria</b>: não entre nem engula água. Toque no cartão da praia para ver temperatura da água e condição do mar.',tg:'#p_city',pre:TPS('praia')},
  {t:'📲 Canal no WhatsApp e segurança',x:'No fim da aba Meu Dia há o <b>Canal Clima Baixada</b>: toque em “Entrar no canal” e depois em “Seguir”. Lembre: o painel é uma <b>previsão</b>, não uma certeza. Em dúvida, não saia, e olhe o mar antes de entrar. Emergências: Bombeiros 193, Defesa Civil 199.',tg:'#view>.card:last-child',pre:TP1}
 ];
+let FS=18;
+try{const q=+localStorage.getItem('capsantos.fs');if(q>=14&&q<=26)FS=q}catch(e){}
+document.documentElement.style.fontSize=FS+'px';
+function setFs(v){FS=Math.max(14,Math.min(26,v));document.documentElement.style.fontSize=FS+'px';try{localStorage.setItem('capsantos.fs',FS)}catch(e){}setTimeout(tourPos,60)}
+const nohelp=()=>{try{return !!localStorage.getItem('capsantos.nohelp')}catch(e){return false}};
 const T={on:0,i:0,mode:'menu'};
 const tourEl=document.createElement('div');
 tourEl.id='tour';
@@ -1065,7 +1073,7 @@ function tourDraw(){
   const tb=$('tb');let h='';
   tourEl.classList.remove('hasspot');
   if(T.mode=='menu'){
-    h=`<h3>❓ Como usar o painel</h3><div class="tcol"><button id="tgo">🧭 Passeio guiado, passo a passo</button><button id="tgl">📖 Palavras difíceis (glossário)</button><button id="tinst" class="one">📲 Instalar o app (crie um ícone no celular)</button><button id="tbig">🔠 Letra maior / menor</button><button id="tclose">Fechar</button></div>`;
+    h=`<h3>❓ Como usar o painel</h3><div class="tcol"><button id="tgo">🧭 Passeio guiado, passo a passo</button><button id="tgl">📖 Palavras difíceis (glossário)</button><button id="tinst" class="one">📲 Instalar o app (crie um ícone no celular)</button><button id="tbig">🔠 Letra maior / menor</button><button id="tclose">Fechar</button></div><label style="display:flex;gap:8px;align-items:center;color:var(--txt);font-size:.95rem;padding:6px 0"><input type="checkbox" id="tnoshow" style="width:auto" ${nohelp()?'checked':''}> Não mostrar ao abrir o painel</label>`;
   }else if(T.mode=='inst'){
     h=`<h3>📲 Instalar no celular</h3><p>Crie um ícone na tela do celular para abrir o painel com um toque, sem digitar o endereço.</p><div class="gl"><b>🤖 Android (Chrome)</b><br>1. Abra o painel no <b>Chrome</b>.<br>2. Toque nos <b>três pontinhos ⋮</b>, no canto de cima.<br>3. Toque em <b>Adicionar à tela inicial</b> (ou <b>Instalar app</b>).<br>4. Toque em <b>Adicionar</b>.</div><div class="gl"><b>🍎 iPhone (Safari)</b><br>1. Abra o painel no <b>Safari</b> (em outros navegadores não funciona).<br>2. Toque no botão <b>Compartilhar</b> (quadrado com seta para cima), embaixo da tela.<br>3. Role e toque em <b>Adicionar à Tela de Início</b>.<br>4. Toque em <b>Adicionar</b>.</div><p class="mut">O ícone aparece na tela inicial, junto dos outros aplicativos. Se abriu o link dentro do WhatsApp, toque em "Abrir no navegador" antes de começar.</p><div class="tr"><button id="tmenu">⬅ Voltar</button><button id="tclose">Fechar</button></div>`;
   }else if(T.mode=='gl'){
@@ -1101,11 +1109,12 @@ tourEl.addEventListener('click',e=>{
   else if(id=='tgl'){T.mode='gl';tourDraw()}
   else if(id=='tinst'){T.mode='inst';tourDraw()}
   else if(id=='tmenu'){T.mode='menu';tourDraw()}
-  else if(id=='tbig'){document.documentElement.classList.toggle('big')}
+  else if(id=='tbig'){setFs(FS>=22?18:22)}
   else if(id=='tprev')tourGo(T.i-1);
   else if(id=='tnext'){if(T.i>=TST.length-1)closeTour();else tourGo(T.i+1)}
   else if(id=='tclose')closeTour();
 });
+tourEl.addEventListener('change',e=>{if(e.target.id=='tnoshow'){try{e.target.checked?localStorage.setItem('capsantos.nohelp','1'):localStorage.removeItem('capsantos.nohelp')}catch(x){}}});
 $('help').addEventListener('click',()=>openTour('menu'));
 window.addEventListener('scroll',tourPos,{passive:true});
 window.addEventListener('resize',tourPos);
@@ -1113,7 +1122,7 @@ setInterval(tourPos,500);
 setInterval(()=>{if(reval())render()},300000);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 render();loadLive();loadDados();
-try{if(!localStorage.getItem('capsantos.tour'))setTimeout(()=>{if(!T.on)openTour('step')},1500)}catch(e){}
+if(!nohelp())setTimeout(()=>{if(!T.on)openTour('menu')},1500);
 </script>
 </body>
 </html>
