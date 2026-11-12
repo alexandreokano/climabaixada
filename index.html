@@ -193,6 +193,32 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 .conf.c1{border-left-color:var(--g)}.conf.c2{border-left-color:var(--y)}.conf.c3{border-left-color:#fb923c}
 .conf small{display:block;color:var(--mut);font-size:.78rem;margin-top:3px}
 footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
+/* ---- ajustes visuais: abas, dias, conselho, 10 dias ---- */
+#days button{height:76px}
+#days button>span:first-child{font-size:1.5rem;line-height:1}
+#days button>span:nth-child(2){font-size:.95rem}
+#tabs button>span:first-child{min-height:48px}
+.tjog{margin-bottom:8px}
+@media (min-width:700px){#tabs button>span:first-child{min-height:76px}.tjog{height:52px;margin-bottom:10px}#days button>span:first-child{font-size:1.8rem}#days button>span:nth-child(2){font-size:1.05rem}}
+.mom{padding:16px 18px}
+.mom .mh{font-size:1.25rem;margin-bottom:12px;gap:14px}
+.mom .mh span{font-size:2.2rem;line-height:1}
+.mbody{text-align:center}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.mi{display:flex;align-items:center;gap:12px;background:rgba(0,0,0,.2);border-radius:12px;padding:12px 14px;text-align:left;line-height:1.4}
+body.light .mi{background:rgba(255,255,255,.6)}
+.mi .ic{font-size:1.9rem;line-height:1;flex:0 0 auto}
+.mkiss{text-align:center;margin-top:12px;font-weight:600;font-size:1.05rem}
+.tgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:10px 0}
+@media (max-width:600px){.tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tgrid button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px;line-height:1.2;border-top:5px solid var(--acc)}
+.tgrid .c1{border-top-color:var(--g)}.tgrid .c2{border-top-color:var(--y)}.tgrid .c3{border-top-color:#fb923c;opacity:.85}
+.tgrid .tl{font-weight:700}
+.tgrid .ti{font-size:2rem;line-height:1.1}
+.tgrid .tt{font-weight:600}
+.tgrid .tr2{font-size:.8rem;color:var(--mut)}
+.tgrid button.on .tr2{color:inherit}
+.tgrid .cf2{font-size:.8rem;letter-spacing:2px}
 </style>
 </head>
 <body>
@@ -334,7 +360,7 @@ async function loadDados(){
     const d=r.headers.get('Date'),sv=d?Date.parse(d):NaN;
     CUR_DRIFT=isNaN(sv)?null:sv-Date.now();
     let j=null;try{j=await r.json()}catch(e){}
-    if(dadosOk(j)){DAYS=j.dias;CETESB=j.cetesb;BEACHES=mkBeaches();S.pb='';S.open=null;CUR_EM=j.avaliado_em;CUR_FONTE='dados.json'}
+    if(dadosOk(j)){DAYS=j.dias;extDays();CETESB=j.cetesb;BEACHES=mkBeaches();S.pb='';S.open=null;CUR_EM=j.avaliado_em;CUR_FONTE='dados.json'}
     else CUR_BAD=true;
   }catch(e){}
   reval();
@@ -642,9 +668,9 @@ function momBox(di){
     if(n&&a.tmax-n.tmin>=3&&n.tmin<=23)x.push(`🧥 O fim da tarde esfria (cai para ${Math.round(n.tmin)}°C): leva uma blusinha!`);
     if(a.amax>=30)x.push('🧴 Vai esquentar: protetor solar e garrafinha de água!');
     if(a.gm>=45)x.push('💨 Vento forte: segura o chapéu!');
-    t=x.join('<br>')+'<br>Beijo e juízo! 😘';
+    t='<div class="mgrid">'+x.map(s=>{const k=s.indexOf(' ');return `<div class="mi"><span class="ic">${s.slice(0,k)}</span><span>${s.slice(k+1)}</span></div>`}).join('')+'</div><div class="mkiss">Beijo e juízo! 😘</div>';
   }
-  return `<div class="mom"><div class="mh"><span>👩</span><b>Conselho da Mamãe e do Papai!</b><span>👨</span></div><div>${t}</div></div>`;
+  return `<div class="mom"><div class="mh"><span>👩</span><b>Conselho da Mamãe e do Papai!</b><span>👨</span></div><div class="mbody">${t}</div></div>`;
 }
 function people(di){
   const D=DAYS[di],all=pst(di,6,21);
@@ -846,13 +872,24 @@ function period(di,a,b,ic,nm){
   const l=(rm>=2||(pm>=60&&rm>=0.3))?'r':pm>=30?'y':'g';
   return `<div class="card ${l}"><h3>${ic} ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">${rm<0.3?(pm>=40?`🌥️ Ameaça de chuva<br>💧 só uns pingos, quase sem água`:`😎 Chuva improvável<br>💧 sem água prevista`):`☔ ${pm}% de chance<br>💧 ${volTxt(rm)} previstos`}<br>💨 ${g.toFixed(0)} km/h</div></div>`;
 }
+function tenDays(){
+  const L=DAYS.map((d,i)=>i).filter(i=>dayOff(i)>=0&&dayOff(i)<=9);
+  const tile=i=>{const c=conf(i),a=pst(i,6,21);return `<button data-td="${i}" class="c${c.n} ${i==S.day?'on':''}"><span class="tl">${DAYS[i].lbl}</span><span class="ti">${dayIcon(i)}</span><span class="tt">${a?Math.round(a.tmin)+'–'+Math.round(a.tmax)+'°C':'–'}</span><span class="tr2">${a?'☔ '+a.pm+'%':'sem previsão'}</span><span class="cf2">${c.dots}</span></button>`};
+  return `<div class="card"><h2>🗓️ Previsão de 10 dias</h2>
+  <div class="conf c1"><b>●●● Confiança alta · hoje até +2 dias.</b> Horários de chuva, vento e temperatura costumam acertar bem. Pode planejar.</div>
+  <div class="conf c2"><b>●●○ Confiança média · +3 a +5 dias.</b> Boa para se organizar, mas a chuva e o vento podem mudar. Confira de novo na véspera.</div>
+  <div class="conf c3"><b>●○○ Confiança baixa · +6 a +9 dias.</b> Só tendência: o erro cresce muito, principalmente em chuva e vento.</div>
+  ${how('Decida com base nos 3 primeiros dias. Do 4º ao 6º, planeje com folga. A partir do 7º, use só como ideia geral do tempo.')}
+  <div class="tgrid">${L.map(tile).join('')}</div>
+  <div class="mut">Toque em um dia para ver o detalhe dele. ☔ = chance de chuva. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div></div>`;
+}
 function meudia(){
   const di=S.day,P=cur(),bn=(CETESB[P.city]||[]).find(x=>x[0].startsWith(P.n));
   let wmax=0,has=false;
   for(let h=6;h<=17;h++){const o=obs(di,h);if(o&&o.wh!=null){has=true;wmax=Math.max(wmax,o.wh)}}
   const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 05/11).':'🔴 Água imprópria para banho (CETESB, boletim de 05/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
   const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar agitado: ondas até ${wmax.toFixed(1)} m. Banho só rente à areia e perto do salva-vidas.`:wmax>1?`🌊 Mar mexido: ondas até ${wmax.toFixed(1)} m. Crianças e idosos só na beira.`:`🌊 Mar calmo: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
-  return `<div class="card"><h2>🌤️ Meu Dia · ${P.n}, ${P.city} · ${DAYS[di].lbl}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
+  return `${S.ten?tenDays():''}<div class="card"><h2>🌤️ Meu Dia · ${P.n}, ${P.city} · ${DAYS[di].lbl}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
   ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
   ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px">☔ chance de chover no período · 💧 quantidade de água prevista. Chance alta com volume quase zero significa ameaça de chuva, mas pouca água.</div>`}
   ${vai()}<div class="card"><h3>🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com mar calmo, entre na água só perto do salva-vidas e confira a bandeira do dia. Se a praia estiver 🔴, prefira passear na areia.':'Para ver praia, troque o bairro para um marcado com 🌊.')}</div>
@@ -1099,7 +1136,7 @@ function render(){
   if(S.tab=='jogo'&&S.news===undefined&&!S.newsBusy){S.newsBusy=1;loadNews()}
   if(S.tab=='meudia')ensureFc();
   if(S.tab!='meudia'&&DAYS[S.day]&&DAYS[S.day].ext)S.day=DAYS.reduce((a,d,i)=>d.ext?a:i,0);
-  $('days').innerHTML=DAYS.map((d,i)=>d.ext&&S.tab!='meudia'?'':d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span>${S.tab=='meudia'?`<span class="cf">${conf(i).dots}</span>`:''}</button>`).join('');
+  $('days').innerHTML=DAYS.map((d,i)=>(S.tab=='meudia'?(dayOff(i)<0||dayOff(i)>2):(d.ext||d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)))?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span>${S.tab=='meudia'?`<span class="cf">${conf(i).dots}</span>`:''}</button>`).join('')+(S.tab=='meudia'?`<button data-ten="1" class="${S.ten||dayOff(S.day)>2?'on':''}"><span>🗓️</span><span>10 dias</span></button>`:'');
   $('tabs').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"><span style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}">${s[1]}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Este dia já passou: os dados manuais estão desatualizados. Peça um novo "?" ao Capitão da Baixada.</div>':'';
@@ -1113,7 +1150,9 @@ document.addEventListener('click',e=>{
   if(c){updateHover(+c.dataset.h+.5);return}
   const b=e.target.closest('button');
   if(!b)return;
-  if(b.dataset.d!=null){S.day=+b.dataset.d;S.hover=null;render()}
+  if(b.dataset.d!=null){S.day=+b.dataset.d;S.ten=false;S.hover=null;render()}
+  else if(b.dataset.ten!=null){S.ten=!S.ten;render()}
+  else if(b.dataset.td!=null){S.day=+b.dataset.td;S.hover=null;render()}
   else if(b.dataset.t){const t=b.dataset.t;S.menu=false;S.tab=t;if(t=='esportes')S.sub='resumo';S.hover=null;render()}
   else if(b.dataset.s){S.sub=b.dataset.s;S.menu=false;S.hover=null;render()}
   else if(b.dataset.pf){S.pf=b.dataset.pf;if(S.pf=='perto'&&!S.pos)locate();render()}
