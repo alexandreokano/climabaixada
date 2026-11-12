@@ -181,6 +181,9 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 .games button b{font-size:1.02rem}
 .row .lk{flex:1 1 calc(50% - 6px);min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;line-height:1.25}
 #noticias-sec{scroll-margin-top:12px}
+.mom{background:linear-gradient(135deg,rgba(56,189,248,.22),rgba(251,146,60,.18));border:2px solid var(--acc);border-radius:14px;padding:12px 14px;margin:8px 0;font-size:.98rem;line-height:1.55}
+.mom .mh{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;font-size:1.1rem}
+.mom .mh span{font-size:1.6rem}
 footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
 </style>
 </head>
@@ -307,7 +310,7 @@ function reval(){
   greyIf();return mudou;
 }
 function avalBox(){
-  if(S.tab=='meudia')return '<div class="note">👨‍👩‍👧 <b>Conselho da Mamãe e do Papai!</b></div>';
+  if(S.tab=='meudia')return momBox(S.day);if(0)return '<div class="note">👨‍👩‍👧 <b>Conselho da Mamãe e do Papai!</b></div>';
   const a=AVAL;if(a.st=='carregando'||S.tab=='jogo'||S.tab=='noticias')return '';
   const f=a.em?new Date(a.em).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'–';
   if(a.st=='ok')return `<div class="note">🕒 Avaliação do Capitão da Baixada feita em ${f} (${a.fonte}), há ${Math.floor(a.h)} h.</div>`;
@@ -585,7 +588,45 @@ function pescaTxt(di){
 }
 const hl=s=>s.replace(/\b(caiaque|surfe|pesca)\b/gi,m=>`<b class="kw-${m.toLowerCase()}">${m}</b>`);
 const fmt=di=>hl(String(DAYS[di].txt)+(DAYS[di].k==3?'':pescaTxt(di)));
+const volTxt=m=>m<=0?'0 mm':m<0.1?'menos de 0,1 mm':m.toFixed(1).replace('.',',')+' mm';
+function pst(di,a,b){
+  const H=[];for(let h=a;h<=b;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push({...o,h})}
+  if(!H.length)return null;
+  const rh=H.filter(x=>x.rain>=0.3),hot=H.reduce((m,x)=>(x.ap??x.tp)>(m.ap??m.tp)?x:m,H[0]);
+  return{a,b,tmin:Math.min(...H.map(x=>x.tp)),tmax:Math.max(...H.map(x=>x.tp)),amax:hot.ap??hot.tp,ah:hot.h,pm:Math.round(Math.max(...H.map(x=>x.pp||0))),rm:H.reduce((s,x)=>s+(x.rain||0),0),r0:rh.length?rh[0].h:null,r1:rh.length?rh[rh.length-1].h+1:null,gm:Math.max(...H.map(x=>x.wg||0))*1.852};
+}
+function momBox(di){
+  const a=pst(di,6,21),n=pst(di,17,21);
+  let t;
+  if(!a)t='Sem previsão ao vivo agora, mas na dúvida leve um guarda-chuva e uma blusinha! 😉';
+  else{
+    const x=[];
+    x.push(a.rm>=1?'☔ Vai chover, hein! Guarda-chuva ou capa na mochila e bora com estilo.':a.rm>=0.3?'🌦️ Pode cair uma chuvinha: leve um guarda-chuva pequeno.':a.pm>=40?'🌂 Tem ameaça de chuva, mas pouca água. Um guarda-chuva pequeno na bolsa resolve.':'😎 Céu camarada: pode deixar o guarda-chuva em casa!');
+    if(n&&a.tmax-n.tmin>=3&&n.tmin<=23)x.push(`🧥 O fim da tarde esfria (cai para ${Math.round(n.tmin)}°C): leva uma blusinha!`);
+    if(a.amax>=30)x.push('🧴 Vai esquentar: protetor solar e garrafinha de água!');
+    if(a.gm>=45)x.push('💨 Vento forte: segura o chapéu!');
+    t=x.join('<br>')+'<br>Beijo e juízo! 😘';
+  }
+  return `<div class="mom"><div class="mh"><span>👩</span><b>Conselho da Mamãe e do Papai!</b><span>👨</span></div><div>${t}</div></div>`;
+}
 function people(di){
+  const D=DAYS[di],all=pst(di,6,21);
+  if(!all)return `<div class="cid"><div>🌡️ Temperatura: sem previsão ao vivo para este dia.</div><div>☔ Chuva: ${D.chuva}</div><div>💨 Vento: ${D.vento}</div></div>`;
+  const P=[['🌅','Manhã',6,11],['☀️','Almoço',12,14],['🌇','Fim de tarde',15,18],['🌙','Noite',19,21]].map(([ic,n,a,b])=>({ic,n,a,b,s:pst(di,a,b)})).filter(p=>p.s);
+  const tl=t=>t>=30?'bem quente':t>=26?'quente':t>=22?'agradável':t>=18?'fresquinho':'frio';
+  const rainTxt=s=>s.rm>=1?`☔ chuva (${s.pm}% de chance, ${volTxt(s.rm)})`:s.rm>=0.3?`🌦️ garoa ou chuva fraca (${s.pm}% de chance, ${volTxt(s.rm)})`:s.pm>=40?`🌥️ ameaça de chuva (${s.pm}% de chance), mas volume previsto de ${volTxt(s.rm)}`:'😎 sem chuva';
+  const lines=P.map(p=>{const s=p.s,t0=Math.round(s.tmin),t1=Math.round(s.tmax),tt=t0==t1?`${t0}°C`:`${t0}–${t1}°C`,feel=s.amax-s.tmax>=3?`, sensação de até ${Math.round(s.amax)}°C`:'';
+    return `${p.ic} <b>${p.n}</b> (${pad(p.a)}h–${pad(p.b+1)}h): ${tl(s.tmax)}, ${tt}${feel}. ${rainTxt(s)}`});
+  const night=pst(di,17,21),ch=[];
+  ch.push(`sensação máxima de ${Math.round(all.amax)}°C por volta das ${pad(all.ah)}h`);
+  ch.push(night&&all.tmax-night.tmin>=3?`esfria no fim da tarde e à noite (até ${Math.round(night.tmin)}°C)`:'sem grande queda de temperatura à noite');
+  ch.push(all.rm>=0.3?`chuva entre ${pad(all.r0)}h e ${pad(all.r1)}h (cerca de ${volTxt(all.rm)} no total)`:all.pm>=40?`ameaça de chuva (até ${all.pm}% de chance), mas com volume previsto de ${volTxt(all.rm)}`:'sem chuva relevante');
+  const ic=all.rm>=0.3?'🌦️':all.tmax>=29?'☀️':'🙂';
+  const gm=all.gm,cg=Math.max(pst(di,6,9)?.gm??0,pst(di,17,19)?.gm??0);
+  const wt=(gm>=45?'💨 Ventania':gm>=30?'💨 Venta bastante':gm>=20?'🍃 Brisa firme':'🍃 Vento fraco')+`: rajadas até ${gm.toFixed(0)} km/h no dia. No ponto de ônibus (6h–9h e 17h–19h) chegam a cerca de ${cg.toFixed(0)} km/h${cg>=30?': sensação mais fresca, cuidado com guarda-chuva e chapéu.':'.'}`;
+  return `<div class="cid"><div><b>${ic} Dia ${tl(all.tmax)}: mín ${Math.round(all.tmin)}°C · máx ${Math.round(all.tmax)}°C.</b> Ao longo do dia: ${ch.join('; ')}.</div><div>${lines.join('<br>')}</div><div>${wt}</div></div><div class="mut">Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}. Previsão de modelo, não certeza. Período considerado: 6h às 22h. <b>Chance</b> = probabilidade de chover naquele período; <b>volume</b> = quantidade de água prevista. Chance alta com volume perto de zero indica ameaça de chuva, mas pouca água.</div>`;
+}
+function peopleOld(di){
   const D=DAYS[di],H=[];
   for(let h=6;h<=21;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push({...o,h})}
   if(!H.length)return `<div class="cid"><div>🌡️ Temperatura: sem previsão ao vivo para este dia.</div><div>☔ Chuva: ${D.chuva}</div><div>💨 Vento: ${D.vento}</div></div>`;
@@ -765,8 +806,8 @@ function period(di,a,b,ic,nm){
   const H=[];for(let h=a;h<b;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push(o)}
   if(!H.length)return `<div class="card"><h3>${ic} ${nm}</h3><div class="mut">sem previsão ao vivo</div></div>`;
   const tmin=Math.min(...H.map(x=>x.tp)),tmax=Math.max(...H.map(x=>x.tp)),pm=Math.round(Math.max(...H.map(x=>x.pp||0))),rm=H.reduce((s,x)=>s+(x.rain||0),0),g=Math.max(...H.map(x=>x.wg||0))*1.852;
-  const l=(pm>=60||rm>=2)?'r':pm>=30?'y':'g';
-  return `<div class="card ${l}"><h3>${ic} ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">☔ ${pm}% · ${rm.toFixed(1).replace('.',',')} mm<br>💨 ${g.toFixed(0)} km/h</div></div>`;
+  const l=(rm>=2||(pm>=60&&rm>=0.3))?'r':pm>=30?'y':'g';
+  return `<div class="card ${l}"><h3>${ic} ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">☔ ${pm}% de chance<br>💧 ${volTxt(rm)}<br>💨 ${g.toFixed(0)} km/h</div></div>`;
 }
 function meudia(){
   const di=S.day,P=cur(),bn=(CETESB[P.city]||[]).find(x=>x[0].startsWith(P.n));
@@ -776,6 +817,7 @@ function meudia(){
   const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar agitado: ondas até ${wmax.toFixed(1)} m. Banho só rente à areia e perto do salva-vidas.`:wmax>1?`🌊 Mar mexido: ondas até ${wmax.toFixed(1)} m. Crianças e idosos só na beira.`:`🌊 Mar calmo: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
   return `<div class="card"><h2>🌤️ Meu Dia · ${P.n}, ${P.city} · ${DAYS[di].lbl}</h2>${people(di)}</div>
   <div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>
+  <div class="mut" style="margin:-6px 0 12px">☔ chance de chover no período · 💧 quantidade de água prevista. Chance alta com volume quase zero significa ameaça de chuva, mas pouca água.</div>
   ${vai()}<div class="card"><h3>🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com mar calmo, entre na água só perto do salva-vidas e confira a bandeira do dia. Se a praia estiver 🔴, prefira passear na areia.':'Para ver praia, troque o bairro para um marcado com 🌊.')}</div>
   <div class="note">Previsão de modelo, não certeza. Para temporal, alertas e emergências, consulte a Defesa Civil (199) e o Corpo de Bombeiros (193).</div>`+alertas();
 }
