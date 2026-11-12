@@ -977,7 +977,7 @@ async function loadVB(){
 }
 function jogo(){
   const g=S.game||{},f=(x,d)=>x==null?'–':x.toFixed(d||0);
-  let res='<div class="note">Digite a data e a hora do jogo para ver a previsão na Vila Belmiro.</div>';
+  let res='<div class="note">Digita a data e a hora do jogo pra ver a previsão na Vila Belmiro.</div>';
   if(g.date&&g.time){
     if(S.vb===undefined)res='<div class="note">⏳ Buscando a previsão…</div>';
     else if(S.vb===null)res='<div class="warn">Não consegui buscar a previsão agora. Toque em 🔄 no topo para tentar de novo.</div>';
@@ -997,16 +997,16 @@ function jogo(){
           tmax!=null&&tmax>=28?'🥵 Calor: protetor solar, água e roupa leve.':tmin!=null&&tmin<=17?'🧥 Frio: leve agasalho.':'🙂 Temperatura agradável.',
           gm>=35?`💨 Rajadas até ${gm.toFixed(0)} km/h: cuidado com objetos soltos e com a saída.`:'🍃 Vento sem problema.'
         ];
-        res=`<div class="card ${COL[l]}"><h3>${EMO[l]} ${['TEMPO FAVORÁVEL','ATENÇÃO COM O TEMPO','TEMPO RUIM'][l]} · ${g.opp?'Santos x '+g.opp:'Jogo do Santos'}</h3><div class="cid">${tips.map(x=>`<div>${x}</div>`).join('')}</div>
+        res=`<div class="card ${COL[l]}"><h3>${EMO[l]} ${['TEMPO FIRMEZA','OLHO NO TEMPO','TEMPO FECHADO'][l]} · ${g.opp?'Santos x '+g.opp:'Jogo do Santos'}</h3><div class="cid">${tips.map(x=>`<div>${x}</div>`).join('')}</div>
         <div class="t"><table><tr><th>Hora</th><th>Momento</th><th>Temp.</th><th>Chuva</th><th>Volume</th><th>Rajada</th></tr>${rows.map(r=>`<tr><td>${r.hh}</td><td>${r.k<0?'Chegada':r.k==0?'Bola rolando':'Jogo / saída'}</td><td>${f(r.tp)}°C</td><td>${r.pp==null?'–':r.pp+'%'}</td><td>${f(r.rain,1)} mm</td><td>${f(r.wg)} km/h</td></tr>`).join('')}</table></div>
-        ${how('A tabela vai de 2 horas antes até 3 horas depois do início. Olhe a chuva na chegada e na saída, que é quando você fica mais exposto. Chegue cedo se o tempo estiver ruim.')}</div>`;
+        ${how('A tabela vai de 2 horas antes até 3 horas depois do início. Olhe a chuva na chegada e na saída, que é quando você fica mais exposto. Chega cedo se o tempo estiver feio.')}</div>`;
       }
     }
   }
   return `<div class="card"><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""><h2>⚽ Jogo do Santos · tempo na Vila Belmiro</h2>
   <h3>🏟️ Próximos jogos na Vila Belmiro</h3>
   <div class="games">${JOGOS.map((j,i)=>`<button data-g="${i}" class="${g.date==j.date?'on':''}"><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
-  <div class="note">Toque em um jogo para ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, use os links abaixo e digite a data.</div>
+  <div class="note">Toca num jogo pra ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, use os links abaixo e digite a data.</div>
   <div class="row">
     <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Jogos no ge</a>
     <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
@@ -1229,19 +1229,19 @@ const q1=s=>document.querySelector(s);
 const TP1=()=>{S.tab='meudia';S.menu=false;S.hover=null};
 const TPS=sub=>()=>{S.tab='esportes';S.sub=sub;S.menu=false;S.hover=null};
 const TST=[
- {t:'Bem-vindo ao Clima Baixada! ⚓',x:'Este painel mostra o <b>tempo</b>, o <b>mar</b> e as <b>praias</b> da Baixada Santista. Quer um passeio rápido? Toque em <b>Próximo</b>. Você pode parar quando quiser em <b>Pular</b>, e rever depois no botão <b>❓ Como usar</b>.',tg:null,pre:TP1},
+ {t:'Bem-vindo ao Clima Baixada! ⚓',x:'Este painel mostra o <b>tempo</b>, o <b>mar</b> e as <b>praias</b> da Baixada Santista. Bora dar uma volta rápida? Toca em <b>Próximo</b>. Pode parar quando quiser em <b>Pular</b> e rever depois no botão <b>❓ Me ajuda aí</b>.',tg:null,pre:TP1},
  {t:'📍 Escolha onde você está',x:'Aqui você escolhe o <b>município</b> e o <b>bairro</b>. Tudo muda conforme o lugar. Bairros com 🌊 têm praia e mostram ondas e maré. Bairros com 🏙️ mostram só o tempo.',tg:'#loc',pre:TP1},
- {t:'🔘 Os botões do topo',x:'<b>🟢 ao vivo + hora</b>: mostra que os dados estão atualizados e a que horas foram buscados. Se aparecer 🟡 ou 🟠, alguma fonte falhou: use com mais cuidado.<br><b>🔄 Atualizar</b>: busca de novo o tempo, o mar e a previsão. Toque se a tela ficou parada há muito tempo.<br><b>🌓 Tema</b>: troca entre fundo escuro e claro. O fundo claro ajuda a ler sob sol forte.',tg:'#hdr',pre:TP1},
- {t:'📅 Escolha o dia',x:'Estes botões mostram os próximos dias. Em <b>Meu Dia</b> o desenho mostra o tempo (sol, nuvem, chuva); em <b>Esportes no Mar</b> a bolinha mostra o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia. Em Meu Dia há 10 dias; os pontinhos mostram a confiança da previsão: quanto mais longe o dia, menor a confiança e menos detalhes.',tg:'#days',pre:TP1},
- {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Pense nela como alguém que quer o seu bem antes de você sair de casa: avisa se vai fazer calor ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai. 💙<br><b>🌊 Esportes no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias, o Capitão da Baixada vai te deixar informado!<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro e, pelo botão <b>📰 Últimas notícias do Peixe</b>, as manchetes e vídeos do Santos.',tg:'#tabs',pre:TP1},
+ {t:'🔘 Os botões do topo',x:'<b>🟢 ao vivo + hora</b>: mostra que os dados estão atualizados e a que horas foram buscados. Se aparecer 🟡 ou 🟠, alguma fonte falhou: use com mais cuidado.<br><b>🔄 Atualizar</b>: busca de novo o tempo, o mar e a previsão. Toque se a tela ficou parada há muito tempo.<br><b>🌓 Tema</b>: troca entre fundo escuro e claro. O claro ajuda a ler no sol forte da praia.',tg:'#hdr',pre:TP1},
+ {t:'📅 Escolha o dia',x:'Estes botões mostram os próximos dias. Em <b>Meu Dia</b> o desenho mostra o tempo (sol, nuvem, chuva); em <b>Rolê no Mar</b> a bolinha mostra o mar: 🟢 bom, 🟡 cuidado, 🔴 ruim. Toque em um dia para ver tudo daquele dia. Em Meu Dia há 10 dias; os pontinhos mostram a confiança da previsão: quanto mais longe o dia, menor a confiança e menos detalhes.',tg:'#days',pre:TP1},
+ {t:'🗂️ As três abas: comece pelo Meu Dia',x:'<b>🌤️ Meu Dia</b> é a aba principal, a que a maioria das pessoas usa todo dia. Pense nela como alguém que quer o seu bem antes de você sair de casa: avisa se vai fazer calor ou frio, se precisa de guarda-chuva, como está o vento e compara o tempo de onde você sai com o de onde vai. 💙<br><b>🌊 Rolê no Mar</b>: para quem surfa, rema, pesca ou quer ver as praias, o Capitão da Baixada vai te deixar informado!<br><b>⚽ Jogo do Santos</b>: o tempo na Vila Belmiro e, pelo botão <b>📰 Últimas notícias do Peixe</b>, as manchetes e vídeos do Santos.',tg:'#tabs',pre:TP1},
  {t:'🌤️ Meu Dia',x:'Lembra quando você ia sair de casa e sempre alguém dizia <i>“Não esqueça de levar a blusa!”</i> ou <i>“Parece que vai chover! Leva o guarda-chuva!”</i>? É isso que o aviso <b>Conselho da Mamãe e do Papai!</b> faz por você. Em palavras simples, diz se está <b>quente ou frio</b>, se precisa de <b>guarda-chuva</b> e se o <b>vento</b> está forte. Mais abaixo vêm os períodos do dia com previsões para <b>manhã</b>, <b>tarde</b> e <b>noite</b>. Vá tranquilo, o Clima Baixada cuidará de você. 🤗',tg:'#view .card',pre:TP1},
  {t:'🧭 Vai pra onde? Será que vai chover lá?',x:'Escolha de onde você sai e para onde vai. O painel compara o tempo dos dois lugares e avisa, por exemplo: “vai chover lá, embora aqui não esteja chovendo”. <b>Planeje antes de sair de casa!</b>',tg:()=>{const h=q1('.hook');return h&&h.parentElement},pre:TP1},
- {t:'🌊 Esportes no Mar',x:'Ao tocar nesta aba você já vê o <b>Resumo Geral</b> com o texto do Capitão da Baixada. Logo abaixo ficam as abas <b>Surf, Caiaque, Pesca, Tráfego marítimo e Como está a praia hoje?</b>. Toque na que quiser para ver os detalhes.',tg:()=>q1('.subtabs')||q1('.tabwrap'),pre:()=>{S.tab='esportes';S.sub='resumo';S.menu=false;S.hover=null}},
- {t:'🚦 Semáforo por hora',x:'Cada quadradinho é uma hora do dia, da meia-noite às 23h. <b>Verde</b>: pode ir. <b>Amarelo</b>: cuidado. <b>Vermelho</b>: não vá. Cores apagadas são a noite. Toque num quadradinho para ver vento, onda e maré daquela hora. <b>Regra de ouro:</b> só saia se toda a sua remada estiver verde.',tg:'#view .strip',pre:TPS('caiaque')},
+ {t:'🌊 Rolê no Mar',x:'Ao tocar nesta aba você já vê o <b>Resumão</b> com o texto do Capitão da Baixada. Logo abaixo ficam as abas <b>Surf, Caiaque, Pesca, Navio na Área e Como tá a praia hoje?</b>. Toca na que quiser pra ver os detalhes.',tg:()=>q1('.subtabs')||q1('.tabwrap'),pre:()=>{S.tab='esportes';S.sub='resumo';S.menu=false;S.hover=null}},
+ {t:'🚦 Semáforo por hora',x:'Cada quadradinho é uma hora do dia, da meia-noite às 23h. <b>Verde</b>: pode ir. <b>Amarelo</b>: cuidado. <b>Vermelho</b>: não vá. Cores apagadas são a noite. Toque num quadradinho para ver vento, onda e maré daquela hora. <b>Regra de ouro:</b> só sai se a remada toda estiver verde.',tg:'#view .strip',pre:TPS('caiaque')},
  {t:'📈 Gráficos do dia',x:'As linhas mostram como o vento, as ondas e a maré mudam durante o dia. Procure as horas em que a linha fica na <b>faixa verde</b>. A linha amarela tracejada escrita “agora” marca a hora atual. Se a <b>rajada</b> passar de 20 nós, não navegue.',tg:'#view svg.chart',pre:TPS('caiaque')},
- {t:'⚓ Tráfego marítimo',x:'Navios grandes demoram a parar e não enxergam caiaques. Os botões abrem mapas ao vivo dos navios. A faixa amarela mostra quando há mais movimento. <b>Nunca cruze o canal de navegação.</b>',tg:'#view .card',pre:TPS('trafego')},
- {t:'🏖️ Como está a praia hoje?',x:'Escolha o município e a praia nas listas. <b>🟢 Própria</b>: pode entrar na água. <b>🔴 Imprópria</b>: não entre nem engula água. Toque no cartão da praia para ver temperatura da água e condição do mar.',tg:'#p_city',pre:TPS('praia')},
- {t:'📲 Canal no WhatsApp e segurança',x:'No fim da aba Meu Dia há o <b>Canal Clima Baixada</b>: toque em “Entrar no canal” e depois em “Seguir”. Lembre: o painel é uma <b>previsão</b>, não uma certeza. Em dúvida, não saia, e olhe o mar antes de entrar. Emergências: Bombeiros 193, Defesa Civil 199.',tg:'#view>.card:last-child',pre:TP1}
+ {t:'⚓ Navio na Área',x:'Navios grandes demoram a parar e não enxergam caiaques. Os botões abrem mapas ao vivo dos navios. A faixa amarela mostra quando há mais movimento. <b>Nunca cruze o canal de navegação.</b>',tg:'#view .card',pre:TPS('trafego')},
+ {t:'🏖️ Como tá a praia hoje?',x:'Escolha o município e a praia nas listas. <b>🟢 Própria</b>: pode entrar na água. <b>🔴 Imprópria</b>: não entre nem engula água. Toque no cartão da praia para ver temperatura da água e condição do mar.',tg:'#p_city',pre:TPS('praia')},
+ {t:'📲 Canal no WhatsApp e segurança',x:'No fim da aba Meu Dia há o <b>Canal Clima Baixada</b>: toque em “Entrar no canal” e depois em “Seguir”. Lembre: o painel é uma <b>previsão</b>, não uma certeza. Na dúvida, não sai, e olha o mar antes de entrar. Emergências: Bombeiros 193, Defesa Civil 199.',tg:'#view>.card:last-child',pre:TP1}
 ];
 let FS=18;
 try{const q=+localStorage.getItem('capsantos.fs');if(q>=14&&q<=26)FS=q}catch(e){}
