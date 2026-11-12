@@ -184,6 +184,7 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 .games button b{font-size:1.02rem}
 .row .lk{flex:1 1 calc(50% - 6px);min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;line-height:1.25}
 #noticias-sec{scroll-margin-top:12px}
+#dez-dias{scroll-margin-top:16px;border-top-width:6px;padding:18px 16px;min-height:220px}
 .mom{background:linear-gradient(135deg,rgba(56,189,248,.22),rgba(251,146,60,.18));border:2px solid var(--acc);border-radius:14px;padding:12px 14px;margin:8px 0;font-size:.98rem;line-height:1.55}
 .mom .mh{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;font-size:1.1rem}
 .mom .mh span{font-size:1.6rem}
@@ -875,7 +876,7 @@ function period(di,a,b,ic,nm){
 function tenDays(){
   const L=DAYS.map((d,i)=>i).filter(i=>dayOff(i)>=0&&dayOff(i)<=9);
   const tile=i=>{const c=conf(i),a=pst(i,6,21);return `<button data-td="${i}" class="c${c.n} ${i==S.day?'on':''}"><span class="tl">${DAYS[i].lbl}</span><span class="ti">${dayIcon(i)}</span><span class="tt">${a?Math.round(a.tmin)+'–'+Math.round(a.tmax)+'°C':'–'}</span><span class="tr2">${a?'☔ '+a.pm+'%':'sem previsão'}</span><span class="cf2">${c.dots}</span></button>`};
-  return `<div class="card"><h2>🗓️ Previsão de 10 dias</h2>
+  return `<div class="card" id="dez-dias"><h2>🗓️ Previsão de 10 dias</h2>
   <div class="conf c1"><b>●●● Confiança alta · hoje até +2 dias.</b> Horários de chuva, vento e temperatura costumam acertar bem. Pode planejar.</div>
   <div class="conf c2"><b>●●○ Confiança média · +3 a +5 dias.</b> Boa para se organizar, mas a chuva e o vento podem mudar. Confira de novo na véspera.</div>
   <div class="conf c3"><b>●○○ Confiança baixa · +6 a +9 dias.</b> Só tendência: o erro cresce muito, principalmente em chuva e vento.</div>
@@ -1151,7 +1152,7 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('button');
   if(!b)return;
   if(b.dataset.d!=null){S.day=+b.dataset.d;S.ten=false;S.hover=null;render()}
-  else if(b.dataset.ten!=null){S.ten=!S.ten;render()}
+  else if(b.dataset.ten!=null){S.ten=!S.ten;render();if(S.ten)requestAnimationFrame(()=>{const s=$('dez-dias');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
   else if(b.dataset.td!=null){S.day=+b.dataset.td;S.hover=null;render()}
   else if(b.dataset.t){const t=b.dataset.t;S.menu=false;S.tab=t;if(t=='esportes')S.sub='resumo';S.hover=null;render()}
   else if(b.dataset.s){S.sub=b.dataset.s;S.menu=false;S.hover=null;render()}
