@@ -206,8 +206,11 @@ body.light .vcmp>div{background:#f1f7fc}
 .tjog{margin-bottom:8px}
 @media (min-width:700px){#tabs button>span:first-child{min-height:76px}.tjog{height:52px;margin-bottom:10px}#days button>span:first-child{font-size:1.8rem}#days button>span:nth-child(2){font-size:1.05rem}}
 .mom{padding:16px 18px}
-.mom .mh{font-size:1.25rem;margin-bottom:12px;gap:14px}
-.mom .mh span{font-size:2.2rem;line-height:1}
+.mom .mh{font-size:min(1.25rem,4.8vw);margin-bottom:12px;gap:min(14px,2.5vw);line-height:1.25;text-align:center}
+.mom .mh span{font-size:min(2.2rem,8.5vw);line-height:1}
+:root{--lead:#fbbf24}
+body.light{--lead:#b45309}
+.cid b,.vcmp b,.conf b,#tour .gl b,#tour p b{color:var(--lead)}
 .mbody{text-align:center}
 .mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
 .mi{display:flex;align-items:center;gap:12px;background:rgba(0,0,0,.2);border-radius:12px;padding:12px 14px;text-align:left;line-height:1.4}
@@ -718,7 +721,7 @@ function momBox(di){
     if(a.gm>=45)x.push('💨 Vento forte: segura o chapéu!');
     t='<div class="mgrid">'+x.map(s=>{const k=s.indexOf(' ');return `<div class="mi"><span class="ic">${s.slice(0,k)}</span><span>${s.slice(k+1)}</span></div>`}).join('')+'</div><div class="mkiss">Beijo e juízo! 😘</div>';
   }
-  return `<div class="mom"><div class="mh"><span>👩</span><b>Conselho da Mamãe e do Papai!</b><span>👨</span></div><div class="mbody">${t}</div></div>`;
+  return `<div class="mom"><div class="mh"><span>👩</span><b>Conselho da Mamãe<br>e do Papai!</b><span>👨</span></div><div class="mbody">${t}</div></div>`;
 }
 function resumoDia(di){
   const m=pst(di,6,11),a=pst(di,12,14),t=pst(di,15,18);
@@ -746,7 +749,7 @@ function people(di){
   const ic=all.rm>=0.3?'🌦️':all.tmax>=29?'☀️':'🙂';
   const gm=all.gm,cg=Math.max(pst(di,6,9)?.gm??0,pst(di,17,19)?.gm??0);
   const wt=(gm>=45?'💨 Ventania':gm>=30?'💨 Venta bastante':gm>=20?'🍃 Brisa firme':'🍃 Vento fraco')+`: rajadas até ${gm.toFixed(0)} km/h no dia. No ponto de ônibus (6h–9h e 17h–19h) chegam a cerca de ${cg.toFixed(0)} km/h${cg>=30?': sensação mais fresca, cuidado com guarda-chuva e chapéu.':'.'}`;
-  return `<div class="cid">${resumoDia(di)?`<div>${resumoDia(di)}</div>`:''}<div><b>${ic} Dia ${tl(all.tmax)}: mín ${Math.round(all.tmin)}°C · máx ${Math.round(all.tmax)}°C.</b> Ao longo do dia: ${ch.join('; ')}.</div><div>${lines.join('<br>')}</div><div>${wt}</div></div><div class="mut">Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}. Previsão de modelo, não certeza. Período considerado: 6h às 22h. <b>Chance</b> = probabilidade de chover naquele período; <b>volume</b> = quantidade de água prevista. Chance alta com volume perto de zero indica ameaça de chuva, mas pouca água.</div>`;
+  return `<div class="cid">${resumoDia(di)?`<div>${resumoDia(di)}</div>`:''}<div><b>${ic} Dia ${tl(all.tmax)}: mín ${Math.round(all.tmin)}°C · máx ${Math.round(all.tmax)}°C.</b> Ao longo do dia: ${ch.join('; ')}.</div><div>${lines.join('<br>')}</div><div>${wt.replace(/^([^:]+):/,'<b>$1:</b>')}</div></div><div class="mut">Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}. Previsão de modelo, não certeza. Período considerado: 6h às 22h. <b>Chance</b> = probabilidade de chover naquele período; <b>volume</b> = quantidade de água prevista. Chance alta com volume perto de zero indica ameaça de chuva, mas pouca água.</div>`;
 }
 function peopleOld(di){
   const D=DAYS[di],H=[];
@@ -980,7 +983,7 @@ function meudia(){
   for(let h=6;h<=17;h++){const o=obs(di,h);if(o&&o.wh!=null){has=true;wmax=Math.max(wmax,o.wh)}}
   const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 05/11).':'🔴 Água imprópria para banho (CETESB, boletim de 05/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
   const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar bravo: ondas até ${wmax.toFixed(1)} m. Banho só na rasa e pertinho do salva-vidas.`:wmax>1?`🌊 Mar mexidinho: ondas até ${wmax.toFixed(1)} m. Criança e idoso só na beirinha.`:`🌊 Mar de boa: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
-  return `${S.ten?tenDays():''}<div class="card"><h2>🌤️ Meu Dia · ${P.n}, ${P.city} · ${DAYS[di].lbl}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
+  return `${S.ten?tenDays():''}<div class="card"><h2>🌤️ Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
   ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
   ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px">☔ chance de cair água no período · 💧 quanto de água vem por aí. Chance alta com quase nada de água é só ameaça, não é toró.</div>`}
   ${vai()}<div class="card"><h3>🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com o mar de boa, entra só perto do salva-vidas e olha a bandeira do dia. Se a praia estiver 🔴, prefere um passeio na areia.':'Pra ver a praia, troca o bairro por um marcado com 🌊.')}</div>
