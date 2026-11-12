@@ -895,7 +895,7 @@ const NEWS_SRC=[
  {n:'Santos FC (site oficial)',site:'https://www.santosfc.com.br/es/noticias/',feed:null}
 ];
 const escH=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const newsOk=u=>typeof u=='string'&&(u.startsWith('https://www.diariodopeixe.com.br/')||u.startsWith('https://www.santosfc.com.br/'));
+const newsOk=u=>typeof u=='string'&&(u.startsWith('https://www.diariodopeixe.com.br/')||u.startsWith('https://www.santosfc.com.br/')||u.startsWith('https://www.youtube.com/watch?v='));
 async function feedItems(s){
   const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);
   try{
