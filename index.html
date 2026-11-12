@@ -234,15 +234,15 @@ body.light .mi{background:rgba(255,255,255,.6)}
   <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
   <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-    <span class="badge" id="status">⏳ buscando dados ao vivo…</span>
-    <button id="help">❓ Como usar</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema">🌓</button>
+    <span class="badge" id="status">⏳ dando uma olhada no mar…</span>
+    <button id="help">❓ Me ajuda aí</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema">🌓</button>
   </div>
 </header>
 <div id="loc" class="locsel"></div>
 <nav id="days"></nav>
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
 <main id="view"></main>
-<div class="row"><a class="btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener" style="flex:1 1 100%;text-align:center;font-weight:600;background:var(--acc);color:#04202f;border-color:var(--acc)">💬 Sua opinião vale muito!</a></div>
+<div class="row"><a class="btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener" style="flex:1 1 100%;text-align:center;font-weight:600;background:var(--acc);color:#04202f;border-color:var(--acc)">💬 Chega mais: sua opinião vale ouro!</a></div>
 <footer>
   Ao vivo: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 05/11) e avaliação manual do Capitão da Baixada (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), com data e hora da última atualização exibidas na própria aba (arquivo dados.json).<br>
   Previsão de modelo não é certeza e não substitui seu julgamento nem as orientações oficiais (Marinha, Defesa Civil, Bombeiros). Confira a arrebentação a olho antes de entrar na água.
@@ -352,9 +352,9 @@ function avalBox(){
   if(S.tab=='meudia')return momBox(S.day);if(0)return '<div class="note">👨‍👩‍👧 <b>Conselho da Mamãe e do Papai!</b></div>';
   const a=AVAL;if(a.st=='carregando'||S.tab=='jogo'||S.tab=='noticias')return '';
   const f=a.em?new Date(a.em).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'–';
-  if(a.st=='ok')return `<div class="note">🕒 Avaliação do Capitão da Baixada feita em ${f} (${a.fonte}), há ${Math.floor(a.h)} h.</div>`;
-  if(a.st=='velha')return `<div class="warn">⚠️ <b>Avaliação antiga:</b> feita em ${f}, há ${Math.floor(a.h)} h. Peça atualização ao Capitão da Baixada e use com mais cautela.</div>`;
-  return `<div class="warn">⚪ <b>Dados do Capitão da Baixada indisponíveis</b> (${a.msg}). Cinza significa sem avaliação válida, nunca "seguro". Valem só os dados ao vivo; na dúvida, não saia.</div>`;
+  if(a.st=='ok')return `<div class="note">🕒 O Capitão da Baixada deu o papo em ${f} (${a.fonte}), faz ${Math.floor(a.h)} h.</div>`;
+  if(a.st=='velha')return `<div class="warn">⚠️ <b>Papo velho:</b> o Capitão avaliou em ${f}, faz ${Math.floor(a.h)} h. Pede uma atualização e vai com o pé atrás.</div>`;
+  return `<div class="warn">⚪ <b>Sem papo do Capitão da Baixada por enquanto</b> (${a.msg}). Cinza é "sem avaliação", nunca "tá seguro". Só valem os dados ao vivo; na dúvida, não sai.</div>`;
 }
 async function loadDados(){
   CUR_BAD=false;
@@ -389,7 +389,7 @@ function extDays(){
 }
 function confBox(di){
   const c=conf(di);
-  const tx=['Previsão detalhada: de hoje a 2 dias à frente os modelos costumam acertar bem os horários de chuva, o vento e a temperatura.','Boa para planejar, mas horários de chuva e vento podem mudar. Confira de novo na véspera.','Só tendência: a partir de 6 dias o erro cresce muito, principalmente em chuva e vento. Por isso mostramos menos detalhes.'][c.n-1];
+  const tx=['Previsão firmeza: de hoje até daqui a 2 dias os modelos costumam acertar bem os horários da chuva, o vento e a temperatura.','Dá pra se organizar, mas a chuva e o vento podem mudar de ideia. Dá outra olhada na véspera.','Só uma ideia geral: de 6 dias pra frente o tempo muda muito, principalmente chuva e vento. Por isso mostramos menos detalhes.'][c.n-1];
   return `<div class="conf c${c.n}"><b>${c.dots} Confiança ${c.t}</b> · ${tx}<small>Pontinhos nos botões dos dias: ●●● alta (hoje a +2 dias) · ●●○ média (+3 a +5) · ●○○ baixa (+6 a +9).</small></div>`;
 }
 function tendencia(di){
@@ -406,7 +406,7 @@ extDays();
 /* ============ DADOS AO VIVO ============ */
 async function getJ(u){const c=new AbortController();const t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw 0;return await r.json()}finally{clearTimeout(t)}}
 async function loadLive(){
-  $('status').textContent='⏳ buscando dados ao vivo…';
+  $('status').textContent='⏳ dando uma olhada no mar…';
   const P=cur(),F='https://api.open-meteo.com/v1/forecast?latitude='+P.la+'&longitude='+P.lo+'&hourly=wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,temperature_2m,apparent_temperature,precipitation_probability,cloud_cover&wind_speed_unit=kn&timezone=America%2FSao_Paulo&forecast_days=10';
   const M='https://marine-api.open-meteo.com/v1/marine?latitude='+(P.la-0.06).toFixed(3)+'&longitude='+(P.lo+0.03).toFixed(3)+'&hourly=wave_height,wave_period,wave_direction&timezone=America%2FSao_Paulo&forecast_days=7';
   const L={};let n=0;
@@ -417,7 +417,7 @@ async function loadLive(){
   if(m.status=='fulfilled'){const h=m.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),wh:h.wave_height[i],wp:h.wave_period[i],wdir:h.wave_direction[i]}});n++}
   S.live=L;S.stamp=new Date().toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
   S.cptecOk=cp.status=='fulfilled'&&cp.value>0;
-  $('status').textContent=(n>=(P.m?2:1)?`🟢 ao vivo · ${S.stamp}`:n==1?`🟡 parcial · ${S.stamp}`:'🟠 offline · dados fixos');
+  $('status').textContent=(n>=(P.m?2:1)?`🟢 ao vivo · ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · usando os dados guardados');
   render();
 }
 const CPTEC_ID=4748;
@@ -875,7 +875,7 @@ function period(di,a,b,ic,nm){
   if(!H.length)return `<div class="card"><h3>${ic} ${nm}</h3><div class="mut">sem previsão ao vivo</div></div>`;
   const tmin=Math.min(...H.map(x=>x.tp)),tmax=Math.max(...H.map(x=>x.tp)),pm=Math.round(Math.max(...H.map(x=>x.pp||0))),rm=H.reduce((s,x)=>s+(x.rain||0),0),g=Math.max(...H.map(x=>x.wg||0))*1.852;
   const l=(rm>=2||(pm>=60&&rm>=0.3))?'r':pm>=30?'y':'g';
-  return `<div class="card ${l}"><h3>${ic} ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">${rm<0.3?(pm>=40?`🌥️ Ameaça de chuva<br>💧 só uns pingos, quase sem água`:`😎 Chuva improvável<br>💧 sem água prevista`):`☔ ${pm}% de chance<br>💧 ${volTxt(rm)} previstos`}<br>💨 ${g.toFixed(0)} km/h</div></div>`;
+  return `<div class="card ${l}"><h3>${ic} ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">${rm<0.3?(pm>=40?`🌥️ Cara de chuva<br>💧 só uns pingos, quase nada`:`😎 Chuva improvável<br>💧 sem água prevista`):`☔ ${pm}% de chance<br>💧 ${volTxt(rm)} previstos`}<br>💨 ${g.toFixed(0)} km/h</div></div>`;
 }
 function tenDays(){
   const L=DAYS.map((d,i)=>i).filter(i=>dayOff(i)>=0&&dayOff(i)<=9);
@@ -884,7 +884,7 @@ function tenDays(){
   <div class="conf c1"><b>●●● Confiança alta · hoje até +2 dias.</b> Horários de chuva, vento e temperatura costumam acertar bem. Pode planejar.</div>
   <div class="conf c2"><b>●●○ Confiança média · +3 a +5 dias.</b> Boa para se organizar, mas a chuva e o vento podem mudar. Confira de novo na véspera.</div>
   <div class="conf c3"><b>●○○ Confiança baixa · +6 a +9 dias.</b> Só tendência: o erro cresce muito, principalmente em chuva e vento.</div>
-  ${how('Decida com base nos 3 primeiros dias. Do 4º ao 6º, planeje com folga. A partir do 7º, use só como ideia geral do tempo.')}
+  ${how('Decide pelos 3 primeiros dias. Do 4º ao 6º, deixa uma folga. Do 7º em diante é só pra ter uma ideia do tempo, tá?')}
   <div class="tgrid">${L.map(tile).join('')}</div>
   <div class="mut">Toque em um dia para ver o detalhe dele. ☔ = chance de chuva. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div></div>`;
 }
@@ -893,12 +893,12 @@ function meudia(){
   let wmax=0,has=false;
   for(let h=6;h<=17;h++){const o=obs(di,h);if(o&&o.wh!=null){has=true;wmax=Math.max(wmax,o.wh)}}
   const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 05/11).':'🔴 Água imprópria para banho (CETESB, boletim de 05/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
-  const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar agitado: ondas até ${wmax.toFixed(1)} m. Banho só rente à areia e perto do salva-vidas.`:wmax>1?`🌊 Mar mexido: ondas até ${wmax.toFixed(1)} m. Crianças e idosos só na beira.`:`🌊 Mar calmo: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
+  const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar bravo: ondas até ${wmax.toFixed(1)} m. Banho só na rasa e pertinho do salva-vidas.`:wmax>1?`🌊 Mar mexidinho: ondas até ${wmax.toFixed(1)} m. Criança e idoso só na beirinha.`:`🌊 Mar de boa: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
   return `${S.ten?tenDays():''}<div class="card"><h2>🌤️ Meu Dia · ${P.n}, ${P.city} · ${DAYS[di].lbl}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
   ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
-  ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px">☔ chance de chover no período · 💧 quantidade de água prevista. Chance alta com volume quase zero significa ameaça de chuva, mas pouca água.</div>`}
-  ${vai()}<div class="card"><h3>🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com mar calmo, entre na água só perto do salva-vidas e confira a bandeira do dia. Se a praia estiver 🔴, prefira passear na areia.':'Para ver praia, troque o bairro para um marcado com 🌊.')}</div>
-  <div class="note">Previsão de modelo, não certeza. Para temporal, alertas e emergências, consulte a Defesa Civil (199) e o Corpo de Bombeiros (193).</div>`+alertas();
+  ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px">☔ chance de cair água no período · 💧 quanto de água vem por aí. Chance alta com quase nada de água é só ameaça, não é toró.</div>`}
+  ${vai()}<div class="card"><h3>🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com o mar de boa, entra só perto do salva-vidas e olha a bandeira do dia. Se a praia estiver 🔴, prefere um passeio na areia.':'Pra ver a praia, troca o bairro por um marcado com 🌊.')}</div>
+  <div class="note">Previsão é de computador, não é promessa. Pra temporal, alerta ou emergência, fala com a Defesa Civil (199) e os Bombeiros (193).</div>`+alertas();
 }
 /* ============ VAI PRA ONDE? ============ */
 const oriS=()=>S.ori&&S.ori.city?S.ori:{city:S.city,pl:S.pl};
@@ -948,12 +948,12 @@ function vai(){
   if(vd<0||dayOff(vd)<0||dayOff(vd)>9){S.vdate=todayStr;vd=DAYS.findIndex(x=>x.date==todayStr)}
   const di=vd<0?S.day:vd,os=oriS(),o=PLACES[os.city][os.pl],d=S.dest?PLACES[S.dest.city][S.dest.pl]:null;
   const grp=(sel,ph)=>(ph?`<option value="" ${sel?'':'selected'}>— escolha o destino —</option>`:'')+Object.keys(PLACES).map(c=>`<optgroup label="${c}">${PLACES[c].map((p,i)=>{const v=c+'|'+i;return `<option value="${v}" ${v==sel?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`}).join('')}</optgroup>`).join('');
-  const orig=`<div class="pick"><label>📍 De onde você sai? ▾</label><select id="o_sel">${grp(os.city+'|'+os.pl,0)}</select></div>${S.ori?`<button id="oriOk" style="margin-top:8px">↩ Usar o local do topo (${PLACES[S.city][S.pl][0]})</button>`:`<div class="mut" style="margin-top:6px">Por padrão vale o local escolhido no topo. Toque na lista para mudar.</div>`}`;
+  const orig=`<div class="pick"><label>📍 De onde você sai? ▾</label><select id="o_sel">${grp(os.city+'|'+os.pl,0)}</select></div>${S.ori?`<button id="oriOk" style="margin-top:8px">↩ Usar o local do topo (${PLACES[S.city][S.pl][0]})</button>`:`<div class="mut" style="margin-top:6px">Por padrão vale o lugar lá do topo. Toca na lista pra trocar.</div>`}`;
   const dst=`<div class="pick" style="margin-top:8px"><label>🎯 Para onde vai? ▾</label><select id="d_sel">${grp(S.dest?S.dest.city+'|'+S.dest.pl:'',1)}</select></div>`;
   const dopt=DAYS.map((x,i)=>({x,i,o:dayOff(i)})).filter(q=>q.o>=0&&q.o<=9).map(q=>`<option value="${q.x.date}" ${q.i==di?'selected':''}>${q.o==0?'Hoje · ':q.o==1?'Amanhã · ':q.o==2?'Depois de amanhã · ':''}${q.x.lbl}</option>`).join('');
   const dsel=`<div class="pick" style="margin-top:8px"><label>📅 Para qual dia? ▾</label><select id="v_date">${dopt}</select></div><div class="mut" style="margin-top:6px">A previsão cobre hoje e os próximos 9 dias. Os 2 dias mais próximos são os mais confiáveis. Depois disso, quanto mais longe a data, mais o tempo pode mudar de ideia! 😉</div>`;
-  let res='<div class="note">Escolha o município e o bairro para onde vai. O painel compara o tempo de lá com o daqui, por exemplo: "vai chover lá, embora aqui não esteja chovendo".</div>';
-  if(S.ori&&!S.ori.city)res='<div class="note">Escolha o município de origem para comparar com o destino. Enquanto isso, vale o local do topo.</div>';
+  let res='<div class="note">Escolhe a cidade e o bairro pra onde vai. O painel compara o tempo de lá com o daqui, tipo: "lá vai chover, mas aqui tá firme".</div>';
+  if(S.ori&&!S.ori.city)res='<div class="note">Escolhe a cidade de origem pra comparar com o destino. Enquanto isso, vale o lugar do topo.</div>';
   else if(d){
     const g=p=>{const m=S.fc[fcKey(p)];return m===null?null:!m?0:wsum(m,di)};
     const so=g(o),sd=g(d);
@@ -962,7 +962,7 @@ function vai(){
     else if(!so||!sd){const fim=DAYS[di].date==todayStr&&nowH()>=22;res=fim?'<div class="note">🌙 O período de previsão de hoje (até 22h) já terminou. Escolha amanhã ou outro dia em <b>📅 Para qual dia?</b>.</div>':'<div class="warn">⚠️ Não há previsão disponível para '+DAYS[di].lbl+' em um dos locais, então nenhum dado é mostrado. Toque em 🔄 no topo ou escolha outro dia.</div>'}
     else res=confVai(di)+vaiTxt(so,sd,o[0],d[0],di);
   }
-  return `<div class="card"><div class="hook"><h3>🧭 Vai pra onde? Será que vai chover lá?</h3><div class="mut">☔ Planeje antes de ir para não passar perrengue!</div></div>${orig}${dst}${dsel}</div>${res}`;
+  return `<div class="card"><div class="hook"><h3>🧭 Vai pra onde? Será que vai chover lá?</h3><div class="mut">☔ Dá o papo antes de sair e não leva chuva na cabeça!</div></div>${orig}${dst}${dsel}</div>${res}`;
 }
 
 const JOGOS=[{date:'2026-11-23',time:'21:00',opp:'Grêmio',lbl:'Seg 23/11 · 21h00'},{date:'2026-12-02',time:'21:30',opp:'Botafogo',lbl:'Qua 02/12 · 21h30'}];
@@ -1021,10 +1021,10 @@ function jogo(){
 }
 
 /* ============ NAVEGAÇÃO ============ */
-const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Esportes no Mar'],['jogo','⚽ Jogo do Santos']];
+const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Rolê no Mar'],['jogo','⚽ Jogo do Santos']];
 const TICON={meudia:'☀️☁️🌧️',esportes:'🏄🚣🐟',noticias:'📰'};
 function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"><span class="ic">${s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
-const SUBS=[['resumo','📋 Resumo Geral'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Tráfego marítimo'],['praia','🏖️ Como está a praia hoje?']];
+const SUBS=[['resumo','📋 Resumão'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Navio na Área'],['praia','🏖️ Como tá a praia hoje?']];
 const FISH='<svg class="fish" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
 TICON.esportes='🏄🚣'+FISH;
 const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
@@ -1141,7 +1141,7 @@ function praia(){
 
 function render(){
   const CT=Object.keys(PLACES);
-  $('loc').innerHTML=`<div><label>📍 Município</label><select id="s_city">${CT.map(c=>`<option ${c==S.city?'selected':''}>${c}</option>`).join('')}</select></div><div><label>🏘️ Bairro</label><select id="s_pl">${PLACES[S.city].map((p,i)=>`<option value="${i}" ${i==S.pl?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`).join('')}</select></div>`;
+  $('loc').innerHTML=`<div><label>📍 Cidade</label><select id="s_city">${CT.map(c=>`<option ${c==S.city?'selected':''}>${c}</option>`).join('')}</select></div><div><label>🏘️ Bairro</label><select id="s_pl">${PLACES[S.city].map((p,i)=>`<option value="${i}" ${i==S.pl?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`).join('')}</select></div>`;
   if(S.tab=='jogo'&&S.vb===undefined&&!S.vbBusy){S.vbBusy=1;loadVB()}
   if(S.tab=='jogo'&&S.news===undefined&&!S.newsBusy){S.newsBusy=1;loadNews()}
   if(S.tab=='meudia')ensureFc();
@@ -1149,7 +1149,7 @@ function render(){
   $('days').innerHTML=DAYS.map((d,i)=>(S.tab=='meudia'?(dayOff(i)<0||dayOff(i)>2):(d.ext||d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)))?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span>${S.tab=='meudia'?`<span class="cf">${conf(i).dots}</span>`:''}</button>`).join('')+(S.tab=='meudia'?`<button data-ten="1" class="${S.ten||dayOff(S.day)>2?'on':''}"><span>🗓️</span><span>10 dias</span></button>`:'');
   $('tabs').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"><span style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}">${s[1]}</button>`).join('')}</div>`:'';
-  const old=DAYS[S.day].date<todayStr?'<div class="note">Este dia já passou: os dados manuais estão desatualizados. Peça um novo "?" ao Capitão da Baixada.</div>':'';
+  const old=DAYS[S.day].date<todayStr?'<div class="note">Esse dia já passou: a avaliação do Capitão ficou velha. Escolhe um dia de hoje pra frente.</div>':'';
   $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
   /* sem calculadora */
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
