@@ -60,7 +60,10 @@ nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 #tabs button{min-height:112px;min-width:0;overflow:hidden}
 #tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.2;font-size:1.05rem;font-weight:700;text-align:center;white-space:normal}
 #tabs button>span:first-child{font-size:1.6rem;line-height:1.1}
-@media (min-width:700px){#tabs button{font-size:1.25rem;min-height:120px}#tabs button>span:first-child{font-size:1.9rem}}
+.fish{width:.45em;height:.625em}
+.tjog{height:26px}
+@media (max-width:699px){#tabs button>span:first-child{font-size:1.15rem}.tjog{height:44px}}
+@media (min-width:700px){#tabs button{font-size:1.25rem;min-height:120px}#tabs button>span:first-child{font-size:3.2rem}}
 .badge{font-size:.78rem;padding:5px 10px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
 .card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:14px;border-top:4px solid var(--acc)}
 .card.g{border-top-color:var(--g)}.card.y{border-top-color:var(--y)}.card.r{border-top-color:var(--r)}.card.n{border-top-color:#94a3b8}
@@ -975,10 +978,10 @@ const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Esportes no Mar'],['j
 const TICON={meudia:'☀️☁️🌧️',esportes:'🏄🚣🐟',noticias:'📰'};
 function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"><span class="ic">${s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
 const SUBS=[['resumo','📋 Resumo Geral'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Tráfego marítimo'],['praia','🏖️ Como está a praia hoje?']];
-const FISH='<svg width="13" height="18" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
+const FISH='<svg class="fish" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
 TICON.esportes='🏄🚣'+FISH;
 const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
-TICON.jogo='<img src="edu-silhueta.png" onerror="this.onerror=null;this.src=\'canvas-asset:edu-silhueta.png\'" alt="" style="height:26px;width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
+TICON.jogo='<img src="edu-silhueta.png" onerror="this.onerror=null;this.src=\'canvas-asset:edu-silhueta.png\'" alt="" class="tjog" style="width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
 /* ============ NOTÍCIAS (só das duas fontes autorizadas) ============ */
 const NEWS_SRC=[
  {n:'Diário do Peixe',site:'https://www.diariodopeixe.com.br/',feed:'https://www.diariodopeixe.com.br/feed/'},
