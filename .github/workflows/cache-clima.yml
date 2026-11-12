@@ -20,8 +20,21 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 20
+      - name: Conferir index.html
+        run: |
+          echo "Branch: $GITHUB_REF_NAME | Commit: $GITHUB_SHA"
+          if [ ! -f index.html ]; then
+            echo "::error::index.html não existe na raiz do repositório. Arquivos na raiz:"
+            ls -la
+            exit 1
+          fi
+          echo "index.html: $(wc -c < index.html) bytes"
+          grep -n "const PLACES=" index.html || { echo "::error::'const PLACES=' não encontrado em index.html. A versão publicada nesta branch está desatualizada."; exit 1; }
+          grep -n "const VB=" index.html || { echo "::error::'const VB=' não encontrado em index.html. A versão publicada nesta branch está desatualizada."; exit 1; }
       - name: Gerar cache
         run: node atualizar-cache.mjs
+        env:
+          HTML: index.html
       - name: Publicar
         run: |
           git config user.name "github-actions[bot]"
