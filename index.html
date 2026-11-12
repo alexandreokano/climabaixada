@@ -306,7 +306,7 @@ let S={day:Math.max(0,DAYS.findIndex(d=>d.date>=todayStr)),tab:'meudia',sub:'res
 const $=id=>document.getElementById(id);
 const KEY='capsantos.v1';
 function ld(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}}
-function sv(){try{localStorage.setItem(KEY,JSON.stringify({city:S.city,pl:S.pl,dest:S.dest||null,ori:S.ori||null}))}catch(e){}}
+function sv(){try{localStorage.setItem(KEY,JSON.stringify({city:S.city,pl:S.pl,dest:S.dest||null,ori:S.oriGps?null:(S.ori||null)}))}catch(e){}}
 Object.assign(S,ld());
 if(!PLACES[S.city]||!PLACES[S.city][S.pl]){S.city='Santos';S.pl=1}
 if(S.dest&&!(PLACES[S.dest.city]&&PLACES[S.dest.city][S.dest.pl]))S.dest=null;
@@ -889,7 +889,7 @@ function alertas(){
 
 /* ============ LOCAL, MEU DIA, JOGO DO SANTOS ============ */
 const cur=()=>{const p=PLACES[S.city][S.pl];return{n:p[0],la:p[1],lo:p[2],m:p[3],city:S.city}};
-function onPlace(){sv();S.live={};S.cptec={};S.cptecOk=undefined;S.hover=null;render();loadLive()}
+function onPlace(){sv();S.live={};S.cptec={};S.cptecOk=undefined;S.hover=null;render();loadLive();habLater()}
 function nosea(){const P=cur();return `<div class="card y"><h3>🏙️ ${P.n} não tem mar</h3><div>Aqui não tem mar: ondas, maré e correntes só valem pros bairros de praia (marcados com 🌊 no seletor). Escolhe um deles, tipo Aparecida, Gonzaguinha ou Pitangueiras, ou vai na aba <b>🌤️ Meu Dia</b> pra ver o tempo no seu bairro.</div></div>`}
 function locNote(){const P=cur();return P.city=='Santos'&&P.m?'':`<div class="note">📍 <b>${P.n} (${P.city})</b>: a avaliação manual do Capitão, a tábua de maré (aproximada) e o boletim CETESB consultado são de Santos. Aqui valem os dados ao vivo do local. ${P.m?'':'Bairro sem mar: ondas e maré não se aplicam.'}</div>`}
 function localWarn(){return S.city=='Santos'?'':guiaLocal()+`<div class="warn">⚠️ Percursos, picos e pontos citados nesta aba (Canal 6, Fortaleza da Barra, Deck do Pescador) e a maré são de Santos. Em ${S.city}, use só os dados ao vivo e as regras do semáforo, e peça orientação local.</div>`}
@@ -991,16 +991,64 @@ function vaiTxt(so,sd,on,dn,di){
   <div class="mut" style="margin-top:6px">Período considerado: ${pad(Math.max(so.a,sd.a))}h às 22h. Previsão de modelo, não certeza: a chuva na Baixada é localizada e pode cair em um bairro e não em outro. Confira antes de sair.</div></div>`;
 }
 const confVai=di=>{const c=conf(di);return `<div class="conf c${c.n}"><b>${c.dots} Confiança ${c.t}</b> · ${c.n==1?'previsão detalhada, boa para decidir.':c.n==2?'boa para planejar, mas confira de novo na véspera.':'só tendência: chuva e vento podem mudar bastante até lá.'}</div>`};
+/* ---- previsão do trajeto (usa só a previsão horária já carregada) ---- */
+const hkey=ms=>new Date(ms).toLocaleString('sv-SE',{timeZone:'America/Sao_Paulo'}).slice(0,13).replace(' ','T')+':00';
+function vTime(di){
+  if(S.vtime)return S.vtime;
+  if(DAYS[di].date==todayStr)return pad(Math.min(23,Math.floor(nowH())+1))+':00';
+  return '08:00';
+}
+function fcWin(m,a,b){
+  const rows=[];
+  for(let ms=Math.floor(a/3600000)*3600000;ms<=b;ms+=3600000){
+    const v=m[hkey(ms)];
+    if(v&&v.tp!=null)rows.push({ms,...v});
+  }
+  if(!rows.length)return null;
+  return{rows,tmin:Math.min(...rows.map(r=>r.tp)),tmax:Math.max(...rows.map(r=>r.tp)),pm:Math.round(Math.max(...rows.map(r=>r.pp||0))),rm:rows.reduce((s,r)=>s+(r.rain||0),0),gm:Math.max(...rows.map(r=>r.wg||0))};
+}
+function tripVai(di,o,d){
+  const t=vTime(di),dur=S.vdur||1,a=Date.parse(`${DAYS[di].date}T${t}:00-03:00`);
+  if(isNaN(a))return '<div class="note">🕘 Informe a hora da saída para ver a previsão do trajeto.</div>';
+  const b=a+dur*3600000;
+  if(b<Date.now())return '<div class="note">🕘 Esse trajeto já terminou. Escolha um horário mais à frente ou outro dia.</div>';
+  const mo=S.fc[fcKey(o)],md=S.fc[fcKey(d)],wo=mo?fcWin(mo,a,b):null,wd=md?fcWin(md,a,b):null;
+  if(!wo||!wd)return '<div class="note">⏳ Não há previsão horária para esse período em um dos locais (a previsão cobre 10 dias). Nada foi estimado.</div>';
+  const wet=s=>s.rm>=1||(s.pm>=60&&s.rm>=0.3),lite=s=>!wet(s)&&(s.rm>=0.3||s.pm>=40);
+  const bad=(x,y)=>(wet(x)||wet(y))?2:(lite(x)||lite(y)||x.gm>=45||y.gm>=45)?1:0;
+  const l=bad(wo,wd);
+  let alt=null;
+  if(l>0)for(const k of[1,-1,2,-2,3,-3]){
+    const a2=a+k*3600000;if(a2<Date.now()-1800000)continue;
+    const x=fcWin(mo,a2,a2+dur*3600000),y=fcWin(md,a2,a2+dur*3600000);
+    if(x&&y&&bad(x,y)==0){alt=a2;break}
+  }
+  const rn=(w,n)=>{const r=w.rows.find(x=>x.rain>=0.3);return w.rm>=0.3?`${n}: ${volTxt(w.rm)} e chance de até ${w.pm}%${r?`, a partir de cerca das ${hm(r.ms)}`:''}`:`${n}: sem chuva relevante (chance de até ${w.pm}%)`};
+  const head=l==2?'☔ <b>Leve capa ou guarda-chuva:</b> há chuva prevista no seu horário.':l==1?'🌂 <b>Atenção:</b> ameaça de chuva fraca ou rajadas fortes no seu horário.':'😎 <b>Sem chuva relevante</b> prevista nos dois locais no seu horário.';
+  const gm=Math.max(wo.gm,wd.gm);
+  const c=v=>v?`${v.tp.toFixed(0)}°C · ${v.pp==null?'–':v.pp+'%'} · ${(v.rain||0).toFixed(1)} mm · ${(v.wg||0).toFixed(0)} km/h`:'–';
+  const tr=wo.rows.map(r=>`<tr><td>${hm(r.ms)}</td><td>${c(r)}</td><td>${c(md[hkey(r.ms)])}</td></tr>`).join('');
+  return `<div class="card ${COL[l]}"><h3>${EMO[l]} Seu trajeto · ${DAYS[di].lbl}, ${t} às ${hm(b)} (${o[0]} → ${d[0]})</h3>
+  <div class="cid"><div>${head}</div><div>🌧️ ${rn(wo,'Na origem ('+o[0]+')')}<br>🌧️ ${rn(wd,'No destino ('+d[0]+')')}</div>
+  ${gm>=45?`<div>💨 Rajadas de até ${gm.toFixed(0)} km/h no período.</div>`:''}
+  ${l>0?`<div>${alt!=null?`💡 Saindo às ${hm(alt)} (mesma duração), a previsão não mostra chuva relevante nem rajada forte nos dois locais.`:'💡 Não achei, até 3 h antes ou depois, uma saída sem chuva ou rajada forte na previsão.'}</div>`:''}</div>
+  <div class="t"><table><tr><th>Hora</th><th>${o[0]} (origem)</th><th>${d[0]} (destino)</th></tr>${tr}</table></div>
+  <div class="mut" style="margin-top:6px">Cada linha mostra temperatura · chance de chuva · volume · rajada. O painel compara só os dois extremos: não há dados do caminho entre eles, e a chuva na Baixada é localizada. Os horários dependem do tempo de trajeto que você informou (o painel não calcula rota). Previsão de modelo, não certeza.</div></div>`;
+}
 function vai(){
   if(!S.fc)S.fc={};
   let vd=DAYS.findIndex(x=>x.date==(S.vdate||todayStr));
   if(vd<0||dayOff(vd)<0||dayOff(vd)>9){S.vdate=todayStr;vd=DAYS.findIndex(x=>x.date==todayStr)}
   const di=vd<0?S.day:vd,os=oriS(),o=PLACES[os.city][os.pl],d=S.dest?PLACES[S.dest.city][S.dest.pl]:null;
   const grp=(sel,ph)=>(ph?`<option value="" ${sel?'':'selected'}>— escolha o destino —</option>`:'')+Object.keys(PLACES).map(c=>`<optgroup label="${c}">${PLACES[c].map((p,i)=>{const v=c+'|'+i;return `<option value="${v}" ${v==sel?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`}).join('')}</optgroup>`).join('');
-  const orig=`<div class="pick"><label>📍 De onde você sai? ▾</label><select id="o_sel">${grp(os.city+'|'+os.pl,0)}</select></div>${S.ori?`<button id="oriOk" style="margin-top:8px">↩ Usar o local do topo (${PLACES[S.city][S.pl][0]})</button>`:`<div class="mut" style="margin-top:6px">Por padrão vale o lugar lá do topo. Toca na lista pra trocar.</div>`}`;
+  const orig=`<div class="pick"><label>📍 De onde você sai? ▾</label><select id="o_sel">${grp(os.city+'|'+os.pl,0)}</select></div><div class="row" style="margin-top:8px"><button id="gpsBtn">📍 Usar minha localização</button></div><div class="mut" style="margin-top:6px">Opcional: o navegador só pede sua permissão quando você toca aqui. Serve apenas para achar o bairro mais perto de você; a posição não é guardada nem enviada. Se negar, é só escolher na lista.</div>${S.gmsg?`<div class="note">${S.gmsg}</div>`:''}${S.ori?`<button id="oriOk" style="margin-top:8px">↩ Usar o local do topo (${PLACES[S.city][S.pl][0]})</button>`:`<div class="mut" style="margin-top:6px">Por padrão vale o lugar lá do topo. Toca na lista pra trocar.</div>`}`;
   const dst=`<div class="pick" style="margin-top:8px"><label>🎯 Para onde vai? ▾</label><select id="d_sel">${grp(S.dest?S.dest.city+'|'+S.dest.pl:'',1)}</select></div>`;
   const dopt=DAYS.map((x,i)=>({x,i,o:dayOff(i)})).filter(q=>q.o>=0&&q.o<=9).map(q=>`<option value="${q.x.date}" ${q.i==di?'selected':''}>${q.o==0?'Hoje · ':q.o==1?'Amanhã · ':q.o==2?'Depois de amanhã · ':''}${q.x.lbl}</option>`).join('');
   const dsel=`<div class="pick" style="margin-top:8px"><label>📅 Para qual dia? ▾</label><select id="v_date">${dopt}</select></div><div class="mut" style="margin-top:6px">A previsão cobre hoje e os próximos 9 dias. Os 2 dias mais próximos são os mais confiáveis. Depois disso, quanto mais longe a data, mais o tempo pode mudar de ideia! 😉</div>`;
+  const vt=vTime(di),vdu=S.vdur||1;
+  const tsel=`<div class="aform" style="margin-top:8px"><div class="pick"><label>🕘 Que horas você sai? ▾</label><input id="v_time" type="time" value="${vt}"></div><div class="pick"><label>⏳ Quanto dura o trajeto? ▾</label><select id="v_dur">${[0.5,1,1.5,2,3,4].map(x=>`<option value="${x}" ${x==vdu?'selected':''}>${x<1?'30 min':x==1?'1 hora':String(x).replace('.',',')+' horas'}</option>`).join('')}</select></div></div><div class="mut">Sugerimos a próxima hora cheia (hoje) ou 8h (outros dias). Ajuste para o seu caso.</div>`;
+  const hp=habPattern(),off=habOff();
+  const hab=`<div class="mut" style="margin-top:12px">🔔 <b>Aviso do seu horário habitual:</b> ${off?'desligado.':'ligado.'} ${off?'':hp?`Notei que você costuma ver ${hp.p[0]} (${hp.city}) por volta das ${hmm(hp.min)}; se a previsão indicar chuva ou rajadas fortes, aviso uns 20 minutos antes, <i>com o painel aberto</i>.`:'Ainda não notei um horário fixo (preciso de 3 dias parecidos).'} O histórico fica só neste aparelho e não é enviado a ninguém. <button id="habToggle" style="margin-top:6px;padding:6px 12px">${off?'Ligar':'Desligar e apagar histórico'}</button></div>`;
   let res='<div class="note">Escolhe a cidade e o bairro pra onde vai. O painel compara o tempo de lá com o daqui, tipo: "lá vai chover, mas aqui tá firme".</div>';
   if(S.ori&&!S.ori.city)res='<div class="note">Escolhe a cidade de origem pra comparar com o destino. Enquanto isso, vale o lugar do topo.</div>';
   else if(d){
@@ -1009,9 +1057,9 @@ function vai(){
     if(d[1]==o[1]&&d[2]==o[2])res='<div class="note">O destino é igual à origem: veja a previsão nos cartões acima.</div>';
     else if(so===0||sd===0)res='<div class="note">⏳ Buscando a previsão dos dois locais…</div>';
     else if(!so||!sd){const fim=DAYS[di].date==todayStr&&nowH()>=22;res=fim?'<div class="note">🌙 O período de previsão de hoje (até 22h) já terminou. Escolha amanhã ou outro dia em <b>📅 Para qual dia?</b>.</div>':'<div class="warn">⚠️ Não há previsão disponível para '+DAYS[di].lbl+' em um dos locais, então nenhum dado é mostrado. Toque em 🔄 no topo ou escolha outro dia.</div>'}
-    else res=confVai(di)+vaiTxt(so,sd,o[0],d[0],di);
+    else res=confVai(di)+tripVai(di,o,d)+vaiTxt(so,sd,o[0],d[0],di);
   }
-  return `<div class="card"><div class="hook"><h3>🧭 Vai pra onde? Será que vai chover lá?</h3><div class="mut">☔ Dá o papo antes de sair e não leva chuva na cabeça!</div></div>${orig}${dst}${dsel}</div>${res}`;
+  return `<div class="card"><div class="hook"><h3>🧭 Vai pra onde? Será que vai chover lá?</h3><div class="mut">☔ Dá o papo antes de sair e não leva chuva na cabeça!</div></div>${orig}${dst}${dsel}${tsel}${hab}</div>${res}`;
 }
 
 const JOGOS=[{date:'2026-11-23',time:'21:00',opp:'Grêmio',lbl:'Seg 23/11 · 21h00'},{date:'2026-12-02',time:'21:30',opp:'Botafogo',lbl:'Qua 02/12 · 21h30'}];
@@ -1230,7 +1278,9 @@ document.addEventListener('click',e=>{
   }
   else if(b.id=='chkreset'){S.chk={};render()}
   else if(b.id=='oriChg'){S.ori={city:S.city,pl:S.pl};sv();render()}
-  else if(b.id=='oriOk'){S.ori=null;sv();render()}
+  else if(b.id=='oriOk'){S.ori=null;S.oriGps=false;S.gmsg='';sv();render()}
+  else if(b.id=='gpsBtn')useGps();
+  else if(b.id=='habToggle')habSwitch();
   else if(b.id=='mapTry'){S.map=1;render()}
   else if(b.id=='goNews'){const n=$('noticias-sec');if(n)n.scrollIntoView({behavior:'smooth',block:'start'})}
   else if(b.id=='tinst2'){openTour('inst')}
@@ -1242,8 +1292,10 @@ document.addEventListener('change',e=>{
   if(e.target.id=='t_a'||e.target.id=='t_b'){(S.trip=S.trip||{a:'',b:''})[e.target.id=='t_a'?'a':'b']=e.target.value;render();return}
   if(e.target.id=='s_city'){S.city=e.target.value;S.pl=0;onPlace();return}
   if(e.target.id=='s_pl'){S.pl=+e.target.value;onPlace();return}
-  if(e.target.id=='o_sel'){const q=e.target.value.split('|');S.ori={city:q[0],pl:+q[1]};sv();render();return}
+  if(e.target.id=='o_sel'){const q=e.target.value.split('|');S.ori={city:q[0],pl:+q[1]};S.oriGps=false;S.gmsg='';sv();render();return}
   if(e.target.id=='v_date'){S.vdate=e.target.value;render();return}
+  if(e.target.id=='v_time'){S.vtime=e.target.value;render();return}
+  if(e.target.id=='v_dur'){S.vdur=+e.target.value||1;render();return}
   if(e.target.id=='d_sel'){const q=e.target.value.split('|');S.dest=e.target.value?{city:q[0],pl:+q[1]}:null;sv();render();return}
   if(e.target.id=='d_city'){S.dest=e.target.value?{city:e.target.value,pl:0}:null;sv();render();return}
   if(e.target.id=='d_pl'&&S.dest){S.dest.pl=+e.target.value;sv();render();return}
@@ -1381,6 +1433,87 @@ function maybeAlert(){
   $('ap_ok').addEventListener('click',()=>{lsSet(ALK,todayStr);el.remove()});
   $('ap_no').addEventListener('click',()=>{lsSet(NOK,'1');el.remove()});
 }
+/* ============ LOCALIZAÇÃO OPCIONAL (só no "Vai pra onde?") ============ */
+function useGps(){
+  if(!navigator.geolocation){S.gmsg='Este navegador não oferece localização. Escolha a origem na lista.';render();return}
+  S.gmsg='📡 Pedindo permissão e buscando sua posição…';render();
+  navigator.geolocation.getCurrentPosition(p=>{
+    let best=null;
+    Object.keys(PLACES).forEach(c=>PLACES[c].forEach((q,i)=>{const k=dist(p.coords.latitude,p.coords.longitude,q[1],q[2]);if(!best||k<best.k)best={c,i,k}}));
+    if(!best||best.k>25){S.gmsg='Você parece estar a mais de 25 km de qualquer bairro do painel. A origem não foi alterada.';render();return}
+    S.ori={city:best.c,pl:best.i};S.oriGps=true;
+    S.gmsg=`📍 Bairro mais próximo: ${PLACES[best.c][best.i][0]} (${best.c}), a cerca de ${best.k.toFixed(1)} km (as coordenadas dos bairros são aproximadas). Sua posição não foi guardada.`;
+    render();
+  },err=>{S.gmsg=err&&err.code==1?'Sem permissão de localização: tudo continua funcionando. Escolha a origem na lista.':'Não consegui obter sua localização agora. Escolha a origem na lista.';render()},{timeout:10000,maximumAge:300000});
+}
+/* ============ HORÁRIO HABITUAL (histórico só neste aparelho) ============ */
+const HK='capsantos.hist',HOFF='capsantos.nohabit',HLAST='capsantos.habitdia';
+function hmm(min){return pad(Math.floor(min/60))+':'+pad(min%60)}
+function habOff(){return !!lsGet(HOFF)}
+function nowMin(){return Math.round(nowH()*60)}
+function histGet(days){
+  let a=[];try{a=JSON.parse(lsGet(HK)||'[]')}catch(e){}
+  if(!Array.isArray(a))return [];
+  const lim=Date.parse(todayStr+'T12:00:00Z')-days*86400000;
+  return a.filter(x=>x&&typeof x.k=='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x.d)&&Number.isInteger(x.m)&&Date.parse(x.d+'T12:00:00Z')>=lim);
+}
+function recHabit(){
+  if(habOff())return;
+  const k=S.city+'|'+S.pl,m=nowMin(),h=histGet(30);
+  if(h.some(x=>x.k==k&&x.d==todayStr&&Math.abs(x.m-m)<60))return;
+  h.push({k,d:todayStr,m});
+  lsSet(HK,JSON.stringify(h.slice(-60)));
+}
+function habLater(){const k=S.city+'|'+S.pl;clearTimeout(S.hT);S.hT=setTimeout(()=>{if(S.city+'|'+S.pl==k)recHabit()},20000)}
+function habPattern(){
+  if(habOff())return null;
+  const by={};histGet(21).forEach(x=>(by[x.k]=by[x.k]||[]).push(x));
+  let best=null;
+  Object.keys(by).forEach(k=>by[k].forEach(c=>{
+    const mem={};by[k].forEach(x=>{if(Math.abs(x.m-c.m)<=30&&(mem[x.d]==null||x.m<mem[x.d]))mem[x.d]=x.m});
+    const ms=Object.values(mem).sort((a,b)=>a-b);
+    if(ms.length>=3&&(!best||ms.length>best.n))best={k,n:ms.length,min:ms[Math.floor(ms.length/2)]};
+  }));
+  if(!best)return null;
+  const q=best.k.split('|'),p=PLACES[q[0]]&&PLACES[q[0]][+q[1]];
+  return p?{...best,p,city:q[0]}:null;
+}
+function habSwitch(){
+  if(habOff())lsSet(HOFF,'');else{lsSet(HOFF,'1');lsSet(HK,'[]');lsSet(HLAST,'')}
+  render();
+}
+async function habFetch(p){
+  const k=fcKey(p);S.hfc={k,m:0,at:Date.now()};
+  try{
+    const j=await getJ('https://api.open-meteo.com/v1/forecast?latitude='+p[1]+'&longitude='+p[2]+'&hourly=temperature_2m,precipitation_probability,precipitation,wind_gusts_10m&timezone=America%2FSao_Paulo&forecast_days=2');
+    const h=j.hourly,m={};
+    h.time.forEach((t,i)=>{m[t]={tp:h.temperature_2m[i],pp:h.precipitation_probability[i],rain:h.precipitation[i],wg:h.wind_gusts_10m[i]}});
+    S.hfc={k,m,at:Date.now()};
+  }catch(e){S.hfc={k,m:null,at:Date.now()}}
+}
+function habCheck(){
+  if(habOff()||lsGet(NOK)||T.on||$('apop'))return;
+  const hp=habPattern();if(!hp)return;
+  const d=hp.min-nowMin();
+  if(d<0||d>35||lsGet(HLAST)==todayStr+'|'+hp.k)return;
+  const hk=fcKey(hp.p),c0=S.hfc;
+  if(!c0||c0.k!=hk||(c0.m!==0&&Date.now()-c0.at>1800000))habFetch(hp.p);
+  const c=S.hfc;
+  if(d>20||!c||c.k!=hk||!c.m)return;
+  const a=Date.parse(`${todayStr}T${hmm(hp.min)}:00-03:00`),b=a+3*3600000,w=fcWin(c.m,a,b);
+  if(!w)return;
+  const wet=w.rm>=1||(w.pm>=60&&w.rm>=0.3),lite=!wet&&(w.rm>=0.3||w.pm>=40);
+  if(!wet&&!lite&&w.gm<45)return;
+  lsSet(HLAST,todayStr+'|'+hp.k);
+  const at=new Date(c.at).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
+  const el=document.createElement('div');
+  el.id='apop';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');
+  el.innerHTML=`<div class="ab"><h3>⏰ Aviso do seu horário · ${hp.p[0]}</h3><p>Você costuma ver a previsão de ${hp.p[0]} (${hp.city}) por volta das ${hmm(hp.min)}. De ${hmm(hp.min)} às ${hm(b)}:</p><p>🌡️ ${w.tmin.toFixed(0)}–${w.tmax.toFixed(0)}°C</p>${wet||lite?`<p>${wet?'☔ Leve capa ou guarda-chuva.':'🌂 Ameaça de chuva fraca.'} Chance de até ${w.pm}% e ${volTxt(w.rm)} previstos.</p>`:''}${w.gm>=45?`<p>💨 Rajadas de até ${w.gm.toFixed(0)} km/h.</p>`:''}<p class="mut">Open-Meteo, atualizado às ${at}. Previsão de modelo, não certeza.</p><div class="ar"><button id="hp_ok" class="on">Valeu, tô ligado!</button><button id="hp_off">Parar de me avisar do meu horário</button></div></div>`;
+  document.body.appendChild(el);
+  $('hp_ok').addEventListener('click',()=>el.remove());
+  $('hp_off').addEventListener('click',()=>{habSwitch();el.remove()});
+}
+recHabit();setTimeout(habCheck,4000);setInterval(habCheck,60000);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 render();loadLive();loadDados();
 if(!nohelp())setTimeout(()=>{if(!T.on)openTour('menu')},1500);
