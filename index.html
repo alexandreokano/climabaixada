@@ -196,7 +196,7 @@ footer{color:var(--mut);font-size:.72rem;line-height:1.5;margin-top:10px}
   <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status">⏳ buscando dados ao vivo…</span>
-    <button id="help">❓ Como usar</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar">🔄</button><button id="theme" title="Tema">🌓</button>
+    <button id="help">❓ Como usar</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema">🌓</button>
   </div>
 </header>
 <div id="loc" class="locsel"></div>
@@ -807,7 +807,7 @@ function period(di,a,b,ic,nm){
   if(!H.length)return `<div class="card"><h3>${ic} ${nm}</h3><div class="mut">sem previsão ao vivo</div></div>`;
   const tmin=Math.min(...H.map(x=>x.tp)),tmax=Math.max(...H.map(x=>x.tp)),pm=Math.round(Math.max(...H.map(x=>x.pp||0))),rm=H.reduce((s,x)=>s+(x.rain||0),0),g=Math.max(...H.map(x=>x.wg||0))*1.852;
   const l=(rm>=2||(pm>=60&&rm>=0.3))?'r':pm>=30?'y':'g';
-  return `<div class="card ${l}"><h3>${ic} ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">☔ ${pm}% de chance<br>💧 ${volTxt(rm)}<br>💨 ${g.toFixed(0)} km/h</div></div>`;
+  return `<div class="card ${l}"><h3>${ic} ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">${rm<0.3?(pm>=40?`🌥️ Ameaça de chuva<br>💧 só uns pingos, quase sem água`:`😎 Chuva improvável<br>💧 sem água prevista`):`☔ ${pm}% de chance<br>💧 ${volTxt(rm)} previstos`}<br>💨 ${g.toFixed(0)} km/h</div></div>`;
 }
 function meudia(){
   const di=S.day,P=cur(),bn=(CETESB[P.city]||[]).find(x=>x[0].startsWith(P.n));
