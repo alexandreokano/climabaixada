@@ -192,6 +192,7 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 #noticias-sec{scroll-margin-top:12px}
 #jogos-sec{scroll-margin-top:16px}
 #meudia-card,#view{scroll-margin-top:16px}
+.oneline{white-space:nowrap;overflow:hidden}
 #dez-dias{scroll-margin-top:16px;border-top-width:6px;padding:18px 16px;min-height:220px}
 .mom{background:linear-gradient(135deg,rgba(56,189,248,.22),rgba(251,146,60,.18));border:2px solid var(--acc);border-radius:14px;padding:12px 14px;margin:8px 0;font-size:.98rem;line-height:1.55}
 .mom .mh{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;font-size:1.1rem}
@@ -994,7 +995,7 @@ function meudia(){
   for(let h=6;h<=17;h++){const o=obs(di,h);if(o&&o.wh!=null){has=true;wmax=Math.max(wmax,o.wh)}}
   const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 12/11).':'🔴 Água imprópria para banho (CETESB, boletim de 12/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
   const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar bravo: ondas até ${wmax.toFixed(1)} m. Banho só na rasa e pertinho do salva-vidas.`:wmax>1?`🌊 Mar mexidinho: ondas até ${wmax.toFixed(1)} m. Criança e idoso só na beirinha.`:`🌊 Mar de boa: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
-  return `${S.ten?tenDays():''}<div class="card" id="meudia-card"><h2>🌤️ Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
+  return `${S.ten?tenDays():''}<div class="card" id="meudia-card"><h2 class="oneline">🌤️ Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
   ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
   ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px">☔ chance de cair água no período · 💧 quanto de água vem por aí. Chance alta com quase nada de água é só ameaça, não é toró.</div>`}
   ${vai()}<div class="card"><h3>🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com o mar de boa, entra só perto do salva-vidas e olha a bandeira do dia. Se a praia estiver 🔴, prefere um passeio na areia.':'Pra ver a praia, troca o bairro por um marcado com 🌊.')}</div>
@@ -1110,7 +1111,7 @@ function vai(){
     else if(!so||!sd){const fim=DAYS[di].date==todayStr&&nowH()>=22;res=fim?'<div class="note">🌙 O período de previsão de hoje (até 22h) já terminou. Escolha amanhã ou outro dia em <b>📅 Para qual dia?</b>.</div>':'<div class="warn">⚠️ Não há previsão disponível para '+DAYS[di].lbl+' em um dos locais, então nenhum dado é mostrado. Toque em 🔄 no topo ou escolha outro dia.</div>'}
     else res=confVai(di)+tripVai(di,o,d)+vaiTxt(so,sd,o[0],d[0],di);
   }
-  return `<div class="card"><div class="hook"><h3>🧭 Vai pra onde? Será que vai chover lá?</h3><div class="mut">☔ Dá o papo antes de sair e não leva chuva na cabeça!</div></div>${orig}${dst}${dsel}${tsel}${hab}</div>${res}`;
+  return `<div class="card"><div class="hook"><h3 class="oneline">🧭 Vai pra onde? Será que vai chover lá?</h3><div class="mut">☔ Dá o papo antes de sair e não leva chuva na cabeça!</div></div>${orig}${dst}${dsel}${tsel}${hab}</div>${res}`;
 }
 
 const ESC={'Santos':'santos.png','Grêmio':'gremio.png','Botafogo':'botafogo.png'};
@@ -1308,7 +1309,20 @@ function render(){
   const old=DAYS[S.day].date<todayStr?'<div class="note">Esse dia já passou: a avaliação do Capitão ficou velha. Escolhe um dia de hoje pra frente.</div>':'';
   $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
   /* sem calculadora */
+  fitOne();
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
+}
+function fitOne(){
+  document.querySelectorAll('.oneline').forEach(e=>{
+    e.style.fontSize='';
+    let fs=parseFloat(getComputedStyle(e).fontSize);
+    while(e.scrollWidth>e.clientWidth+1&&fs>9){fs-=0.5;e.style.fontSize=fs+'px'}
+  });
+}
+window.addEventListener('resize',fitOne);
+function scrollSub(){
+  const el=document.querySelector('.subtabs');if(!el)return;
+  window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-8),behavior:'auto'});
 }
 function goTop(id){
   requestAnimationFrame(()=>{
@@ -1332,7 +1346,7 @@ document.addEventListener('click',e=>{
   else if(b.dataset.ten!=null){S.ten=!S.ten;render();if(S.ten)requestAnimationFrame(()=>{const s=$('dez-dias');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
   else if(b.dataset.td!=null){S.day=+b.dataset.td;S.hover=null;render()}
   else if(b.dataset.t){const t=b.dataset.t;S.menu=false;S.tab=t;if(t=='esportes')S.sub='resumo';S.hover=null;render();goTop(t=='jogo'?'view':'loc')}
-  else if(b.dataset.s){S.sub=b.dataset.s;S.menu=false;S.hover=null;render()}
+  else if(b.dataset.s){S.sub=b.dataset.s;S.menu=false;S.hover=null;render();scrollSub()}
   else if(b.dataset.pf){S.pf=b.dataset.pf;if(S.pf=='perto'&&!S.pos)locate();render()}
   else if(b.dataset.pb!=null){S.open=S.open==b.dataset.pb?null:b.dataset.pb;if(S.open!=null)loadSea(BEACHES[+S.open]);render()}
   else if(b.dataset.f){S.filter=b.dataset.f;render()}
@@ -1420,7 +1434,7 @@ const FS_BIG=22;
 let FS=FS_BIG;
 try{const q=+localStorage.getItem('capsantos.fs2');if(q>=14&&q<=26)FS=q}catch(e){}
 document.documentElement.style.fontSize=FS+'px';
-function setFs(v){FS=Math.max(14,Math.min(26,v));document.documentElement.style.fontSize=FS+'px';try{localStorage.setItem('capsantos.fs2',FS)}catch(e){}setTimeout(tourPos,60)}
+function setFs(v){FS=Math.max(14,Math.min(26,v));document.documentElement.style.fontSize=FS+'px';try{localStorage.setItem('capsantos.fs2',FS)}catch(e){}fitOne();setTimeout(tourPos,60)}
 const nohelp=()=>{try{return !!localStorage.getItem('capsantos.nohelp')}catch(e){return false}};
 const T={on:0,i:0,mode:'menu'};
 const tourEl=document.createElement('div');
