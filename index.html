@@ -1295,6 +1295,12 @@ function render(){
   /* sem calculadora */
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
 }
+function goTop(id){
+  requestAnimationFrame(()=>{
+    const el=$(id);if(!el)return;
+    window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-6),behavior:'smooth'});
+  });
+}
 function scrollToDay(){
   requestAnimationFrame(()=>{
     const el=S.tab=='meudia'?$('meudia-card'):$('view');
@@ -1307,10 +1313,10 @@ document.addEventListener('click',e=>{
   if(c){updateHover(+c.dataset.h+.5);return}
   const b=e.target.closest('button');
   if(!b)return;
-  if(b.dataset.d!=null){S.day=+b.dataset.d;S.ten=false;S.hover=null;render();scrollToDay()}
+  if(b.dataset.d!=null){S.day=+b.dataset.d;S.ten=false;S.hover=null;render();goTop('loc')}
   else if(b.dataset.ten!=null){S.ten=!S.ten;render();if(S.ten)requestAnimationFrame(()=>{const s=$('dez-dias');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
   else if(b.dataset.td!=null){S.day=+b.dataset.td;S.hover=null;render()}
-  else if(b.dataset.t){const t=b.dataset.t;S.menu=false;S.tab=t;if(t=='esportes')S.sub='resumo';S.hover=null;render()}
+  else if(b.dataset.t){const t=b.dataset.t;S.menu=false;S.tab=t;if(t=='esportes')S.sub='resumo';S.hover=null;render();goTop(t=='jogo'?'view':'loc')}
   else if(b.dataset.s){S.sub=b.dataset.s;S.menu=false;S.hover=null;render()}
   else if(b.dataset.pf){S.pf=b.dataset.pf;if(S.pf=='perto'&&!S.pos)locate();render()}
   else if(b.dataset.pb!=null){S.open=S.open==b.dataset.pb?null:b.dataset.pb;if(S.open!=null)loadSea(BEACHES[+S.open]);render()}
