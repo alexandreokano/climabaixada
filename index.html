@@ -1301,6 +1301,7 @@ function render(){
   const CT=Object.keys(PLACES);
   $('loc').innerHTML=`<div><label>📍 Cidade</label><select id="s_city">${CT.map(c=>`<option ${c==S.city?'selected':''}>${c}</option>`).join('')}</select></div><div><label>🏘️ Bairro</label><select id="s_pl">${PLACES[S.city].map((p,i)=>`<option value="${i}" ${i==S.pl?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`).join('')}</select></div>`;
   if(S.tab=='esportes'&&!cur().m){S.tab='meudia';S.menu=false;S.hover=null}
+  if(S.tab=='esportes'&&!cur().m){S.tab='meudia';S.menu=false;S.hover=null}
   if(S.tab=='jogo'&&S.vb===undefined&&!S.vbBusy){S.vbBusy=1;loadVB()}
   if(S.tab=='jogo'&&S.news===undefined&&!S.newsBusy){S.newsBusy=1;loadNews()}
   if(S.tab=='meudia')ensureFc();
