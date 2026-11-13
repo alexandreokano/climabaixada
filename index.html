@@ -184,6 +184,7 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 .games button b{font-size:1.02rem}
 .row .lk{flex:1 1 calc(50% - 6px);min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;line-height:1.25}
 #noticias-sec{scroll-margin-top:12px}
+#meudia-card,#view{scroll-margin-top:16px}
 #dez-dias{scroll-margin-top:16px;border-top-width:6px;padding:18px 16px;min-height:220px}
 .mom{background:linear-gradient(135deg,rgba(56,189,248,.22),rgba(251,146,60,.18));border:2px solid var(--acc);border-radius:14px;padding:12px 14px;margin:8px 0;font-size:.98rem;line-height:1.55}
 .mom .mh{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;font-size:1.1rem}
@@ -986,7 +987,7 @@ function meudia(){
   for(let h=6;h<=17;h++){const o=obs(di,h);if(o&&o.wh!=null){has=true;wmax=Math.max(wmax,o.wh)}}
   const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 12/11).':'🔴 Água imprópria para banho (CETESB, boletim de 12/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
   const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar bravo: ondas até ${wmax.toFixed(1)} m. Banho só na rasa e pertinho do salva-vidas.`:wmax>1?`🌊 Mar mexidinho: ondas até ${wmax.toFixed(1)} m. Criança e idoso só na beirinha.`:`🌊 Mar de boa: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
-  return `${S.ten?tenDays():''}<div class="card"><h2>🌤️ Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
+  return `${S.ten?tenDays():''}<div class="card" id="meudia-card"><h2>🌤️ Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
   ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
   ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px">☔ chance de cair água no período · 💧 quanto de água vem por aí. Chance alta com quase nada de água é só ameaça, não é toró.</div>`}
   ${vai()}<div class="card"><h3>🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com o mar de boa, entra só perto do salva-vidas e olha a bandeira do dia. Se a praia estiver 🔴, prefere um passeio na areia.':'Pra ver a praia, troca o bairro por um marcado com 🌊.')}</div>
@@ -1294,13 +1295,19 @@ function render(){
   /* sem calculadora */
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
 }
+function scrollToDay(){
+  requestAnimationFrame(()=>{
+    const el=S.tab=='meudia'?$('meudia-card'):$('view');
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}
 document.addEventListener('click',e=>{
   if(S.menu&&!e.target.closest('.tabwrap')){S.menu=false;render()}
   const c=e.target.closest('.strip div');
   if(c){updateHover(+c.dataset.h+.5);return}
   const b=e.target.closest('button');
   if(!b)return;
-  if(b.dataset.d!=null){S.day=+b.dataset.d;S.ten=false;S.hover=null;render()}
+  if(b.dataset.d!=null){S.day=+b.dataset.d;S.ten=false;S.hover=null;render();scrollToDay()}
   else if(b.dataset.ten!=null){S.ten=!S.ten;render();if(S.ten)requestAnimationFrame(()=>{const s=$('dez-dias');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
   else if(b.dataset.td!=null){S.day=+b.dataset.td;S.hover=null;render()}
   else if(b.dataset.t){const t=b.dataset.t;S.menu=false;S.tab=t;if(t=='esportes')S.sub='resumo';S.hover=null;render()}
