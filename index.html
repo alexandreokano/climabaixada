@@ -261,14 +261,19 @@ body.light .mi{background:rgba(255,255,255,.6)}
 .mcc i.hi{background:#2563eb}
 .mcc span{font-size:.7rem;color:var(--mut);margin-top:3px}
 .card h3.praiah{font-size:clamp(1.25rem,4.5vw,1.45rem);font-weight:800;line-height:1.2;color:var(--acc);margin:0 0 12px;letter-spacing:.02em}
-.inst-btn{display:inline-flex;align-items:center;gap:10px;max-width:100%;text-align:left;line-height:1.25;white-space:normal}
-.inst-btn span{min-width:0}
-.inst-ic{width:32px;height:32px;border-radius:8px;flex:0 0 auto;display:block;object-fit:cover}
-@media (min-width:700px){
-.inst-card{padding:20px 16px}
+.inst-card{padding:22px 16px}
 .inst-card .row{justify-content:center;margin:0}
-.inst-btn{gap:20px;padding:14px 36px 14px 18px;font-size:1.1rem;font-weight:600;border-radius:16px;width:min(100%,600px);justify-content:center;text-align:center}
-.inst-ic{width:64px;height:64px;border-radius:14px}
+.inst-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;width:100%;min-height:210px;padding:22px 16px;text-align:center;line-height:1.3;white-space:normal;border-radius:18px;background:linear-gradient(160deg,rgba(56,189,248,.16),rgba(56,189,248,.03))}
+.inst-ic{width:96px;height:96px;border-radius:22px;flex:0 0 auto;display:block;object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 0 3px rgba(56,189,248,.35)}
+.inst-tx{display:flex;flex-direction:column;gap:4px;min-width:0}
+.inst-tx b{font-size:1.05rem;font-weight:700;color:var(--txt)}
+.inst-tx em{font-style:normal;font-size:1rem;font-weight:700;color:var(--lead)}
+@media (min-width:700px){
+.inst-card{padding:26px 16px}
+.inst-btn{flex-direction:row;justify-content:flex-start;gap:28px;width:min(100%,680px);min-height:150px;padding:20px 32px 20px 24px;text-align:left}
+.inst-ic{width:112px;height:112px;border-radius:26px}
+.inst-tx b{font-size:1.25rem}
+.inst-tx em{font-size:1.15rem}
 }
 </style>
 </head>
@@ -948,7 +953,7 @@ function checklist(){
 
 /* ============ ALERTAS WHATSAPP ============ */
 function alertas(){
-  return `<div class="card g inst-card"><div class="row"><button id="tinst2" class="inst-btn"><img class="inst-ic" src="icon-512.png?v=5" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M3W9YDriOSW0KJz8NGh6dJGDuU.png?Expires=1794583180&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=De2ul0d8N5dRhLFLi9Y4Wy2f3vP3slF20t5tz6DbkrPXU04lth~tEzPLncnGzJzpo~B8hnB7NDYc2UbxiOdduDY2V4HyGi6s5Kg2cKNFDnMKZlxOzUJSUb4EZIP0xrWCpHjCBG7O6qjuP8ioiWhrTu14aw2annana7jy7WOW9fMBQkBq-nYGPL2zg4vOg89N7OUCr5TeAxhoA8vN022NuIqKqWbK65kyo7vKUxldV-xcwOZjOBVbyIogRSuoqUUFQHUjm1Gdcva2X0Hv9CenYm~5vF02J6AOztfSo-c~rEL9Gc~MLcxxGuxsgL0f0c7SB1ffK57AZOcD9pR1YHLnjA__'" alt=""><span>Quer o ícone na tela do celular? Vem ver como</span></button></div></div>`;
+  return `<div class="card g inst-card"><div class="row"><button id="tinst2" class="inst-btn"><img class="inst-ic" src="icon-512.png?v=5" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M3W9YDriOSW0KJz8NGh6dJGDuU.png?Expires=1794583180&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=De2ul0d8N5dRhLFLi9Y4Wy2f3vP3slF20t5tz6DbkrPXU04lth~tEzPLncnGzJzpo~B8hnB7NDYc2UbxiOdduDY2V4HyGi6s5Kg2cKNFDnMKZlxOzUJSUb4EZIP0xrWCpHjCBG7O6qjuP8ioiWhrTu14aw2annana7jy7WOW9fMBQkBq-nYGPL2zg4vOg89N7OUCr5TeAxhoA8vN022NuIqKqWbK65kyo7vKUxldV-xcwOZjOBVbyIogRSuoqUUFQHUjm1Gdcva2X0Hv9CenYm~5vF02J6AOztfSo-c~rEL9Gc~MLcxxGuxsgL0f0c7SB1ffK57AZOcD9pR1YHLnjA__'" alt=""><span class="inst-tx"><b>Quer o ícone na tela do celular?</b><em>Vem ver como é muito fácil!</em></span></button></div></div>`;
 }
 
 /* ============ LOCAL, MEU DIA, JOGO DO SANTOS ============ */
