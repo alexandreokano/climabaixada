@@ -260,6 +260,7 @@ body.light .mi{background:rgba(255,255,255,.6)}
 .mcc i.lo{background:#7dd3fc;opacity:.7}
 .mcc i.hi{background:#2563eb}
 .mcc span{font-size:.7rem;color:var(--mut);margin-top:3px}
+.card h3.praiah{font-size:clamp(1.6rem,7vw,2.2rem);font-weight:800;line-height:1.2;color:var(--acc);margin:0 0 12px;letter-spacing:.02em}
 </style>
 </head>
 <body>
@@ -1000,7 +1001,7 @@ function meudia(){
   return `${S.ten?tenDays():''}<div class="card" id="meudia-card"><h2 class="oneline">🌤️ Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
   ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
   ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px">☔ chance de cair água no período · 💧 quanto de água vem por aí. Chance alta com quase nada de água é só ameaça, não é toró.</div>`}
-  ${vai()}<div class="card"><h3>🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com o mar de boa, entra só perto do salva-vidas e olha a bandeira do dia. Se a praia estiver 🔴, prefere um passeio na areia.':'Pra ver a praia, troca o bairro por um marcado com 🌊.')}</div>
+  ${vai()}<div class="card"><h3 class="praiah">🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com o mar de boa, entra só perto do salva-vidas e olha a bandeira do dia. Se a praia estiver 🔴, prefere um passeio na areia.':'Pra ver a praia, troca o bairro por um marcado com 🌊.')}</div>
   <div class="note">Previsão é de computador, não é promessa. Pra temporal, alerta ou emergência, fala com a Defesa Civil (199) e os Bombeiros (193).</div>`+alertas();
 }
 /* ============ VAI PRA ONDE? ============ */
