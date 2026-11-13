@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clima Baixada – Painel interativo</title>
@@ -178,7 +178,10 @@ body.touring{padding-bottom:60vh}
 html.big{font-size:22px}
 .kw-caiaque{color:#2dd4bf}.kw-surfe{color:#fb923c}.kw-pesca{color:#c084fc}
 body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.light .kw-pesca{color:#7e22ce}
-.jimg{float:right;height:76px;width:auto;margin:0 0 8px 12px;border-radius:10px;background:#fff;padding:3px}
+.jhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.jhead h2{flex:1 1 auto;min-width:0;margin:0;line-height:1.3}
+.jimg{flex:0 0 auto;height:112px;width:auto;margin:0;border-radius:12px;background:#fff;padding:4px}
+@media (max-width:380px){.jimg{height:96px}}
 .games{clear:both;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
 .games button{width:100%;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px 10px;white-space:normal;text-align:center;line-height:1.35;font-size:.95rem}
 .games button b{font-size:1.02rem}
@@ -1165,8 +1168,7 @@ function jogo(){
       }
     }
   }
-  return `<div class="card"><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""><h2>⚽ Jogo do Santos · tempo na Vila Belmiro</h2>
-  <h3>🏟️ Próximos jogos na Vila Belmiro</h3>
+  return `<div class="card"><div class="jhead"><h2>⚽ Jogo do Santos<br>Tempo na Vila Belmiro</h2><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""></div>
   <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}"><span class="vs">${esc('Santos')}<i>x</i>${esc(j.opp)}</span><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Toca num jogo pra ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, veja os links abaixo.</div>
   <div class="row">
