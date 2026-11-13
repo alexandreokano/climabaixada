@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clima Baixada – Painel interativo</title>
@@ -293,6 +293,21 @@ body.light .mi{background:rgba(255,255,255,.6)}
 .totop button{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:8px 20px;border-radius:999px;font-weight:700;font-size:.95rem;background:linear-gradient(160deg,rgba(56,189,248,.22),rgba(56,189,248,.05))}
 .totop svg{width:26px;height:26px;flex:0 0 auto;display:block}
 </style>
+<!-- Analítica leve (GoatCounter): código do site climabaixada -->
+<script data-goatcounter="https://climabaixada.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<script>
+  /* Conta quantas aberturas vêm do ícone instalado (PWA) */
+  window.addEventListener('load', function () {
+    var app = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+    if (!app || !window.goatcounter || !window.goatcounter.count) return;
+    try {
+      if (sessionStorage.getItem('gc_pwa')) return;
+      sessionStorage.setItem('gc_pwa', '1');
+    } catch (e) {}
+    window.goatcounter.count({ path: 'pwa-aberto-como-app', title: 'Aberto como app', event: true });
+  });
+</script>
 </head>
 <body>
 <div class="wrap">
