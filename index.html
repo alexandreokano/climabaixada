@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clima Baixada – Painel interativo</title>
-<meta name="description" content="Vento, ondas, marés, balneabilidade e pesca para Santos, Guarujá e São Vicente.">
+<meta name="description" content="Vento, ondas, marés, balneabilidade e pesca para a Baixada Santista.">
 
 <!-- Cores e PWA -->
 <meta name="theme-color" content="#0b2a4a">
@@ -252,9 +252,9 @@ body.light .mi{background:rgba(255,255,255,.6)}
 <div class="wrap">
 <header>
   
-  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M0uxAzvzqh2wQ55e9CkuqT8Inq.jpg?Expires=1794511934&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=eUXR-d~dy8iZ7JA12YMXXXgsf8vAejMy586CB66ol2TLa~vV7nBn8P2JG2o40USLAQGqZmQZLAuT9Y6ovmQJcEFvj3SfEEyGNVOul-dP8ANBvkKl1IHkVXGT6cSZkdZ8nyUlj0~qseUDAgUEy5NkcZ8~hWt4A7DRT2shka1DtUx1Nh4AJpkXZEbHUvRRP7S8zhNOrIc9FSSiSOSq8mEI3dRFDv-rwli6BMKmHWi5JNMCgYiqNoX6uMqvY~90fCiiA9N-9gnYhsRMYOklqeYmSFjdqj0nBmOBbIvclNSZxCF3hNUphRQoHCUYq9X-aeAQWtgeBuiz3y23pBYY7j~Eww__'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
+  <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='canvas-asset:banner-panoramico.jpg'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
   <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
-  <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém</div>
+  <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Itanhaém · Mongaguá · Peruíbe</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status">⏳ dando uma olhada no mar…</span>
     <button id="help">❓ Me ajuda aí</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema">🌓</button>
@@ -264,9 +264,9 @@ body.light .mi{background:rgba(255,255,255,.6)}
 <nav id="days"></nav>
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
 <main id="view"></main>
-<div class="row"><a class="btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener" style="flex:1 1 100%;text-align:center;font-weight:600;background:var(--acc);color:#04202f;border-color:var(--acc)">💬 Chega mais: sua opinião vale ouro!</a></div>
+<div class="row"><a class="btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener" style="flex:1 1 100%;text-align:center;font-weight:600;background:var(--acc);color:#04202f;border-color:var(--acc)">💬 Chega mais: sua opinião vale ouro!</a><a class="btn" href="mailto:climabaixada@gmail.com" style="flex:1 1 100%;text-align:center">✉️ climabaixada@gmail.com</a></div>
 <footer>
-  Ao vivo ou em cache de até cerca de 1 h: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 05/11) e avaliação manual do Capitão da Baixada (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), com data e hora da última atualização exibidas na própria aba (arquivo dados.json).<br>
+  Ao vivo ou em cache de até cerca de 1 h: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 12/11) e avaliação manual do Capitão da Baixada (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), com data e hora da última atualização exibidas na própria aba (arquivo dados.json).<br>
   Previsão de computador não é certeza e não vale mais que o seu bom senso nem que as orientações oficiais (Marinha, Defesa Civil, Bombeiros). Olha a arrebentação com seus olhos antes de entrar na água.
 </footer>
 </div>
@@ -300,7 +300,13 @@ let DAYS=[
 ];
 let CETESB={
  'Santos':[['Ponta da Praia',2],['Aparecida',2],['Embaré',2],['Boqueirão',2],['Gonzaga',2],['Pompeia',2],['José Menino',2]],
- 'São Vicente':[['Praia da Divisa',2],['Milionários',2],['Gonzaguinha',2],['Itararé (Posto 2)',0],['Ilha Porchat',0],['Prainha',0]]
+ 'São Vicente':[['Praia da Divisa',2],['Milionários',2],['Gonzaguinha',2],['Itararé (Posto 2)',0],['Ilha Porchat',0],['Prainha',2]],
+ 'Guarujá':[['Pitangueiras - Av. Puglisi',2],['Pitangueiras - R. Silvia Valadão',0],['Astúrias',0],['Tombo',0],['Guaiúba',0],['Enseada - Estrada de Pernambuco',2],['Enseada - Av. Atlântica',2],['Enseada - Rua Chile',2],['Enseada - Av. Santa Maria',2],['Pernambuco',0],['Perequê',2]],
+ 'Praia Grande':[['Canto do Forte',2],['Boqueirão',2],['Guilhermina',2],['Aviação',2],['Vila Tupy',2],['Ocian',2],['Vila Mirim',2],['Maracanã',2],['Vila Caiçara',2],['Real',2],['Flórida',2],['Jardim Solemar',2]],
+ 'Bertioga':[['Enseada - R. Rafael Costabili',2],['Indaiá (Enseada)',0],['Enseada - Vista Linda',0],['Enseada - Colônia do SESC',0],['São Lourenço - junto ao morro',0],['São Lourenço - Rua 2',0],['Boraceia - Colégio Marista',0],['Boraceia - Sul',0],['Guaratuba',0]],
+ 'Itanhaém':[['Praia dos Pescadores',2],['Sonho',2],['Jardim Cibratel',2],['Centro',2],['Parque Balneário',2],['Estância Balneária',2],['Jardim São Fernando',2],['Balneário Jardim Regina',2],['Balneário Gaivotas',2],['Suarão - AFPESP',2],['Jardim Suarão',0],['Campos Elíseos',0]],
+ 'Mongaguá':[['Itapoã (Vila São Paulo)',2],['Central',2],['Vera Cruz',2],['Santa Eugênia',2],['Itaóca',2],['Agenor de Campos',2],['Flórida Mirim',2]],
+ 'Peruíbe':[['Icaraíba',2],['Parque Turístico',2],['Balneário São João Batista',2],['Centro',2],['Prainha',0],['Guaraú',0]]
 };
 const SPECIES=[['Robalo','canais e estuário, na virada da maré'],['Corvina','orla e fundo de areia, ao amanhecer/entardecer'],['Betara','arrebentação, fundo de areia'],['Pescadinha','orla, enchente'],['Bagre','estuário, água turva'],['Sargo','pedras e Deck, maré cheia']];
 const CHECK=['Colete salva-vidas ajustado','Apito preso ao colete','Leash do remo / do caiaque','Celular em capa estanque','Água e protetor solar','Roupa adequada (vento frio, água ~23 °C)','Avisei alguém do trajeto e do horário de volta','Conferi a arrebentação a olho','Plano de abortar: voltar se vento > 10 nós ou ondas > 1,0 m','Sem previsão de raios','Longe do canal de navegação e da boca da barra'];
@@ -309,10 +315,12 @@ const CHECK=['Colete salva-vidas ajustado','Apito preso ao colete','Leash do rem
 const PLACES={
  'Santos':[['Ponta da Praia',-23.985,-46.300,1],['Aparecida',-23.980,-46.313,1],['Embaré',-23.975,-46.322,1],['Boqueirão',-23.973,-46.329,1],['Gonzaga',-23.970,-46.335,1],['Pompeia',-23.971,-46.343,1],['José Menino',-23.972,-46.355,1],['Marapé',-23.965,-46.320,0],['Vila Mathias',-23.950,-46.330,0],['Centro',-23.935,-46.326,0],['Campo Grande',-23.961,-46.340,0],['Macuco',-23.956,-46.318,0]],
  'São Vicente':[['Itararé',-23.972,-46.383,1],['Gonzaguinha',-23.970,-46.395,1],['Ilha Porchat',-23.980,-46.385,1],['Prainha',-23.981,-46.392,1],['Milionários',-23.974,-46.404,1],['Praia da Divisa',-23.980,-46.415,1],['Centro',-23.963,-46.392,0],['Vila Valença',-23.954,-46.400,0]],
- 'Praia Grande':[['Boqueirão',-24.012,-46.415,1],['Guilhermina',-24.020,-46.435,1],['Aviação',-24.026,-46.450,1],['Tupi',-24.032,-46.465,1],['Caiçara',-24.040,-46.485,1],['Ocian',-24.048,-46.500,1],['Mirim',-24.060,-46.525,1],['Solemar',-24.070,-46.540,1],['Sítio do Campo',-24.015,-46.460,0]],
+ 'Praia Grande':[['Boqueirão',-24.012,-46.415,1],['Guilhermina',-24.020,-46.435,1],['Aviação',-24.026,-46.450,1],['Vila Tupy',-24.032,-46.465,1],['Vila Caiçara',-24.040,-46.485,1],['Ocian',-24.048,-46.500,1],['Vila Mirim',-24.060,-46.525,1],['Jardim Solemar',-24.070,-46.540,1],['Sítio do Campo',-24.015,-46.460,0]],
  'Guarujá':[['Pitangueiras',-23.993,-46.256,1],['Astúrias',-23.999,-46.263,1],['Enseada',-23.990,-46.240,1],['Tombo',-24.008,-46.270,1],['Perequê',-23.940,-46.185,1],['Vicente de Carvalho',-23.939,-46.279,0],['Centro',-23.990,-46.258,0]],
  'Bertioga':[['Indaiá',-23.845,-46.115,1],['Enseada',-23.830,-46.095,1],['São Lourenço',-23.793,-46.050,1],['Itaguaré',-23.775,-46.020,1],['Centro',-23.854,-46.138,0]],
- 'Itanhaém':[['Boca da Barra',-24.180,-46.792,1],['Prainha (Pescadores)',-24.186,-46.797,1],['Sonho',-24.192,-46.803,1],['Praião (Centro)',-24.172,-46.778,1],['Cibratel I',-24.215,-46.822,1]]
+ 'Itanhaém':[['Boca da Barra',-24.180,-46.792,1],['Praia dos Pescadores',-24.186,-46.797,1],['Sonho',-24.192,-46.803,1],['Praião (Centro)',-24.172,-46.778,1],['Cibratel I',-24.215,-46.822,1]],
+ 'Mongaguá':[['Itapoã',-24.082,-46.583,1],['Central',-24.097,-46.617,1],['Agenor de Campos',-24.120,-46.680,1]],
+ 'Peruíbe':[['Icaraíba',-24.290,-46.950,1],['Centro',-24.322,-46.998,1],['Prainha',-24.333,-47.005,1],['Guaraú',-24.370,-47.015,1]]
 };
 
 /* ============ ESTADO ============ */
@@ -786,7 +794,7 @@ function resumo(){
    <div class="card ${COL[D.k]}"><h3>🛶 Caiaque (manual)</h3><div class="big">${EMO[D.k]} ${LBL[D.k]}</div><div class="mut">⏰ Melhor hora pra cair na água hoje: ${wtxt(kw)}</div></div>
    <div class="card ${COL[D.s]}"><h3>🏄 Surfe (manual)</h3><div class="big">${EMO[D.s]} ${['FAVORÁVEL','ALERTA','NÃO SURFE','SEM AVALIAÇÃO'][D.s]}</div><div class="mut">⏰ Melhor hora pra cair na água hoje: ${wtxt(sw)}</div></div>
    <div class="card y"><h3>🎣 Pesca</h3><div class="big">🟡 De terra</div><div class="mut">Veja a aba Pesca para as viradas de maré.</div></div>
-   <div class="card r"><h3>🧪 Balneabilidade</h3><div class="big">🔴 Santos impróprio</div><div class="mut">CETESB 05/11 · próximo boletim 12/11</div></div>
+   <div class="card r"><h3>🧪 Balneabilidade</h3><div class="big">🔴 Santos impróprio</div><div class="mut">CETESB 12/11 · próximo boletim 19/11</div></div>
    <div class="card y"><h3>⚓ Tráfego</h3><div class="big">🟡 Atenção</div><div class="mut">Mais manobras ±2 h das viradas de maré. Fique fora do canal.</div></div>
   </div>
   ${cptecNote(di)}<div class="note">⏰ <b>Melhor hora</b> é o maior bloco de horas seguidas com mar tranquilo entre 5h e 17h, calculado com vento, onda e chuva ao vivo. O Capitão da Baixada olha mais fontes e pode chegar a outra conclusão. Se as duas não baterem, vai pela mais cuidadosa.</div>
@@ -918,21 +926,16 @@ function checklist(){
 }
 
 /* ============ ALERTAS WHATSAPP ============ */
-const CANAL_URL='https://whatsapp.com/channel/0029Vb9aMtp0gcfAN4amaC2l';
 function alertas(){
-  return `<div class="card g"><h3>📲 Canal Clima Baixada no WhatsApp</h3>
-  <div class="cid"><div>Recebe o resumo do tempo, do mar e das praias da Baixada direto no seu Zap, sem precisar abrir o painel.</div></div>
-  <div class="row"><a class="btn on" href="${CANAL_URL}" target="_blank" rel="noopener" style="font-weight:600">📲 Entrar no canal</a></div>
-  ${how('Toca em "Entrar no canal" e depois em "Seguir". Liga o sininho do canal pra não perder aviso. Seu número de telefone não aparece pros outros seguidores.')}
-  <div class="note">O Capitão posta na mão, geralmente uma vez por dia. Não substitui este painel nem as orientações oficiais (Marinha, Defesa Civil 199, Bombeiros 193). Pra sair, é só deixar de seguir o canal.</div><div class="row"><button id="tinst2">📲 Quer o ícone na tela do celular? Vem ver como</button></div></div>`;
+  return `<div class="card g"><div class="row"><button id="tinst2">📲 Quer o ícone na tela do celular? Vem ver como</button></div></div>`;
 }
 
 /* ============ LOCAL, MEU DIA, JOGO DO SANTOS ============ */
 const cur=()=>{const p=PLACES[S.city][S.pl];return{n:p[0],la:p[1],lo:p[2],m:p[3],city:S.city}};
 function onPlace(){sv();S.live={};S.cptec={};S.cptecOk=undefined;S.hover=null;render();loadLive();habLater()}
 function nosea(){const P=cur();return `<div class="card y"><h3>🏙️ ${P.n} não tem mar</h3><div>Aqui não tem mar: ondas, maré e correntes só valem pros bairros de praia (marcados com 🌊 no seletor). Escolhe um deles, tipo Aparecida, Gonzaguinha ou Pitangueiras, ou vai na aba <b>🌤️ Meu Dia</b> pra ver o tempo no seu bairro.</div></div>`}
-function locNote(){const P=cur();return P.city=='Santos'&&P.m?'':`<div class="note">📍 <b>${P.n} (${P.city})</b>: a avaliação manual do Capitão, a tábua de maré (aproximada) e o boletim CETESB consultado são de Santos. Aqui valem os dados ao vivo do local. ${P.m?'':'Bairro sem mar: ondas e maré não se aplicam.'}</div>`}
-function localWarn(){return S.city=='Santos'?'':guiaLocal()+`<div class="warn">⚠️ Percursos, picos e pontos citados nesta aba (Canal 6, Fortaleza da Barra, Deck do Pescador) e a maré são de Santos. Em ${S.city}, use só os dados ao vivo e as regras do semáforo, e peça orientação local.</div>`}
+function locNote(){const P=cur();return P.city=='Santos'&&P.m?'':`<div class="note">📍 <b>${P.n} (${P.city})</b>: a avaliação manual do Capitão e a tábua de maré (aproximada) são de Santos. A balneabilidade vem do boletim da CETESB para os pontos desta cidade. Aqui valem os dados ao vivo do local. ${P.m?'':'Bairro sem mar: ondas e maré não se aplicam.'}</div>`}
+function localWarn(){return S.city=='Santos'?'':guiaLocal()+`<div class="warn">⚠️ Percursos, picos e pontos citados nesta aba (Canal 6, Fortaleza da Barra, Deck do Pescador) e a maré são de Santos. Em ${S.city}, use só os dados ao vivo e as regras do semáforo, e peça orientação local.${['Praia Grande','Mongaguá','Peruíbe'].includes(S.city)?' Aqui o mar é aberto, sem a proteção da baía: o semáforo de caiaque pode subestimar o risco.':''}</div>`}
 const GUIA={
  'Bertioga':{r:[
   ['🛶 Caiaque iniciante','Indaiá (Praia da Enseada): enseada abrigada, sem ondas','🟢'],
@@ -956,7 +959,7 @@ const GUIA={
 };
 function guiaLocal(){
   const g=GUIA[S.city];if(!g)return '';
-  return `<div class="card y"><h3>📍 Guia local · ${S.city}</h3><div class="t"><table><tr><th>Atividade</th><th>Ponto / acesso</th><th>Nível</th></tr>${g.r.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}</table></div><ul style="margin-top:8px">${g.a.map(x=>`<li>${x}</li>`).join('')}</ul>${how('Use o guia para escolher o ponto e o semáforo por hora para escolher o horário. Colete salva-vidas, apito e sinalização visual são obrigatórios no caiaque.')}<div class="note">As regras de vento e ondas são calibradas com referência na Baía de Santos. A maré é aproximada (tábua de Santos) e a balneabilidade aparece como <b>sem dados</b>: consulte o boletim vigente da CETESB antes de entrar na água.</div></div>`;
+  return `<div class="card y"><h3>📍 Guia local · ${S.city}</h3><div class="t"><table><tr><th>Atividade</th><th>Ponto / acesso</th><th>Nível</th></tr>${g.r.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}</table></div><ul style="margin-top:8px">${g.a.map(x=>`<li>${x}</li>`).join('')}</ul>${how('Use o guia para escolher o ponto e o semáforo por hora para escolher o horário. Colete salva-vidas, apito e sinalização visual são obrigatórios no caiaque.')}<div class="note">As regras de vento e ondas são calibradas com referência na Baía de Santos. A maré é aproximada (tábua de Santos) e a balneabilidade vem do boletim da CETESB de 12/11; onde não houver ponto correspondente aparece como <b>sem dados</b>. Confira o boletim vigente antes de entrar na água.</div></div>`;
 }
 const SEA=f=>()=>!cur().m?nosea():localWarn()+f();
 function period(di,a,b,ic,nm){
@@ -981,7 +984,7 @@ function meudia(){
   const di=S.day,P=cur(),bn=(CETESB[P.city]||[]).find(x=>x[0].startsWith(P.n));
   let wmax=0,has=false;
   for(let h=6;h<=17;h++){const o=obs(di,h);if(o&&o.wh!=null){has=true;wmax=Math.max(wmax,o.wh)}}
-  const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 05/11).':'🔴 Água imprópria para banho (CETESB, boletim de 05/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
+  const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 12/11).':'🔴 Água imprópria para banho (CETESB, boletim de 12/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
   const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar bravo: ondas até ${wmax.toFixed(1)} m. Banho só na rasa e pertinho do salva-vidas.`:wmax>1?`🌊 Mar mexidinho: ondas até ${wmax.toFixed(1)} m. Criança e idoso só na beirinha.`:`🌊 Mar de boa: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
   return `${S.ten?tenDays():''}<div class="card"><h2>🌤️ Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
   ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
@@ -1244,7 +1247,7 @@ function beachDetail(b){
     if(s.wh!=null)mar=`${s.wh<0.5?'Calmo, com ondas baixas':s.wh<1?'Pouco agitado':s.wh<1.5?'Mexido':'Agitado'} · ondas de cerca de ${s.wh.toFixed(1)} m`;
   }
   return `<div class="cid" style="margin-top:10px"><div><b>Condição atual:</b> ${ok?'Liberada para banho':'Banho não recomendado'}</div>
-  <div><b>Balneabilidade:</b> ${ok?'Própria':'Imprópria'} (CETESB, boletim de 05/11; o próximo sai em 12/11)</div>
+  <div><b>Balneabilidade:</b> ${ok?'Própria':'Imprópria'} (CETESB, boletim de 12/11; o próximo sai em 19/11)</div>
   <div><b>Temperatura da água:</b> ${tw}</div><div><b>Condição do mar:</b> ${mar}</div>
   <div>💡 Mesmo em praia própria, entre perto do posto de salva-vidas e confira a bandeira do dia. Chuva forte recente pode piorar a qualidade da água.</div></div>
   <div class="mut">Temperatura e ondas são estimativas de modelo (Open-Meteo), não medições no local.</div>`;
@@ -1269,7 +1272,7 @@ function praia(){
   <div class="locsel" style="margin:10px 0"><div class="pick"><label>📍 Município ▾</label><select id="p_city"><option value="">Todos os municípios</option>${Object.keys(CETESB).map(c=>`<option ${c==S.pc?'selected':''}>${c}</option>`).join('')}</select></div><div class="pick"><label>🏖️ Praia ▾</label><select id="p_beach"><option value="">Todas as praias</option>${BEACHES.filter(b=>!S.pc||b.c==S.pc).map(b=>`<option value="${b.id}" ${String(b.id)==S.pb?'selected':''}>${b.n}${S.pc?'':' ('+b.c+')'}</option>`).join('')}</select></div></div>
   <div class="row">${b('all','Todas')}${b('ok','Próprias para banho')}${b('perto','Próximas a mim')}</div>
   ${S.pmsg?`<div class="note">${S.pmsg}</div>`:''}
-  <div class="note">Fonte: CETESB, boletim de 05/11 (próximo em 12/11). Guarujá, Praia Grande, Bertioga e Itanhaém ainda não foram consultados (sem dados). Chuva e ressaca recentes podem piorar o resultado.</div></div>
+  <div class="note">Fonte: CETESB, boletim de 12/11 (próximo em 19/11). Pontos classificados como "Sist. boa" no boletim (ex.: Iporanga, em Guarujá) e Cubatão não estão listados. Chuva e ressaca recentes podem piorar o resultado.</div></div>
   <div id="plist">${praiaList()}</div>
   ${how('🟢 própria: pode entrar na água, com cuidado. 🔴 imprópria: não entra nem engole água. Toca no cartão da praia pra ver a temperatura da água e a condição do mar. Depois de chuva forte, evita entrar mesmo em praia própria.')}
   <div class="note">Veja o boletim oficial em <a style="color:var(--acc)" href="https://cetesb.sp.gov.br/praias" target="_blank" rel="noopener">cetesb.sp.gov.br/praias</a>.</div>`;
@@ -1383,7 +1386,7 @@ const TST=[
  {t:'📈 Gráficos do dia',x:'As linhas mostram como o vento, as ondas e a maré mudam durante o dia. Procure as horas em que a linha fica na <b>faixa verde</b>. A linha amarela tracejada escrita “agora” marca a hora atual. Se a <b>rajada</b> passar de 20 nós, não navegue.',tg:'#view svg.chart',pre:TPS('caiaque')},
  {t:'⚓ Navio na Área',x:'Navios grandes demoram a parar e não enxergam caiaques. Os botões abrem mapas ao vivo dos navios. A faixa amarela mostra quando há mais movimento. <b>Nunca cruze o canal de navegação.</b>',tg:'#view .card',pre:TPS('trafego')},
  {t:'🏖️ Como tá a praia hoje?',x:'Escolha o município e a praia nas listas. <b>🟢 Própria</b>: pode entrar na água. <b>🔴 Imprópria</b>: não entre nem engula água. Toque no cartão da praia para ver temperatura da água e condição do mar.',tg:'#p_city',pre:TPS('praia')},
- {t:'📲 Canal no WhatsApp e segurança',x:'No fim da aba Meu Dia há o <b>Canal Clima Baixada</b>: toque em “Entrar no canal” e depois em “Seguir”. Lembre: o painel é uma <b>previsão</b>, não uma certeza. Na dúvida, não sai, e olha o mar antes de entrar. Emergências: Bombeiros 193, Defesa Civil 199.',tg:'#view>.card:last-child',pre:TP1}
+ {t:'🛡️ Segurança',x:'Lembre: o painel é uma <b>previsão</b>, não uma certeza. Na dúvida, não sai, e olha o mar antes de entrar. Emergências: Bombeiros 193, Defesa Civil 199.',tg:'#view>.card:last-child',pre:TP1}
 ];
 const FS_BIG=22;
 let FS=FS_BIG;
