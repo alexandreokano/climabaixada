@@ -184,6 +184,7 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 .games button b{font-size:1.02rem}
 .row .lk{flex:1 1 calc(50% - 6px);min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;line-height:1.25}
 #noticias-sec{scroll-margin-top:12px}
+#jogos-sec{scroll-margin-top:16px}
 #meudia-card,#view{scroll-margin-top:16px}
 #dez-dias{scroll-margin-top:16px;border-top-width:6px;padding:18px 16px;min-height:220px}
 .mom{background:linear-gradient(135deg,rgba(56,189,248,.22),rgba(251,146,60,.18));border:2px solid var(--acc);border-radius:14px;padding:12px 14px;margin:8px 0;font-size:.98rem;line-height:1.55}
@@ -1106,7 +1107,17 @@ function vai(){
   return `<div class="card"><div class="hook"><h3>🧭 Vai pra onde? Será que vai chover lá?</h3><div class="mut">☔ Dá o papo antes de sair e não leva chuva na cabeça!</div></div>${orig}${dst}${dsel}${tsel}${hab}</div>${res}`;
 }
 
-const JOGOS=[{date:'2026-11-23',time:'21:00',opp:'Grêmio',lbl:'Seg 23/11 · 21h00'},{date:'2026-12-02',time:'21:30',opp:'Botafogo',lbl:'Qua 02/12 · 21h30'}];
+let JOGOS=[{date:'2026-11-23',time:'21:00',opp:'Grêmio',lbl:'Seg 23/11 · 21h00'},{date:'2026-12-02',time:'21:30',opp:'Botafogo',lbl:'Qua 02/12 · 21h30'}];
+function jogosOk(j){return j&&Array.isArray(j.jogos)&&j.jogos.length&&j.jogos.every(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)&&/^\d{2}:\d{2}$/.test(x.time)&&typeof x.opp=='string'&&typeof x.lbl=='string')}
+async function loadJogos(){
+  try{
+    const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);
+    const r=await fetch('jogos.json?t='+Date.now(),{cache:'no-store',signal:c.signal});clearTimeout(to);
+    if(!r.ok)return;
+    const j=await r.json();
+    if(jogosOk(j)){JOGOS=j.jogos;render()}
+  }catch(e){}
+}
 const VB={la:-23.952,lo:-46.339};
 async function loadVB(){
   try{
@@ -1117,8 +1128,8 @@ async function loadVB(){
   render();
 }
 function jogo(){
-  const g=S.game||{},f=(x,d)=>x==null?'–':x.toFixed(d||0);
-  let res='<div class="note">Digita a data e a hora do jogo pra ver a previsão na Vila Belmiro.</div>';
+  const g=S.game||JOGOS.find(j=>j.date>=todayStr)||{},f=(x,d)=>x==null?'–':x.toFixed(d||0);
+  let res='<div class="note">Não há jogo futuro na lista. Veja os links acima para conferir a agenda.</div>';
   if(g.date&&g.time){
     if(S.vb===undefined)res='<div class="note">⏳ Buscando a previsão…</div>';
     else if(S.vb===null)res='<div class="warn">Não consegui buscar a previsão agora. Toque em 🔄 no topo para tentar de novo.</div>';
@@ -1146,19 +1157,15 @@ function jogo(){
   }
   return `<div class="card"><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""><h2>⚽ Jogo do Santos · tempo na Vila Belmiro</h2>
   <h3>🏟️ Próximos jogos na Vila Belmiro</h3>
-  <div class="games">${JOGOS.map((j,i)=>`<button data-g="${i}" class="${g.date==j.date?'on':''}"><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
-  <div class="note">Toca num jogo pra ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, use os links abaixo e digite a data.</div>
+  <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}"><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
+  <div class="note">Toca num jogo pra ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, veja os links abaixo.</div>
   <div class="row">
     <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Jogos no ge</a>
     <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
     <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener">🔎 Buscar no Google</a>
     <button id="goNews" class="lk">📰 Últimas notícias do Peixe</button>
   </div>
-  <div class="aform">
-    <div><label>Data do jogo</label><input id="g_date" type="date" value="${g.date||''}"></div>
-    <div><label>Hora do início</label><input id="g_time" type="time" value="${g.time||''}"></div>
-    <div><label>Adversário (opcional)</label><input id="g_opp" type="text" placeholder="Ex.: Palmeiras" value="${g.opp||''}"></div>
-  </div></div>${res}${newsSec()}`;
+  </div><div id="jogo-res">${res}</div>${newsSec()}`;
 }
 
 /* ============ NAVEGAÇÃO ============ */
@@ -1340,7 +1347,7 @@ document.addEventListener('click',e=>{
   else if(b.id=='mapTry'){S.map=1;render()}
   else if(b.id=='goNews'){const n=$('noticias-sec');if(n)n.scrollIntoView({behavior:'smooth',block:'start'})}
   else if(b.id=='tinst2'){openTour('inst')}
-  else if(b.dataset.g!=null){const j=JOGOS[+b.dataset.g];S.game={date:j.date,time:j.time,opp:j.opp};render()}
+  else if(b.dataset.g!=null){const j=JOGOS[+b.dataset.g];S.game={date:j.date,time:j.time,opp:j.opp};render();requestAnimationFrame(()=>{const s=$('jogos-sec');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
 });
 document.addEventListener('input',e=>{if(e.target.id=='q_praia'){S.q=e.target.value;const l=$('plist');if(l)l.innerHTML=praiaList()}});
 document.addEventListener('change',e=>{
@@ -1670,7 +1677,7 @@ function habCheck(){
 recHabit();setTimeout(habCheck,4000);setInterval(habCheck,60000);
 setTimeout(agoraCheck,6000);setInterval(agoraCheck,600000);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
-render();loadLive();loadDados();
+render();loadLive();loadDados();loadJogos();
 if(!nohelp())setTimeout(()=>{if(!T.on)openTour('menu')},1500);
 </script>
 </body>
