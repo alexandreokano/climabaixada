@@ -1,4 +1,4 @@
-const C = 'clima-v13';
+const C = 'clima-v14';
 
 self.addEventListener('install', () => self.skipWaiting());
 
