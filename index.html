@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clima Baixada – Painel interativo</title>
@@ -196,6 +196,9 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 #jogo-res{scroll-margin-top:16px}
 .row .lk{flex:1 1 calc(50% - 6px);min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;line-height:1.25}
 #noticias-sec{scroll-margin-top:12px}
+#noticias-sec h2{display:flex;align-items:center;gap:10px}
+#noticias-sec h2 .esc{height:40px;max-width:52px;flex:0 0 auto}
+#noticias-sec .nlida{opacity:.5}
 #jogos-sec{scroll-margin-top:16px}
 #meudia-card,#view{scroll-margin-top:16px}
 .oneline{white-space:nowrap;overflow:hidden}
@@ -1225,6 +1228,10 @@ const NEWS_SRC=[
 ];
 const escH=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const newsOk=u=>typeof u=='string'&&(u.startsWith('https://www.diariodopeixe.com.br/')||u.startsWith('https://www.santosfc.com.br/')||u.startsWith('https://www.youtube.com/watch?v='));
+const NRK='capsantos.lidas';
+function newsRead(){try{const a=JSON.parse(localStorage.getItem(NRK)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
+function newsMark(u){try{const a=newsRead();if(!a.includes(u)){a.push(u);localStorage.setItem(NRK,JSON.stringify(a.slice(-200)))}}catch(e){}}
+['click','auxclick'].forEach(t=>document.addEventListener(t,e=>{const a=e.target.closest&&e.target.closest('a[data-nu]');if(!a)return;newsMark(a.dataset.nu);if(a.parentElement)a.parentElement.classList.add('nlida')}));
 async function feedItems(s){
   const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);
   try{
@@ -1254,8 +1261,8 @@ function newsSec(){
   let body;
   if(n===undefined)body='<div class="note">⏳ Buscando manchetes…</div>';
   else if(!n.it.length)body='<div class="note">Não consegui carregar as manchetes aqui dentro do painel: os sites podem bloquear a leitura direta pelo navegador (CORS) ou não oferecer feed público. Nada foi inventado: use os botões para ler no site de origem.</div>';
-  else body=`<div class="cid">${n.it.map(x=>`<div><a style="color:var(--acc)" href="${escH(x.u)}" target="_blank" rel="noopener">${escH(x.t)}</a><div class="mut">${escH(x.f)}${x.d?' · '+escH(x.d):''}</div></div>`).join('')}</div><div class="mut">Manchetes copiadas dos sites de origem${n.upd?', atualizadas em '+escH(n.upd):''}. Toque para ler a matéria completa no site.</div>`;
-  return `<div class="card" id="noticias-sec"><h2>📰 Últimas notícias do Peixe</h2>${body}<div class="row">${links}</div></div>`;
+  else body=`<div class="cid">${n.it.map(x=>`<div class="${newsRead().includes(x.u)?'nlida':''}"><a data-nu="${escH(x.u)}" style="color:var(--acc)" href="${escH(x.u)}" target="_blank" rel="noopener">${escH(x.t)}</a><div class="mut">${escH(x.f)}${x.d?' · '+escH(x.d):''}</div></div>`).join('')}</div><div class="mut">Manchetes copiadas dos sites de origem${n.upd?', atualizadas em '+escH(n.upd):''}. Toque para ler a matéria completa no site.</div>`;
+  return `<div class="card" id="noticias-sec"><h2>${esc('Santos')}<span>Últimas notícias do Peixe</span></h2>${body}<div class="row">${links}</div></div>`;
 }
 const VIEWS={meudia,jogo,esportes};
 function esportes(){
