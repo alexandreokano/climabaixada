@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clima Baixada – Painel interativo</title>
@@ -70,7 +70,8 @@ nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .card h3,.card h2{margin:0 0 8px;font-size:1.02rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:14px}
 .grid .card{margin:0}
-.per{grid-template-columns:repeat(3,1fr);gap:6px}
+.per{grid-template-columns:repeat(4,1fr);gap:6px}
+@media (max-width:600px){.per{grid-template-columns:repeat(2,1fr);gap:8px}}
 .per .card{padding:10px 4px;text-align:center}
 .per h3{font-size:.95rem;margin:0 0 4px}
 .per h3 small{display:block;font-size:.72rem;font-weight:400}
@@ -1024,7 +1025,7 @@ function meudia(){
   const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 12/11).':'🔴 Água imprópria para banho (CETESB, boletim de 12/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
   const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar bravo: ondas até ${wmax.toFixed(1)} m. Banho só na rasa e pertinho do salva-vidas.`:wmax>1?`🌊 Mar mexidinho: ondas até ${wmax.toFixed(1)} m. Criança e idoso só na beirinha.`:`🌊 Mar de boa: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
   return `${S.ten?tenDays():''}<div class="card" id="meudia-card"><h2 class="oneline">🌤️ Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
-  ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
+  ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,15,'🍽️','Almoço')}${period(di,15,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
   ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px">☔ chance de cair água no período · 💧 quanto de água vem por aí. Chance alta com quase nada de água é só ameaça, não é toró.</div>`}
   ${vai()}<div class="card"><h3 class="praiah">🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com o mar de boa, entra só perto do salva-vidas e olha a bandeira do dia. Se a praia estiver 🔴, prefere um passeio na areia.':'Pra ver a praia, troca o bairro por um marcado com 🌊.')}</div>
   <div class="note">Previsão é de computador, não é promessa. Pra temporal, alerta ou emergência, fala com a Defesa Civil (199) e os Bombeiros (193).</div>`+alertas();
