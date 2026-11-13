@@ -1,7 +1,7 @@
 {
   "versao": 1,
   "avaliado_em": "2026-11-12T10:50:00-03:00",
-  "boletim_cetesb": "2026-11-05",
+  "boletim_cetesb": "2026-11-12",
   "dias": [
     {
       "date": "2026-11-12",
@@ -60,7 +60,76 @@
       ["Gonzaguinha", 2],
       ["Itararé (Posto 2)", 0],
       ["Ilha Porchat", 0],
-      ["Prainha", 0]
+      ["Prainha", 2]
+    ],
+    "Guarujá": [
+      ["Pitangueiras - Av. Puglisi", 2],
+      ["Pitangueiras - R. Silvia Valadão", 0],
+      ["Astúrias", 0],
+      ["Tombo", 0],
+      ["Guaiúba", 0],
+      ["Enseada - Estrada de Pernambuco", 2],
+      ["Enseada - Av. Atlântica", 2],
+      ["Enseada - Rua Chile", 2],
+      ["Enseada - Av. Santa Maria", 2],
+      ["Pernambuco", 0],
+      ["Perequê", 2]
+    ],
+    "Praia Grande": [
+      ["Canto do Forte", 2],
+      ["Boqueirão", 2],
+      ["Guilhermina", 2],
+      ["Aviação", 2],
+      ["Vila Tupy", 2],
+      ["Ocian", 2],
+      ["Vila Mirim", 2],
+      ["Maracanã", 2],
+      ["Vila Caiçara", 2],
+      ["Real", 2],
+      ["Flórida", 2],
+      ["Jardim Solemar", 2]
+    ],
+    "Bertioga": [
+      ["Enseada - R. Rafael Costabili", 2],
+      ["Indaiá (Enseada)", 0],
+      ["Enseada - Vista Linda", 0],
+      ["Enseada - Colônia do SESC", 0],
+      ["São Lourenço - junto ao morro", 0],
+      ["São Lourenço - Rua 2", 0],
+      ["Boraceia - Colégio Marista", 0],
+      ["Boraceia - Sul", 0],
+      ["Guaratuba", 0]
+    ],
+    "Itanhaém": [
+      ["Praia dos Pescadores", 2],
+      ["Sonho", 2],
+      ["Jardim Cibratel", 2],
+      ["Centro", 2],
+      ["Parque Balneário", 2],
+      ["Estância Balneária", 2],
+      ["Jardim São Fernando", 2],
+      ["Balneário Jardim Regina", 2],
+      ["Balneário Gaivotas", 2],
+      ["Suarão - AFPESP", 2],
+      ["Jardim Suarão", 0],
+      ["Campos Elíseos", 0]
+    ],
+    "Mongaguá": [
+      ["Itapoã (Vila São Paulo)", 2],
+      ["Central", 2],
+      ["Vera Cruz", 2],
+      ["Santa Eugênia", 2],
+      ["Itaóca", 2],
+      ["Agenor de Campos", 2],
+      ["Flórida Mirim", 2]
+    ],
+    "Peruíbe": [
+      ["Icaraíba", 2],
+      ["Parque Turístico", 2],
+      ["Balneário São João Batista", 2],
+      ["Centro", 2],
+      ["Prainha", 0],
+      ["Guaraú", 0]
     ]
   }
 }
