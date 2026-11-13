@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clima Baixada – Painel interativo</title>
@@ -286,6 +286,9 @@ body.light .mi{background:rgba(255,255,255,.6)}
 .inst-tx b{font-size:1.25rem}
 .inst-tx em{font-size:1.15rem}
 }
+.totop{display:flex;justify-content:center;margin:6px 0 14px}
+.totop button{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:8px 20px;border-radius:999px;font-weight:700;font-size:.95rem;background:linear-gradient(160deg,rgba(56,189,248,.22),rgba(56,189,248,.05))}
+.totop svg{width:26px;height:26px;flex:0 0 auto;display:block}
 </style>
 </head>
 <body>
@@ -304,6 +307,7 @@ body.light .mi{background:rgba(255,255,255,.6)}
 <nav id="days"></nav>
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
 <main id="view"></main>
+<div id="totop"></div>
 <div class="row"><a class="btn fb-btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener"><span class="fb-ic" aria-hidden="true">💬</span><b>Chega mais:</b><em>sua opinião vale ouro!</em></a><a class="btn" href="mailto:climabaixada@gmail.com" style="flex:1 1 100%;text-align:center">✉️ climabaixada@gmail.com</a></div>
 <footer>
   <div class="selo"><img src="icon-512.png?v=5" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M3W9YDriOSW0KJz8NGh6dJGDuU.png?Expires=1794583180&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=De2ul0d8N5dRhLFLi9Y4Wy2f3vP3slF20t5tz6DbkrPXU04lth~tEzPLncnGzJzpo~B8hnB7NDYc2UbxiOdduDY2V4HyGi6s5Kg2cKNFDnMKZlxOzUJSUb4EZIP0xrWCpHjCBG7O6qjuP8ioiWhrTu14aw2annana7jy7WOW9fMBQkBq-nYGPL2zg4vOg89N7OUCr5TeAxhoA8vN022NuIqKqWbK65kyo7vKUxldV-xcwOZjOBVbyIogRSuoqUUFQHUjm1Gdcva2X0Hv9CenYm~5vF02J6AOztfSo-c~rEL9Gc~MLcxxGuxsgL0f0c7SB1ffK57AZOcD9pR1YHLnjA__'" alt="Clima Baixada"><span>CLIMA <b>BAIXADA</b></span></div>
@@ -1016,7 +1020,7 @@ function tenDays(){
   <div class="conf c3"><b>●○○ Confiança baixa · +6 a +9 dias.</b> Só tendência: o erro cresce muito, principalmente em chuva e vento.</div>
   ${how('Decide pelos 3 primeiros dias. Do 4º ao 6º, deixa uma folga. Do 7º em diante é só pra ter uma ideia do tempo, tá?')}
   <div class="tgrid">${L.map(tile).join('')}</div>
-  <div class="mut">Toque em um dia para ver o detalhe dele. ☔ = chance de chuva. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div></div>`;
+  <div class="mut">Toque em um dia para ver o detalhe dele. ☔ = chance de chuva. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div>${topBtn()}</div>`;
 }
 function meudia(){
   const di=S.day,P=cur(),bn=(CETESB[P.city]||[]).find(x=>x[0].startsWith(P.n));
@@ -1341,6 +1345,8 @@ function render(){
   fitOne();
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
 }
+function topBtn(){return `<div class="totop"><button type="button" data-top="1" aria-label="Voltar ao topo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="var(--acc)"/><path d="M12 18V7M7 11.5L12 6.5l5 5" fill="none" stroke="#04202f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Volta pra riba</span></button></div>`}
+$('totop').innerHTML=topBtn();
 function fitOne(){
   document.querySelectorAll('.oneline').forEach(e=>{
     e.style.fontSize='';
@@ -1373,7 +1379,8 @@ document.addEventListener('click',e=>{
   if(!b)return;
   if(b.dataset.d!=null){S.day=+b.dataset.d;S.ten=false;S.hover=null;render();goTop('loc')}
   else if(b.dataset.ten!=null){S.ten=!S.ten;render();if(S.ten)requestAnimationFrame(()=>{const s=$('dez-dias');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
-  else if(b.dataset.td!=null){S.day=+b.dataset.td;S.hover=null;render()}
+  else if(b.dataset.td!=null){S.day=+b.dataset.td;S.hover=null;render();goTop('meudia-card')}
+  else if(b.dataset.top!=null){window.scrollTo({top:0,behavior:'smooth'})}
   else if(b.dataset.t){const t=b.dataset.t;S.menu=false;S.tab=t;if(t=='esportes')S.sub='resumo';S.hover=null;render();goTop(t=='jogo'?'view':'loc')}
   else if(b.dataset.s){S.sub=b.dataset.s;S.menu=false;S.hover=null;render();scrollSub()}
   else if(b.dataset.pf){S.pf=b.dataset.pf;if(S.pf=='perto'&&!S.pos)locate();render()}
@@ -1493,7 +1500,7 @@ function tourDraw(){
     const s=TST[T.i],n=TST.length;
     h=`<div class="tp">Passo ${T.i+1} de ${n}</div><div class="bar"><i style="width:${(T.i+1)/n*100}%"></i></div><h3>${s.t}</h3><p>${s.x}</p><div class="tr"><button id="tprev" ${T.i==0?'disabled':''}>⬅ Voltar</button><button id="tnext" class="on">${T.i==n-1?'✔ Concluir':'Próximo ➡'}</button></div><div class="tr"><button id="tclose">Pular passeio</button></div>`;
   }
-  tb.innerHTML=h;
+  tb.innerHTML=h;tb.scrollTop=0;
 }
 function tourGo(i){
   T.i=Math.max(0,Math.min(TST.length-1,i));T.mode='step';
@@ -1512,6 +1519,7 @@ function closeTour(){
   T.on=0;tourEl.classList.remove('on','hasspot');document.body.classList.remove('touring');
   S.menu=false;render();
   try{localStorage.setItem('capsantos.tour','1')}catch(e){}
+  window.scrollTo(0,0);requestAnimationFrame(()=>window.scrollTo(0,0));setTimeout(()=>window.scrollTo(0,0),80);
 }
 tourEl.addEventListener('click',e=>{
   e.stopPropagation();
