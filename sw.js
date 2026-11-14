@@ -1,4 +1,4 @@
-const C = 'clima-v14';
+const C = 'clima-v15';
 
 self.addEventListener('install', () => self.skipWaiting());
 
@@ -16,10 +16,12 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     fetch(e.request)
       .then(r => {
-        const c = r.clone();
-        caches.open(C).then(x => x.put(e.request, c));
+        if (r.ok && r.status === 200) {
+          const c = r.clone();
+          e.waitUntil(caches.open(C).then(x => x.put(e.request, c)));
+        }
         return r;
       })
-      .catch(() => caches.match(e.request))
+      .catch(() => caches.match(e.request).then(m => m || (e.request.mode === 'navigate' ? caches.match('./') : undefined)))
   );
 });
