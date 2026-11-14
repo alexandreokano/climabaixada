@@ -1,6 +1,6 @@
 {
   "jogos": [
-    { "date": "2026-11-23", "time": "21:00", "opp": "Grêmio", "lbl": "Seg 23/11 · 21h00" },
-    { "date": "2026-12-02", "time": "21:30", "opp": "Botafogo", "lbl": "Qua 02/12 · 21h30" }
+    { "date": "2026-11-23", "time": "21:00", "opp": "Grêmio", "lbl": "Seg 23/11 · 21h00", "estadio": "Morumbis", "local_confirmado": true },
+    { "date": "2026-12-02", "time": "21:30", "opp": "Botafogo", "lbl": "Qua 02/12 · 21h30", "estadio": "Vila Belmiro", "local_confirmado": false }
   ]
 }
