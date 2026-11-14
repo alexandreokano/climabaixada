@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clima Baixada – Painel interativo</title>
@@ -736,7 +736,7 @@ function updateHover(h){
   document.querySelectorAll('svg.chart').forEach(sv=>{const l=sv.querySelector('.xh');const x=PL+h/24*(W-PL-PR);l.setAttribute('x1',x);l.setAttribute('x2',x);l.setAttribute('opacity',1)});
   document.querySelectorAll('.strip div.sel').forEach(e=>e.classList.remove('sel'));
   const sc=document.querySelector('.strip div[data-h="'+Math.floor(h)+'"]');if(sc)sc.classList.add('sel');
-  const b=$('hinfo');if(b){b.innerHTML=infoHTML(S.day,h);hideEmoji(b)}
+  const b=$('hinfo');if(b)b.innerHTML=infoHTML(S.day,h);
 }
 function dayChartData(di){
   const wind=[],gust=[],wave=[],tide=[];let any=false;
@@ -1225,7 +1225,7 @@ function jogo(){
       }
     }
   }
-  return `<div class="card"><div class="jhead"><h2>⚽ Jogo do Santos<br>Tempo na Vila Belmiro</h2><img class="jimg" src="edu-silhueta.png" onerror="imgFb(this,'edu-silhueta.png')" alt=""></div>
+  return `<div class="card"><div class="jhead"><h2>⚽ Jogo do Santos<br>Tempo na Vila Belmiro</h2><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""></div>
   <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}" aria-pressed="${g.date==j.date}"><span class="vs">${esc('Santos')}<i>x</i>${esc(j.opp)}</span><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Toca num jogo pra ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, veja os links abaixo.</div>
   <div class="row">
@@ -1240,12 +1240,12 @@ function jogo(){
 /* ============ NAVEGAÇÃO ============ */
 const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Rolê no Mar'],['jogo','⚽ Jogo do Santos']];
 const TICON={meudia:'☀️☁️🌧️',esportes:'🏄🚣🐟',noticias:'📰'};
-function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}><span class="ic">${s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
+function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}><span class="ic" aria-hidden="true">${s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
 const SUBS=[['resumo','📋 Resumão'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Navio na Área'],['praia','🏖️ Como tá a praia hoje?']];
 const FISH='<svg class="fish" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
 TICON.esportes='🏄🚣'+FISH;
 const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
-TICON.jogo='<img src="edu-silhueta.png" onerror="imgFb(this,\'edu-silhueta.png\',\'⚽\')" alt="" class="tjog" style="width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
+TICON.jogo='<img src="edu-silhueta.png" onerror="this.onerror=null;this.src=\'canvas-asset:edu-silhueta.png\'" alt="" class="tjog" style="width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
 /* ============ NOTÍCIAS (só das duas fontes autorizadas) ============ */
 const NEWS_SRC=[
  {n:'Diário do Peixe',site:'https://www.diariodopeixe.com.br/',feed:'https://www.diariodopeixe.com.br/feed/'},
@@ -1369,40 +1369,16 @@ function render(){
   if(S.tab=='meudia')ensureFc();
   if(S.tab!='meudia'&&DAYS[S.day]&&DAYS[S.day].ext)S.day=DAYS.reduce((a,d,i)=>d.ext?a:i,0);
   $('days').innerHTML=DAYS.map((d,i)=>(S.tab=='meudia'?(dayOff(i)<0||dayOff(i)>2):(d.ext||d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)))?'':`<button data-d="${i}" class="${i==S.day?'on':''}"${i==S.day?' aria-current="true"':''}><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span>${S.tab=='meudia'?`<span class="cf">${conf(i).dots}</span>`:''}</button>`).join('')+(S.tab=='meudia'?`<button data-ten="1" class="${S.ten||dayOff(S.day)>2?'on':''}" aria-pressed="${S.ten||dayOff(S.day)>2?'true':'false'}"><span>🗓️</span><span>10 dias</span></button>`:'');
-  const TV=TABS.filter(t=>t[0]!='esportes'||cur().m);$('tabs').style.gridTemplateColumns='repeat('+TV.length+',minmax(0,1fr))';$('tabs').innerHTML=TV.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"${t[0]==S.tab?' aria-current="page"':''}><span style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
+  const TV=TABS.filter(t=>t[0]!='esportes'||cur().m);$('tabs').style.gridTemplateColumns='repeat('+TV.length+',minmax(0,1fr))';$('tabs').innerHTML=TV.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"${t[0]==S.tab?' aria-current="page"':''}><span aria-hidden="true" style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}>${s[1]}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Esse dia já passou: a avaliação do Capitão ficou velha. Escolhe um dia de hoje pra frente.</div>':'';
   $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
   /* sem calculadora */
-  [$('days'),$('tabs'),$('pop'),$('view')].forEach(hideEmoji);
   fitOne();
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
 }
 function topBtn(){return `<div class="totop"><button type="button" data-top="1" aria-label="Voltar ao topo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="var(--acc)"/><path d="M12 18V7M7 11.5L12 6.5l5 5" fill="none" stroke="#04202f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Volta pra riba</span></button></div>`}
 $('totop').innerHTML=topBtn();
-function imgFb(el,f,alt){
-  if(!el.dataset.tried){el.dataset.tried='1';el.src='canvas-asset:'+f;return}
-  el.onerror=null;
-  if(alt){const s=document.createElement('span');s.setAttribute('aria-hidden','true');s.textContent=alt;el.replaceWith(s)}
-  else el.style.display='none';
-}
-const EMJ=/\p{Extended_Pictographic}\uFE0F?/u;
-function hideEmoji(root){
-  if(!root)return;
-  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),L=[];
-  for(let n=w.nextNode();n;n=w.nextNode()){
-    if(EMJ.test(n.nodeValue)&&n.parentElement&&!n.parentElement.closest('svg,option,select,textarea,script,style,[aria-hidden="true"],[role="img"]'))L.push(n);
-  }
-  L.forEach(n=>{
-    const f=document.createDocumentFragment();
-    n.nodeValue.split(/(\p{Extended_Pictographic}\uFE0F?)/u).forEach(p=>{
-      if(!p)return;
-      if(EMJ.test(p)){const s=document.createElement('span');s.setAttribute('aria-hidden','true');s.textContent=p;f.appendChild(s)}
-      else f.appendChild(document.createTextNode(p));
-    });
-    n.replaceWith(f);
-  });
-}
 function fitOne(){
   document.querySelectorAll('.oneline').forEach(e=>{
     e.style.fontSize='';
