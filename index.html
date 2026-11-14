@@ -49,9 +49,9 @@ h1{margin:0;font-size:1.8rem;line-height:1.15}
 .skip{position:absolute;left:8px;top:-120px;z-index:2000;background:var(--acc);color:#04202f;font-weight:700;padding:12px 18px;border-radius:10px;text-decoration:none}
 .skip:focus{top:8px}
 #view:focus{outline:none}
-h1.brand{flex:0 0 100%;text-align:center;margin:4px 0 2px;font-size:clamp(1.6rem,7vw,2.8rem);font-weight:800;letter-spacing:.16em;line-height:1.1;color:var(--txt)}
+h1.brand{flex:0 0 100%;text-align:center;margin:2px 0 0;font-size:clamp(1.05rem,3.6vw,1.45rem);font-weight:800;letter-spacing:.14em;line-height:1.15;color:var(--txt)}
 h1.brand span{color:var(--acc)}
-h1.brand::after{content:"";display:block;height:4px;width:140px;margin:8px auto 0;border-radius:4px;background:linear-gradient(90deg,transparent,var(--acc),transparent)}
+h1.brand::after{content:"";display:block;height:2px;width:88px;margin:5px auto 1px;border-radius:4px;background:linear-gradient(90deg,transparent,var(--acc),transparent)}
 @media (min-width:900px){.grid.five{grid-template-columns:repeat(5,1fr);gap:8px}.grid.five .card{padding:12px 9px}.grid.five .big{font-size:1.05rem}.grid.five h3{font-size:.9rem}}
 button,.btn{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);border-radius:10px;padding:8px 12px;text-decoration:none;display:inline-block}
 button.on{background:var(--acc);color:#04202f;border-color:var(--acc);font-weight:600}
@@ -327,8 +327,8 @@ body.light .mi{background:rgba(255,255,255,.6)}
   </div>
 </header>
 <div id="loc" class="locsel"></div>
-<nav id="days"></nav>
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
+<nav id="days"></nav>
 <main id="view" tabindex="-1"></main>
 <div id="totop"></div>
 <div class="row"><a class="btn fb-btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener"><span class="fb-ic" aria-hidden="true">💬</span><b>Chega mais:</b><em>sua opinião vale ouro!</em></a><a class="btn" href="mailto:climabaixada@gmail.com" style="flex:1 1 100%;text-align:center"><span aria-hidden="true">✉️</span> climabaixada@gmail.com</a></div>
@@ -815,9 +815,9 @@ function momBox(di){
     if(n&&a.tmax-n.tmin>=3&&n.tmin<=23)x.push(`🧥 O fim da tarde esfria (cai para ${Math.round(n.tmin)}°C): leva uma blusinha!`);else if(pst(di,6,10)&&pst(di,6,10).tmin<=23)x.push(`🧥 Vai dar um friozinho de manhã (${Math.round(pst(di,6,10).tmin)}°C): leva uma blusinha!`);
     if(a.amax>=30)x.push('🧴 Vai esquentar: protetor solar e garrafinha de água!');
     if(a.gm>=45)x.push('💨 Vento forte: segura o chapéu!');
-    t='<div class="mgrid">'+x.map(s=>{const k=s.indexOf(' ');return `<div class="mi"><span class="ic" aria-hidden="true">${s.slice(0,k)}</span><span>${s.slice(k+1)}</span></div>`}).join('')+'</div><div class="mkiss">Beijo e juízo! 😘</div>';
+        t='<div class="mgrid">'+x.map(s=>{const k=s.indexOf(' ');return `<div class="mi"><span class="ic" aria-hidden="true">${s.slice(0,k)}</span><span>${s.slice(k+1)}</span></div>`}).join('')+'</div><div class="mkiss">Beijo salgado, pé na areia e juízo, hein! 🤙🌊</div>';
   }
-  return `<div class="mom"><div class="mh"><span aria-hidden="true">👩</span><b>Conselho da Mamãe<br>e do Papai!</b><span aria-hidden="true">👨</span></div><div class="mbody">${t}</div></div>`;
+  return `<div class="mom"><div class="mh"><span aria-hidden="true">🧜‍♀️</span><b>Conselho da Mamãe<br>e do Papai!</b><span aria-hidden="true">🏄‍♂️</span></div><div class="mbody">${t}</div></div>`;
 }
 function resumoDia(di){
   const m=pst(di,6,11),a=pst(di,12,14),t=pst(di,15,18);
@@ -1660,7 +1660,7 @@ function miniChuva(R){
   return `<div class="mc" role="img" aria-label="Chuva prevista nas próximas horas"><div class="mcl"><span>Elevado</span><span>Baixo</span></div><div class="mcb">${R.map(r=>`<div class="mcc"><div class="bw"><i class="${r.mm>=3?'hi':r.mm<0.3?'lo':''}" style="height:${Math.max(5,Math.round(r.mm/mx*100))}%" title="${pad(r.h)}h: ${r.mm.toFixed(1)} mm"></i></div><span>${pad(r.h)}h</span></div>`).join('')}</div></div><div class="mut">Barras: chuva prevista por hora (topo = 3 mm/h ou mais).</div>`;
 }
 function apMain(o){
-  return ae(`<div class="ab" tabindex="-1"><h3 id="ap_t">${o.tit}</h3><div class="apact">${o.acao}</div>${o.res?`<p>${o.res}</p>`:''}${o.rows?miniChuva(o.rows):''}${o.extra?`<p>${o.extra}</p>`:''}<p class="mut">${o.fonte}</p>${o.saved?'<p class="mut">✔ Preferências salvas. Valem a partir do próximo aviso.</p>':''}<div class="ar"><div class="apr"><button id="ap_ver">Ver detalhes ›</button><button id="ap_pers">⚙️ Personalizar</button></div><button id="ap_zzz">⏰ Soneca de 1 h</button><button id="ap_ok" class="on">Valeu, tô ligado!</button><button id="ap_no">Tô na correria! Não me mande mais!</button></div></div>`);
+  return ae(`<div class="ab" tabindex="-1"><h3 id="ap_t">${o.tit}</h3><div class="apact">${o.acao}</div>${o.res?`<p>${o.res}</p>`:''}${o.rows?miniChuva(o.rows):''}${o.extra?`<p>${o.extra}</p>`:''}<p class="mut">${o.fonte}</p>${o.saved?'<p class="mut">✔ Preferências salvas. Valem a partir do próximo aviso.</p>':''}<div class="ar"><div class="apr"><button id="ap_ver">🔎 Ver detalhes</button><button id="ap_pers">⚙️ Personalizar</button></div>
 }
 function apPers(){
   const L=lims(),op=(v,c,t)=>`<option value="${v}" ${v==c?'selected':''}>${t}</option>`;
