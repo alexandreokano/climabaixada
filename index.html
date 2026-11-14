@@ -816,9 +816,9 @@ function momBox(di){
     if(n&&a.tmax-n.tmin>=3&&n.tmin<=23)x.push(`🧥 O fim da tarde esfria (cai para ${Math.round(n.tmin)}°C): leva uma blusinha!`);else if(pst(di,6,10)&&pst(di,6,10).tmin<=23)x.push(`🧥 Vai dar um friozinho de manhã (${Math.round(pst(di,6,10).tmin)}°C): leva uma blusinha!`);
     if(a.amax>=30)x.push('🧴 Vai esquentar: protetor solar e garrafinha de água!');
     if(a.gm>=45)x.push('💨 Vento forte: segura o chapéu!');
-    t='<div class="mgrid">'+x.map(s=>{const k=s.indexOf(' ');return `<div class="mi"><span class="ic" aria-hidden="true">${s.slice(0,k)}</span><span>${s.slice(k+1)}</span></div>`}).join('')+'</div><div class="mkiss">Beijo e juízo! 😘</div>';
+    t='<div class="mgrid">'+x.map(s=>{const k=s.indexOf(' ');return `<div class="mi"><span class="ic" aria-hidden="true">${s.slice(0,k)}</span><span>${s.slice(k+1)}</span></div>`}).join('')+'</div><div class="mkiss">Um beijo e juízo, viu? 😘</div>';
   }
-  return `<div class="mom"><div class="mh"><span aria-hidden="true">👩</span><b>Conselho da Mamãe<br>e do Papai!</b><span aria-hidden="true">👨</span></div><div class="mbody">${t}</div></div>`;
+  return `<div class="mom"><div class="mh"><span aria-hidden="true">👒🐚</span><b>Conselho da Mamãe<br>e do Papai!</b><span aria-hidden="true">🧢🎣</span></div><div class="mbody">${t}</div></div>`;
 }
 function resumoDia(di){
   const m=pst(di,6,11),a=pst(di,12,14),t=pst(di,15,18);
