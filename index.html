@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clima Baixada – Painel interativo</title>
@@ -1368,9 +1368,9 @@ function render(){
   if(S.tab=='jogo'&&S.news===undefined&&!S.newsBusy){S.newsBusy=1;loadNews()}
   if(S.tab=='meudia')ensureFc();
   if(S.tab!='meudia'&&DAYS[S.day]&&DAYS[S.day].ext)S.day=DAYS.reduce((a,d,i)=>d.ext?a:i,0);
-  $('days').innerHTML=DAYS.map((d,i)=>(S.tab=='meudia'?(dayOff(i)<0||dayOff(i)>2):(d.ext||d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)))?'':`<button data-d="${i}" class="${i==S.day?'on':''}"${i==S.day?' aria-current="true"':''}><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span>${S.tab=='meudia'?`<span class="cf">${conf(i).dots}</span>`:''}</button>`).join('')+(S.tab=='meudia'?`<button data-ten="1" class="${S.ten||dayOff(S.day)>2?'on':''}" aria-pressed="${S.ten||dayOff(S.day)>2?'true':'false'}"><span>🗓️</span><span>10 dias</span></button>`:'');
+  $('days').innerHTML=DAYS.map((d,i)=>(S.tab=='meudia'?(dayOff(i)<0||dayOff(i)>2):(d.ext||d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)))?'':`<button data-d="${i}" class="${i==S.day?'on':''}"${i==S.day?' aria-current="true"':''}><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span>${S.tab=='meudia'?`<span class="cf" aria-hidden="true">${conf(i).dots}</span><span class="sr">confiança ${conf(i).t}</span>`:''}</button>`).join('')+(S.tab=='meudia'?`<button data-ten="1" class="${S.ten||dayOff(S.day)>2?'on':''}" aria-pressed="${S.ten||dayOff(S.day)>2?'true':'false'}"><span aria-hidden="true">🗓️</span><span>10 dias</span></button>`:'');
   const TV=TABS.filter(t=>t[0]!='esportes'||cur().m);$('tabs').style.gridTemplateColumns='repeat('+TV.length+',minmax(0,1fr))';$('tabs').innerHTML=TV.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"${t[0]==S.tab?' aria-current="page"':''}><span aria-hidden="true" style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
-  $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}>${s[1]}</button>`).join('')}</div>`:'';
+  $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}>${ae(s[1])}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Esse dia já passou: a avaliação do Capitão ficou velha. Escolhe um dia de hoje pra frente.</div>':'';
   $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
   /* sem calculadora */
