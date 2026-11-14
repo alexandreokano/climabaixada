@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clima Baixada – Painel interativo</title>
@@ -46,6 +46,9 @@ h1{margin:0;font-size:1.8rem;line-height:1.15}
 @media (max-width:600px){.banner{aspect-ratio:5/2;object-position:center 40%}}
 @media (min-width:601px){.banner{aspect-ratio:3/1;object-position:center 42%}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.skip{position:absolute;left:8px;top:-120px;z-index:2000;background:var(--acc);color:#04202f;font-weight:700;padding:12px 18px;border-radius:10px;text-decoration:none}
+.skip:focus{top:8px}
+#view:focus{outline:none}
 h1.brand{flex:0 0 100%;text-align:center;margin:4px 0 2px;font-size:clamp(1.6rem,7vw,2.8rem);font-weight:800;letter-spacing:.16em;line-height:1.1;color:var(--txt)}
 h1.brand span{color:var(--acc)}
 h1.brand::after{content:"";display:block;height:4px;width:140px;margin:8px auto 0;border-radius:4px;background:linear-gradient(90deg,transparent,var(--acc),transparent)}
@@ -257,6 +260,7 @@ body.light .mi{background:rgba(255,255,255,.6)}
 #apop .ar{display:grid;gap:10px;margin-top:14px}
 #apop .ar button{min-height:52px;font-weight:700;white-space:normal}
 #apop .ab{max-height:92vh;overflow:auto}
+#apop .ab:focus,#tour .tb:focus{outline:none}
 #apop .apact{font-size:1.15rem;font-weight:700;line-height:1.4;margin:4px 0 8px}
 #apop .apr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 #apop label{margin-top:10px}
@@ -310,6 +314,7 @@ body.light .mi{background:rgba(255,255,255,.6)}
 </script>
 </head>
 <body>
+<a class="skip" href="#view">Pular para o conteúdo</a>
 <div class="wrap">
 <header>
   
@@ -317,18 +322,18 @@ body.light .mi{background:rgba(255,255,255,.6)}
   <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
   <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Cubatão · Itanhaém · Mongaguá · Peruíbe</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-    <span class="badge" id="status">⏳ dando uma olhada no mar…</span>
-    <button id="help">❓ Me ajuda aí</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema">🌓</button>
+    <span class="badge" id="status" aria-live="polite" aria-atomic="true"><span aria-hidden="true">⏳</span> dando uma olhada no mar…</span>
+    <button id="help"><span aria-hidden="true">❓</span> Me ajuda aí</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema" aria-label="Tema claro" aria-pressed="false"><span aria-hidden="true">🌓</span></button>
   </div>
 </header>
 <div id="loc" class="locsel"></div>
 <nav id="days"></nav>
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
-<main id="view"></main>
+<main id="view" tabindex="-1"></main>
 <div id="totop"></div>
-<div class="row"><a class="btn fb-btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener"><span class="fb-ic" aria-hidden="true">💬</span><b>Chega mais:</b><em>sua opinião vale ouro!</em></a><a class="btn" href="mailto:climabaixada@gmail.com" style="flex:1 1 100%;text-align:center">✉️ climabaixada@gmail.com</a></div>
+<div class="row"><a class="btn fb-btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener"><span class="fb-ic" aria-hidden="true">💬</span><b>Chega mais:</b><em>sua opinião vale ouro!</em></a><a class="btn" href="mailto:climabaixada@gmail.com" style="flex:1 1 100%;text-align:center"><span aria-hidden="true">✉️</span> climabaixada@gmail.com</a></div>
 <footer>
-  <div class="selo"><img src="icon-512.png?v=5" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M3W9YDriOSW0KJz8NGh6dJGDuU.png?Expires=1794583180&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=De2ul0d8N5dRhLFLi9Y4Wy2f3vP3slF20t5tz6DbkrPXU04lth~tEzPLncnGzJzpo~B8hnB7NDYc2UbxiOdduDY2V4HyGi6s5Kg2cKNFDnMKZlxOzUJSUb4EZIP0xrWCpHjCBG7O6qjuP8ioiWhrTu14aw2annana7jy7WOW9fMBQkBq-nYGPL2zg4vOg89N7OUCr5TeAxhoA8vN022NuIqKqWbK65kyo7vKUxldV-xcwOZjOBVbyIogRSuoqUUFQHUjm1Gdcva2X0Hv9CenYm~5vF02J6AOztfSo-c~rEL9Gc~MLcxxGuxsgL0f0c7SB1ffK57AZOcD9pR1YHLnjA__'" alt="Clima Baixada"><span>CLIMA <b>BAIXADA</b></span></div>
+  <div class="selo"><img src="icon-512.png?v=5" onerror="this.onerror=null;this.src='canvas-asset:icon-512.png'" alt="Clima Baixada"><span>CLIMA <b>BAIXADA</b></span></div>
   Ao vivo ou em cache de até cerca de 1 h: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 12/11) e avaliação manual do Capitão da Baixada (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), com data e hora da última atualização exibidas na própria aba (arquivo dados.json).<br>
   Previsão de computador não é certeza e não vale mais que o seu bom senso nem que as orientações oficiais (Marinha, Defesa Civil, Bombeiros). Olha a arrebentação com seus olhos antes de entrar na água.
 </footer>
@@ -388,7 +393,8 @@ const PLACES={
 };
 
 /* ============ ESTADO ============ */
-const EMO=['🟢','🟡','🔴','⚪'],COL=['g','y','r','n'],LBL=['FAVORÁVEL','ALERTA','NÃO NAVEGUE','SEM AVALIAÇÃO'];
+const EMOS=['🟢','🟡','🔴','⚪'],EMOT=['favorável','alerta','não vá','sem avaliação'];
+const EMO=EMOS.map((e,i)=>`<span role="img" aria-label="${EMOT[i]}">${e}</span>`),COL=['g','y','r','n'],LBL=['FAVORÁVEL','ALERTA','NÃO NAVEGUE','SEM AVALIAÇÃO'];
 const todayStr=new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
 let S={day:Math.max(0,DAYS.findIndex(d=>d.date>=todayStr)),tab:'meudia',sub:'resumo',pf:'all',q:'',city:'Santos',pl:1,live:{},hover:null,filter:'all',stamp:'',chk:{}};
 const $=id=>document.getElementById(id);
@@ -400,6 +406,7 @@ if(!PLACES[S.city]||!PLACES[S.city][S.pl]){S.city='Santos';S.pl=1}
 if(S.dest&&!(PLACES[S.dest.city]&&PLACES[S.dest.city][S.dest.pl]))S.dest=null;
 if(S.ori&&!(PLACES[S.ori.city]&&PLACES[S.ori.city][S.ori.pl]))S.ori=null;
 const pad=n=>String(n).padStart(2,'0');
+const ae=h=>String(h).replace(/\p{Extended_Pictographic}\uFE0F?/gu,m=>`<span aria-hidden="true">${m}</span>`);
 const dirName=d=>['N','NE','L','SE','S','SO','O','NO'][Math.round(d/45)%8];
 const hm=ms=>new Date(ms).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
 function nowH(){const p=new Date().toLocaleTimeString('en-GB',{timeZone:'America/Sao_Paulo',hour12:false}).split(':');return +p[0]+p[1]/60}
@@ -446,9 +453,9 @@ function avalBox(){
   if(S.tab=='meudia')return momBox(S.day);if(0)return '<div class="note">👨‍👩‍👧 <b>Conselho da Mamãe e do Papai!</b></div>';
   const a=AVAL;if(a.st=='carregando'||S.tab=='jogo'||S.tab=='noticias')return '';
   const f=a.em?new Date(a.em).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'–';
-  if(a.st=='ok')return `<div class="note">🕒 O Capitão da Baixada deu o papo em ${f} (${a.fonte}), faz ${Math.floor(a.h)} h.</div>`;
-  if(a.st=='velha')return `<div class="warn">⚠️ <b>Papo velho:</b> o Capitão avaliou em ${f}, faz ${Math.floor(a.h)} h. Pede uma atualização e vai com o pé atrás.</div>`;
-  return `<div class="warn">⚪ <b>Sem papo do Capitão da Baixada por enquanto</b> (${a.msg}). Cinza é "sem avaliação", nunca "tá seguro". Só valem os dados ao vivo; na dúvida, não sai.</div>`;
+  if(a.st=='ok')return `<div class="note"><span aria-hidden="true">🕒</span> O Capitão da Baixada deu o papo em ${f} (${a.fonte}), faz ${Math.floor(a.h)} h.</div>`;
+  if(a.st=='velha')return `<div class="warn"><span aria-hidden="true">⚠️</span> <b>Papo velho:</b> o Capitão avaliou em ${f}, faz ${Math.floor(a.h)} h. Pede uma atualização e vai com o pé atrás.</div>`;
+  return `<div class="warn"><span aria-hidden="true">⚪</span> <b>Sem papo do Capitão da Baixada por enquanto</b> (${a.msg}). Cinza é "sem avaliação", nunca "tá seguro". Só valem os dados ao vivo; na dúvida, não sai.</div>`;
 }
 async function loadDados(){
   CUR_BAD=false;
@@ -484,16 +491,16 @@ function extDays(){
 function confBox(di){
   const c=conf(di);
   const tx=['Previsão firmeza: os modelos acertam bem chuva, vento e temperatura.','Dá pra se organizar, mas chuva e vento podem mudar. Confira na véspera.','Só tendência: a partir de 6 dias o tempo muda muito.'][c.n-1];
-  return `<div class="conf c${c.n}"><b>${c.dots} Confiança ${c.t}</b> · ${tx}</div>`;
+  return `<div class="conf c${c.n}"><b><span aria-hidden="true">${c.dots}</span> Confiança ${c.t}</b> · ${tx}</div>`;
 }
 function tendencia(di){
   const a=pst(di,6,21);
-  if(!a)return '<div class="cid"><div>🌡️ Sem previsão ao vivo para este dia.</div></div>';
+  if(!a)return '<div class="cid"><div><span aria-hidden="true">🌡️</span> Sem previsão ao vivo para este dia.</div></div>';
   let hp=false;for(let h=6;h<=21;h++){const o=obs(di,h);if(o&&o.pp!=null)hp=true}
   const wet=a.rm>=2||(hp&&a.pm>=60&&a.rm>=0.3);
   const tr=wet?'☔ Tendência de dia chuvoso':(a.rm>=0.3||(hp&&a.pm>=30))?'🌦️ Chuva possível':'😎 Tendência de tempo firme';
   const rn=a.rm>=0.3?`volume previsto de cerca de ${volTxt(a.rm)} no dia${hp?` e chance de até ${a.pm}%`:''}`:hp&&a.pm>=40?`ameaça de chuva (chance de até ${a.pm}%), mas com volume previsto de ${volTxt(a.rm)}`:'chuva improvável';
-  return `<div class="cid"><div><b>${tr}.</b> Temperatura em torno de ${Math.round(a.tmin)} a ${Math.round(a.tmax)}°C; ${rn}.</div></div><div class="mut">Para datas distantes mostramos só a tendência do dia, sem horários, períodos nem vento. Os detalhes aparecem conforme a data se aproxima. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div>`;
+  return `<div class="cid"><div><b><span aria-hidden="true">${tr.slice(0,tr.indexOf(' '))}</span>${tr.slice(tr.indexOf(' '))}.</b> Temperatura em torno de ${Math.round(a.tmin)} a ${Math.round(a.tmax)}°C; ${rn}.</div></div><div class="mut">Para datas distantes mostramos só a tendência do dia, sem horários, períodos nem vento. Os detalhes aparecem conforme a data se aproxima. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div>`;
 }
 extDays();
 
@@ -523,8 +530,9 @@ async function getData(kind,la,lo,live,kmh){
   }catch(x){}
   return getJ(live);
 }
+function setStatus(t){const i=t.indexOf(' ');$('status').innerHTML='<span aria-hidden="true">'+t.slice(0,i)+'</span>'+t.slice(i)}
 async function loadLive(){
-  $('status').textContent='⏳ dando uma olhada no mar…';
+setStatus('⏳ dando uma olhada no mar…');
   const P=cur(),F='https://api.open-meteo.com/v1/forecast?latitude='+P.la+'&longitude='+P.lo+'&hourly=wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,temperature_2m,apparent_temperature,precipitation_probability,cloud_cover&wind_speed_unit=kn&timezone=America%2FSao_Paulo&forecast_days=10';
   const M='https://marine-api.open-meteo.com/v1/marine?latitude='+(P.la-0.06).toFixed(3)+'&longitude='+(P.lo+0.03).toFixed(3)+'&hourly=wave_height,wave_period,wave_direction&timezone=America%2FSao_Paulo&forecast_days=7';
   const L={};let n=0;
@@ -535,7 +543,7 @@ async function loadLive(){
   if(m.status=='fulfilled'){const h=m.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),wh:h.wave_height[i],wp:h.wave_period[i],wdir:h.wave_direction[i]}});n++}
   const gen=[f,m].filter(x=>x.status=='fulfilled'&&x.value.__gen).map(x=>x.value.__gen);S.fromCache=gen.length>0;S.live=L;S.stamp=new Date(gen.length?Math.min(...gen):Date.now()).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
   S.cptecOk=cp.status=='fulfilled'&&cp.value>0;
-  $('status').textContent=(n>=(P.m?2:1)?`🟢 ${S.fromCache?'dados das':'ao vivo ·'} ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · usando os dados guardados');setTimeout(maybeAlert,800);
+  setStatus((n>=(P.m?2:1)?`🟢 ${S.fromCache?'dados das':'ao vivo ·'} ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · usando os dados guardados'));setTimeout(maybeAlert,800);
   render();
 }
 const CPTEC_ID=4748;
@@ -565,7 +573,9 @@ async function loadCptec(){
   return ok;
 }
 const obs=(di,h)=>S.live[`${DAYS[di].date}T${pad(h)}:00`]||null;
-function dayIcon(di){
+const WNM={'❔':'sem previsão','🌧️':'chuva','🌦️':'chuva possível','☀️':'sol','🌤️':'sol com poucas nuvens','⛅':'parcialmente nublado','☁️':'nublado'};
+function dayIcon(di){const e=dayIcon0(di);return `<span role="img" aria-label="${WNM[e]}">${e}</span>`}
+function dayIcon0(di){
   const H=[];for(let h=6;h<=21;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push(o)}
   if(!H.length)return '❔';
   const pm=Math.max(...H.map(x=>x.pp||0)),rm=H.reduce((s,x)=>s+(x.rain||0),0),cc=H.reduce((s,x)=>s+(x.cc||0),0)/H.length;
@@ -711,10 +721,10 @@ function infoHTML(di,h){
   h=Math.max(0,Math.min(23,Math.floor(h)));
   const x=hourInfo(di,h),o=x.o;
   let t=`<b>${pad(h)}:00</b> · `;
-  if(o&&(o.ws!=null||o.wh!=null)){t+=`💨 ${o.ws!=null?o.ws.toFixed(0):'–'} nós (raj. ${o.wg!=null?o.wg.toFixed(0):'–'}) ${o.wd!=null?dirName(o.wd):''} · 🌊 ${o.wh!=null?o.wh.toFixed(1):'–'} m / ${o.wp!=null?o.wp.toFixed(0):'–'} s · 🌧 ${o.rain!=null?o.rain.toFixed(1):'–'} mm · `}
+  if(o&&(o.ws!=null||o.wh!=null)){t+=`<span aria-hidden="true">💨</span> ${o.ws!=null?o.ws.toFixed(0):'–'} nós (raj. ${o.wg!=null?o.wg.toFixed(0):'–'}) ${o.wd!=null?dirName(o.wd):''} · <span aria-hidden="true">🌊</span> ${o.wh!=null?o.wh.toFixed(1):'–'} m / ${o.wp!=null?o.wp.toFixed(0):'–'} s · <span aria-hidden="true">🌧</span> ${o.rain!=null?o.rain.toFixed(1):'–'} mm · `}
   else t+='sem dados ao vivo · ';
   if(x.t&&cur().m)t+=`Maré ${x.t.lvl.toFixed(2)} m${x.t.approx?'*':''} (${x.t.state}) · `;
-  if(x.w)t+='⚓ possível movimento de navios · ';
+  if(x.w)t+='<span aria-hidden="true">⚓</span> possível movimento de navios · ';
   const cr=S.city!='Santos'?null:((S.cptec&&S.cptec[DAYS[di].date])||[]).find(r=>r.h==h);
   if(cr)t+=`CPTEC: ${cr.wh.toFixed(1)} m · ${cr.ws!=null?cr.ws.toFixed(0):'–'} nós · `;
   t+=`🛶 ${x.k.l==null?'–':EMO[x.k.l]} · 🏄 ${x.s.l==null?'–':EMO[x.s.l]}`;
@@ -726,7 +736,7 @@ function updateHover(h){
   document.querySelectorAll('svg.chart').forEach(sv=>{const l=sv.querySelector('.xh');const x=PL+h/24*(W-PL-PR);l.setAttribute('x1',x);l.setAttribute('x2',x);l.setAttribute('opacity',1)});
   document.querySelectorAll('.strip div.sel').forEach(e=>e.classList.remove('sel'));
   const sc=document.querySelector('.strip div[data-h="'+Math.floor(h)+'"]');if(sc)sc.classList.add('sel');
-  const b=$('hinfo');if(b)b.innerHTML=infoHTML(S.day,h);
+  const b=$('hinfo');if(b){b.innerHTML=infoHTML(S.day,h);hideEmoji(b)}
 }
 function dayChartData(di){
   const wind=[],gust=[],wave=[],tide=[];let any=false;
@@ -791,9 +801,9 @@ function momBox(di){
     if(n&&a.tmax-n.tmin>=3&&n.tmin<=23)x.push(`🧥 O fim da tarde esfria (cai para ${Math.round(n.tmin)}°C): leva uma blusinha!`);else if(pst(di,6,10)&&pst(di,6,10).tmin<=23)x.push(`🧥 Vai dar um friozinho de manhã (${Math.round(pst(di,6,10).tmin)}°C): leva uma blusinha!`);
     if(a.amax>=30)x.push('🧴 Vai esquentar: protetor solar e garrafinha de água!');
     if(a.gm>=45)x.push('💨 Vento forte: segura o chapéu!');
-    t='<div class="mgrid">'+x.map(s=>{const k=s.indexOf(' ');return `<div class="mi"><span class="ic">${s.slice(0,k)}</span><span>${s.slice(k+1)}</span></div>`}).join('')+'</div><div class="mkiss">Beijo e juízo! 😘</div>';
+    t='<div class="mgrid">'+x.map(s=>{const k=s.indexOf(' ');return `<div class="mi"><span class="ic" aria-hidden="true">${s.slice(0,k)}</span><span>${s.slice(k+1)}</span></div>`}).join('')+'</div><div class="mkiss">Beijo e juízo! 😘</div>';
   }
-  return `<div class="mom"><div class="mh"><span>👩</span><b>Conselho da Mamãe<br>e do Papai!</b><span>👨</span></div><div class="mbody">${t}</div></div>`;
+  return `<div class="mom"><div class="mh"><span aria-hidden="true">👩</span><b>Conselho da Mamãe<br>e do Papai!</b><span aria-hidden="true">👨</span></div><div class="mbody">${t}</div></div>`;
 }
 function resumoDia(di){
   const m=pst(di,6,11),a=pst(di,12,14),t=pst(di,15,18);
@@ -808,21 +818,21 @@ function resumoDia(di){
 }
 function people(di){
   const D=DAYS[di],all=pst(di,6,21);
-  if(!all)return `<div class="cid"><div>🌡️ Temperatura: sem previsão ao vivo para este dia.</div><div>☔ Chuva: ${D.chuva}</div><div>💨 Vento: ${D.vento}</div></div>`;
+  if(!all)return `<div class="cid"><div><span aria-hidden="true">🌡️</span> Temperatura: sem previsão ao vivo para este dia.</div><div><span aria-hidden="true">☔</span> Chuva: ${D.chuva}</div><div><span aria-hidden="true">💨</span> Vento: ${D.vento}</div></div>`;
   const tl=t=>t>=30?'bem quente':t>=26?'quente':t>=22?'agradável':t>=18?'fresquinho':'frio';
   const night=pst(di,17,21),t0=Math.round(all.tmin),t1=Math.round(all.tmax);
   const fr=[`sensação de até ${Math.round(all.amax)}°C às ${pad(all.ah)}h`];
   if(night&&all.tmax-night.tmin>=3)fr.push(`esfria à noite (até ${Math.round(night.tmin)}°C)`);
-  const rn=all.rm>=0.3?`☔ Chuva entre ${pad(all.r0)}h e ${pad(all.r1)}h (cerca de ${volTxt(all.rm)}, chance de até ${all.pm}%).`:all.pm>=40?`🌥️ Ameaça de chuva (chance de até ${all.pm}%), mas só ${volTxt(all.rm)} previstos.`:'😎 Sem chuva relevante.';
+  const rn=all.rm>=0.3?`<span aria-hidden="true">☔</span> Chuva entre ${pad(all.r0)}h e ${pad(all.r1)}h (cerca de ${volTxt(all.rm)}, chance de até ${all.pm}%).`:all.pm>=40?`<span aria-hidden="true">🌥️</span> Ameaça de chuva (chance de até ${all.pm}%), mas só ${volTxt(all.rm)} previstos.`:'<span aria-hidden="true">😎</span> Sem chuva relevante.';
   const ic=all.rm>=0.3?'🌦️':all.tmax>=29?'☀️':'🙂';
   const gm=all.gm,cg=Math.max(pst(di,6,9)?.gm??0,pst(di,17,19)?.gm??0);
-  const wt=(gm>=45?'💨 Ventania':gm>=30?'💨 Venta bastante':gm>=20?'🍃 Brisa firme':'🍃 Vento fraco')+`: rajadas até ${gm.toFixed(0)} km/h${cg>=30?` (${cg.toFixed(0)} km/h de manhã cedo e fim de tarde). Cuidado com guarda-chuva e chapéu.`:'.'}`;
-  return `<div class="cid"><div><b>${ic} Dia ${tl(all.tmax)}: ${t0}–${t1}°C</b>, ${fr.join('; ')}.<br>${rn}<br>${wt.replace(/^([^:]+):/,'<b>$1:</b>')}</div></div><div class="mut">Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}. Previsão de modelo, não certeza.</div>`;
+  const wt=(gm>=45?'<span aria-hidden="true">💨</span> Ventania':gm>=30?'<span aria-hidden="true">💨</span> Venta bastante':gm>=20?'<span aria-hidden="true">🍃</span> Brisa firme':'<span aria-hidden="true">🍃</span> Vento fraco')+`: rajadas até ${gm.toFixed(0)} km/h${cg>=30?` (${cg.toFixed(0)} km/h de manhã cedo e fim de tarde). Cuidado com guarda-chuva e chapéu.`:'.'}`;
+  return `<div class="cid"><div><b><span aria-hidden="true">${ic}</span> Dia ${tl(all.tmax)}: ${t0}–${t1}°C</b>, ${fr.join('; ')}.<br>${rn}<br>${wt.replace(/^([^:]+):/,'<b>$1:</b>')}</div></div><div class="mut">Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}. Previsão de modelo, não certeza.</div>`;
 }
 function peopleOld(di){
   const D=DAYS[di],H=[];
   for(let h=6;h<=21;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push({...o,h})}
-  if(!H.length)return `<div class="cid"><div>🌡️ Temperatura: sem previsão ao vivo para este dia.</div><div>☔ Chuva: ${D.chuva}</div><div>💨 Vento: ${D.vento}</div></div>`;
+  if(!H.length)return `<div class="cid"><div><span aria-hidden="true">🌡️</span> Temperatura: sem previsão ao vivo para este dia.</div><div><span aria-hidden="true">☔</span> Chuva: ${D.chuva}</div><div><span aria-hidden="true">💨</span> Vento: ${D.vento}</div></div>`;
   const mx=f=>Math.max(...H.map(f)),tmax=mx(x=>x.tp),tmin=Math.min(...H.map(x=>x.tp)),
    hot=H.reduce((b,x)=>(x.ap??x.tp)>(b.ap??b.tp)?x:b,H[0]),amax=hot.ap??hot.tp,
    pm=Math.round(mx(x=>x.pp||0)),rm=H.reduce((s,x)=>s+(x.rain||0),0),rh=H.filter(x=>x.rain>=0.3),
@@ -838,32 +848,32 @@ function peopleOld(di){
 function cptecNote(di){
   if(S.city!='Santos')return '';
   const c=((S.cptec&&S.cptec[DAYS[di].date])||[]).slice().sort((a,b)=>a.h-b.h);
-  if(!c.length)return `<div class="note">🔍 CPTEC/INPE: ${S.cptecOk===undefined?'carregando…':S.cptecOk?'sem dados para este dia (cobre só 10 a 12/11).':'indisponível agora (bloqueio do navegador ou serviço fora do ar). Usando só o Open-Meteo.'}</div>`;
+  if(!c.length)return `<div class="note"><span aria-hidden="true">🔍</span> CPTEC/INPE: ${S.cptecOk===undefined?'carregando…':S.cptecOk?'sem dados para este dia (cobre só 10 a 12/11).':'indisponível agora (bloqueio do navegador ou serviço fora do ar). Usando só o Open-Meteo.'}</div>`;
   let div=false;
   const rows=c.map(r=>{const o=obs(di,r.h);if(o&&o.wh!=null&&Math.abs(o.wh-r.wh)>=0.3)div=true;
     return `<tr><td>${pad(r.h)}h</td><td>${r.wh.toFixed(1)} m · ${r.ws!=null?r.ws.toFixed(0):'–'} nós ${r.wvd||''}</td><td>${o&&o.wh!=null?o.wh.toFixed(1)+' m · '+(o.ws!=null?o.ws.toFixed(0):'–')+' nós '+(o.wd!=null?dirName(o.wd):''):'sem dado'}</td></tr>`}).join('');
-  return `<div class="card ${div?'y':'g'}"><h3>🔍 Segunda opinião: CPTEC × Open-Meteo</h3><div class="t"><table><tr><th>Hora</th><th>CPTEC (onda · vento)</th><th>Open-Meteo</th></tr>${rows}</table></div>${how(div?'As fontes divergem na altura da onda (30 cm ou mais). Na dúvida, vale a leitura mais conservadora e a conferência da arrebentação a olho antes de sair.':'As duas fontes estão próximas. Isso aumenta a confiança, mas não elimina o risco: o CPTEC não traz rajada, período da onda nem chuva.')}</div>`;
+  return `<div class="card ${div?'y':'g'}"><h3><span aria-hidden="true">🔍</span> Segunda opinião: CPTEC × Open-Meteo</h3><div class="t"><table><tr><th>Hora</th><th>CPTEC (onda · vento)</th><th>Open-Meteo</th></tr>${rows}</table></div>${how(div?'As fontes divergem na altura da onda (30 cm ou mais). Na dúvida, vale a leitura mais conservadora e a conferência da arrebentação a olho antes de sair.':'As duas fontes estão próximas. Isso aumenta a confiança, mas não elimina o risco: o CPTEC não traz rajada, período da onda nem chuva.')}</div>`;
 }
 function resumo(){
   const di=S.day,D=DAYS[di],kw=bestRun(di,x=>x.k),sw=bestRun(di,x=>x.s);
-  const wtxt=w=>!w?'sem dados ao vivo':w.l==2?'🔴 nenhum horário seguro hoje':`${EMO[w.l]} ${w.txt}${w.l==1?' (com cautela)':''}`;
-  return `<div class="card ${COL[D.k]}"><h2>🏄🛶🎣⚓ Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão da Baixada</h3><div>${fmt(di)}</div>
+  const wtxt=w=>!w?'sem dados ao vivo':w.l==2?'<span aria-hidden="true">🔴</span> nenhum horário seguro hoje':`${EMO[w.l]} ${w.txt}${w.l==1?' (com cautela)':''}`;
+  return `<div class="card ${COL[D.k]}"><h2><span aria-hidden="true">🏄🛶🎣⚓</span> Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão da Baixada</h3><div>${fmt(di)}</div>
   <div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>
   ${subtabs()}<div class="note">ℹ️ <b>Esse é o Resumão do mar.</b> Quer o detalhe de uma atividade? Toca na aba lá em cima: <b>🏄 Surf</b> (picos e correntes), <b>🛶 Caiaque</b> (hora a hora e percurso), <b>🎣 Pesca</b> (viradas de maré e peixes), <b>⚓ Navio na Área</b> (navios) e <b>🏖️ Como tá a praia hoje?</b> (balneabilidade).</div>
   <div class="grid five">
-   <div class="card ${COL[D.k]}"><h3>🛶 Caiaque (manual)</h3><div class="big">${EMO[D.k]} ${LBL[D.k]}</div><div class="mut">⏰ Melhor hora pra cair na água hoje: ${wtxt(kw)}</div></div>
-   <div class="card ${COL[D.s]}"><h3>🏄 Surfe (manual)</h3><div class="big">${EMO[D.s]} ${['FAVORÁVEL','ALERTA','NÃO SURFE','SEM AVALIAÇÃO'][D.s]}</div><div class="mut">⏰ Melhor hora pra cair na água hoje: ${wtxt(sw)}</div></div>
-   <div class="card y"><h3>🎣 Pesca</h3><div class="big">🟡 De terra</div><div class="mut">Veja a aba Pesca para as viradas de maré.</div></div>
-   <div class="card r"><h3>🧪 Balneabilidade</h3><div class="big">🔴 Santos impróprio</div><div class="mut">CETESB 12/11 · próximo boletim 19/11</div></div>
-   <div class="card y"><h3>⚓ Tráfego</h3><div class="big">🟡 Atenção</div><div class="mut">Mais manobras ±2 h das viradas de maré. Fique fora do canal.</div></div>
+   <div class="card ${COL[D.k]}"><h3><span aria-hidden="true">🛶</span> Caiaque (manual)</h3><div class="big">${EMO[D.k]} ${LBL[D.k]}</div><div class="mut"><span aria-hidden="true">⏰</span> Melhor hora pra cair na água hoje: ${wtxt(kw)}</div></div>
+   <div class="card ${COL[D.s]}"><h3><span aria-hidden="true">🏄</span> Surfe (manual)</h3><div class="big">${EMO[D.s]} ${['FAVORÁVEL','ALERTA','NÃO SURFE','SEM AVALIAÇÃO'][D.s]}</div><div class="mut"><span aria-hidden="true">⏰</span> Melhor hora pra cair na água hoje: ${wtxt(sw)}</div></div>
+   <div class="card y"><h3><span aria-hidden="true">🎣</span> Pesca</h3><div class="big"><span aria-hidden="true">🟡</span> De terra</div><div class="mut">Veja a aba Pesca para as viradas de maré.</div></div>
+   <div class="card r"><h3><span aria-hidden="true">🧪</span> Balneabilidade</h3><div class="big"><span aria-hidden="true">🔴</span> Santos impróprio</div><div class="mut">CETESB 12/11 · próximo boletim 19/11</div></div>
+   <div class="card y"><h3><span aria-hidden="true">⚓</span> Tráfego</h3><div class="big"><span aria-hidden="true">🟡</span> Atenção</div><div class="mut">Mais manobras ±2 h das viradas de maré. Fique fora do canal.</div></div>
   </div>
   ${cptecNote(di)}<div class="note">⏰ <b>Melhor hora</b> é o maior bloco de horas seguidas com mar tranquilo entre 5h e 17h, calculado com vento, onda e chuva ao vivo. O Capitão da Baixada olha mais fontes e pode chegar a outra conclusão. Se as duas não baterem, vai pela mais cuidadosa.</div>
-  <div class="card"><h3>📈 Passa o mouse (ou toca) nos gráficos</h3><div class="info" id="hinfo">Aponta pra uma hora aí.</div>${how('Use a linha do tempo para escolher a melhor hora: procure o período em que vento, rajada e onda ficam juntos na faixa verde. A caixa acima mostra os valores da hora em que você tocar.')}${charts(di)}</div>`;
+  <div class="card"><h3><span aria-hidden="true">📈</span> Passa o mouse (ou toca) nos gráficos</h3><div class="info" id="hinfo">Aponta pra uma hora aí.</div>${how('Use a linha do tempo para escolher a melhor hora: procure o período em que vento, rajada e onda ficam juntos na faixa verde. A caixa acima mostra os valores da hora em que você tocar.')}${charts(di)}</div>`;
 }
 function tripBox(k){
   const di=S.day,T=S.trip||(S.trip={a:'',b:''}),sea=k=='k',fn=x=>sea?x.k:x.s;
-  const head='<div class="card"><h3>⏱️ Meu horário (opcional)</h3>';
-  const form=`<div class="aform"><div><label>🕘 Saída</label><input id="t_a" type="time" value="${T.a}"></div><div><label>🏁 Volta</label><input id="t_b" type="time" value="${T.b}"></div></div>`;
+  const head='<div class="card"><h3><span aria-hidden="true">⏱️</span> Meu horário (opcional)</h3>';
+  const form=`<div class="aform"><div><label><span aria-hidden="true">🕘</span> Saída</label><input id="t_a" type="time" value="${T.a}"></div><div><label><span aria-hidden="true">🏁</span> Volta</label><input id="t_b" type="time" value="${T.b}"></div></div>`;
   const tp=v=>{const m=/^(\d{2}):(\d{2})$/.exec(v);return m?+m[1]+m[2]/60:null};
   const a=tp(T.a),b=tp(T.b);
   if(a==null||b==null)return head+form+'<div class="mut">Preenche a saída e a volta pra ver o mar só no seu horário. Vale pro Surf e pro Caiaque.</div></div>';
@@ -894,10 +904,10 @@ function tripBox(k){
 }
 function caiaque(){
   const di=S.day;
-  return tripBox('k')+`<div class="card"><h3>🛶 Semáforo hora a hora (automático)</h3>${strip(di,x=>x.k)}<div class="mut">Toca numa hora pra ver os números.</div><div class="info" id="hinfo">Clique em um horário.</div>${how('Só sai se a remada toda (ida e volta) estiver 🟢 e volta antes da primeira hora 🟡 ou 🔴. O vento costuma levantar à tarde: remar cedo é mais tranquilo. Sendo iniciante no Barracuda Evolution, na dúvida fica pertinho da praia ou deixa pra outro dia.')}</div>
+  return tripBox('k')+`<div class="card"><h3><span aria-hidden="true">🛶</span> Semáforo hora a hora (automático)</h3>${strip(di,x=>x.k)}<div class="mut">Toca numa hora pra ver os números.</div><div class="info" id="hinfo">Clique em um horário.</div>${how('Só sai se a remada toda (ida e volta) estiver 🟢 e volta antes da primeira hora 🟡 ou 🔴. O vento costuma levantar à tarde: remar cedo é mais tranquilo. Sendo iniciante no Barracuda Evolution, na dúvida fica pertinho da praia ou deixa pra outro dia.')}</div>
   <div class="grid">
-   <div class="card g"><h3>🧭 Percurso sugerido</h3><ul><li>Saída: Aparecida ou Canal 6</li><li>Remada paralela à praia, 300–500 m, entre o Canal 6 e o Canal 3</li><li>Sai contra o vento e volta com ele empurrando</li><li>Retorne pelo mesmo caminho</li></ul></div>
-   <div class="card r"><h3>🚫 Evitar</h3><ul><li>Boca da barra e Fortaleza</li><li>Deck do Pescador</li><li>Ponta da Praia</li><li>Canal de navegação do porto</li><li>Vazante com vento sul &gt;12 nós</li></ul></div>
+   <div class="card g"><h3><span aria-hidden="true">🧭</span> Percurso sugerido</h3><ul><li>Saída: Aparecida ou Canal 6</li><li>Remada paralela à praia, 300–500 m, entre o Canal 6 e o Canal 3</li><li>Sai contra o vento e volta com ele empurrando</li><li>Retorne pelo mesmo caminho</li></ul></div>
+   <div class="card r"><h3><span aria-hidden="true">🚫</span> Evitar</h3><ul><li>Boca da barra e Fortaleza</li><li>Deck do Pescador</li><li>Ponta da Praia</li><li>Canal de navegação do porto</li><li>Vazante com vento sul &gt;12 nós</li></ul></div>
   </div>
   ${how('O trajeto verde segue a praia, longe do canal e da barra, e dá pra voltar rápido. Fica longe dos pontos vermelhos mesmo em dia bom: lá tem navio, correnteza e onda que muda do nada.')}<div class="card"><h3>Regras</h3><ul><li>Vento ≤10 nós 🟢 · 11–14 🟡 · ≥15 ou rajada &gt;20 🔴</li><li>Onda &gt;1,0 m 🔴 (iniciante: cautela a partir de 0,8 m)</li><li>Período &lt;6 s com vento moderado: mar quadrado</li><li>Vazante + vento S/SE/SO &gt;12 nós: aviso grave de efeito canal</li></ul></div>`;
 }
@@ -909,7 +919,7 @@ function trafego(){
   const mt='https://www.marinetraffic.com/en/ais/home/centerx:-46.30/centery:-23.98/zoom:12';
   const vf='https://www.vesselfinder.com/?lat=-23.98&lon=-46.30&zoom=12';
   const emb='https://www.vesselfinder.com/aismap?width=100%25&height=380&names=true&lat=-23.98&lon=-46.30&zoom=12&clicktoact=false&track=false&fleet=&fleet_name=&fleet_timespan=&mmsi=0&imo=0';
-  return `<div class="card r"><h3>⚓ Tráfego de embarcações · ${DAYS[di].lbl}</h3>
+  return `<div class="card r"><h3><span aria-hidden="true">⚓</span> Tráfego de embarcações · ${DAYS[di].lbl}</h3>
    ${how('Antes de sair, abre o mapa de navios (AIS, um radar público que mostra onde cada navio está agora) e vê se tem navio chegando ou saindo. Se tiver, ou se estiver na janela amarela, fica mais perto da praia ou adia. Regra de ouro: nunca cruza o canal.')}<div class="warn"><b>⚠️ Atenção:</b> navio grande demora pra parar, manobra pouco e não enxerga caiaque. Nunca cruza o canal de navegação nem fica na rota de entrada e saída da barra.</div>${agora}
    <div class="row">
     <a class="btn" href="${mt}" target="_blank" rel="noopener">🗺️ MarineTraffic</a>
@@ -918,14 +928,14 @@ function trafego(){
     <a class="btn" href="https://www.nexuscomex.com.br/santos.html" target="_blank" rel="noopener">📋 Atracações programadas</a>
     <a class="btn" href="https://www.google.com/search?q=Praticagem+de+S%C3%A3o+Paulo+c%C3%A2meras+barra+Santos" target="_blank" rel="noopener">📹 Câmeras da barra (Praticagem SP)</a>
    </div>
-   ${S.map?`<iframe src="${emb}" style="width:100%;height:380px;border:0;border-radius:10px" loading="lazy" title="Mapa AIS"></iframe>`:`<button id="mapTry">🗺️ Tentar mapa aqui dentro do painel</button>`}
+   ${S.map?`<iframe src="${emb}" style="width:100%;height:380px;border:0;border-radius:10px" loading="lazy" title="Mapa AIS"></iframe>`:`<button id="mapTry"><span aria-hidden="true">🗺️</span> Tentar mapa aqui dentro do painel</button>`}
    <div class="mut">Se o mapa ficar em branco, o site não deixa aparecer aqui dentro. É normal: usa os botões acima, que abrem o mapa ao vivo em outra aba.</div></div>
-  <div class="card y"><h3>🕒 Janelas prováveis de maior movimento (estimativa)</h3>
+  <div class="card y"><h3><span aria-hidden="true">🕒</span> Janelas prováveis de maior movimento (estimativa)</h3>
    ${strip(di,x=>({l:x.w==null?null:(x.w?1:0),r:[x.w?'janela provável de manobras':'fora das janelas']}),TLEG)}
    <div class="info" id="hinfo">Clique em um horário.</div>
    <div class="t"><table><tr><th>Virada de maré</th><th>Janela ±2 h</th></tr>${rows||'<tr><td colspan=2>sem dados</td></tr>'}</table></div>
    ${how('A faixa amarela mostra quando há mais manobras (±2 h das viradas de maré). Prefira remar nas horas verdes, longe do canal.')}<div class="note">Estimativa baseada na tábua da Marinha, <b>não é a programação oficial de manobras</b>, que é do C3OT da Praticagem e não tem API pública. Para a situação real da barra, use o mapa de navios (AIS), as câmeras e o canal 16 VHF.</div></div>
-  <div class="card"><h3>🛡️ Regras para o caiaque</h3><ul>
+  <div class="card"><h3><span aria-hidden="true">🛡️</span> Regras para o caiaque</h3><ul>
    <li>Mantenha-se bem fora do canal de navegação e da boca da barra</li>
    <li>Navios geram marola forte e sucção: afaste-se do canal</li>
    <li>Evite remar na virada da maré, quando há mais manobras</li>
@@ -934,8 +944,8 @@ function trafego(){
 }
 function surfe(){
   const di=S.day;
-  return tripBox('s')+`<div class="card"><h3>🏄 Semáforo hora a hora (iniciante, automático)</h3>${strip(di,x=>x.s)}<div class="info" id="hinfo">Clique em um horário.</div>${how('Pra quem tá começando, procura hora 🟢: onda de 0,3 a 1,0 m e vento fraco ou terral. Vento do mar (onshore) acima de 10 nós deixa a onda bagunçada. Sem hora verde? Treina na areia ou volta outro dia.')}</div>
-  <div class="card"><h3>📍 Onde surfar</h3>${how('Começa nos Canais 4 e 6, em frente ao posto de salva-vidas. Corrente de retorno é aquela faixa de água escura e agitada, sem onda quebrando. Não rema contra: sai de lado, paralelo à praia.')}<div class="t"><table><tr><th>Pico</th><th>Perfil</th></tr>
+  return tripBox('s')+`<div class="card"><h3><span aria-hidden="true">🏄</span> Semáforo hora a hora (iniciante, automático)</h3>${strip(di,x=>x.s)}<div class="info" id="hinfo">Clique em um horário.</div>${how('Pra quem tá começando, procura hora 🟢: onda de 0,3 a 1,0 m e vento fraco ou terral. Vento do mar (onshore) acima de 10 nós deixa a onda bagunçada. Sem hora verde? Treina na areia ou volta outro dia.')}</div>
+  <div class="card"><h3><span aria-hidden="true">📍</span> Onde surfar</h3>${how('Começa nos Canais 4 e 6, em frente ao posto de salva-vidas. Corrente de retorno é aquela faixa de água escura e agitada, sem onda quebrando. Não rema contra: sai de lado, paralelo à praia.')}<div class="t"><table><tr><th>Pico</th><th>Perfil</th></tr>
    <tr><td>Canais 4 e 6</td><td>🟢 Ondas menores e mais amigáveis ao iniciante</td></tr>
    <tr><td>Quebra-Mar (José Menino)</td><td>🟡 Ondas maiores e mais cheias</td></tr>
    <tr><td>Emissário, molhes e saída de canais</td><td>🔴 Correntes de retorno mais fortes: evitar</td></tr></table></div>
@@ -944,9 +954,9 @@ function surfe(){
 function pesca(){
   const di=S.day,tds=dayTides(di);
   const rows=tds.map(e=>`<tr><td>${e.t=='A'?'⬆️ Alta':'⬇️ Baixa'}</td><td>${hm(e.ms)}${e.h!=null?` (${e.h.toFixed(2)} m)`:''}</td><td>${hm(e.ms-3600000)}–${hm(e.ms+3600000)}</td></tr>`).join('');
-  return `<div class="card y"><h3>🎣 Viradas de maré · ${DAYS[di].lbl}</h3><div class="t"><table><tr><th>Maré</th><th>Horário</th><th>Janela sugerida (±1 h)</th></tr>${rows||'<tr><td colspan=3>sem dados</td></tr>'}</table></div>
+  return `<div class="card y"><h3><span aria-hidden="true">🎣</span> Viradas de maré · ${DAYS[di].lbl}</h3><div class="t"><table><tr><th>Maré</th><th>Horário</th><th>Janela sugerida (±1 h)</th></tr>${rows||'<tr><td colspan=3>sem dados</td></tr>'}</table></div>
   <div class="mut" style="margin-top:6px">A janela é manha da região, não garantia de peixe.</div>${how('O peixe costuma beliscar mais na virada da maré, quando a água mexe. Pega a janela da tabela que cair em hora 🟢 do mar. Indo de caiaque, volta antes do vento da tarde.')}<div class="mut"> Com ondas altas, pesque de terra e fique longe das pedras molhadas.</div></div>
-  <div class="card"><h3>🐟 Espécies prováveis</h3><div class="t"><table><tr><th>Peixe</th><th>Onde / quando</th></tr>${SPECIES.map(s=>`<tr><td>${s[0]}</td><td>${s[1]}</td></tr>`).join('')}</table></div></div>`;
+  <div class="card"><h3><span aria-hidden="true">🐟</span> Espécies prováveis</h3><div class="t"><table><tr><th>Peixe</th><th>Onde / quando</th></tr>${SPECIES.map(s=>`<tr><td>${s[0]}</td><td>${s[1]}</td></tr>`).join('')}</table></div></div>`;
 }
 function aguaOld(){
   const f=S.filter,btn=(k,t)=>`<button data-f="${k}" class="${f==k?'on':''}">${t}</button>`;
@@ -982,20 +992,20 @@ function calcRun(){
 }
 function checklist(){
   const done=CHECK.filter((c,i)=>S.chk[i]).length;
-  return `<div class="card chk"><h3>✅ Checklist de segurança <small class="mut">(${done}/${CHECK.length}; não fica salvo ao fechar)</small></h3>${CHECK.map((c,i)=>`<label><input type="checkbox" data-i="${i}" ${S.chk[i]?'checked':''}> ${c}</label>`).join('')}<button id="chkreset" style="margin-top:8px">Limpar</button></div>`;
+  return `<div class="card chk"><h3><span aria-hidden="true">✅</span> Checklist de segurança <small class="mut">(${done}/${CHECK.length}; não fica salvo ao fechar)</small></h3>${CHECK.map((c,i)=>`<label><input type="checkbox" data-i="${i}" ${S.chk[i]?'checked':''}> ${c}</label>`).join('')}<button id="chkreset" style="margin-top:8px">Limpar</button></div>`;
 }
 
 /* ============ ALERTAS WHATSAPP ============ */
 function alertas(){
-  return `<div class="card g inst-card"><div class="row"><button id="tinst2" class="inst-btn"><img class="inst-ic" src="icon-512.png?v=5" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3M3W9YDriOSW0KJz8NGh6dJGDuU.png?Expires=1794583180&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=De2ul0d8N5dRhLFLi9Y4Wy2f3vP3slF20t5tz6DbkrPXU04lth~tEzPLncnGzJzpo~B8hnB7NDYc2UbxiOdduDY2V4HyGi6s5Kg2cKNFDnMKZlxOzUJSUb4EZIP0xrWCpHjCBG7O6qjuP8ioiWhrTu14aw2annana7jy7WOW9fMBQkBq-nYGPL2zg4vOg89N7OUCr5TeAxhoA8vN022NuIqKqWbK65kyo7vKUxldV-xcwOZjOBVbyIogRSuoqUUFQHUjm1Gdcva2X0Hv9CenYm~5vF02J6AOztfSo-c~rEL9Gc~MLcxxGuxsgL0f0c7SB1ffK57AZOcD9pR1YHLnjA__'" alt=""><span class="inst-tx"><b>Quer o ícone na tela do celular?</b><em>Vem ver como é muito fácil!</em></span></button></div></div>`;
+  return `<div class="card g inst-card"><div class="row"><button id="tinst2" class="inst-btn"><img class="inst-ic" src="icon-512.png?v=5" onerror="this.onerror=null;this.src='canvas-asset:icon-512.png'" alt=""><span class="inst-tx"><b>Quer o ícone na tela do celular?</b><em>Vem ver como é muito fácil!</em></span></button></div></div>`;
 }
 
 /* ============ LOCAL, MEU DIA, JOGO DO SANTOS ============ */
 const cur=()=>{const p=PLACES[S.city][S.pl];return{n:p[0],la:p[1],lo:p[2],m:p[3],city:S.city}};
 function onPlace(){sv();S.live={};S.cptec={};S.cptecOk=undefined;S.hover=null;render();loadLive();habLater()}
 function nosea(){const P=cur();return `<div class="card y"><h3>🏙️ ${P.n} não tem mar</h3><div>Aqui não tem mar: ondas, maré e correntes só valem pros bairros de praia (marcados com 🌊 no seletor). Escolhe um deles, tipo Aparecida, Gonzaguinha ou Pitangueiras, ou vai na aba <b>🌤️ Meu Dia</b> pra ver o tempo no seu bairro.</div></div>`}
-function locNote(){const P=cur();return P.city=='Santos'&&P.m?'':`<div class="note">📍 <b>${P.n} (${P.city})</b>: a avaliação manual do Capitão e a tábua de maré (aproximada) são de Santos. A balneabilidade vem do boletim da CETESB para os pontos desta cidade. Aqui valem os dados ao vivo do local. ${P.m?'':'Bairro sem mar: ondas e maré não se aplicam.'}</div>`}
-function localWarn(){return S.city=='Santos'?'':guiaLocal()+`<div class="warn">⚠️ Percursos, picos e pontos citados nesta aba (Canal 6, Fortaleza da Barra, Deck do Pescador) e a maré são de Santos. Em ${S.city}, use só os dados ao vivo e as regras do semáforo, e peça orientação local.${['Praia Grande','Mongaguá','Peruíbe'].includes(S.city)?' Aqui o mar é aberto, sem a proteção da baía: o semáforo de caiaque pode subestimar o risco.':''}</div>`}
+function locNote(){const P=cur();return P.city=='Santos'&&P.m?'':`<div class="note"><span aria-hidden="true">📍</span> <b>${P.n} (${P.city})</b>: a avaliação manual do Capitão e a tábua de maré (aproximada) são de Santos. A balneabilidade vem do boletim da CETESB para os pontos desta cidade. Aqui valem os dados ao vivo do local. ${P.m?'':'Bairro sem mar: ondas e maré não se aplicam.'}</div>`}
+function localWarn(){return S.city=='Santos'?'':guiaLocal()+`<div class="warn"><span aria-hidden="true">⚠️</span> Percursos, picos e pontos citados nesta aba (Canal 6, Fortaleza da Barra, Deck do Pescador) e a maré são de Santos. Em ${S.city}, use só os dados ao vivo e as regras do semáforo, e peça orientação local.${['Praia Grande','Mongaguá','Peruíbe'].includes(S.city)?' Aqui o mar é aberto, sem a proteção da baía: o semáforo de caiaque pode subestimar o risco.':''}</div>`}
 const GUIA={
  'Bertioga':{r:[
   ['🛶 Caiaque iniciante','Indaiá (Praia da Enseada): enseada abrigada, sem ondas','🟢'],
@@ -1019,37 +1029,37 @@ const GUIA={
 };
 function guiaLocal(){
   const g=GUIA[S.city];if(!g)return '';
-  return `<div class="card y"><h3>📍 Guia local · ${S.city}</h3><div class="t"><table><tr><th>Atividade</th><th>Ponto / acesso</th><th>Nível</th></tr>${g.r.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}</table></div><ul style="margin-top:8px">${g.a.map(x=>`<li>${x}</li>`).join('')}</ul>${how('Use o guia para escolher o ponto e o semáforo por hora para escolher o horário. Colete salva-vidas, apito e sinalização visual são obrigatórios no caiaque.')}<div class="note">As regras de vento e ondas são calibradas com referência na Baía de Santos. A maré é aproximada (tábua de Santos) e a balneabilidade vem do boletim da CETESB de 12/11; onde não houver ponto correspondente aparece como <b>sem dados</b>. Confira o boletim vigente antes de entrar na água.</div></div>`;
+  return `<div class="card y"><h3><span aria-hidden="true">📍</span> Guia local · ${S.city}</h3><div class="t"><table><tr><th>Atividade</th><th>Ponto / acesso</th><th>Nível</th></tr>${g.r.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}</table></div><ul style="margin-top:8px">${g.a.map(x=>`<li>${x}</li>`).join('')}</ul>${how('Use o guia para escolher o ponto e o semáforo por hora para escolher o horário. Colete salva-vidas, apito e sinalização visual são obrigatórios no caiaque.')}<div class="note">As regras de vento e ondas são calibradas com referência na Baía de Santos. A maré é aproximada (tábua de Santos) e a balneabilidade vem do boletim da CETESB de 12/11; onde não houver ponto correspondente aparece como <b>sem dados</b>. Confira o boletim vigente antes de entrar na água.</div></div>`;
 }
 const SEA=f=>()=>!cur().m?nosea():localWarn()+f();
 function period(di,a,b,ic,nm){
   const H=[];for(let h=a;h<b;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push(o)}
-  if(!H.length)return `<div class="card"><h3>${ic} ${nm}</h3><div class="mut">sem previsão ao vivo</div></div>`;
+  if(!H.length)return `<div class="card"><h3><span aria-hidden="true">${ic}</span> ${nm}</h3><div class="mut">sem previsão ao vivo</div></div>`;
   const tmin=Math.min(...H.map(x=>x.tp)),tmax=Math.max(...H.map(x=>x.tp)),pm=Math.round(Math.max(...H.map(x=>x.pp||0))),rm=H.reduce((s,x)=>s+(x.rain||0),0),g=Math.max(...H.map(x=>x.wg||0))*1.852;
   const l=(rm>=2||(pm>=60&&rm>=0.3))?'r':pm>=30?'y':'g';
-  return `<div class="card ${l}"><h3>${ic} ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">${rm<0.3?(pm>=40?`🌥️ Cara de chuva<br>💧 só uns pingos, quase nada`:`😎 Chuva improvável<br>💧 sem água prevista`):`☔ ${pm}% de chance<br>💧 ${volTxt(rm)} previstos`}<br>💨 ${g.toFixed(0)} km/h</div></div>`;
+  return `<div class="card ${l}"><h3><span aria-hidden="true">${ic}</span> ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">${rm<0.3?(pm>=40?`<span aria-hidden="true">🌥️</span> Cara de chuva<br><span aria-hidden="true">💧</span> só uns pingos, quase nada`:`<span aria-hidden="true">😎</span> Chuva improvável<br><span aria-hidden="true">💧</span> sem água prevista`):`<span aria-hidden="true">☔</span> ${pm}% de chance<br><span aria-hidden="true">💧</span> ${volTxt(rm)} previstos`}<br><span aria-hidden="true">💨</span> ${g.toFixed(0)} km/h</div></div>`;
 }
 function tenDays(){
   const L=DAYS.map((d,i)=>i).filter(i=>dayOff(i)>=0&&dayOff(i)<=9);
-  const tile=i=>{const c=conf(i),a=pst(i,6,21);return `<button data-td="${i}" class="c${c.n} ${i==S.day?'on':''}"><span class="tl">${DAYS[i].lbl}</span><span class="ti">${dayIcon(i)}</span><span class="tt">${a?Math.round(a.tmin)+'–'+Math.round(a.tmax)+'°C':'–'}</span><span class="tr2">${a?'☔ '+a.pm+'%':'sem previsão'}</span><span class="cf2">${c.dots}</span></button>`};
-  return `<div class="card" id="dez-dias"><h2>🗓️ Previsão de 10 dias</h2>
-  <div class="conf c1"><b>●●● Confiança alta · hoje até +2 dias.</b> Horários de chuva, vento e temperatura costumam acertar bem. Pode planejar.</div>
-  <div class="conf c2"><b>●●○ Confiança média · +3 a +5 dias.</b> Boa para se organizar, mas a chuva e o vento podem mudar. Confira de novo na véspera.</div>
-  <div class="conf c3"><b>●○○ Confiança baixa · +6 a +9 dias.</b> Só tendência: o erro cresce muito, principalmente em chuva e vento.</div>
+  const tile=i=>{const c=conf(i),a=pst(i,6,21);return `<button data-td="${i}" class="c${c.n} ${i==S.day?'on':''}"${i==S.day?' aria-current="true"':''}><span class="tl">${DAYS[i].lbl}</span><span class="ti">${dayIcon(i)}</span><span class="tt">${a?Math.round(a.tmin)+'–'+Math.round(a.tmax)+'°C':'–'}</span><span class="tr2">${a?'<span aria-hidden="true">☔</span> '+a.pm+'%<span class="sr"> de chance de chuva</span>':'sem previsão'}</span><span class="cf2" aria-hidden="true">${c.dots}</span><span class="sr">confiança ${c.t}</span></button>`};
+  return `<div class="card" id="dez-dias"><h2><span aria-hidden="true">🗓️</span> Previsão de 10 dias</h2>
+  <div class="conf c1"><b><span aria-hidden="true">●●●</span> Confiança alta · hoje até +2 dias.</b> Horários de chuva, vento e temperatura costumam acertar bem. Pode planejar.</div>
+  <div class="conf c2"><b><span aria-hidden="true">●●○</span> Confiança média · +3 a +5 dias.</b> Boa para se organizar, mas a chuva e o vento podem mudar. Confira de novo na véspera.</div>
+  <div class="conf c3"><b><span aria-hidden="true">●○○</span> Confiança baixa · +6 a +9 dias.</b> Só tendência: o erro cresce muito, principalmente em chuva e vento.</div>
   ${how('Decide pelos 3 primeiros dias. Do 4º ao 6º, deixa uma folga. Do 7º em diante é só pra ter uma ideia do tempo, tá?')}
   <div class="tgrid">${L.map(tile).join('')}</div>
-  <div class="mut">Toque em um dia para ver o detalhe dele. ☔ = chance de chuva. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div>${topBtn()}</div>`;
+  <div class="mut">Toque em um dia para ver o detalhe dele. <span aria-hidden="true">☔</span> = chance de chuva. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div>${topBtn()}</div>`;
 }
 function meudia(){
   const di=S.day,P=cur(),bn=(CETESB[P.city]||[]).find(x=>x[0].startsWith(P.n));
   let wmax=0,has=false;
   for(let h=6;h<=17;h++){const o=obs(di,h);if(o&&o.wh!=null){has=true;wmax=Math.max(wmax,o.wh)}}
-  const praia=!P.m?'🏙️ Este bairro não tem praia.':bn?(bn[1]==0?'🟢 Água própria para banho (CETESB, boletim de 12/11).':'🔴 Água imprópria para banho (CETESB, boletim de 12/11). Evite entrar e engolir água.'):'⚪ Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
-  const mar=!P.m?'':has?(wmax>1.5?`🌊 Mar bravo: ondas até ${wmax.toFixed(1)} m. Banho só na rasa e pertinho do salva-vidas.`:wmax>1?`🌊 Mar mexidinho: ondas até ${wmax.toFixed(1)} m. Criança e idoso só na beirinha.`:`🌊 Mar de boa: ondas até ${wmax.toFixed(1)} m.`):'🌊 Sem dados de ondas agora.';
-  return `${S.ten?tenDays():''}<div class="card" id="meudia-card"><h2 class="oneline">🌤️ Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
+  const praia=!P.m?'<span aria-hidden="true">🏙️</span> Este bairro não tem praia.':bn?(bn[1]==0?'<span aria-hidden="true">🟢</span> Água própria para banho (CETESB, boletim de 12/11).':'<span aria-hidden="true">🔴</span> Água imprópria para banho (CETESB, boletim de 12/11). Evite entrar e engolir água.'):'<span aria-hidden="true">⚪</span> Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
+  const mar=!P.m?'':has?(wmax>1.5?`<span aria-hidden="true">🌊</span> Mar bravo: ondas até ${wmax.toFixed(1)} m. Banho só na rasa e pertinho do salva-vidas.`:wmax>1?`<span aria-hidden="true">🌊</span> Mar mexidinho: ondas até ${wmax.toFixed(1)} m. Criança e idoso só na beirinha.`:`<span aria-hidden="true">🌊</span> Mar de boa: ondas até ${wmax.toFixed(1)} m.`):'<span aria-hidden="true">🌊</span> Sem dados de ondas agora.';
+  return `${S.ten?tenDays():''}<div class="card" id="meudia-card"><h2 class="oneline"><span aria-hidden="true">🌤️</span> Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
   ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,15,'🍽️','Almoço')}${period(di,15,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
-  ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px">☔ chance de cair água no período · 💧 quanto de água vem por aí. Chance alta com quase nada de água é só ameaça, não é toró.</div>`}
-  ${vai()}<div class="card"><h3 class="praiah">🏖️ E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com o mar de boa, entra só perto do salva-vidas e olha a bandeira do dia. Se a praia estiver 🔴, prefere um passeio na areia.':'Pra ver a praia, troca o bairro por um marcado com 🌊.')}</div>
+  ${conf(di).n==3?'':`<div class="mut" style="margin:-6px 0 12px"><span aria-hidden="true">☔</span> chance de cair água no período · <span aria-hidden="true">💧</span> quanto de água vem por aí. Chance alta com quase nada de água é só ameaça, não é toró.</div>`}
+  ${vai()}<div class="card"><h3 class="praiah"><span aria-hidden="true">🏖️</span> E a praia?</h3><div class="cid">${mar?`<div>${mar}</div>`:''}<div>${praia}</div></div>${how(P.m?'Mesmo com o mar de boa, entra só perto do salva-vidas e olha a bandeira do dia. Se a praia estiver 🔴, prefere um passeio na areia.':'Pra ver a praia, troca o bairro por um marcado com 🌊.')}</div>
   <div class="note">Previsão é de computador, não é promessa. Pra temporal, alerta ou emergência, fala com a Defesa Civil (199) e os Bombeiros (193).</div>`+alertas();
 }
 /* ============ VAI PRA ONDE? ============ */
@@ -1081,19 +1091,19 @@ function vaiTxt(so,sd,on,dn,di){
   const wet=s=>s.rm>=1||(s.pm>=60&&s.rm>=0.3),lite=s=>!wet(s)&&s.pm>=40;
   const chv=s=>`${s.r0!=null?`chuva entre ${pad(s.r0)}h e ${pad(s.r1)}h, `:''}cerca de ${s.rm.toFixed(1)} mm e chance de até ${s.pm}%`;
   let l,t;
-  if(wet(sd)&&!wet(so)){l=2;t=`☔ <b>Vai chover em ${dn}</b>, embora em ${on} ${lite(so)?'só possa garoar':'a previsão seja de tempo sem chuva relevante'}. Em ${dn}: ${chv(sd)}. Leve capa ou guarda-chuva e, se puder, ajuste o horário da saída.`}
-  else if(wet(sd)){l=2;t=`☔ <b>Chuva nos dois lugares.</b> Em ${on}: ${chv(so)}. Em ${dn}: ${chv(sd)}. Leve capa ou guarda-chuva.`}
-  else if(wet(so)){l=0;t=`🌤️ <b>Em ${dn} o tempo tende a ser melhor.</b> Em ${on} deve chover (${chv(so)}), mas em ${dn} a previsão é de tempo sem chuva relevante (chance de até ${sd.pm}%).`}
-  else if(lite(sd)){l=1;t=`🌂 <b>Pode garoar em ${dn}</b> (chance de até ${sd.pm}%, com pouca água prevista). Um guarda-chuva pequeno resolve.`}
-  else{l=0;t=`😎 <b>Sem chuva relevante em ${dn}</b> (chance de até ${sd.pm}%).`}
-  const dt=sd.tmax-so.tmax,x=[`🌡️ ${dn}: ${sd.tmin.toFixed(0)}–${sd.tmax.toFixed(0)}°C${Math.abs(dt)>=3?` (${Math.abs(dt).toFixed(0)}°C ${dt>0?'mais quente':'mais fresco'} que em ${on})`:''}.`];
-  if(sd.gm>=40)x.push(`💨 Rajadas de até ${sd.gm.toFixed(0)} km/h em ${dn}.`);
-  const row=(n,s)=>`<div><b>${n}</b>🌡️ ${s.tmin.toFixed(0)}–${s.tmax.toFixed(0)}°C<br>☔ Chance de chuva: ${s.pm}%<br>💧 Volume: ${s.rm.toFixed(1)} mm<br>💨 Rajada: ${s.gm.toFixed(0)} km/h</div>`;
+  if(wet(sd)&&!wet(so)){l=2;t=`<span aria-hidden="true">☔</span> <b>Vai chover em ${dn}</b>, embora em ${on} ${lite(so)?'só possa garoar':'a previsão seja de tempo sem chuva relevante'}. Em ${dn}: ${chv(sd)}. Leve capa ou guarda-chuva e, se puder, ajuste o horário da saída.`}
+  else if(wet(sd)){l=2;t=`<span aria-hidden="true">☔</span> <b>Chuva nos dois lugares.</b> Em ${on}: ${chv(so)}. Em ${dn}: ${chv(sd)}. Leve capa ou guarda-chuva.`}
+  else if(wet(so)){l=0;t=`<span aria-hidden="true">🌤️</span> <b>Em ${dn} o tempo tende a ser melhor.</b> Em ${on} deve chover (${chv(so)}), mas em ${dn} a previsão é de tempo sem chuva relevante (chance de até ${sd.pm}%).`}
+  else if(lite(sd)){l=1;t=`<span aria-hidden="true">🌂</span> <b>Pode garoar em ${dn}</b> (chance de até ${sd.pm}%, com pouca água prevista). Um guarda-chuva pequeno resolve.`}
+  else{l=0;t=`<span aria-hidden="true">😎</span> <b>Sem chuva relevante em ${dn}</b> (chance de até ${sd.pm}%).`}
+  const dt=sd.tmax-so.tmax,x=[`<span aria-hidden="true">🌡️</span> ${dn}: ${sd.tmin.toFixed(0)}–${sd.tmax.toFixed(0)}°C${Math.abs(dt)>=3?` (${Math.abs(dt).toFixed(0)}°C ${dt>0?'mais quente':'mais fresco'} que em ${on})`:''}.`];
+  if(sd.gm>=40)x.push(`<span aria-hidden="true">💨</span> Rajadas de até ${sd.gm.toFixed(0)} km/h em ${dn}.`);
+  const row=(n,s)=>`<div><b>${n}</b><span aria-hidden="true">🌡️</span> ${s.tmin.toFixed(0)}–${s.tmax.toFixed(0)}°C<br><span aria-hidden="true">☔</span> Chance de chuva: ${s.pm}%<br><span aria-hidden="true">💧</span> Volume: ${s.rm.toFixed(1)} mm<br><span aria-hidden="true">💨</span> Rajada: ${s.gm.toFixed(0)} km/h</div>`;
   return `<div class="card ${COL[l]}"><h3>${EMO[l]} ${DAYS[di].lbl} · ${on} → ${dn}</h3><div class="cid"><div>${t}</div>${x.map(v=>`<div>${v}</div>`).join('')}</div>
-  <div class="vcmp">${row('📍 '+on+' (origem)',so)}${row('🎯 '+dn+' (destino)',sd)}</div>
+  <div class="vcmp">${row('<span aria-hidden="true">📍</span> '+on+' (origem)',so)}${row('<span aria-hidden="true">🎯</span> '+dn+' (destino)',sd)}</div>
   <div class="mut" style="margin-top:6px">Período considerado: ${pad(Math.max(so.a,sd.a))}h às 22h. Previsão de modelo, não certeza: a chuva na Baixada é localizada e pode cair em um bairro e não em outro. Confira antes de sair.</div></div>`;
 }
-const confVai=di=>{const c=conf(di);return `<div class="conf c${c.n}"><b>${c.dots} Confiança ${c.t}</b> · ${c.n==1?'previsão detalhada, boa para decidir.':c.n==2?'boa para planejar, mas confira de novo na véspera.':'só tendência: chuva e vento podem mudar bastante até lá.'}</div>`};
+const confVai=di=>{const c=conf(di);return `<div class="conf c${c.n}"><b><span aria-hidden="true">${c.dots}</span> Confiança ${c.t}</b> · ${c.n==1?'previsão detalhada, boa para decidir.':c.n==2?'boa para planejar, mas confira de novo na véspera.':'só tendência: chuva e vento podem mudar bastante até lá.'}</div>`};
 /* ---- previsão do trajeto (usa só a previsão horária já carregada) ---- */
 const hkey=ms=>new Date(ms).toLocaleString('sv-SE',{timeZone:'America/Sao_Paulo'}).slice(0,13).replace(' ','T')+':00';
 function vTime(di){
@@ -1127,14 +1137,14 @@ function tripVai(di,o,d){
     if(x&&y&&bad(x,y)==0){alt=a2;break}
   }
   const rn=(w,n)=>{const r=w.rows.find(x=>x.rain>=0.3);return w.rm>=0.3?`${n}: ${volTxt(w.rm)} e chance de até ${w.pm}%${r?`, a partir de cerca das ${hm(r.ms)}`:''}`:`${n}: sem chuva relevante (chance de até ${w.pm}%)`};
-  const head=l==2?'☔ <b>Leve capa ou guarda-chuva:</b> há chuva prevista no seu horário.':l==1?'🌂 <b>Atenção:</b> ameaça de chuva fraca ou rajadas fortes no seu horário.':'😎 <b>Sem chuva relevante</b> prevista nos dois locais no seu horário.';
+  const head=l==2?'<span aria-hidden="true">☔</span> <b>Leve capa ou guarda-chuva:</b> há chuva prevista no seu horário.':l==1?'<span aria-hidden="true">🌂</span> <b>Atenção:</b> ameaça de chuva fraca ou rajadas fortes no seu horário.':'<span aria-hidden="true">😎</span> <b>Sem chuva relevante</b> prevista nos dois locais no seu horário.';
   const gm=Math.max(wo.gm,wd.gm);
   const c=v=>v?`${v.tp.toFixed(0)}°C · ${v.pp==null?'–':v.pp+'%'} · ${(v.rain||0).toFixed(1)} mm · ${(v.wg||0).toFixed(0)} km/h`:'–';
   const tr=wo.rows.map(r=>`<tr><td>${hm(r.ms)}</td><td>${c(r)}</td><td>${c(md[hkey(r.ms)])}</td></tr>`).join('');
   return `<div class="card ${COL[l]}"><h3>${EMO[l]} Seu trajeto · ${DAYS[di].lbl}, ${t} às ${hm(b)} (${o[0]} → ${d[0]})</h3>
-  <div class="cid"><div>${head}</div><div>🌧️ ${rn(wo,'Na origem ('+o[0]+')')}<br>🌧️ ${rn(wd,'No destino ('+d[0]+')')}</div>
-  ${gm>=45?`<div>💨 Rajadas de até ${gm.toFixed(0)} km/h no período.</div>`:''}
-  ${l>0?`<div>${alt!=null?`💡 Saindo às ${hm(alt)} (mesma duração), a previsão não mostra chuva relevante nem rajada forte nos dois locais.`:'💡 Não achei, até 3 h antes ou depois, uma saída sem chuva ou rajada forte na previsão.'}</div>`:''}</div>
+  <div class="cid"><div>${head}</div><div><span aria-hidden="true">🌧️</span> ${rn(wo,'Na origem ('+o[0]+')')}<br><span aria-hidden="true">🌧️</span> ${rn(wd,'No destino ('+d[0]+')')}</div>
+  ${gm>=45?`<div><span aria-hidden="true">💨</span> Rajadas de até ${gm.toFixed(0)} km/h no período.</div>`:''}
+  ${l>0?`<div>${alt!=null?`<span aria-hidden="true">💡</span> Saindo às ${hm(alt)} (mesma duração), a previsão não mostra chuva relevante nem rajada forte nos dois locais.`:'<span aria-hidden="true">💡</span> Não achei, até 3 h antes ou depois, uma saída sem chuva ou rajada forte na previsão.'}</div>`:''}</div>
   <div class="t"><table><tr><th>Hora</th><th>${o[0]} (origem)</th><th>${d[0]} (destino)</th></tr>${tr}</table></div>
   <div class="mut" style="margin-top:6px">Cada linha mostra temperatura · chance de chuva · volume · rajada. O painel compara só os dois extremos: não há dados do caminho entre eles, e a chuva na Baixada é localizada. Os horários dependem do tempo de trajeto que você informou (o painel não calcula rota). Previsão de modelo, não certeza.</div></div>`;
 }
@@ -1143,15 +1153,15 @@ function vai(){
   let vd=DAYS.findIndex(x=>x.date==(S.vdate||todayStr));
   if(vd<0||dayOff(vd)<0||dayOff(vd)>9){S.vdate=todayStr;vd=DAYS.findIndex(x=>x.date==todayStr)}
   const di=vd<0?S.day:vd,os=oriS(),o=PLACES[os.city][os.pl],d=S.dest?PLACES[S.dest.city][S.dest.pl]:null;
-  const grp=(sel,ph)=>(ph?`<option value="" ${sel?'':'selected'}>— escolha o destino —</option>`:'')+Object.keys(PLACES).map(c=>`<optgroup label="${c}">${PLACES[c].map((p,i)=>{const v=c+'|'+i;return `<option value="${v}" ${v==sel?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`}).join('')}</optgroup>`).join('');
-  const orig=`<div class="pick"><label>📍 De onde você sai? ▾</label><select id="o_sel">${grp(os.city+'|'+os.pl,0)}</select></div><div class="row" style="margin-top:8px"><button id="gpsBtn">📍 Usar minha localização</button></div><div class="mut" style="margin-top:6px">Opcional: o navegador só pede sua permissão quando você toca aqui. Serve apenas para achar o bairro mais perto de você; a posição não é guardada nem enviada. Se negar, é só escolher na lista.</div>${S.gmsg?`<div class="note">${S.gmsg}</div>`:''}${S.ori?`<button id="oriOk" style="margin-top:8px">↩ Usar o local do topo (${PLACES[S.city][S.pl][0]})</button>`:`<div class="mut" style="margin-top:6px">Por padrão vale o lugar lá do topo. Toca na lista pra trocar.</div>`}`;
-  const dst=`<div class="pick" style="margin-top:8px"><label>🎯 Para onde vai? ▾</label><select id="d_sel">${grp(S.dest?S.dest.city+'|'+S.dest.pl:'',1)}</select></div>`;
+  const grp=(sel,ph)=>(ph?`<option value="" ${sel?'':'selected'}>— escolha o destino —</option>`:'')+Object.keys(PLACES).map(c=>`<optgroup label="${c}">${PLACES[c].map((p,i)=>{const v=c+'|'+i;return `<option value="${v}" ${v==sel?'selected':''} aria-label="${p[0]}, ${p[3]?'com praia':'sem praia'}">${p[3]?'🌊':'🏙️'} ${p[0]}</option>`}).join('')}</optgroup>`).join('');
+  const orig=`<div class="pick"><label><span aria-hidden="true">📍</span> De onde você sai? ▾</label><select id="o_sel">${grp(os.city+'|'+os.pl,0)}</select></div><div class="row" style="margin-top:8px"><button id="gpsBtn"><span aria-hidden="true">📍</span> Usar minha localização</button></div><div class="mut" style="margin-top:6px">Opcional: o navegador só pede sua permissão quando você toca aqui. Serve apenas para achar o bairro mais perto de você; a posição não é guardada nem enviada. Se negar, é só escolher na lista.</div>${S.gmsg?`<div class="note">${S.gmsg}</div>`:''}${S.ori?`<button id="oriOk" style="margin-top:8px">↩ Usar o local do topo (${PLACES[S.city][S.pl][0]})</button>`:`<div class="mut" style="margin-top:6px">Por padrão vale o lugar lá do topo. Toca na lista pra trocar.</div>`}`;
+  const dst=`<div class="pick" style="margin-top:8px"><label><span aria-hidden="true">🎯</span> Para onde vai? ▾</label><select id="d_sel">${grp(S.dest?S.dest.city+'|'+S.dest.pl:'',1)}</select></div>`;
   const dopt=DAYS.map((x,i)=>({x,i,o:dayOff(i)})).filter(q=>q.o>=0&&q.o<=9).map(q=>`<option value="${q.x.date}" ${q.i==di?'selected':''}>${q.o==0?'Hoje · ':q.o==1?'Amanhã · ':q.o==2?'Depois de amanhã · ':''}${q.x.lbl}</option>`).join('');
-  const dsel=`<div class="pick" style="margin-top:8px"><label>📅 Para qual dia? ▾</label><select id="v_date">${dopt}</select></div><div class="mut" style="margin-top:6px">A previsão cobre hoje e os próximos 9 dias. Os 2 dias mais próximos são os mais confiáveis. Depois disso, quanto mais longe a data, mais o tempo pode mudar de ideia! 😉</div>`;
+  const dsel=`<div class="pick" style="margin-top:8px"><label><span aria-hidden="true">📅</span> Para qual dia? ▾</label><select id="v_date">${dopt}</select></div><div class="mut" style="margin-top:6px">A previsão cobre hoje e os próximos 9 dias. Os 2 dias mais próximos são os mais confiáveis. Depois disso, quanto mais longe a data, mais o tempo pode mudar de ideia! 😉</div>`;
   const vt=vTime(di),vdu=S.vdur||1;
-  const tsel=`<div class="aform" style="margin-top:8px"><div class="pick"><label>🕘 Que horas você sai? ▾</label><input id="v_time" type="time" value="${vt}"></div><div class="pick"><label>⏳ Quanto dura o trajeto? ▾</label><select id="v_dur">${[0.5,1,1.5,2,3,4].map(x=>`<option value="${x}" ${x==vdu?'selected':''}>${x<1?'30 min':x==1?'1 hora':String(x).replace('.',',')+' horas'}</option>`).join('')}</select></div></div><div class="mut">Sugerimos a próxima hora cheia (hoje) ou 8h (outros dias). Ajuste para o seu caso.</div>`;
+  const tsel=`<div class="aform" style="margin-top:8px"><div class="pick"><label><span aria-hidden="true">🕘</span> Que horas você sai? ▾</label><input id="v_time" type="time" value="${vt}"></div><div class="pick"><label><span aria-hidden="true">⏳</span> Quanto dura o trajeto? ▾</label><select id="v_dur">${[0.5,1,1.5,2,3,4].map(x=>`<option value="${x}" ${x==vdu?'selected':''}>${x<1?'30 min':x==1?'1 hora':String(x).replace('.',',')+' horas'}</option>`).join('')}</select></div></div><div class="mut">Sugerimos a próxima hora cheia (hoje) ou 8h (outros dias). Ajuste para o seu caso.</div>`;
   const hp=habPattern(),off=habOff();
-  const hab=`<div class="mut" style="margin-top:12px">🔔 <b>Aviso do seu horário habitual:</b> ${off?'desligado.':'ligado.'} ${off?'':hp?`Notei que você costuma ver ${hp.p[0]} (${hp.city}) por volta das ${hmm(hp.min)}; se a previsão indicar chuva ou rajadas fortes, aviso uns 20 minutos antes, <i>com o painel aberto</i>.`:'Ainda não notei um horário fixo (preciso de 3 dias parecidos).'} O histórico fica só neste aparelho e não é enviado a ninguém. <button id="habToggle" style="margin-top:6px;padding:6px 12px">${off?'Ligar':'Desligar e apagar histórico'}</button></div>`;
+  const hab=`<div class="mut" style="margin-top:12px"><span aria-hidden="true">🔔</span> <b>Aviso do seu horário habitual:</b> ${off?'desligado.':'ligado.'} ${off?'':hp?`Notei que você costuma ver ${hp.p[0]} (${hp.city}) por volta das ${hmm(hp.min)}; se a previsão indicar chuva ou rajadas fortes, aviso uns 20 minutos antes, <i>com o painel aberto</i>.`:'Ainda não notei um horário fixo (preciso de 3 dias parecidos).'} O histórico fica só neste aparelho e não é enviado a ninguém. <button id="habToggle" style="margin-top:6px;padding:6px 12px">${off?'Ligar':'Desligar e apagar histórico'}</button></div>`;
   let res='<div class="note">Escolhe a cidade e o bairro pra onde vai. O painel compara o tempo de lá com o daqui, tipo: "lá vai chover, mas aqui tá firme".</div>';
   if(S.ori&&!S.ori.city)res='<div class="note">Escolhe a cidade de origem pra comparar com o destino. Enquanto isso, vale o lugar do topo.</div>';
   else if(d){
@@ -1162,7 +1172,7 @@ function vai(){
     else if(!so||!sd){const fim=DAYS[di].date==todayStr&&nowH()>=22;res=fim?'<div class="note">🌙 O período de previsão de hoje (até 22h) já terminou. Escolha amanhã ou outro dia em <b>📅 Para qual dia?</b>.</div>':'<div class="warn">⚠️ Não há previsão disponível para '+DAYS[di].lbl+' em um dos locais, então nenhum dado é mostrado. Toque em 🔄 no topo ou escolha outro dia.</div>'}
     else res=confVai(di)+tripVai(di,o,d)+vaiTxt(so,sd,o[0],d[0],di);
   }
-  return `<div class="card"><div class="hook"><h3 class="oneline">🧭 Vai pra onde?<br class="mb"> Será que vai chover lá?</h3><div class="mut">☔ Dá o papo antes de sair e não leva chuva na cabeça!</div></div>${orig}${dst}${dsel}${tsel}${hab}</div>${res}`;
+  return `<div class="card"><div class="hook"><h3 class="oneline"><span aria-hidden="true">🧭</span> Vai pra onde?<br class="mb"> Será que vai chover lá?</h3><div class="mut">☔ Dá o papo antes de sair e não leva chuva na cabeça!</div></div>${orig}${dst}${dsel}${tsel}${hab}</div>${res}`;
 }
 
 const ESC={'Santos':'santos.png','Grêmio':'gremio.png','Botafogo':'botafogo.png'};
@@ -1205,9 +1215,9 @@ function jogo(){
         const ts=rows.filter(r=>r.tp!=null).map(r=>r.tp),tmax=ts.length?Math.max(...ts):null,tmin=ts.length?Math.min(...ts):null;
         const l=(pm>=60||rm>=3||gm>=50)?2:(pm>=30||rm>=0.5||gm>=35)?1:0;
         const tips=[
-          (pm>=60||rm>=2)?`☔ Chuva provável (até ${pm}%). Leve capa de chuva: muitos estádios restringem guarda-chuva, confira as regras do jogo.`:pm>=30?`🌂 Pode chover (até ${pm}%). Leve uma capa leve na bolsa.`:'😎 Chuva improvável.',
-          tmax!=null&&tmax>=28?'🥵 Calor: protetor solar, água e roupa leve.':tmin!=null&&tmin<=17?'🧥 Frio: leve agasalho.':'🙂 Temperatura agradável.',
-          gm>=35?`💨 Rajadas até ${gm.toFixed(0)} km/h: cuidado com objetos soltos e com a saída.`:'🍃 Vento sem problema.'
+          (pm>=60||rm>=2)?`<span aria-hidden="true">☔</span> Chuva provável (até ${pm}%). Leve capa de chuva: muitos estádios restringem guarda-chuva, confira as regras do jogo.`:pm>=30?`<span aria-hidden="true">🌂</span> Pode chover (até ${pm}%). Leve uma capa leve na bolsa.`:'<span aria-hidden="true">😎</span> Chuva improvável.',
+          tmax!=null&&tmax>=28?'<span aria-hidden="true">🥵</span> Calor: protetor solar, água e roupa leve.':tmin!=null&&tmin<=17?'<span aria-hidden="true">🧥</span> Frio: leve agasalho.':'<span aria-hidden="true">🙂</span> Temperatura agradável.',
+          gm>=35?`<span aria-hidden="true">💨</span> Rajadas até ${gm.toFixed(0)} km/h: cuidado com objetos soltos e com a saída.`:'<span aria-hidden="true">🍃</span> Vento sem problema.'
         ];
         res=`<div class="card ${COL[l]}"><h3>${EMO[l]} ${['TEMPO FIRMEZA','OLHO NO TEMPO','TEMPO FECHADO'][l]}</h3><div class="vs vsbig">${esc('Santos')}<i>x</i>${esc(g.opp)}</div><div class="mut" style="text-align:center">${g.opp?'Santos x '+g.opp:'Jogo do Santos'}</div><div class="cid">${tips.map(x=>`<div>${x}</div>`).join('')}</div>
         <div class="t"><table><tr><th>Hora</th><th>Momento</th><th>Temp.</th><th>Chuva</th><th>Volume</th><th>Rajada</th></tr>${rows.map(r=>`<tr><td>${r.hh}</td><td>${r.k<0?'Chegada':r.k==0?'Bola rolando':'Jogo / saída'}</td><td>${f(r.tp)}°C</td><td>${r.pp==null?'–':r.pp+'%'}</td><td>${f(r.rain,1)} mm</td><td>${f(r.wg)} km/h</td></tr>`).join('')}</table></div>
@@ -1215,14 +1225,14 @@ function jogo(){
       }
     }
   }
-  return `<div class="card"><div class="jhead"><h2>⚽ Jogo do Santos<br>Tempo na Vila Belmiro</h2><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""></div>
-  <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}"><span class="vs">${esc('Santos')}<i>x</i>${esc(j.opp)}</span><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
+  return `<div class="card"><div class="jhead"><h2>⚽ Jogo do Santos<br>Tempo na Vila Belmiro</h2><img class="jimg" src="edu-silhueta.png" onerror="imgFb(this,'edu-silhueta.png')" alt=""></div>
+  <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}" aria-pressed="${g.date==j.date}"><span class="vs">${esc('Santos')}<i>x</i>${esc(j.opp)}</span><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Toca num jogo pra ver o tempo. Lista dos jogos em casa (mandante Santos), conforme Lance! e Google em 10/11. O estádio não consta nas fontes: confirme o local. Para outros jogos, veja os links abaixo.</div>
   <div class="row">
     <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Jogos no ge</a>
     <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
     <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener">🔎 Buscar no Google</a>
-    <button id="goNews" class="lk">📰 Últimas notícias do Peixe</button>
+    <button id="goNews" class="lk"><span aria-hidden="true">📰</span> Últimas notícias do Peixe</button>
   </div>
   </div><div id="jogo-res">${res}</div>${newsSec()}`;
 }
@@ -1230,12 +1240,12 @@ function jogo(){
 /* ============ NAVEGAÇÃO ============ */
 const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Rolê no Mar'],['jogo','⚽ Jogo do Santos']];
 const TICON={meudia:'☀️☁️🌧️',esportes:'🏄🚣🐟',noticias:'📰'};
-function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"><span class="ic">${s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
+function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}><span class="ic">${s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
 const SUBS=[['resumo','📋 Resumão'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Navio na Área'],['praia','🏖️ Como tá a praia hoje?']];
 const FISH='<svg class="fish" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
 TICON.esportes='🏄🚣'+FISH;
 const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
-TICON.jogo='<img src="edu-silhueta.png" onerror="this.onerror=null;this.src=\'canvas-asset:edu-silhueta.png\'" alt="" class="tjog" style="width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
+TICON.jogo='<img src="edu-silhueta.png" onerror="imgFb(this,\'edu-silhueta.png\',\'⚽\')" alt="" class="tjog" style="width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
 /* ============ NOTÍCIAS (só das duas fontes autorizadas) ============ */
 const NEWS_SRC=[
  {n:'Diário do Peixe',site:'https://www.diariodopeixe.com.br/',feed:'https://www.diariodopeixe.com.br/feed/'},
@@ -1272,9 +1282,9 @@ async function loadNews(){
 }
 function newsSec(){
   const n=S.news;
-  const links=NEWS_SRC.map(s=>`<a class="btn" href="${s.site}" target="_blank" rel="noopener">📰 ${s.n}</a>`).join('');
+  const links=NEWS_SRC.map(s=>`<a class="btn" href="${s.site}" target="_blank" rel="noopener"><span aria-hidden="true">📰</span> ${s.n}</a>`).join('');
   let body;
-  if(n===undefined)body='<div class="note">⏳ Buscando manchetes…</div>';
+  if(n===undefined)body='<div class="note"><span aria-hidden="true">⏳</span> Buscando manchetes…</div>';
   else if(!n.it.length)body='<div class="note">Não consegui carregar as manchetes aqui dentro do painel: os sites podem bloquear a leitura direta pelo navegador (CORS) ou não oferecer feed público. Nada foi inventado: use os botões para ler no site de origem.</div>';
   else body=`<div class="cid">${n.it.map(x=>`<div class="${newsRead().includes(x.u)?'nlida':''}"><a data-nu="${escH(x.u)}" style="color:var(--acc)" href="${escH(x.u)}" target="_blank" rel="noopener">${escH(x.t)}</a><div class="mut">${escH(x.f)}${x.d?' · '+escH(x.d):''}</div></div>`).join('')}</div><div class="mut">Manchetes copiadas dos sites de origem${n.upd?', atualizadas em '+escH(n.upd):''}. Toque para ler a matéria completa no site.</div>`;
   return `<div class="card" id="noticias-sec"><h2>${esc('Santos')}<span>Últimas notícias do Peixe</span></h2>${body}<div class="row">${links}</div></div>`;
@@ -1289,7 +1299,7 @@ function esportes(){
   const v=sub=='surfe'?D.s:D.k;
   const head='';
   const body={surfe,caiaque,pesca,trafego}[sub]();
-  const extra=(sub=='surfe'||sub=='caiaque')?cptecNote(di)+`<div class="card"><h3>📈 Gráficos do dia <small class="mut">(passa o mouse ou toca)</small></h3>${charts(di)}</div>`:'';
+  const extra=(sub=='surfe'||sub=='caiaque')?cptecNote(di)+`<div class="card"><h3><span aria-hidden="true">📈</span> Gráficos do dia <small class="mut">(passa o mouse ou toca)</small></h3>${charts(di)}</div>`:'';
   return nav+locNote()+head+localWarn()+body+extra+(sub=='caiaque'?checklist():'');
 }
 const norm=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
@@ -1331,16 +1341,16 @@ function praiaList(){
   return L.map(b=>{
     const ok=b.st==0,open=S.open==String(b.id);
     return `<div class="card ${ok?'g':'r'}"><button data-pb="${b.id}" style="width:100%;text-align:left;background:none;border:0;color:inherit;padding:0">
-    <h3>🏖️ ${b.n} <small class="mut">${b.c}/SP${b.km!=null?' · '+b.km.toFixed(1)+' km de você':''}</small></h3>
-    <div class="big">${ok?'🟢 Própria para banho':'🔴 Imprópria para banho'}</div>
+    <h3><span aria-hidden="true">🏖️</span> ${b.n} <small class="mut">${b.c}/SP${b.km!=null?' · '+b.km.toFixed(1)+' km de você':''}</small></h3>
+    <div class="big">${ok?'<span aria-hidden="true">🟢</span> Própria para banho':'<span aria-hidden="true">🔴</span> Imprópria para banho'}</div>
     <div class="mut">${ok?'Água dentro do padrão da CETESB. Entra pertinho do salva-vidas e olha a bandeira.':'Banho não é recomendado. A água não tá boa. Evita o contato.'}</div>
     <div class="mut" style="margin-top:4px">${open?'▲ ocultar detalhes':'▼ ver detalhes'}</div></button>${open?beachDetail(b):''}</div>`;
   }).join('');
 }
 function praia(){
-  const b=(k,t)=>`<button data-pf="${k}" class="${S.pf==k?'on':''}">${t}</button>`;
-  return `<div class="card"><h2>🏖️ Como está a praia hoje?</h2><div class="mut">Fica sabendo como tá a água antes de sair de casa.</div>
-  <div class="locsel" style="margin:10px 0"><div class="pick"><label>📍 Município ▾</label><select id="p_city"><option value="">Todos os municípios</option>${Object.keys(CETESB).map(c=>`<option ${c==S.pc?'selected':''}>${c}</option>`).join('')}</select></div><div class="pick"><label>🏖️ Praia ▾</label><select id="p_beach"><option value="">Todas as praias</option>${BEACHES.filter(b=>!S.pc||b.c==S.pc).map(b=>`<option value="${b.id}" ${String(b.id)==S.pb?'selected':''}>${b.n}${S.pc?'':' ('+b.c+')'}</option>`).join('')}</select></div></div>
+  const b=(k,t)=>`<button data-pf="${k}" class="${S.pf==k?'on':''}" aria-pressed="${S.pf==k}">${t}</button>`;
+  return `<div class="card"><h2><span aria-hidden="true">🏖️</span> Como está a praia hoje?</h2><div class="mut">Fica sabendo como tá a água antes de sair de casa.</div>
+  <div class="locsel" style="margin:10px 0"><div class="pick"><label><span aria-hidden="true">📍</span> Município ▾</label><select id="p_city"><option value="">Todos os municípios</option>${Object.keys(CETESB).map(c=>`<option ${c==S.pc?'selected':''}>${c}</option>`).join('')}</select></div><div class="pick"><label><span aria-hidden="true">🏖️</span> Praia ▾</label><select id="p_beach"><option value="">Todas as praias</option>${BEACHES.filter(b=>!S.pc||b.c==S.pc).map(b=>`<option value="${b.id}" ${String(b.id)==S.pb?'selected':''}>${b.n}${S.pc?'':' ('+b.c+')'}</option>`).join('')}</select></div></div>
   <div class="row">${b('all','Todas')}${b('ok','Próprias para banho')}${b('perto','Próximas a mim')}</div>
   ${S.pmsg?`<div class="note">${S.pmsg}</div>`:''}
   <div class="note">Fonte: CETESB, boletim de 12/11 (próximo em 19/11). Pontos classificados como "Sist. boa" no boletim (ex.: Iporanga, em Guarujá) e Cubatão não estão listados. Chuva e ressaca recentes podem piorar o resultado.</div></div>
@@ -1352,23 +1362,47 @@ function praia(){
 
 function render(){
   const CT=Object.keys(PLACES);
-  $('loc').innerHTML=`<div><label>📍 Cidade</label><select id="s_city">${CT.map(c=>`<option ${c==S.city?'selected':''}>${c}</option>`).join('')}</select></div><div><label>🏘️ Bairro</label><select id="s_pl">${PLACES[S.city].map((p,i)=>`<option value="${i}" ${i==S.pl?'selected':''}>${p[3]?'🌊':'🏙️'} ${p[0]}</option>`).join('')}</select></div>`;
+  $('loc').innerHTML=`<div><label><span aria-hidden="true">📍</span> Cidade</label><select id="s_city">${CT.map(c=>`<option ${c==S.city?'selected':''}>${c}</option>`).join('')}</select></div><div><label><span aria-hidden="true">🏘️</span> Bairro</label><select id="s_pl">${PLACES[S.city].map((p,i)=>`<option value="${i}" ${i==S.pl?'selected':''} aria-label="${p[0]}, ${p[3]?'com praia':'sem praia'}">${p[3]?'🌊':'🏙️'} ${p[0]}</option>`).join('')}</select></div>`;
   if(S.tab=='esportes'&&!cur().m){S.tab='meudia';S.menu=false;S.hover=null}
   if(S.tab=='jogo'&&S.vb===undefined&&!S.vbBusy){S.vbBusy=1;loadVB()}
   if(S.tab=='jogo'&&S.news===undefined&&!S.newsBusy){S.newsBusy=1;loadNews()}
   if(S.tab=='meudia')ensureFc();
   if(S.tab!='meudia'&&DAYS[S.day]&&DAYS[S.day].ext)S.day=DAYS.reduce((a,d,i)=>d.ext?a:i,0);
-  $('days').innerHTML=DAYS.map((d,i)=>(S.tab=='meudia'?(dayOff(i)<0||dayOff(i)>2):(d.ext||d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)))?'':`<button data-d="${i}" class="${i==S.day?'on':''}"><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span>${S.tab=='meudia'?`<span class="cf">${conf(i).dots}</span>`:''}</button>`).join('')+(S.tab=='meudia'?`<button data-ten="1" class="${S.ten||dayOff(S.day)>2?'on':''}"><span>🗓️</span><span>10 dias</span></button>`:'');
-  const TV=TABS.filter(t=>t[0]!='esportes'||cur().m);$('tabs').style.gridTemplateColumns='repeat('+TV.length+',minmax(0,1fr))';$('tabs').innerHTML=TV.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"><span style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
-  $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}">${s[1]}</button>`).join('')}</div>`:'';
+  $('days').innerHTML=DAYS.map((d,i)=>(S.tab=='meudia'?(dayOff(i)<0||dayOff(i)>2):(d.ext||d.date<todayStr&&DAYS.some(x=>x.date>=todayStr)))?'':`<button data-d="${i}" class="${i==S.day?'on':''}"${i==S.day?' aria-current="true"':''}><span>${S.tab=='esportes'?EMO[d.k]:dayIcon(i)}</span><span>${d.lbl}</span>${S.tab=='meudia'?`<span class="cf">${conf(i).dots}</span>`:''}</button>`).join('')+(S.tab=='meudia'?`<button data-ten="1" class="${S.ten||dayOff(S.day)>2?'on':''}" aria-pressed="${S.ten||dayOff(S.day)>2?'true':'false'}"><span>🗓️</span><span>10 dias</span></button>`:'');
+  const TV=TABS.filter(t=>t[0]!='esportes'||cur().m);$('tabs').style.gridTemplateColumns='repeat('+TV.length+',minmax(0,1fr))';$('tabs').innerHTML=TV.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"${t[0]==S.tab?' aria-current="page"':''}><span style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
+  $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}>${s[1]}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Esse dia já passou: a avaliação do Capitão ficou velha. Escolhe um dia de hoje pra frente.</div>':'';
   $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
   /* sem calculadora */
+  [$('days'),$('tabs'),$('pop'),$('view')].forEach(hideEmoji);
   fitOne();
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
 }
 function topBtn(){return `<div class="totop"><button type="button" data-top="1" aria-label="Voltar ao topo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="var(--acc)"/><path d="M12 18V7M7 11.5L12 6.5l5 5" fill="none" stroke="#04202f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Volta pra riba</span></button></div>`}
 $('totop').innerHTML=topBtn();
+function imgFb(el,f,alt){
+  if(!el.dataset.tried){el.dataset.tried='1';el.src='canvas-asset:'+f;return}
+  el.onerror=null;
+  if(alt){const s=document.createElement('span');s.setAttribute('aria-hidden','true');s.textContent=alt;el.replaceWith(s)}
+  else el.style.display='none';
+}
+const EMJ=/\p{Extended_Pictographic}\uFE0F?/u;
+function hideEmoji(root){
+  if(!root)return;
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),L=[];
+  for(let n=w.nextNode();n;n=w.nextNode()){
+    if(EMJ.test(n.nodeValue)&&n.parentElement&&!n.parentElement.closest('svg,option,select,textarea,script,style,[aria-hidden="true"],[role="img"]'))L.push(n);
+  }
+  L.forEach(n=>{
+    const f=document.createDocumentFragment();
+    n.nodeValue.split(/(\p{Extended_Pictographic}\uFE0F?)/u).forEach(p=>{
+      if(!p)return;
+      if(EMJ.test(p)){const s=document.createElement('span');s.setAttribute('aria-hidden','true');s.textContent=p;f.appendChild(s)}
+      else f.appendChild(document.createTextNode(p));
+    });
+    n.replaceWith(f);
+  });
+}
 function fitOne(){
   document.querySelectorAll('.oneline').forEach(e=>{
     e.style.fontSize='';
@@ -1409,7 +1443,7 @@ document.addEventListener('click',e=>{
   else if(b.dataset.pb!=null){S.open=S.open==b.dataset.pb?null:b.dataset.pb;if(S.open!=null)loadSea(BEACHES[+S.open]);render()}
   else if(b.dataset.f){S.filter=b.dataset.f;render()}
   else if(b.id=='reload'){S.vb=undefined;S.vbBusy=0;S.news=undefined;S.newsBusy=0;S.fc={};loadLive();loadDados()}
-  else if(b.id=='theme')document.body.classList.toggle('light');
+  else if(b.id=='theme'){const on=document.body.classList.toggle('light');b.setAttribute('aria-pressed',on?'true':'false')}
   else if(b.id=='fsm')setFs(FS-2);
   else if(b.id=='fsp')setFs(FS+2);
   else if(b.id=='fillh'){
@@ -1455,6 +1489,29 @@ $('view').addEventListener('pointermove',e=>{
   const r=sv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W;
   updateHover(Math.max(0,Math.min(23.99,(px-PL)/(W-PL-PR)*24)));
 });
+/* ============ DIÁLOGOS: foco e teclado ============ */
+const FOCUSABLE='button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+let dlgFrom=null;
+function dlgSave(){const a=document.activeElement;dlgFrom=(a&&a!==document.body&&a!==document.documentElement)?a:null}
+function dlgFocus(box){if(box)box.focus({preventScroll:true})}
+function dlgBack(fb){const a=dlgFrom;dlgFrom=null;const t=(a&&a.isConnected)?a:fb;if(t)t.focus({preventScroll:true})}
+new MutationObserver(ms=>{if(ms.some(m=>[...m.removedNodes].some(n=>n.id=='apop')))dlgBack()}).observe(document.body,{childList:true});
+document.addEventListener('keydown',e=>{
+  const ap=$('apop'),box=ap?ap.querySelector('.ab'):(T.on?$('tb'):null);
+  if(!box)return;
+  if(e.key=='Escape'){
+    e.preventDefault();
+    if(ap){const b=ap.querySelector('#ap_back,#ap_ok,#hp_ok');if(b)b.click()}else closeTour();
+    return;
+  }
+  if(e.key!='Tab')return;
+  const f=[...box.querySelectorAll(FOCUSABLE)].filter(x=>x.getClientRects().length);
+  if(!f.length){e.preventDefault();box.focus();return}
+  const a=f[0],z=f[f.length-1],c=document.activeElement;
+  if(!box.contains(c)){e.preventDefault();(e.shiftKey?z:a).focus()}
+  else if(e.shiftKey&&(c===a||c===box)){e.preventDefault();z.focus()}
+  else if(!e.shiftKey&&c===z){e.preventDefault();a.focus()}
+});
 /* ============ TUTORIAL SIMPLES (sem voz) ============ */
 const GL=[
  ['Nó','Medida de velocidade do vento no mar. 10 nós equivalem a cerca de 18 km/h.'],
@@ -1497,7 +1554,8 @@ const nohelp=()=>{try{return !!localStorage.getItem('capsantos.nohelp')}catch(e)
 const T={on:0,i:0,mode:'menu'};
 const tourEl=document.createElement('div');
 tourEl.id='tour';
-tourEl.innerHTML='<div class="dim"></div><div class="spot"></div><div class="tb" id="tb"></div>';
+tourEl.setAttribute('role','dialog');tourEl.setAttribute('aria-modal','true');tourEl.setAttribute('aria-labelledby','tour-t');
+tourEl.innerHTML='<div class="dim"></div><div class="spot"></div><div class="tb" id="tb" tabindex="-1"></div>';
 document.body.appendChild(tourEl);
 function tget(){const s=TST[T.i].tg;if(!s)return null;try{return typeof s=='function'?s():q1(s)}catch(e){return null}}
 function tourPos(){
@@ -1522,7 +1580,9 @@ function tourDraw(){
     const s=TST[T.i],n=TST.length;
     h=`<div class="tp">Passo ${T.i+1} de ${n}</div><div class="bar"><i style="width:${(T.i+1)/n*100}%"></i></div><h3>${s.t}</h3><p>${s.x}</p><div class="tr"><button id="tprev" ${T.i==0?'disabled':''}>⬅ Voltar</button><button id="tnext" class="on">${T.i==n-1?'✔ Concluir':'Próximo ➡'}</button></div><div class="tr"><button id="tclose">Pular passeio</button></div>`;
   }
-  tb.innerHTML=h;tb.scrollTop=0;
+  tb.innerHTML=ae(h);tb.scrollTop=0;
+  const hd=tb.querySelector('h3');if(hd)hd.id='tour-t';
+  if(T.on)dlgFocus(tb);
 }
 function tourGo(i){
   T.i=Math.max(0,Math.min(TST.length-1,i));T.mode='step';
@@ -1534,6 +1594,7 @@ function tourGo(i){
 }
 function openTour(mode){
   if(FS<FS_BIG)setFs(FS_BIG);
+  if(!T.on)dlgSave();
   T.on=1;T.mode=mode;tourEl.classList.add('on');document.body.classList.add('touring');
   if(mode=='step')tourGo(0);else tourDraw();
 }
@@ -1542,6 +1603,7 @@ function closeTour(){
   S.menu=false;render();
   try{localStorage.setItem('capsantos.tour','1')}catch(e){}
   window.scrollTo(0,0);requestAnimationFrame(()=>window.scrollTo(0,0));setTimeout(()=>window.scrollTo(0,0),80);
+  dlgBack($('help'));
 }
 tourEl.addEventListener('click',e=>{
   e.stopPropagation();
@@ -1608,11 +1670,11 @@ function miniChuva(R){
   return `<div class="mc" role="img" aria-label="Chuva prevista nas próximas horas"><div class="mcl"><span>Elevado</span><span>Baixo</span></div><div class="mcb">${R.map(r=>`<div class="mcc"><div class="bw"><i class="${r.mm>=3?'hi':r.mm<0.3?'lo':''}" style="height:${Math.max(5,Math.round(r.mm/mx*100))}%" title="${pad(r.h)}h: ${r.mm.toFixed(1)} mm"></i></div><span>${pad(r.h)}h</span></div>`).join('')}</div></div><div class="mut">Barras: chuva prevista por hora (topo = 3 mm/h ou mais).</div>`;
 }
 function apMain(o){
-  return `<div class="ab"><h3>${o.tit}</h3><div class="apact">${o.acao}</div>${o.res?`<p>${o.res}</p>`:''}${o.rows?miniChuva(o.rows):''}${o.extra?`<p>${o.extra}</p>`:''}<p class="mut">${o.fonte}</p>${o.saved?'<p class="mut">✔ Preferências salvas. Valem a partir do próximo aviso.</p>':''}<div class="ar"><div class="apr"><button id="ap_ver">Ver detalhes ›</button><button id="ap_pers">⚙️ Personalizar</button></div><button id="ap_zzz">⏰ Soneca de 1 h</button><button id="ap_ok" class="on">Valeu, tô ligado!</button><button id="ap_no">Tô na correria! Não me mande mais!</button></div></div>`;
+  return ae(`<div class="ab" tabindex="-1"><h3 id="ap_t">${o.tit}</h3><div class="apact">${o.acao}</div>${o.res?`<p>${o.res}</p>`:''}${o.rows?miniChuva(o.rows):''}${o.extra?`<p>${o.extra}</p>`:''}<p class="mut">${o.fonte}</p>${o.saved?'<p class="mut">✔ Preferências salvas. Valem a partir do próximo aviso.</p>':''}<div class="ar"><div class="apr"><button id="ap_ver">Ver detalhes ›</button><button id="ap_pers">⚙️ Personalizar</button></div><button id="ap_zzz">⏰ Soneca de 1 h</button><button id="ap_ok" class="on">Valeu, tô ligado!</button><button id="ap_no">Tô na correria! Não me mande mais!</button></div></div>`);
 }
 function apPers(){
   const L=lims(),op=(v,c,t)=>`<option value="${v}" ${v==c?'selected':''}>${t}</option>`;
-  return `<div class="ab"><h3>⚙️ Personalizar avisos</h3><label>☔ Avisar de chuva quando…</label><select id="ap_c">${op('sens',L.c,'Qualquer chuva prevista (mais avisos)')}${op('padrao',L.c,'Chuva relevante (padrão)')}${op('forte',L.c,'Só chuva forte (5 mm ou mais no dia)')}</select><label>💨 Avisar de rajadas a partir de…</label><select id="ap_g">${op(30,L.g,'30 km/h (mais avisos)')}${op(45,L.g,'45 km/h (padrão)')}${op(60,L.g,'60 km/h (só ventania)')}</select><p class="mut">Vale para o aviso do dia e para o aviso de "chuva agora". As preferências ficam só neste aparelho.</p><div class="ar"><button id="ap_save" class="on">Salvar</button><button id="ap_back">Voltar</button></div></div>`;
+  return `<div class="ab" tabindex="-1"><h3 id="ap_t">⚙️ Personalizar avisos</h3><label>☔ Avisar de chuva quando…</label><select id="ap_c">${op('sens',L.c,'Qualquer chuva prevista (mais avisos)')}${op('padrao',L.c,'Chuva relevante (padrão)')}${op('forte',L.c,'Só chuva forte (5 mm ou mais no dia)')}</select><label>💨 Avisar de rajadas a partir de…</label><select id="ap_g">${op(30,L.g,'30 km/h (mais avisos)')}${op(45,L.g,'45 km/h (padrão)')}${op(60,L.g,'60 km/h (só ventania)')}</select><p class="mut">Vale para o aviso do dia e para o aviso de "chuva agora". As preferências ficam só neste aparelho.</p><div class="ar"><button id="ap_save" class="on">Salvar</button><button id="ap_back">Voltar</button></div></div>`;
 }
 function apVer(o){
   if(o.pl&&(o.pl.city!=S.city||o.pl.i!=S.pl)){S.city=o.pl.city;S.pl=o.pl.i;onPlace()}
@@ -1636,14 +1698,17 @@ function popAviso(o){
     else if(id=='ap_no'){lsSet(NOK,'1');el.remove()}
     else if(id=='ap_zzz'){lsSet(SNZ,String(Date.now()+3600000));el.remove();setTimeout(()=>{maybeAlert();agoraCheck()},3600000+2000)}
     else if(id=='ap_ver'){if(o.kind=='dia')lsSet(ALK,todayStr);el.remove();apVer(o)}
-    else if(id=='ap_pers'){el.innerHTML=apPers()}
-    else if(id=='ap_back'){el.innerHTML=apMain(o)}
+    else if(id=='ap_pers'){el.innerHTML=ae(apPers());dlgFocus(el.querySelector('.ab'))}
+    else if(id=='ap_back'){el.innerHTML=apMain(o);dlgFocus(el.querySelector('.ab'))}
     else if(id=='ap_save'){
       lsSet(LIMK,JSON.stringify({c:$('ap_c').value,g:Number($('ap_g').value)}));
-      o.saved=1;el.innerHTML=apMain(o);
+      o.saved=1;el.innerHTML=apMain(o);dlgFocus(el.querySelector('.ab'));
     }
   });
+  el.setAttribute('aria-labelledby','ap_t');
+  dlgSave();
   document.body.appendChild(el);
+  dlgFocus(el.querySelector('.ab'));
 }
 async function agoraCheck(){
   if(S.agBusy||lsGet(NOK)||$('apop')||T.on||Date.now()<soneca()||!navigator.geolocation||!navigator.permissions)return;
@@ -1750,8 +1815,11 @@ function habCheck(){
   const at=new Date(c.at).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
   const el=document.createElement('div');
   el.id='apop';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');
-  el.innerHTML=`<div class="ab"><h3>⏰ Aviso do seu horário · ${hp.p[0]}</h3><p>Você costuma ver a previsão de ${hp.p[0]} (${hp.city}) por volta das ${hmm(hp.min)}. De ${hmm(hp.min)} às ${hm(b)}:</p><p>🌡️ ${w.tmin.toFixed(0)}–${w.tmax.toFixed(0)}°C</p>${wet||lite?`<p>${wet?'☔ Leve capa ou guarda-chuva.':'🌂 Ameaça de chuva fraca.'} Chance de até ${w.pm}% e ${volTxt(w.rm)} previstos.</p>`:''}${w.gm>=45?`<p>💨 Rajadas de até ${w.gm.toFixed(0)} km/h.</p>`:''}<p class="mut">Open-Meteo, atualizado às ${at}. Previsão de modelo, não certeza.</p><div class="ar"><button id="hp_ok" class="on">Valeu, tô ligado!</button><button id="hp_off">Parar de me avisar do meu horário</button></div></div>`;
+  el.innerHTML=ae(`<div class="ab" tabindex="-1"><h3 id="ap_t">⏰ Aviso do seu horário · ${hp.p[0]}</h3><p>Você costuma ver a previsão de ${hp.p[0]} (${hp.city}) por volta das ${hmm(hp.min)}. De ${hmm(hp.min)} às ${hm(b)}:</p><p>🌡️ ${w.tmin.toFixed(0)}–${w.tmax.toFixed(0)}°C</p>${wet||lite?`<p>${wet?'☔ Leve capa ou guarda-chuva.':'🌂 Ameaça de chuva fraca.'} Chance de até ${w.pm}% e ${volTxt(w.rm)} previstos.</p>`:''}${w.gm>=45?`<p>💨 Rajadas de até ${w.gm.toFixed(0)} km/h.</p>`:''}<p class="mut">Open-Meteo, atualizado às ${at}. Previsão de modelo, não certeza.</p><div class="ar"><button id="hp_ok" class="on">Valeu, tô ligado!</button><button id="hp_off">Parar de me avisar do meu horário</button></div></div>`);
+  el.setAttribute('aria-labelledby','ap_t');
+  dlgSave();
   document.body.appendChild(el);
+  dlgFocus(el.querySelector('.ab'));
   $('hp_ok').addEventListener('click',()=>el.remove());
   $('hp_off').addEventListener('click',()=>{habSwitch();el.remove()});
 }
