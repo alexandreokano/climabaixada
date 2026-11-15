@@ -1195,7 +1195,7 @@ function vai(){
 
 const ESC={'Santos':'santos.png','Grêmio':'gremio.png','Botafogo':'botafogo.png'};
 function esc(n){const f=ESC[n];return f?`<img class="esc" src="${f}" onerror="this.onerror=function(){this.style.display='none'};this.src='canvas-asset:${f}'" alt="Escudo ${n}">`:''}
-let JOGOS=[{date:'2026-11-23',time:'21:00',opp:'Grêmio',lbl:'Seg 23/11 · 21h00',estadio:'Morumbis',local_confirmado:true},{date:'2026-12-02',time:'21:30',opp:'Botafogo',lbl:'Qua 02/12 · 21h30',estadio:'Vila Belmiro',local_confirmado:false}];
+let JOGOS=[{date:'2026-11-18',time:'19:30',opp:'Coritiba',lbl:'Qua 18/11 · 19h30',estadio:'Couto Pereira',local_confirmado:true},{date:'2026-11-23',time:'21:00',opp:'Grêmio',lbl:'Seg 23/11 · 21h00',estadio:'Morumbis',local_confirmado:true},{date:'2026-12-02',time:'21:30',opp:'Botafogo',lbl:'Qua 02/12 · 21h30',estadio:'Vila Belmiro',local_confirmado:false}];
 function jogosOk(j){return j&&Array.isArray(j.jogos)&&j.jogos.length&&j.jogos.every(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)&&/^\d{2}:\d{2}$/.test(x.time)&&typeof x.opp=='string'&&typeof x.lbl=='string'&&(x.estadio==null||typeof x.estadio=='string'))}
 async function loadJogos(){
   try{
@@ -1210,6 +1210,7 @@ const VB={la:-23.952,lo:-46.339};
 const ESTADIOS={
   'Vila Belmiro':{art:'na',la:VB.la,lo:VB.lo},
   'Morumbis':{art:'no',la:-23.600,lo:-46.722},
+  'Couto Pereira':{art:'no',la:-25.396,lo:-49.261,tit:'Temperatura no Couto Pereira'},
   'Neo Química Arena':{art:'na',la:-23.545,lo:-46.474},
   'Allianz Parque':{art:'no',la:-23.527,lo:-46.678},
   'Maracanã':{art:'no',la:-22.912,lo:-43.230},
