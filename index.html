@@ -1310,7 +1310,7 @@ function transmissaoHTML(g){
   if(!t.length)return '<div class="note"><span aria-hidden="true">📺</span> Transmissão ainda não confirmada para este jogo.</div>';
 return `<div class="row">${t.map(x=>`<a class="btn lk yt-btn" href="${escH(x.url)}" target="_blank" rel="noopener" aria-label="Assistir ao jogo no YouTube">
   <span class="yt-logo"><img src="youtube-logo.png" alt="YouTube"></span>
-  <span class="yt-frase">Bora vê o peixe jogar! E num quero que ninguém me <span class="pert">pert</span><span class="youtube">YouTube</span>!</span>
+  <span class="yt-frase">Bora vê o peixe jogar!<br>E num quero ninguém me <span class="pert">pert</span><span class="youtube">YouTube</span>!</span>
 </a>`).join('')}</div>`;
 }
 /* ============ NAVEGAÇÃO ============ */
