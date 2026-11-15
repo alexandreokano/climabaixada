@@ -474,9 +474,11 @@ function avalBox(){
   if(S.tab=='meudia')return momBox(S.day);if(0)return '<div class="note">👨‍👩‍👧 <b>Conselho da Mamãe e do Papai!</b></div>';
   const a=AVAL;if(a.st=='carregando'||S.tab=='jogo'||S.tab=='noticias')return '';
   const f=a.em?new Date(a.em).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'–';
-  if(a.st=='ok')return `<div class="note"><span aria-hidden="true">🕒</span> O Capitão da Baixada deu o papo em ${f} (${a.fonte}), faz ${Math.floor(a.h)} h.</div>`;
-  if(a.st=='velha')return `<div class="warn"><span aria-hidden="true">⚠️</span> <b>Papo velho:</b> o Capitão avaliou em ${f}, faz ${Math.floor(a.h)} h. Pede uma atualização e vai com o pé atrás.</div>`;
-  return `<div class="warn"><span aria-hidden="true">⚪</span> <b>Sem papo do Capitão da Baixada por enquanto</b> (${a.msg}). Cinza é "sem avaliação", nunca "tá seguro". Só valem os dados ao vivo; na dúvida, não sai.</div>`;
+  const rs=(S.tab=='esportes'&&(S.sub||'surfe')=='resumo'&&cur().m)?`<div style="margin-top:10px">ℹ️ <b>Esse é o Resumão do mar.</b> Quer o detalhe de uma atividade? Toca na aba lá em cima: <b>🏄 Surf</b> (picos e correntes), <b>🛶 Caiaque</b> (hora a hora e percurso), <b>🎣 Pesca</b> (viradas de maré e peixes), <b>⚓ Navio na Área</b> (navios) e <b>🏖️ Como tá a praia hoje?</b> (balneabilidade).</div>`:'';
+  const fresco=a.h<6?'fresquinho, saído da rede agorinha':a.h<16?'ainda no ponto, que nem peixe do dia':'já correu uma maré, mas ainda serve';
+  if(a.st=='ok')return `<div class="note"><span aria-hidden="true">🕒</span> O Capitão da Baixada deu o papo em ${f}: ${fresco} (faz ${Math.floor(a.h)} h).${rs}</div>`;
+  if(a.st=='velha')return `<div class="warn"><span aria-hidden="true">⚠️</span> <b>Papo velho:</b> o Capitão avaliou em ${f}, faz ${Math.floor(a.h)} h. Pede uma atualização e vai com o pé atrás.${rs}</div>`;
+  return `<div class="warn"><span aria-hidden="true">⚪</span> <b>Sem papo do Capitão da Baixada por enquanto</b> (${a.msg}). Cinza é "sem avaliação", nunca "tá seguro". Só valem os dados ao vivo; na dúvida, não sai.${rs}</div>`;
 }
 async function loadDados(){
   CUR_BAD=false;
@@ -890,7 +892,7 @@ function resumo(){
   const wtxt=w=>!w?'sem dados ao vivo':w.l==2?'<span aria-hidden="true">🔴</span> nenhum horário seguro hoje':`${EMO[w.l]} ${w.txt}${w.l==1?' (com cautela)':''}`;
   return `<div class="card ${COL[D.k]}"><h2><span aria-hidden="true">🏄🛶🎣⚓</span> Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão da Baixada</h3><div>${fmt(di)}</div>
   <div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>
-  ${subtabs()}<div class="note">ℹ️ <b>Esse é o Resumão do mar.</b> Quer o detalhe de uma atividade? Toca na aba lá em cima: <b>🏄 Surf</b> (picos e correntes), <b>🛶 Caiaque</b> (hora a hora e percurso), <b>🎣 Pesca</b> (viradas de maré e peixes), <b>⚓ Navio na Área</b> (navios) e <b>🏖️ Como tá a praia hoje?</b> (balneabilidade).</div>
+  ${subtabs()}
   <div class="grid five">
    <div class="card ${COL[D.k]}"><h3><span aria-hidden="true">🛶</span> Caiaque (manual)</h3><div class="big">${EMO[D.k]} ${LBL[D.k]}</div><div class="mut"><span aria-hidden="true">⏰</span> Melhor hora pra cair na água hoje: ${wtxt(kw)}</div></div>
    <div class="card ${COL[D.s]}"><h3><span aria-hidden="true">🏄</span> Surfe (manual)</h3><div class="big">${EMO[D.s]} ${['FAVORÁVEL','ALERTA','NÃO SURFE','SEM AVALIAÇÃO'][D.s]}</div><div class="mut"><span aria-hidden="true">⏰</span> Melhor hora pra cair na água hoje: ${wtxt(sw)}</div></div>
