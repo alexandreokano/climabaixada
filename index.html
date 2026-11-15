@@ -1478,7 +1478,7 @@ document.addEventListener('click',e=>{
   else if(b.id=='mapTry'){S.map=1;render()}
   else if(b.id=='goNews'){const n=$('noticias-sec');if(n)n.scrollIntoView({behavior:'smooth',block:'start'})}
   else if(b.id=='tinst2'){openTour('inst')}
-  else if(b.dataset.g!=null){const j=JOGOS[+b.dataset.g];S.game={date:j.date,time:j.time,opp:j.opp};render();requestAnimationFrame(()=>{const s=$('jogo-res');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
+  else if(b.dataset.g!=null){const j=JOGOS[+b.dataset.g];S.game={date:j.date,time:j.time,opp:j.opp,estadio:j.estadio,local_confirmado:j.local_confirmado};render();requestAnimationFrame(()=>{const s=$('jogo-res');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
 });
 document.addEventListener('input',e=>{if(e.target.id=='q_praia'){S.q=e.target.value;const l=$('plist');if(l)l.innerHTML=praiaList()}});
 document.addEventListener('change',e=>{
