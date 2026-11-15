@@ -1310,7 +1310,7 @@ function transmissaoHTML(g){
   if(!t.length)return '<div class="note"><span aria-hidden="true">📺</span> Transmissão ainda não confirmada para este jogo.</div>';
 return `<div class="row">${t.map(x=>`<a class="btn lk yt-btn" href="${escH(x.url)}" target="_blank" rel="noopener" aria-label="Assistir ao jogo no YouTube">
   <span class="yt-logo"><img src="youtube-logo.png" alt="YouTube"></span>
-  <span class="yt-frase">Bora vê o peixe jogar! E num quero que ninguém me <span class="pert">pert</span><span class="youtube">YouTube</span>!</span>
+  <span class="yt-frase">Bora vê o peixe jogar!<br>E num quero que ninguém me <span class="pert">pert</span><span class="youtube">Tube</span>!</span>
 </a>`).join('')}</div>`;
 }
 /* ============ NAVEGAÇÃO ============ */
@@ -1401,7 +1401,7 @@ function jogo(){
   <div class="note">Toca num jogo pra ver o tempo no estádio onde ele será disputado. Datas e horários conforme Lance! e Google em 10/11: confira sempre o local e o horário nos links abaixo.</div>
   ${g.local_confirmado===false?`<div class="warn"><span aria-hidden="true">⚠️</span> Local de ${g.opp?'Santos x '+g.opp:'este jogo'} ainda não confirmado: estou usando ${est.nome}. Confira antes de sair.</div>`:''}
   <div class="row">
-    <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Jogos no ge</a>
+    <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Peixe no ge</a>
     <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
     <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener">🔎 Buscar no Google</a>
     <button id="goNews" class="lk"><span aria-hidden="true">📰</span> Últimas notícias do Peixe</button>
