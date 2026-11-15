@@ -1296,12 +1296,6 @@ function calHTML(g){
   const href='data:text/calendar;charset=utf-8,'+encodeURIComponent(ics);
   return `<div class="row"><a class="btn lk" href="${escH(gcal)}" target="_blank" rel="noopener"><span aria-hidden="true">📅</span> Google Agenda</a><a class="btn lk" href="${href}" download="jogo-santos-${g.date}.ics"><span aria-hidden="true">📅</span> Arquivo .ics</a></div>`;
 }
-function transmissaoHTML(g){
-  const j=JOGOS.find(x=>x.date==g.date&&x.time==g.time),t=j&&Array.isArray(j.transmissao)?j.transmissao:[];
-  const ok=t.filter(x=>x&&typeof x.nome=='string'&&/^https:\/\//.test(x.url));
-  if(!ok.length)return '';
-  return '<div class="row">'+ok.map(x=>`<a class="btn lk" href="${x.url}" target="_blank" rel="noopener"><span aria-hidden="true">📺</span> ${x.nome}</a>`).join('')+'</div>';
-}
 function jogo(){
   const g=S.game||JOGOS.find(j=>j.date>=todayStr)||{},f=(x,d)=>x==null?'–':x.toFixed(d||0);
   const est=estadioDe(g),vbe=S.vb?S.vb[est.nome]:S.vb;
@@ -1337,14 +1331,13 @@ function jogo(){
   <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}" aria-pressed="${g.date==j.date}"><span class="vs">${par(j).map(n=>esc(n)).join('<i>x</i>')}</span><b>${par(j).join(' x ')}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Toca num jogo pra ver o tempo no estádio onde ele será disputado. Datas e horários conforme Lance! e Google em 10/11: confira sempre o local e o horário nos links abaixo.</div>
   ${g.local_confirmado===false?`<div class="warn"><span aria-hidden="true">⚠️</span> Local de ${g.opp?'Santos x '+g.opp:'este jogo'} ainda não confirmado: estou usando ${est.nome}. Confira antes de sair.</div>`:''}
-  <div class="row">
+  ${transmissaoHTML(g)}<div class="row">
   ${calHTML(g)}
     <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Santos no ge</a>
     <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
     <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener">🔎 Buscar no Google</a>
     <button id="goNews" class="lk"><span aria-hidden="true">📰</span> Últimas notícias do Peixe</button>
   </div>
-  ${transmissaoHTML(g)}
   </div><div id="jogo-res">${res}</div>${newsSec()}`;
 }
 /* ============ NAVEGAÇÃO ============ */
