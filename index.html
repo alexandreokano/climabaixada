@@ -1281,6 +1281,21 @@ function transmissaoHTML(g){
   if(!t.length)return '<div class="note"><span aria-hidden="true">📺</span> Transmissão ainda não confirmada para este jogo.</div>';
   return `<div class="row">${t.map(x=>`<a class="btn lk" href="${escH(x.url)}" target="_blank" rel="noopener"><span aria-hidden="true">📺</span> ${escH(x.nome||'Assistir')}</a>`).join('')}</div>`;
 }
+function calHTML(g){
+  if(!g||!g.date||!g.time)return '';
+  const ini=new Date(`${g.date}T${g.time}:00-03:00`),fim=new Date(ini.getTime()+2*3600000);
+  if(isNaN(ini))return '';
+  const z=d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+  const fora=/couto/i.test(g.estadio||'');
+  const titulo='⚽ '+(fora?g.opp+' x Santos':'Santos x '+g.opp);
+  const local=g.estadio||'';
+  const nota='Tempo no jogo: https://climabaixada.com.br/';
+  const gcal='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(titulo)+'&dates='+z(ini)+'/'+z(fim)+'&location='+encodeURIComponent(local)+'&details='+encodeURIComponent(nota);
+  const q=s=>String(s).replace(/([,;\\])/g,'\\$1');
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Clima Baixada//PT-BR','BEGIN:VEVENT','UID:'+g.date+'-'+g.time+'@climabaixada.com.br','DTSTAMP:'+z(new Date()),'DTSTART:'+z(ini),'DTEND:'+z(fim),'SUMMARY:'+q(titulo),'LOCATION:'+q(local),'DESCRIPTION:'+q(nota),'END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const href='data:text/calendar;charset=utf-8,'+encodeURIComponent(ics);
+  return `<div class="row"><a class="btn lk" href="${escH(gcal)}" target="_blank" rel="noopener"><span aria-hidden="true">📅</span> Google Agenda</a><a class="btn lk" href="${href}" download="jogo-santos-${g.date}.ics"><span aria-hidden="true">📅</span> Arquivo .ics</a></div>`;
+}
 function jogo(){
   const g=S.game||JOGOS.find(j=>j.date>=todayStr)||{},f=(x,d)=>x==null?'–':x.toFixed(d||0);
   const est=estadioDe(g),vbe=S.vb?S.vb[est.nome]:S.vb;
