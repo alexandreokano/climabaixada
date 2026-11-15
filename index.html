@@ -1568,6 +1568,7 @@ else if(b.dataset.g!=null){
     if(s)s.scrollIntoView({behavior:'smooth',block:'start'});
   });
 }
+});
 document.addEventListener('input',e=>{if(e.target.id=='q_praia'){S.q=e.target.value;const l=$('plist');if(l)l.innerHTML=praiaList()}});
 document.addEventListener('change',e=>{
   if(e.target.matches('.chk input')){S.chk[e.target.dataset.i]=e.target.checked;render()}
