@@ -1457,7 +1457,7 @@ document.addEventListener('click',e=>{
   if(c){updateHover(+c.dataset.h+.5);return}
   const b=e.target.closest('button');
   if(!b)return;
-  if(b.dataset.d!=null){S.day=+b.dataset.d;S.ten=false;S.hover=null;render();goTop('loc')}
+  if(b.dataset.d!=null){S.day=+b.dataset.d;S.ten=false;S.hover=null;const keep=S.tab=='esportes'&&S.sub=='pesca',y=window.scrollY;render();if(keep){window.scrollTo({top:y,behavior:'instant'});requestAnimationFrame(()=>window.scrollTo({top:y,behavior:'instant'}))}else goTop('loc')}
   else if(b.dataset.ten!=null){S.ten=!S.ten;render();if(S.ten)requestAnimationFrame(()=>{const s=$('dez-dias');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
   else if(b.dataset.td!=null){S.day=+b.dataset.td;S.hover=null;render();goTop('meudia-card')}
   else if(b.dataset.top!=null){window.scrollTo({top:0,behavior:'smooth'})}
