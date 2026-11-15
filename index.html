@@ -1266,14 +1266,14 @@ function jogo(){
           tmax!=null&&tmax>=28?'<span aria-hidden="true">🥵</span> Calor: protetor solar, água e roupa leve.':tmin!=null&&tmin<=17?'<span aria-hidden="true">🧥</span> Frio: leve agasalho.':'<span aria-hidden="true">🙂</span> Temperatura agradável.',
           gm>=35?`<span aria-hidden="true">💨</span> Rajadas até ${gm.toFixed(0)} km/h: cuidado com objetos soltos e com a saída.`:'<span aria-hidden="true">🍃</span> Vento sem problema.'
         ];
-        res=`<div class="card ${COL[l]}"><h3>${EMO[l]} ${['TEMPO FIRMEZA','OLHO NO TEMPO','TEMPO FECHADO'][l]}</h3><div class="vs vsbig">${esc('Santos')}<i>x</i>${esc(g.opp)}</div><div class="mut" style="text-align:center">${g.opp?'Santos x '+g.opp:'Jogo do Santos'} · ${est.nome}</div><div class="cid">${tips.map(x=>`<div>${x}</div>`).join('')}</div>
+        res=`<div class="card ${COL[l]}"><h3>${EMO[l]} ${['TEMPO FIRMEZA','OLHO NO TEMPO','TEMPO FECHADO'][l]}</h3><div class="vs vsbig">${par(g).map(n=>esc(n)).join('<i>x</i>')}</div><div class="mut" style="text-align:center">${g.opp?par(g).join(' x '):'Jogo do Santos'} · ${est.nome}</div><div class="cid">${tips.map(x=>`<div>${x}</div>`).join('')}</div>
         <div class="t"><table><tr><th>Hora</th><th>Momento</th><th>Temp.</th><th>Chuva</th><th>Volume</th><th>Rajada</th></tr>${rows.map(r=>`<tr><td>${r.hh}</td><td>${r.k<0?'Chegada':r.k==0?'Bola rolando':'Jogo / saída'}</td><td>${f(r.tp)}°C</td><td>${r.pp==null?'–':r.pp+'%'}</td><td>${f(r.rain,1)} mm</td><td>${f(r.wg)} km/h</td></tr>`).join('')}</table></div>
         ${how('A tabela vai de 2 horas antes até 3 horas depois do início. Olhe a chuva na chegada e na saída, que é quando você fica mais exposto. Chega cedo se o tempo estiver feio.')}</div>`;
       }
     }
   }
   return `<div class="card"><div class="jhead"><h2>⚽ Jogo do Santos<span class="jsub">${tituloTempo(est)}</span></h2><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""></div>
-  <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}" aria-pressed="${g.date==j.date}"><span class="vs">${esc('Santos')}<i>x</i>${esc(j.opp)}</span><b>Santos x ${j.opp}</b><span>${j.lbl}</span></button>`).join('')}</div>
+  <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}" aria-pressed="${g.date==j.date}"><span class="vs">${par(j).map(n=>esc(n)).join('<i>x</i>')}</span><b>${par(j).join(' x ')}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Toca num jogo pra ver o tempo no estádio onde ele será disputado. Datas e horários conforme Lance! e Google em 10/11: confira sempre o local e o horário nos links abaixo.</div>
   ${g.local_confirmado===false?`<div class="warn"><span aria-hidden="true">⚠️</span> Local de ${g.opp?'Santos x '+g.opp:'este jogo'} ainda não confirmado: estou usando ${est.nome}. Confira antes de sair.</div>`:''}
   <div class="row">
