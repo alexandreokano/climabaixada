@@ -1280,7 +1280,7 @@ function transmissaoHTML(g){
   if(!g||!g.date)return '';
   const t=Array.isArray(g.transmissao)?g.transmissao.filter(x=>x&&typeof x.url=='string'&&x.url.startsWith('https://')):[];
   if(!t.length)return '<div class="note"><span aria-hidden="true">📺</span> Transmissão ainda não confirmada para este jogo.</div>';
-  return `<div class="row">${t.map(x=>`<a class="btn lk" href="${escH(x.url)}" target="_blank" rel="noopener" aria-label="Abrir transmissão no YouTube"><img src="youtubelogo.jpeg" alt="YouTube" style="width:180px;height:auto;vertical-align:middle"></a>`).join('')}</div>`;
+  return `<div class="row">${t.map(x=>`<a class="btn lk" href="${escH(x.url)}" target="_blank" rel="noopener" aria-label="Abrir transmissão no YouTube"><img src="youtube-logo.png" alt="YouTube" style="width:180px;height:auto;vertical-align:middle"></a>`).join('')}</div>`;
 }
 /* ============ NAVEGAÇÃO ============ */
 const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Rolê no Mar'],['jogo','⚽ Jogo do Santos']];
