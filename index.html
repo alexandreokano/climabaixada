@@ -1245,7 +1245,6 @@ async function loadVB(){
 function jogo(){
   const g=S.game||JOGOS.find(j=>j.date>=todayStr)||{},f=(x,d)=>x==null?'–':x.toFixed(d||0);
   const est=estadioDe(g),vbe=S.vb?S.vb[est.nome]:S.vb;
-  const par=x=>estadioDe(x).nome==='Couto Pereira'?`${esc(x.opp)}<i>x</i>${esc('Santos')}`:`${esc('Santos')}<i>x</i>${esc(x.opp)}`;
   let res='<div class="note">Não há jogo futuro na lista. Veja os links acima para conferir a agenda.</div>';
   if(g.date&&g.time){
     if(est.la==null)res=`<div class="warn">Ainda não tenho as coordenadas de ${est.nome}: sem previsão para esse jogo.</div>`;
