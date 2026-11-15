@@ -1562,7 +1562,7 @@ else if(b.dataset.g!=null){
   S.game={...j};
   render();
   requestAnimationFrame(()=>{
-    const s=j.opp==='Grêmio'
+    const s=(j.opp==='Grêmio'||j.opp==='Coritiba')
       ? document.querySelector('.yt-logo')?.closest('a')
       : $('jogo-res');
     if(s)s.scrollIntoView({behavior:'smooth',block:'start'});
