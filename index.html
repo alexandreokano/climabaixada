@@ -804,7 +804,17 @@ function pescaTxt(di){
   return ' Pesca: de terra, com as melhores janelas ±1 h das viradas de maré'+(v?' ('+v+')':'')+'; o robalo costuma aproveitar essas viradas.'+c;
 }
 const hl=s=>s.replace(/\b(caiaque|surfe|pesca)\b/gi,m=>`<b class="kw-${m.toLowerCase()}">${m}</b>`);
-const fmt=di=>{   const D=DAYS[di],t=String(D.txt);   if(D.k==3)return hl(t);   const KL=['favorável','alerta','não navegue','sem avaliação'],SL=['favorável','alerta','não surfe','sem avaliação'];   let x=t;   if(!/caiaque/i.test(t))x+=' Caiaque: '+EMO[D.k]+' '+KL[D.k]+'.';   if(!/surfe/i.test(t))x+=' Surfe: '+EMO[D.s]+' '+SL[D.s]+'.';   return hl(x+pescaTxt(di)); };
+function esporteTxt(di){
+  const D=DAYS[di],t=String(D.txt);
+  const kk={0:' Caiaque: condições favoráveis na avaliação do dia; mesmo assim, confira o vento e a arrebentação antes de sair.',
+            1:' Caiaque: com cautela; fique perto da praia, olhe o céu e volte se o vento subir.',
+            2:' Caiaque: não recomendado hoje.'};
+  const ss={0:' Surfe: condições favoráveis na avaliação do dia; mesmo assim, olhe a arrebentação e as correntes antes de entrar.',
+            1:' Surfe: com cautela; olhe a arrebentação e as correntes antes de entrar.',
+            2:' Surfe: não recomendado hoje.'};
+  return (/caiaque/i.test(t)?'':(kk[D.k]||''))+(/surfe/i.test(t)?'':(ss[D.s]||''));
+}
+const fmt=di=>hl(String(DAYS[di].txt)+(DAYS[di].k==3?'':esporteTxt(di)+pescaTxt(di)));
 const volTxt=m=>m<=0?'0 mm':m<0.1?'menos de 0,1 mm':m.toFixed(1).replace('.',',')+' mm';
 function pst(di,a,b){
   const H=[];for(let h=a;h<=b;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push({...o,h})}
