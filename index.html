@@ -1310,7 +1310,7 @@ function transmissaoHTML(g){
   if(!t.length)return '<div class="note"><span aria-hidden="true">📺</span> Transmissão ainda não confirmada para este jogo.</div>';
 return `<div class="row">${t.map(x=>`<a class="btn lk yt-btn" href="${escH(x.url)}" target="_blank" rel="noopener" aria-label="Assistir ao jogo no YouTube">
   <span class="yt-logo"><img src="youtube-logo.png" alt="YouTube"></span>
-  <span class="yt-frase">Bora vê o peixe jogar!<br>E num quero ninguém me <span class="pert">pert</span><span class="youtube">YouTube</span>!</span>
+  <span class="yt-frase">Bora vê o peixe jogar! E num quero que ninguém me <span class="pert">pert</span><span class="youtube">YouTube</span>!</span>
 </a>`).join('')}</div>`;
 }
 /* ============ NAVEGAÇÃO ============ */
@@ -1557,9 +1557,7 @@ document.addEventListener('click',e=>{
   else if(b.id=='mapTry'){S.map=1;render()}
   else if(b.id=='goNews'){const n=$('noticias-sec');if(n)n.scrollIntoView({behavior:'smooth',block:'start'})}
   else if(b.id=='tinst2'){openTour('inst')}
-  else if(b.dataset.g!=null){const j=JOGOS[+b.dataset.g];S.game={...j};render();requestAnimationFrame(()=>document.getElementById('jogo-res')?.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'})})}
+  else if(b.dataset.g!=null){const j=JOGOS[+b.dataset.g];S.game={...j};render();requestAnimationFrame(()=>{const s=$('jogo-res');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
 });
 document.addEventListener('input',e=>{if(e.target.id=='q_praia'){S.q=e.target.value;const l=$('plist');if(l)l.innerHTML=praiaList()}});
 document.addEventListener('change',e=>{
