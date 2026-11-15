@@ -1436,7 +1436,7 @@ document.querySelectorAll('.oneline,.jhead h2 .jsub').forEach(e=>{
 }
 window.addEventListener('resize',fitOne);
 function scrollSub(){
-  const el=document.querySelector('.subtabs');if(!el)return;
+  const el=(S.sub=='pesca'&&document.querySelector('#days'))||document.querySelector('.subtabs');if(!el)return;
   window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-8),behavior:'auto'});
 }
 function goTop(id){
