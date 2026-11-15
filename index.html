@@ -1354,7 +1354,7 @@ const NEWS_SRC=[
  {n:'Diário do Peixe',site:'https://www.diariodopeixe.com.br/',feed:'https://www.diariodopeixe.com.br/feed/'},
  {n:'Santos FC (site oficial)',site:'https://www.santosfc.com.br/es/noticias/',feed:null}
 ];
-const escH=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const escH=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&','<':'<','>':'>','"':'&quot;',"'":'&#39;'}[c]));
 const newsOk=u=>typeof u=='string'&&(u.startsWith('https://www.diariodopeixe.com.br/')||u.startsWith('https://www.santosfc.com.br/')||u.startsWith('https://www.youtube.com/watch?v=')||u.startsWith('https://www.youtube.com/shorts/'));
 const NRK='capsantos.lidas';
 function newsRead(){try{const a=JSON.parse(localStorage.getItem(NRK)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
