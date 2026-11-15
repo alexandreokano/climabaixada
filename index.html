@@ -1212,7 +1212,7 @@ const ESC={'Santos':'santos.png','Grêmio':'gremio.png','Botafogo':'botafogo.png
 function esc(n){const f=ESC[n];return f?`<img class="esc" src="${f}" onerror="this.onerror=function(){this.style.display='none'};this.src='canvas-asset:${f}'" alt="Escudo ${n}">`:''}
 function par(j){return j&&j.fora?[j.opp,'Santos']:['Santos',j.opp]}
 let JOGOS=[{date:'2026-11-18',time:'19:30',opp:'Coritiba',lbl:'Qua 18/11 · 19h30',estadio:'Couto Pereira',local_confirmado:true},{date:'2026-11-23',time:'21:00',opp:'Grêmio',lbl:'Seg 23/11 · 21h00',estadio:'Morumbis',local_confirmado:true},{date:'2026-12-02',time:'21:30',opp:'Botafogo',lbl:'Qua 02/12 · 21h30',estadio:'Vila Belmiro',local_confirmado:false}];
-function jogosOk(j){return j&&Array.isArray(j.jogos)&&j.jogos.length&&j.jogos.every(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)&&/^\d{2}:\d{2}$/.test(x.time)&&typeof x.opp=='string'&&typeof x.lbl=='string'&&(x.estadio==null||typeof x.estadio=='string'))}
+function jogosOk(j){return j&&Array.isArray(j.jogos)&&j.jogos.length&&j.jogos.every(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)&&/^\d{2}:\d{2}$/.test(x.time)&&typeof x.opp=='string'&&typeof x.lbl=='string'&&(x.estadio==null||typeof x.estadio=='string')&&(x.transmissao==null||Array.isArray(x.transmissao)&&x.transmissao.every(t=>t&&typeof t.nome=='string'&&/^https:\/\//.test(t.url))))}
 async function loadJogos(){
   try{
     const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);
@@ -1254,6 +1254,12 @@ async function loadVB(){
   S.vb={...(S.vb||{}),...vb};
   render();
 }
+function transmissaoHTML(g){
+  if(!g||!g.date)return '';
+  const t=Array.isArray(g.transmissao)?g.transmissao.filter(x=>x&&typeof x.url=='string'&&x.url.startsWith('https://')):[];
+  if(!t.length)return '<div class="note"><span aria-hidden="true">📺</span> Transmissão ainda não confirmada para este jogo.</div>';
+  return `<div class="row">${t.map(x=>`<a class="btn lk" href="${escH(x.url)}" target="_blank" rel="noopener"><span aria-hidden="true">📺</span> ${escH(x.nome||'Assistir')}</a>`).join('')}</div>`;
+}
 function jogo(){
   const g=S.game||JOGOS.find(j=>j.date>=todayStr)||{},f=(x,d)=>x==null?'–':x.toFixed(d||0);
   const est=estadioDe(g),vbe=S.vb?S.vb[est.nome]:S.vb;
@@ -1289,7 +1295,7 @@ function jogo(){
   <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}" aria-pressed="${g.date==j.date}"><span class="vs">${par(j).map(n=>esc(n)).join('<i>x</i>')}</span><b>${par(j).join(' x ')}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Toca num jogo pra ver o tempo no estádio onde ele será disputado. Datas e horários conforme Lance! e Google em 10/11: confira sempre o local e o horário nos links abaixo.</div>
   ${g.local_confirmado===false?`<div class="warn"><span aria-hidden="true">⚠️</span> Local de ${g.opp?'Santos x '+g.opp:'este jogo'} ainda não confirmado: estou usando ${est.nome}. Confira antes de sair.</div>`:''}
-  <div class="row">
+  ${transmissaoHTML(g)}<div class="row">
     <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Jogos no ge</a>
     <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
     <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener">🔎 Buscar no Google</a>
@@ -1497,7 +1503,7 @@ document.addEventListener('click',e=>{
   else if(b.id=='mapTry'){S.map=1;render()}
   else if(b.id=='goNews'){const n=$('noticias-sec');if(n)n.scrollIntoView({behavior:'smooth',block:'start'})}
   else if(b.id=='tinst2'){openTour('inst')}
-else if(b.dataset.g!=null){const j=JOGOS[+b.dataset.g];S.game={date:j.date,time:j.time,opp:j.opp,estadio:j.estadio,local_confirmado:j.local_confirmado};render();requestAnimationFrame(()=>{const s=$('jogo-res');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
+  else if(b.dataset.g!=null){const j=JOGOS[+b.dataset.g];S.game={...j};render();requestAnimationFrame(()=>{const s=$('jogo-res');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
 });
 document.addEventListener('input',e=>{if(e.target.id=='q_praia'){S.q=e.target.value;const l=$('plist');if(l)l.innerHTML=praiaList()}});
 document.addEventListener('change',e=>{
