@@ -42,6 +42,7 @@ h1{margin:0;font-size:1.8rem;line-height:1.15}
 .brand-title{display:flex;align-items:center;gap:10px}
 .brand-logo{width:56px;height:56px;object-fit:contain;flex:0 0 auto;border-radius:10px;background:#fff;padding:2px}
 .sub{color:var(--mut);font-size:.8rem;flex:1 1 220px}
+.sub.cid{white-space:nowrap;font-size:min(.8rem,3.2vw)}
 .banner{flex:0 0 100%;width:100%;aspect-ratio:34/10;height:auto;object-fit:cover;object-position:center 38%;border-radius:14px;display:block;border:2px solid var(--bd,#7aa2c4)}
 @media (max-width:600px){.banner{aspect-ratio:5/2;object-position:center 40%}}
 @media (min-width:601px){.banner{aspect-ratio:3/1;object-position:center 42%}}
@@ -326,7 +327,7 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
   
   <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='canvas-asset:banner-panoramico.jpg'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
   <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
-  <div class="sub">Santos · São Vicente · Guarujá · Praia Grande · Bertioga · Cubatão · Itanhaém · Mongaguá · Peruíbe</div>
+<div class="sub cid">Santos · São Vicente · Guarujá · Praia Grande<br>Bertioga · Cubatão · Itanhaém · Mongaguá · Peruíbe</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status" aria-live="polite" aria-atomic="true"><span aria-hidden="true">⏳</span> dando uma olhada no mar…</span>
     <button id="help"><span aria-hidden="true">❓</span> Me ajuda aí</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema" aria-label="Tema claro" aria-pressed="false"><span aria-hidden="true">🌓</span></button>
