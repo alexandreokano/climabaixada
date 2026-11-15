@@ -1563,7 +1563,7 @@ else if(b.dataset.g!=null){
   render();
   requestAnimationFrame(()=>{
     const s=j.opp==='Grêmio'
-      ? document.querySelector('#noticias-sec h2')
+      ? document.querySelector('.yt-logo')?.closest('a')
       : $('jogo-res');
     if(s)s.scrollIntoView({behavior:'smooth',block:'start'});
   });
