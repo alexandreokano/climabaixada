@@ -503,7 +503,7 @@ function avalBox(){
   if(S.tab=='meudia')return momBox(S.day);if(0)return '<div class="note">👨‍👩‍👧 <b>Conselho da Mamãe e do Papai!</b></div>';
   const a=AVAL;if(a.st=='carregando'||S.tab=='jogo'||S.tab=='noticias')return '';
   const f=a.em?new Date(a.em).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'–';
-  const rs=(S.tab=='esportes'&&(S.sub||'surfe')=='resumo'&&cur().m)?`<div style="margin-top:10px;font-size:.72em;line-height:1.35">ℹ️ <b>Esse é o Resumão do mar.</b> Quer o detalhe de uma atividade? Toca na aba lá embaixo, depois da Avaliação do Capitão da Baixada, para saber mais detalhes: <b>🏄 Surf</b> (picos e correntes), <b>🛶 Caiaque</b> (hora a hora e percurso), <b>🎣 Pesca</b> (viradas de maré e peixes), <b>⚓ Navio na Área</b> (navios) e <b>🏖️ Como tá a praia hoje?</b> (balneabilidade).</div>`:'';
+  const rs=(S.tab=='esportes'&&(S.sub||'surfe')=='resumo'&&cur().m)?`<div style="margin-top:10px">ℹ️ <b>Esse é o Resumão do mar.</b> Quer o detalhe de uma atividade? Toca na aba lá em baixo, depois da Avaliação do Capitão da Baixada, para saber mais detalhes: <b>🏄 Surf</b> (picos e correntes), <b>🛶 Caiaque</b> (hora a hora e percurso), <b>🎣 Pesca</b> (viradas de maré e peixes), <b>⚓ Navio na Área</b> (navios) e <b>🏖️ Como tá a praia hoje?</b> (balneabilidade).</div>`:'';
   const fresco=a.h<6?'fresquinho, saído da rede agorinha':a.h<16?'ainda no ponto, que nem peixe do dia':'já correu uma maré, mas ainda serve';
   if(a.st=='ok')return `<div class="note"><span aria-hidden="true">🕒</span> O Capitão da Baixada deu o papo em ${f}: ${fresco} (faz ${Math.floor(a.h)} h).${rs}</div>`;
   if(a.st=='velha')return `<div class="warn"><span aria-hidden="true">⚠️</span> <b>Papo velho:</b> o Capitão avaliou em ${f}, faz ${Math.floor(a.h)} h. Pede uma atualização e vai com o pé atrás.${rs}</div>`;
@@ -1310,15 +1310,16 @@ function transmissaoHTML(g){
   if(!t.length)return '<div class="note"><span aria-hidden="true">📺</span> Transmissão ainda não confirmada para este jogo.</div>';
 return `<div class="row">${t.map(x=>`<a class="btn lk yt-btn" href="${escH(x.url)}" target="_blank" rel="noopener" aria-label="Assistir ao jogo no YouTube">
   <span class="yt-logo"><img src="youtube-logo.png" alt="YouTube"></span>
-  <span class="yt-frase">Bora vê o Peixe jogááá!<br>E num quero que ninguém me <span class="pert">pert</span><span class="youtube">Tube</span>!</span>
+  <span class="yt-frase">Bora vê o peixe jogar!<br>E num quero que ninguém me <span class="pert">pert</span><span class="youtube">Tube</span>!</span>
 </a>`).join('')}</div>`;
 }
 /* ============ NAVEGAÇÃO ============ */
 const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Rolê no Mar'],['jogo','⚽ Jogo do Santos']];
-const TICON={meudia:'☀️☁️🌧️',esportes:'<img src="surf-caiaque-pesca.png" alt="" style="display:block;width:96px;height:96px;object-fit:contain;margin:auto">',noticias:'📰'};
+const TICON={meudia:'☀️☁️🌧️',esportes:'🏄🚣🐟',noticias:'📰'};
 function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}><span class="ic" aria-hidden="true">${s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
 const SUBS=[['resumo','📋 Resumão'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Navio na Área'],['praia','🏖️ Como tá a praia hoje?']];
 const FISH='<svg class="fish" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
+TICON.esportes='🏄🚣'+FISH;
 const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
 TICON.jogo='<img src="edu-silhueta.png" onerror="this.onerror=null;this.src=\'canvas-asset:edu-silhueta.png\'" alt="" class="tjog" style="width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
 /* ============ NOTÍCIAS (só das duas fontes autorizadas) ============ */
@@ -1561,7 +1562,7 @@ else if(b.dataset.g!=null){
   S.game={...j};
   render();
   requestAnimationFrame(()=>{
-    const s=(j.opp==='Grêmio'||j.opp==='Coritiba')
+    const s=j.opp==='Grêmio'
       ? document.querySelector('.yt-logo')?.closest('a')
       : $('jogo-res');
     if(s)s.scrollIntoView({behavior:'smooth',block:'start'});
