@@ -26,6 +26,10 @@ jobs:
       - name: Gerar dados.json
         run: node gerar-dados.mjs
 
+      - name: Atualizar CETESB
+        continue-on-error: true
+        run: node atualizar-cetesb.mjs
+
       - name: Publicar se mudou
         run: |
           if git diff --quiet -- dados.json; then
