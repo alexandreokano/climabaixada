@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Clima Baixada – Painel interativo</title>
-<meta name="description" co
-        ntent="Vento, ondas, marés, balneabilidade e pesca para a Baixada Santista.">
+<meta name="description" content="Vento, ondas, marés, balneabilidade e pesca para a Baixada Santista.">
 
 <!-- Cores e PWA -->
 <meta name="theme-color" content="#0b2a4a">
@@ -24,7 +23,7 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Clima Baixada">
 <meta property="og:title" content="Clima Baixada · Painel Interativo">
-<meta property="og:description" content="Caiaque, surfe, pesca e balneabilidade na Baixada Santista, com previsão de 6 dias.">
+<meta property="og:description" content="Caiaque, surfe, pesca e balneabilidade na Baixada Santista, com previsão de 10 dias.">
 <meta property="og:url" content="https://climabaixada.com.br/">
 <meta property="og:image" content="https://climabaixada.com.br/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -43,7 +42,7 @@ h1{margin:0;font-size:1.8rem;line-height:1.15}
 .brand-title{display:flex;align-items:center;gap:10px}
 .brand-logo{width:56px;height:56px;object-fit:contain;flex:0 0 auto;border-radius:10px;background:#fff;padding:2px}
 .sub{color:var(--mut);font-size:.8rem;flex:1 1 220px}
-.sub.cid{white-space:nowrap;font-size:min(.8rem,3.2vw)}
+.sub.cidades{white-space:nowrap;font-size:min(.8rem,3.2vw)}
 .banner{flex:0 0 100%;width:100%;aspect-ratio:34/10;height:auto;object-fit:cover;object-position:center 38%;border-radius:14px;display:block;border:2px solid var(--bd,#7aa2c4)}
 @media (max-width:600px){.banner{aspect-ratio:5/2;object-position:center 40%}}
 @media (min-width:601px){.banner{aspect-ratio:3/1;object-position:center 42%}}
@@ -67,6 +66,8 @@ nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 #tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.2;font-size:1.05rem;font-weight:700;text-align:center;white-space:normal}
 #tabs button>span:first-child{font-size:1.6rem;line-height:1.1}
 .fish{width:.45em;height:.625em}
+.tesp{height:44px;width:auto;display:block;margin-bottom:8px}
+@media (min-width:700px){.tesp{height:52px;margin-bottom:10px}}
 .tjog{height:26px}
 @media (max-width:699px){#tabs button>span:first-child{font-size:1.15rem}.tjog{height:44px}}
 @media (min-width:700px){#tabs button{font-size:1.25rem;min-height:120px}#tabs button>span:first-child{font-size:3.2rem}}
@@ -190,7 +191,7 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 .jhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .jhead h2{flex:1 1 auto;min-width:0;margin:0;line-height:1.3}
 .jimg{flex:0 0 auto;height:112px;width:auto;margin:0;border-radius:12px;background:#fff;padding:4px}
-@media (max-width:380px){.jimg{height:96px}}.jhead h2 .jsub{display:block;white-space:nowrap}.jhead h2{min-width:0}
+@media (max-width:380px){.jimg{height:96px}}.jhead h2 .jsub{display:block;white-space:nowrap;overflow:hidden}.jhead h2{min-width:0}
 @media (max-width:699px){.jhead h2 .jsub{font-size:3.9vw}}
 .games{clear:both;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
 .games button{width:100%;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px 10px;white-space:normal;text-align:center;line-height:1.35;font-size:.95rem}
@@ -356,7 +357,7 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
   
   <img class="banner" src="banner-panoramico.jpg" onerror="this.onerror=null;this.src='canvas-asset:banner-panoramico.jpg'" alt="Clima Baixada: caiaque, stand up paddle, pesca, vela e futebol ao pôr do sol, com o peixe e a onda no centro">
   <h1 class="brand">CLIMA <span>BAIXADA</span></h1>
-<div class="sub cid">Santos · São Vicente · Guarujá · Praia Grande<br>Bertioga · Cubatão · Itanhaém · Mongaguá · Peruíbe</div>
+<div class="sub cidades">Santos · São Vicente · Guarujá · Praia Grande<br>Bertioga · Cubatão · Itanhaém · Mongaguá · Peruíbe</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge" id="status" aria-live="polite" aria-atomic="true"><span aria-hidden="true">⏳</span> dando uma olhada no mar…</span>
     <button id="help"><span aria-hidden="true">❓</span> Me ajuda aí</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema" aria-label="Tema claro" aria-pressed="false"><span aria-hidden="true">🌓</span></button>
@@ -378,29 +379,33 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
 <script>
 /* ============ DADOS FIXOS ============ */
 const TZ='-03:00';
-const ev=(d,hm,t,h)=>({ms:new Date(`2026-11-${d}T${hm}:00${TZ}`).getTime(),t,h});
-const TIDES=[ev('09','20:38','B',0.01),ev('10','02:19','A',1.39),ev('10','08:25','B',0.42),ev('10','14:57','A',1.21),ev('10','21:17','B',0.03),
- ev('11','02:49','A',1.36),ev('11','08:55','B',0.44),ev('11','15:16','A',1.17),ev('11','22:02','B',0.09),
- ev('12','03:25','A',1.32),ev('12','09:19','B',0.47),ev('15:29'.length===5?'12':'12','15:29','A',1.11),ev('12','22:51','B',0.18),
- ev('13','04:08','A',1.26),ev('13','09:57','B',0.52),ev('13','15:14','A',1.05),ev('13','23:49','B',0.26),
- ev('14','04:57','A',1.19),ev('14','10:27','B',0.59),ev('14','15:02','A',1.01),
- ev('15','00:53','B',0.33),ev('15','05:53','A',1.12),ev('15','11:02','B',0.67),ev('15','15:14','A',0.95),ev('15','18:44','B',0.81),ev('15','20:46','A',0.83),
- ev('16','01:59','B',0.36),ev('16','07:01','A',1.06),ev('16','11:57','B',0.77),ev('16','15:17','A',0.86),ev('16','18:38','B',0.75),ev('16','22:12','A',0.93),
- ev('17','03:01','B',0.35),ev('17','08:17','A',1.03),ev('17','18:36','B',0.68),ev('17','23:02','A',1.04),
- ev('18','04:01','B',0.31),ev('18','09:51','A',1.06),ev('18','18:10','B',0.59),ev('18','23:47','A',1.15),
- ev('19','04:59','B',0.26),ev('19','11:31','A',1.13),ev('19','18:06','B',0.47),
- ev('20','00:25','A',1.25),ev('20','05:53','B',0.21),ev('20','12:25','A',1.21),ev('20','18:27','B',0.36),
- ev('21','01:01','A',1.34),ev('21','06:44','B',0.16),ev('21','12:59','A',1.26),ev('21','18:57','B',0.26),
- ev('22','01:36','A',1.41),ev('22','07:31','B',0.14),ev('22','13:32','A',1.28),ev('22','19:25','B',0.18),
- ev('23','02:12','A',1.46),ev('23','08:16','B',0.16),ev('23','13:59','A',1.26),ev('23','20:01','B',0.12),
- ev('24','02:53','A',1.48),ev('24','08:59','B',0.21),ev('24','14:21','A',1.23),ev('24','20:34','B',0.10),
- ev('25','03:34','A',1.46),ev('25','09:36','B',0.30),ev('25','14:40','A',1.19),ev('25','21:12','B',0.11),
- ev('26','04:17','A',1.41),ev('26','10:12','B',0.42),ev('26','15:04','A',1.16),ev('26','21:59','B',0.15),
- ev('27','05:06','A',1.33),ev('27','10:46','B',0.54),ev('27','15:27','A',1.12),ev('27','22:49','B',0.22),
- ev('28','05:59','A',1.23),ev('28','11:19','B',0.65),ev('28','16:01','A',1.07),ev('28','23:51','B',0.30),
- ev('29','06:57','A',1.11),ev('29','12:04','B',0.75),ev('29','16:31','A',1.01),
- ev('30','01:06','B',0.37),ev('30','08:17','A',1.01),ev('30','13:29','B',0.80),ev('30','17:23','A',0.94)];
-const LAST_TIDE=TIDES[TIDES.length-1].ms;
+
+/* ---- MARÉS: vêm do arquivo mares.json (formato {"2026-11-16":[["01:59","B",0.36],...]}) ---- */
+let TIDES=[],LAST_TIDE=0;
+function mkTides(j){
+  const out=[];
+  if(!j||typeof j!='object')return out;
+  Object.keys(j).sort().forEach(d=>{
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!Array.isArray(j[d]))return;
+    j[d].forEach(e=>{
+      if(!Array.isArray(e)||!/^\d{2}:\d{2}$/.test(e[0])||(e[1]!='A'&&e[1]!='B'))return;
+      const ms=new Date(`${d}T${e[0]}:00${TZ}`).getTime();
+      if(isNaN(ms))return;
+      out.push({ms,t:e[1],h:typeof e[2]=='number'?e[2]:null});
+    });
+  });
+  out.sort((a,b)=>a.ms-b.ms);
+  return out;
+}
+async function loadMares(){
+  try{
+    const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);
+    const r=await fetch('mares.json',{cache:'no-cache',signal:c.signal});clearTimeout(to);
+    if(!r.ok)return;
+    const t=mkTides(await r.json());
+    if(t.length>1){TIDES=t;LAST_TIDE=t[t.length-1].ms;render()}
+  }catch(e){}
+}
 
 let DAYS=[
  {date:'2026-11-10',lbl:'Ter 10',k:1,s:0,vento:'Manhã 4–7 km/h; tarde E 22–25 km/h, rajadas até 43',ondas:'0,6–0,9 m (Marinha: 1–2 m)',chuva:'sem chuva',
@@ -1276,7 +1281,6 @@ const VB={la:-23.952,lo:-46.339};
 const ESTADIOS={
   'Vila Belmiro':{art:'na',la:VB.la,lo:VB.lo},
   'Morumbis':{art:'no',la:-23.600,lo:-46.722},
-  'Couto Pereira':{art:'no',la:-25.396,lo:-49.261,tit:'Temperatura no Couto Pereira'},
   'Neo Química Arena':{art:'na',la:-23.545,lo:-46.474},
   'Allianz Parque':{art:'no',la:-23.527,lo:-46.678},
   'Maracanã':{art:'no',la:-22.912,lo:-43.230},
@@ -1315,7 +1319,7 @@ return `<div class="row">${t.map(x=>`<a class="btn lk yt-btn" href="${escH(x.url
 }
 /* ============ NAVEGAÇÃO ============ */
 const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Rolê no Mar'],['jogo','⚽ Jogo do Santos']];
-const TICON={meudia:'☀️☁️🌧️',esportes:'surf-caiaque-pesca.png',noticias:'📰'};
+const TICON={meudia:'☀️☁️🌧️',esportes:'<img src="surf-caiaque-pesca.png" alt="" class="tesp">',noticias:'📰'};
 function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}><span class="ic" aria-hidden="true">${s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
 const SUBS=[['resumo','📋 Resumão'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Navio na Área'],['praia','🏖️ Como tá a praia hoje?']];
 const FISH='<svg class="fish" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
@@ -1562,7 +1566,7 @@ else if(b.dataset.g!=null){
   render();
   requestAnimationFrame(()=>{
     const s=(j.opp==='Grêmio'||j.opp==='Coritiba')
-      ? document.querySelector('.yt-logo')?.closest('a')
+      ? (document.querySelector('.yt-logo')?.closest('a')||$('jogo-res'))
       : $('jogo-res');
     if(s)s.scrollIntoView({behavior:'smooth',block:'start'});
   });
@@ -1931,7 +1935,7 @@ function habCheck(){
 recHabit();setTimeout(habCheck,4000);setInterval(habCheck,60000);
 setTimeout(agoraCheck,6000);setInterval(agoraCheck,600000);
 if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
-render();loadLive();loadDados();loadJogos();
+render();loadLive();loadDados();loadJogos();loadMares();
 if(!nohelp())setTimeout(()=>{if(!T.on)openTour('menu')},1500);
 </script>
 </body>
