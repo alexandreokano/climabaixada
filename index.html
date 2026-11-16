@@ -496,7 +496,41 @@ function validade(em,drift){
   return{st:h>48?'vencida':h>24?'velha':'ok',h:Math.max(0,h),msg:h>48?'avaliação com mais de 48 h':''};
 }
 function greyIf(){
-  if(['vencida','indisp','relogio'].includes(AVAL.st))DAYS.forEach(d=>{d.k=3;d.s=3;d.txt='Sem avaliação válida do Capitão da Baixada. Valem só os dados ao vivo (indicativos). Na dúvida, não saia.';d.vento=d.ondas=d.chuva='–'});
+  if(!['vencida','indisp','relogio'].includes(AVAL.st))return;
+  DAYS.forEach(d=>{
+    d.auto=1;d.k=3;d.s=3;
+    d.txt='Sem avaliação válida do Capitão da Baixada e sem dados ao vivo ainda. Na dúvida, não saia.';
+    d.vento=d.ondas=d.chuva='–';
+  });
+  autoDays();
+}
+const AUTO_MAX=3; /* até quantos dias à frente calcular (0 = hoje). Máximo útil: 6, o marine tem 7 dias */
+function tsHours(di){const a=[];for(let h=6;h<=18;h++){const o=obs(di,h);if(o&&o.wc!=null&&o.wc>=95)a.push(h)}return a}
+function autoLvl(di,fn){
+  const b=bestRun(di,fn);
+  if(!b)return{l:3,b:null};
+  let l=b.l;
+  if(l==0&&tsHours(di).length)l=1; /* trovoada no dia: nunca 🟢 */
+  return{l,b};
+}
+function autoDays(){
+  if(!S.live||!Object.keys(S.live).length)return;
+  DAYS.forEach((d,i)=>{
+    if(!d.auto)return;
+    if(dayOff(i)<0||dayOff(i)>AUTO_MAX){d.k=3;d.s=3;return}
+    const kk=autoLvl(i,x=>x.k),ss=autoLvl(i,x=>x.s);
+    d.k=kk.l;d.s=ss.l;
+    const H=[];for(let h=6;h<=17;h++){const o=obs(i,h);if(o)H.push(o)}
+    if(!H.length)return;
+    const mx=f=>{const v=H.map(f).filter(x=>x!=null);return v.length?Math.max(...v):null};
+    const ws=mx(o=>o.ws),wg=mx(o=>o.wg),wh=mx(o=>o.wh),pp=mx(o=>o.pp),rn=H.reduce((s,o)=>s+(o.rain||0),0);
+    d.vento=ws!=null?`até ${ws.toFixed(0)} nós (rajadas ${wg!=null?wg.toFixed(0):'–'})`:'–';
+    d.ondas=wh!=null?`até ${wh.toFixed(1)} m`:'–';
+    d.chuva=`${pp!=null?'chance até '+pp+'%, ':''}${volTxt(rn)}`;
+    const ts=tsHours(i);
+    const jan=r=>!r.b?'sem dados':r.b.l==2?'sem janela segura':`melhor janela ${r.b.txt}${r.b.l==1?' (com cautela)':''}`;
+    d.txt=`⚙️ Avaliação automática pelos dados ao vivo (o Capitão ainda não atualizou). Caiaque: ${jan(kk)}. Surfe: ${jan(ss)}.${ts.length?` ⛈️ Trovoada prevista por volta das ${pad(ts[0])}h: fique em terra.`:''} Na dúvida, não saia.`;
+  });
 }
 function reval(){
   const v=CUR_BAD?{st:'indisp',msg:'arquivo dados.json corrompido ou incompleto'}:validade(CUR_EM,CUR_DRIFT);
@@ -512,7 +546,7 @@ function avalBox(){
   const fresco=a.h<6?'fresquinho, saído da rede agorinha':a.h<16?'ainda no ponto, que nem peixe do dia':'já correu uma maré, mas ainda serve';
   if(a.st=='ok')return `<div class="note"><span aria-hidden="true">🕒</span> O Capitão da Baixada deu o papo em ${f}: ${fresco} (faz ${Math.floor(a.h)} h).${rs}</div>`;
   if(a.st=='velha')return `<div class="warn"><span aria-hidden="true">⚠️</span> <b>Papo velho:</b> o Capitão avaliou em ${f}, faz ${Math.floor(a.h)} h. Pede uma atualização e vai com o pé atrás.${rs}</div>`;
-  return `<div class="warn"><span aria-hidden="true">⚪</span> <b>Sem papo do Capitão da Baixada por enquanto</b> (${a.msg}). Cinza é "sem avaliação", nunca "tá seguro". Só valem os dados ao vivo; na dúvida, não sai.${rs}</div>`;
+  return `<div class="warn"><span aria-hidden="true">⚪</span> <b>Sem papo do Capitão da Baixada por enquanto</b> (${a.msg}). O semáforo de Caiaque e Surfe está em <b>modo automático</b> (vento, ondas, chuva e trovoada ao vivo). Cinza é "sem avaliação", nunca "tá seguro". Na dúvida, não sai.${rs}</div>`;
 }
 async function loadDados(){
   CUR_BAD=false;
@@ -590,16 +624,16 @@ async function getData(kind,la,lo,live,kmh){
 function setStatus(t){const i=t.indexOf(' ');$('status').innerHTML='<span aria-hidden="true">'+t.slice(0,i)+'</span>'+t.slice(i)}
 async function loadLive(){
 setStatus('⏳ dando uma olhada no mar…');
-  const P=cur(),F='https://api.open-meteo.com/v1/forecast?latitude='+P.la+'&longitude='+P.lo+'&hourly=wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,temperature_2m,apparent_temperature,precipitation_probability,cloud_cover&wind_speed_unit=kn&timezone=America%2FSao_Paulo&forecast_days=10';
+  const P=cur(),F='https://api.open-meteo.com/v1/forecast?latitude='+P.la+'&longitude='+P.lo+'&hourly=wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,temperature_2m,apparent_temperature,precipitation_probability,cloud_cover,weather_code&wind_speed_unit=kn&timezone=America%2FSao_Paulo&forecast_days=10';
   const M='https://marine-api.open-meteo.com/v1/marine?latitude='+(P.la-0.06).toFixed(3)+'&longitude='+(P.lo+0.03).toFixed(3)+'&hourly=wave_height,wave_period,wave_direction&timezone=America%2FSao_Paulo&forecast_days=7';
   const L={};let n=0;
   const tk=S.tk=(S.tk||0)+1;
   const [f,m,cp]=await Promise.allSettled([getData('forecast',P.la,P.lo,F),P.m?getData('marine',P.la,P.lo,M):Promise.reject(0),P.city=='Santos'?loadCptec():Promise.resolve(0)]);
   if(tk!=S.tk)return;
-  if(f.status=='fulfilled'){const h=f.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),ws:h.wind_speed_10m[i],wg:h.wind_gusts_10m[i],wd:h.wind_direction_10m[i],rain:h.precipitation[i],tp:h.temperature_2m[i],ap:h.apparent_temperature[i],pp:h.precipitation_probability[i],cc:h.cloud_cover?h.cloud_cover[i]:null}});n++}
+  if(f.status=='fulfilled'){const h=f.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),ws:h.wind_speed_10m[i],wg:h.wind_gusts_10m[i],wd:h.wind_direction_10m[i],rain:h.precipitation[i],tp:h.temperature_2m[i],ap:h.apparent_temperature[i],pp:h.precipitation_probability[i],cc:h.cloud_cover?h.cloud_cover[i]:null,wc:h.weather_code?h.weather_code[i]:null}});n++}
   if(m.status=='fulfilled'){const h=m.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),wh:h.wave_height[i],wp:h.wave_period[i],wdir:h.wave_direction[i]}});n++}
   const gen=[f,m].filter(x=>x.status=='fulfilled'&&x.value.__gen).map(x=>x.value.__gen);S.fromCache=gen.length>0;S.live=L;S.stamp=new Date(gen.length?Math.min(...gen):Date.now()).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
-  S.cptecOk=cp.status=='fulfilled'&&cp.value>0;
+  S.cptecOk=cp.status=='fulfilled'&&cp.value>0;autoDays();
   setStatus((n>=(P.m?2:1)?`🟢 ${S.fromCache?'dados das':'ao vivo ·'} ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · usando os dados guardados'));setTimeout(maybeAlert,800);
   render();
 }
@@ -675,6 +709,8 @@ function surfV(o){
   }
   if(o.wp!=null&&o.wp<6){up(1);r.push(`período ${o.wp.toFixed(0)} s: mar picado`)}
   if(o.rain>=2){up(1);r.push('chuva')}
+  if(o.wc!=null&&o.wc>=95){up(2);r.push('trovoada prevista')}
+  else if(o.pp!=null&&o.pp>60){up(1);r.push(`chance de chuva ${o.pp}%`)}
   return{l,r};
 }
 function hourInfo(di,h){
