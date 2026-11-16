@@ -52,7 +52,7 @@ async function modelos(urls, fields, tratar) {
       const j = await get(u);
       res.push(byDay(j.hourly, fields));
       console.log('OK  ' + u.split('models=')[1].split('&')[0]);
-    } catch (e) { console.warn('::warning::' + u.split('models=')[1].split('&')[0] + ': ' + e.message); }
+    } catch (e) { console.warn('::warning::' + u.split('models=')[1].split('&')[0] + ': ' + e.message + (e.cause ? ' (' + (e.cause.code || e.cause.message) + ')' : '')); }
     await sleep(300);
   }
   return res;
@@ -62,7 +62,12 @@ const FIELDS_F = ['wind_speed_10m', 'wind_gusts_10m', 'wind_direction_10m', 'pre
 const FIELDS_M = ['wave_height', 'wave_period'];
 const fc = await modelos(FM.map(fcUrl), FIELDS_F);
 const mr = await modelos(MM.map(mrUrl), FIELDS_M);
-if (!fc.length && !mr.length) { console.error('Nenhum modelo respondeu.'); process.exit(1); }
+if (!fc.length || !mr.length) {
+  console.error(`::error::Dados incompletos (vento/chuva: ${fc.length}/${FM.length} modelos; ondas: ${mr.length}/${MM.length}). dados.json anterior mantido.`);
+  process.exit(1);
+}
+const parcial = fc.length < FM.length || mr.length < MM.length;
+if (parcial) console.warn('::warning::Só parte dos modelos respondeu; avaliação menos conservadora.');
 
 const hoje = new Date().toLocaleDateString('sv-SE', { timeZone: TZ });
 const datas = [...new Set([...fc, ...mr].flatMap(m => Object.keys(m)))].filter(d => d >= hoje).sort().slice(0, DAYS);
@@ -127,7 +132,13 @@ const dias = datas.map(date => {
   const extra = [];
   if (sul && vento >= 12) extra.push('Vento sul acima de 12 nós: confira a maré; se estiver vazante, evite a Fortaleza da Barra e o Deck do Pescador.');
   if (diverge) extra.push('Os modelos divergem: adotei o mais conservador.');
+  if (parcial) extra.push('Só parte dos modelos respondeu: avaliação menos conservadora.');
   extra.push('Confirme a tábua de marés antes de sair.');
+
+  if (vento == null || onda == null || precip == null) {
+    console.warn(`::warning::${date} descartado: faltam dados de vento, ondas ou chuva.`);
+    return null;
+  }
 
   return {
     date, lbl, k, s,
@@ -136,14 +147,14 @@ const dias = datas.map(date => {
     chuva: `${(precip ?? 0).toFixed(1)} mm${prob != null ? ' (até ' + r0(prob) + '%)' : ''}${trov ? ', com trovoadas' : ''}`,
     txt: `${veredito}${motivos.length ? ': ' + [...new Set(motivos)].join('; ') : ''}. ${extra.join(' ')}`
   };
-});
+}).filter(Boolean);
 
-if (!dias.length) { console.error('Sem dias para gravar.'); process.exit(1); }
+if (dias.length < 3) { console.error('::error::Menos de 3 dias completos. dados.json anterior mantido.'); process.exit(1); }
 
 let antigo = {};
 try { antigo = JSON.parse(await readFile(OUT, 'utf8')); } catch {}
 
 const avaliado_em = new Date().toLocaleString('sv-SE', { timeZone: TZ }).replace(' ', 'T') + '-03:00';
-const novo = { ...antigo, versao: antigo.versao || 1, avaliado_em, fonte: 'open-meteo (ECMWF + GFS, mais conservador)', dias };
+const novo = { ...antigo, versao: antigo.versao || 1, avaliado_em, fonte: parcial ? 'open-meteo (modelos parciais)' : 'open-meteo (ECMWF + GFS, mais conservador)', dias };
 await writeFile(OUT, JSON.stringify(novo, null, 2) + '\n');
 console.log(`Gravado ${OUT}: ${dias.length} dias. CETESB mantida do boletim ${antigo.boletim_cetesb || '(nenhum)'}.`);
