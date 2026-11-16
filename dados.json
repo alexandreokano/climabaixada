@@ -1,145 +1,356 @@
 {
   "versao": 1,
-  "avaliado_em": "2026-11-14T15:30:00-03:00",
+  "avaliado_em": "2026-11-15T21:02:16-03:00",
   "boletim_cetesb": "2026-11-12",
   "dias": [
-    {
-      "date": "2026-11-14",
-      "lbl": "Sáb 14",
-      "k": 1,
-      "s": 1,
-      "vento": "S/SSE 5–8 nós (9–15 km/h) à tarde com rajadas até 12–15 nós; cai para 1–3 nós à noite",
-      "ondas": "~0,6 m · 5,2–7,5 s (SE/S) · água 24°C",
-      "chuva": "5,1 mm acumulados pela manhã (ECMWF); tarde e noite firmes (0 mm nos 4 modelos)",
-      "txt": "A chuva da manhã já passou e a tarde de sábado segue firme, com sol entre nuvens (23–25°C). O vento sul/sudeste sopra moderado no começo da tarde (5 a 8 nós, com rajadas de até 14–15 nós no ECMWF e ICON) e perde força após as 15h. Ondas constantes de 0,6 m (ECMWF WAM e GFS WAVE): mar tranquilo para caiaque perto da praia se o vento não incomodar, e pequeno para surfe. Preia-mar às 15h02 (1,01 m)."
-    },
     {
       "date": "2026-11-15",
       "lbl": "Dom 15",
       "k": 1,
       "s": 1,
-      "vento": "Fraco de manhã (N/NW 1–3 nós, rajadas 3–8 nós); vira p/ E/SE 3–7 nós à tarde (rajadas até 11–13 nós)",
-      "ondas": "~0,6 m de manhã/tarde, subindo p/ 0,7 m à noite · 6,1–7,1 s (8,9–9,1 s à noite) · água 24°C",
-      "chuva": "Manhã seca; forte divergência à tarde/noite: 19,3 mm no GFS e 7,6 mm com trovoadas no meteoblue AI (0,7–1,3 mm no ICON/ECMWF)",
-      "txt": "Atenção ao feriado: a manhã (06h às 11h) é a melhor janela, com tempo firme, vento bem fraco (1–3 nós), ondas de 0,6 m e vazante suave das 05h53 às 11h02. Porém, saia da água antes do almoço: os modelos GFS (19,3 mm) e meteoblue AI (7,6 mm) preveem pancadas fortes e trovoadas com raios a partir das 15h–18h. Por segurança, considere a tarde imprópria se o céu escurecer. Surfe pequeno pela manhã."
+      "vento": "ESE até 9 nós (rajadas até 16 nós)",
+      "ondas": "até 0.7 m · 7 s",
+      "chuva": "4.8 mm (até 100%)",
+      "txt": "Atenção: vento moderado ou rajadas; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-11-16",
       "lbl": "Seg 16",
       "k": 1,
       "s": 1,
-      "vento": "Fraco de manhã (2–4 nós, rajadas 4–8 nós); S/ESE 5–8 nós à tarde com rajadas até 10–14 nós (ECMWF)",
-      "ondas": "~0,6–0,8 m · período sobe para 9,3–11,8 s (swell de SE/S) · água 24°C",
-      "chuva": "2,3 a 8,5 mm conforme o modelo, com risco de trovoadas de madrugada e entre 06h e 12h (meteoblue AI e ECMWF)",
-      "txt": "Dia instável: embora o vento seja fraco de manhã (2–4 nós) e a maré tenha pouca correnteza (vazante de apenas 0,29 m entre 07h01 e 11h57), o meteoblue AI e o ECMWF indicam risco de trovoadas e raios entre a madrugada e o meio-dia. Não entre no mar se ouvir trovões ou vir nuvens carregadas. Para o surfe, a ondulação ganha período mais longo (9 a 11,8 s) com ondas de 0,6 a 0,8 m. À tarde o vento leste/sudeste sobe com rajadas de até 14 nós."
+      "vento": "S até 8 nós (rajadas até 19 nós)",
+      "ondas": "até 0.7 m · 11 s",
+      "chuva": "5.0 mm (até 83%)",
+      "txt": "Atenção: vento moderado ou rajadas; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-11-17",
       "lbl": "Ter 17",
-      "k": 1,
-      "s": 0,
-      "vento": "Fraco de manhã (2–4 nós, rajadas 4–9 nós); à tarde sobe p/ ESE 8–11 nós com rajadas de 15 a 18 nós (ICON/ECMWF)",
-      "ondas": "~0,7–0,9 m de manhã, subindo p/ 0,9–1,0 m à tarde/noite · swell longo de 14,9–16,0 s após 12h!",
-      "chuva": "Pouca ou nenhuma chuva: 0 a 0,8 mm (tempo firme com sol entre nuvens, 21–26°C)",
-      "txt": "Duas metades bem diferentes: de manhã (06h–10h) o vento é fraco (2–4 nós) e o mar tem 0,7–0,8 m, dando janela para remada curta e bom surfe. A partir das 12h, NÃO saia de caiaque: a maré vaza o dia inteiro (08h17 às 18h36) enquanto o vento ESE sobe para 10–11 nós com rajadas de 16–18 nós (ECMWF) e entra uma ondulação longa de 15–16 s batendo 1,0 m, gerando risco de efeito canal e mar mexido na barra. Melhor janela de surfe cedo (06h–10h)."
+      "k": 2,
+      "s": 1,
+      "vento": "ESE até 9 nós (rajadas até 20 nós)",
+      "ondas": "até 1.0 m · 7 s",
+      "chuva": "7.8 mm (até 75%)",
+      "txt": "Não navegue: vento/rajadas acima do limite do caiaque; ondas acima de 1,0 m; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-11-18",
       "lbl": "Qua 18",
       "k": 1,
+      "s": 1,
+      "vento": "SSE até 7 nós (rajadas até 13 nós)",
+      "ondas": "até 0.9 m · 14 s",
+      "chuva": "8.1 mm (até 80%)",
+      "txt": "Atenção: ondas perto de 1,0 m; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
+    },
+    {
+      "date": "2026-11-19",
+      "lbl": "Qui 19",
+      "k": 1,
       "s": 0,
-      "vento": "Muito fraco de manhã (1–2 nós, rajadas 3–6 nós); SE/SSE 3–6 nós à tarde com rajadas até 9–14 nós",
-      "ondas": "~0,9 m cedo (00h–09h), baixando p/ 0,8 m ao longo do dia · 6,5–9,7 s (SE) · água 24°C",
-      "chuva": "0 a 0,1 mm no ICON/ECMWF; 1,1 a 3,6 mm em pancada isolada no fim da tarde (15h–18h no meteoblue/GFS)",
-      "txt": "Manhã ensolarada e quase sem vento (1–2 nós): excelente para o surfe (🟢) com ondas alinhadas de 0,8 a 0,9 m e período de até 9,7 s no ECMWF WAM. Para o caiaque, fica o alerta amarelo (🟡) porque a onda começa o dia em 0,9 m (acima de 0,8 m) e a vazante vai das 09h51 às 18h10: reme de manhã se tiver experiência para passar a arrebentação, ou aguarde a onda baixar para 0,8 m antes do meio-dia. Volte antes das 15h por conta de possível pancada de fim de tarde."
+      "vento": "SSE até 8 nós (rajadas até 17 nós)",
+      "ondas": "até 0.7 m · 7 s",
+      "chuva": "0.6 mm (até 54%)",
+      "txt": "Atenção: vento moderado ou rajadas. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     }
   ],
   "cetesb": {
     "Santos": [
-      ["Ponta da Praia", 2],
-      ["Aparecida", 2],
-      ["Embaré", 2],
-      ["Boqueirão", 2],
-      ["Gonzaga", 2],
-      ["Pompeia", 2],
-      ["José Menino", 2]
+      [
+        "Ponta da Praia",
+        2
+      ],
+      [
+        "Aparecida",
+        2
+      ],
+      [
+        "Embaré",
+        2
+      ],
+      [
+        "Boqueirão",
+        2
+      ],
+      [
+        "Gonzaga",
+        2
+      ],
+      [
+        "Pompeia",
+        2
+      ],
+      [
+        "José Menino",
+        2
+      ]
     ],
     "São Vicente": [
-      ["Praia da Divisa", 2],
-      ["Milionários", 2],
-      ["Gonzaguinha", 2],
-      ["Itararé (Posto 2)", 0],
-      ["Ilha Porchat", 0],
-      ["Prainha", 2]
+      [
+        "Praia da Divisa",
+        2
+      ],
+      [
+        "Milionários",
+        2
+      ],
+      [
+        "Gonzaguinha",
+        2
+      ],
+      [
+        "Itararé (Posto 2)",
+        0
+      ],
+      [
+        "Ilha Porchat",
+        0
+      ],
+      [
+        "Prainha",
+        2
+      ]
     ],
     "Guarujá": [
-      ["Pitangueiras - Av. Puglisi", 2],
-      ["Pitangueiras - R. Silvia Valadão", 0],
-      ["Astúrias", 0],
-      ["Tombo", 0],
-      ["Guaiúba", 0],
-      ["Enseada - Estrada de Pernambuco", 2],
-      ["Enseada - Av. Atlântica", 2],
-      ["Enseada - Rua Chile", 2],
-      ["Enseada - Av. Santa Maria", 2],
-      ["Pernambuco", 0],
-      ["Perequê", 2]
+      [
+        "Pitangueiras - Av. Puglisi",
+        2
+      ],
+      [
+        "Pitangueiras - R. Silvia Valadão",
+        0
+      ],
+      [
+        "Astúrias",
+        0
+      ],
+      [
+        "Tombo",
+        0
+      ],
+      [
+        "Guaiúba",
+        0
+      ],
+      [
+        "Enseada - Estrada de Pernambuco",
+        2
+      ],
+      [
+        "Enseada - Av. Atlântica",
+        2
+      ],
+      [
+        "Enseada - Rua Chile",
+        2
+      ],
+      [
+        "Enseada - Av. Santa Maria",
+        2
+      ],
+      [
+        "Pernambuco",
+        0
+      ],
+      [
+        "Perequê",
+        2
+      ]
     ],
     "Praia Grande": [
-      ["Canto do Forte", 2],
-      ["Boqueirão", 2],
-      ["Guilhermina", 2],
-      ["Aviação", 2],
-      ["Vila Tupy", 2],
-      ["Ocian", 2],
-      ["Vila Mirim", 2],
-      ["Maracanã", 2],
-      ["Vila Caiçara", 2],
-      ["Real", 2],
-      ["Flórida", 2],
-      ["Jardim Solemar", 2]
+      [
+        "Canto do Forte",
+        2
+      ],
+      [
+        "Boqueirão",
+        2
+      ],
+      [
+        "Guilhermina",
+        2
+      ],
+      [
+        "Aviação",
+        2
+      ],
+      [
+        "Vila Tupy",
+        2
+      ],
+      [
+        "Ocian",
+        2
+      ],
+      [
+        "Vila Mirim",
+        2
+      ],
+      [
+        "Maracanã",
+        2
+      ],
+      [
+        "Vila Caiçara",
+        2
+      ],
+      [
+        "Real",
+        2
+      ],
+      [
+        "Flórida",
+        2
+      ],
+      [
+        "Jardim Solemar",
+        2
+      ]
     ],
     "Bertioga": [
-      ["Enseada - R. Rafael Costabili", 2],
-      ["Indaiá (Enseada)", 0],
-      ["Enseada - Vista Linda", 0],
-      ["Enseada - Colônia do SESC", 0],
-      ["São Lourenço - junto ao morro", 0],
-      ["São Lourenço - Rua 2", 0],
-      ["Boraceia - Colégio Marista", 0],
-      ["Boraceia - Sul", 0],
-      ["Guaratuba", 0]
+      [
+        "Enseada - R. Rafael Costabili",
+        2
+      ],
+      [
+        "Indaiá (Enseada)",
+        0
+      ],
+      [
+        "Enseada - Vista Linda",
+        0
+      ],
+      [
+        "Enseada - Colônia do SESC",
+        0
+      ],
+      [
+        "São Lourenço - junto ao morro",
+        0
+      ],
+      [
+        "São Lourenço - Rua 2",
+        0
+      ],
+      [
+        "Boraceia - Colégio Marista",
+        0
+      ],
+      [
+        "Boraceia - Sul",
+        0
+      ],
+      [
+        "Guaratuba",
+        0
+      ]
     ],
     "Itanhaém": [
-      ["Praia dos Pescadores", 2],
-      ["Sonho", 2],
-      ["Jardim Cibratel", 2],
-      ["Centro", 2],
-      ["Parque Balneário", 2],
-      ["Estância Balneária", 2],
-      ["Jardim São Fernando", 2],
-      ["Balneário Jardim Regina", 2],
-      ["Balneário Gaivotas", 2],
-      ["Suarão - AFPESP", 2],
-      ["Jardim Suarão", 0],
-      ["Campos Elíseos", 0]
+      [
+        "Praia dos Pescadores",
+        2
+      ],
+      [
+        "Sonho",
+        2
+      ],
+      [
+        "Jardim Cibratel",
+        2
+      ],
+      [
+        "Centro",
+        2
+      ],
+      [
+        "Parque Balneário",
+        2
+      ],
+      [
+        "Estância Balneária",
+        2
+      ],
+      [
+        "Jardim São Fernando",
+        2
+      ],
+      [
+        "Balneário Jardim Regina",
+        2
+      ],
+      [
+        "Balneário Gaivotas",
+        2
+      ],
+      [
+        "Suarão - AFPESP",
+        2
+      ],
+      [
+        "Jardim Suarão",
+        0
+      ],
+      [
+        "Campos Elíseos",
+        0
+      ]
     ],
     "Mongaguá": [
-      ["Itapoã (Vila São Paulo)", 2],
-      ["Central", 2],
-      ["Vera Cruz", 2],
-      ["Santa Eugênia", 2],
-      ["Itaóca", 2],
-      ["Agenor de Campos", 2],
-      ["Flórida Mirim", 2]
+      [
+        "Itapoã (Vila São Paulo)",
+        2
+      ],
+      [
+        "Central",
+        2
+      ],
+      [
+        "Vera Cruz",
+        2
+      ],
+      [
+        "Santa Eugênia",
+        2
+      ],
+      [
+        "Itaóca",
+        2
+      ],
+      [
+        "Agenor de Campos",
+        2
+      ],
+      [
+        "Flórida Mirim",
+        2
+      ]
     ],
     "Peruíbe": [
-      ["Icaraíba", 2],
-      ["Parque Turístico", 2],
-      ["Balneário São João Batista", 2],
-      ["Centro", 2],
-      ["Prainha", 0],
-      ["Guaraú", 0]
+      [
+        "Icaraíba",
+        2
+      ],
+      [
+        "Parque Turístico",
+        2
+      ],
+      [
+        "Balneário São João Batista",
+        2
+      ],
+      [
+        "Centro",
+        2
+      ],
+      [
+        "Prainha",
+        0
+      ],
+      [
+        "Guaraú",
+        0
+      ]
     ]
-  }
+  },
+  "fonte": "open-meteo (ECMWF + GFS, mais conservador)"
 }
