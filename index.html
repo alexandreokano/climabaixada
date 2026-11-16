@@ -503,35 +503,7 @@ function greyIf(){
     d.vento=d.ondas=d.chuva='–';
   });
   autoDays();
-}
-const AUTO_MAX=3; /* até quantos dias à frente calcular (0 = hoje). Máximo útil: 6, o marine tem 7 dias */
-function tsHours(di){const a=[];for(let h=6;h<=18;h++){const o=obs(di,h);if(o&&o.wc!=null&&o.wc>=95)a.push(h)}return a}
-function autoLvl(di,fn){
-  const b=bestRun(di,fn);
-  if(!b)return{l:3,b:null};
-  let l=b.l;
-  if(l==0&&tsHours(di).length)l=1; /* trovoada no dia: nunca 🟢 */
-  return{l,b};
-}
-function autoDays(){
-  if(!S.live||!Object.keys(S.live).length)return;
-  DAYS.forEach((d,i)=>{
-    if(!d.auto)return;
-    if(dayOff(i)<0||dayOff(i)>AUTO_MAX){d.k=3;d.s=3;return}
-    const kk=autoLvl(i,x=>x.k),ss=autoLvl(i,x=>x.s);
-    d.k=kk.l;d.s=ss.l;
-    const H=[];for(let h=6;h<=17;h++){const o=obs(i,h);if(o)H.push(o)}
-    if(!H.length)return;
-    const mx=f=>{const v=H.map(f).filter(x=>x!=null);return v.length?Math.max(...v):null};
-    const ws=mx(o=>o.ws),wg=mx(o=>o.wg),wh=mx(o=>o.wh),pp=mx(o=>o.pp),rn=H.reduce((s,o)=>s+(o.rain||0),0);
-    d.vento=ws!=null?`até ${ws.toFixed(0)} nós (rajadas ${wg!=null?wg.toFixed(0):'–'})`:'–';
-    d.ondas=wh!=null?`até ${wh.toFixed(1)} m`:'–';
-    d.chuva=`${pp!=null?'chance até '+pp+'%, ':''}${volTxt(rn)}`;
-    const ts=tsHours(i);
-    const jan=r=>!r.b?'sem dados':r.b.l==2?'sem janela segura':`melhor janela ${r.b.txt}${r.b.l==1?' (com cautela)':''}`;
-    d.txt=`⚙️ Avaliação automática pelos dados ao vivo (o Capitão ainda não atualizou). Caiaque: ${jan(kk)}. Surfe: ${jan(ss)}.${ts.length?` ⛈️ Trovoada prevista por volta das ${pad(ts[0])}h: fique em terra.`:''} Na dúvida, não saia.`;
-  });
-}
+function autoDays
 function reval(){
   const v=CUR_BAD?{st:'indisp',msg:'arquivo dados.json corrompido ou incompleto'}:validade(CUR_EM,CUR_DRIFT);
   const mudou=AVAL.st!=v.st;
@@ -690,6 +662,8 @@ function kayakV(o,tide){
   }
   if(o.wp!=null&&o.wp<6&&o.ws>10){up(1);r.push(`período ${o.wp.toFixed(0)} s: mar quadrado`)}
   if(o.rain>=1){up(1);r.push(`chuva ${o.rain.toFixed(1)} mm/h`)}
+  if(o.wc!=null&&o.wc>=95){up(2);r.push('trovoada prevista')}
+  else if(o.pp!=null&&o.pp>60){up(1);r.push(`chance de chuva ${o.pp}%`)}v
   if(tide&&tide.state=='vazante'&&o.wd>=112&&o.wd<=248&&o.ws>12){up(2);warn=true;r.push('vazante + vento sul >12 nós')}
   return{l,r,warn};
 }
