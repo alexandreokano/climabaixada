@@ -1,57 +1,57 @@
 {
   "versao": 1,
-  "avaliado_em": "2026-11-15T22:33:24-03:00",
+  "avaliado_em": "2026-11-15T22:47:32-03:00",
   "boletim_cetesb": "2026-11-12",
   "dias": [
     {
       "date": "2026-11-15",
       "lbl": "Dom 15",
-      "k": 0,
-      "s": 0,
-      "vento": "sem dados",
+      "k": 1,
+      "s": 1,
+      "vento": "SE até 9 nós (rajadas até 16 nós)",
       "ondas": "até 0.7 m · 7 s",
-      "chuva": "0.0 mm",
-      "txt": "Condições favoráveis. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
+      "chuva": "4.8 mm (até 100%)",
+      "txt": "Atenção: vento moderado ou rajadas; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-11-16",
       "lbl": "Seg 16",
-      "k": 0,
-      "s": 0,
-      "vento": "sem dados",
+      "k": 1,
+      "s": 1,
+      "vento": "S até 8 nós (rajadas até 17 nós)",
       "ondas": "até 0.7 m · 11 s",
-      "chuva": "0.0 mm",
-      "txt": "Condições favoráveis. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
+      "chuva": "4.6 mm (até 83%)",
+      "txt": "Atenção: vento moderado ou rajadas; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-11-17",
       "lbl": "Ter 17",
       "k": 2,
-      "s": 0,
-      "vento": "sem dados",
+      "s": 1,
+      "vento": "ESE até 9 nós (rajadas até 18 nós)",
       "ondas": "até 1.0 m · 7 s",
-      "chuva": "0.0 mm",
-      "txt": "Não navegue: ondas acima de 1,0 m. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
+      "chuva": "4.6 mm (até 75%)",
+      "txt": "Não navegue: vento moderado ou rajadas; ondas acima de 1,0 m; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-11-18",
       "lbl": "Qua 18",
       "k": 1,
-      "s": 0,
-      "vento": "sem dados",
+      "s": 1,
+      "vento": "SSE até 7 nós (rajadas até 13 nós)",
       "ondas": "até 0.9 m · 14 s",
-      "chuva": "0.0 mm",
-      "txt": "Atenção: ondas perto de 1,0 m. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
+      "chuva": "8.1 mm (até 80%)",
+      "txt": "Atenção: ondas perto de 1,0 m; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-11-19",
       "lbl": "Qui 19",
-      "k": 0,
+      "k": 1,
       "s": 0,
-      "vento": "sem dados",
+      "vento": "S até 8 nós (rajadas até 17 nós)",
       "ondas": "até 0.7 m · 7 s",
-      "chuva": "0.0 mm",
-      "txt": "Condições favoráveis. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
+      "chuva": "0.6 mm (até 54%)",
+      "txt": "Atenção: vento moderado ou rajadas. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     }
   ],
   "cetesb": {
