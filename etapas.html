@@ -1,0 +1,274 @@
+/* ======================================================================
+   PATCHES DO SEMÁFORO AUTOMÁTICO · aplique na ordem (Ctrl+F no VS Code)
+   ====================================================================== */
+
+/* ---------- PATCH 1 · loadLive: pedir weather_code ----------
+   LOCALIZAR:   precipitation_probability,cloud_cover&wind_speed_unit=kn&timezone=America%2FSao_Paulo&forecast_days=10';
+   SUBSTITUIR:  precipitation_probability,cloud_cover,weather_code&wind_speed_unit=kn&timezone=America%2FSao_Paulo&forecast_days=10';
+*/
+
+/* ---------- PATCH 2 · loadLive: guardar wc ----------
+   LOCALIZAR:   cc:h.cloud_cover?h.cloud_cover[i]:null}
+   SUBSTITUIR:  cc:h.cloud_cover?h.cloud_cover[i]:null,wc:h.weather_code?h.weather_code[i]:null}
+*/
+
+/* ---------- PATCH 3 · kayakV: depois da linha da chuva (o.rain>=1), ADICIONAR ----------
+   LOCALIZAR:   if(o.rain>=1){up(1);r.push(`chuva ${o.rain.toFixed(1)} mm/h`)}
+   SUBSTITUIR POR (a linha acima + as duas abaixo): */
+  if(o.rain>=1){up(1);r.push(`chuva ${o.rain.toFixed(1)} mm/h`)}
+  if(o.wc!=null&&o.wc>=95){up(2);r.push('trovoada prevista')}
+  else if(o.pp!=null&&o.pp>60){up(1);r.push(`chance de chuva ${o.pp}%`)}
+
+/* ---------- PATCH 4 · surfV: depois da linha da chuva (o.rain>=2), ADICIONAR ----------
+   LOCALIZAR:   if(o.rain>=2){up(1);r.push('chuva')}
+   SUBSTITUIR POR (a linha acima + as duas abaixo): */
+  if(o.rain>=2){up(1);r.push('chuva')}
+  if(o.wc!=null&&o.wc>=95){up(2);r.push('trovoada prevista')}
+  else if(o.pp!=null&&o.pp>60){up(1);r.push(`chance de chuva ${o.pp}%`)}
+
+/* ---------- PATCH 5 · greyIf: trocar a função inteira por este bloco ----------
+   LOCALIZAR: a função greyIf() inteira (3 linhas)
+   SUBSTITUIR por: */
+function greyIf(){
+  if(!['vencida','indisp','relogio'].includes(AVAL.st))return;
+  DAYS.forEach(d=>{
+    d.auto=1;d.k=3;d.s=3;
+    d.txt='Sem avaliação válida do Capitão da Baixada e sem dados ao vivo ainda. Na dúvida, não saia.';
+    d.vento=d.ondas=d.chuva='–';
+  });
+  autoDays();
+}
+const AUTO_MAX=3; /* até quantos dias à frente calcular (0 = hoje). Máximo útil: 6, o marine tem 7 dias */
+function tsHours(di){const a=[];for(let h=6;h<=18;h++){const o=obs(di,h);if(o&&o.wc!=null&&o.wc>=95)a.push(h)}return a}
+function autoLvl(di,fn){
+  const b=bestRun(di,fn);
+  if(!b)return{l:3,b:null};
+  let l=b.l;
+  if(l==0&&tsHours(di).length)l=1; /* trovoada no dia: nunca 🟢 */
+  return{l,b};
+}
+function autoDays(){
+  if(!S.live||!Object.keys(S.live).length)return;
+  DAYS.forEach((d,i)=>{
+    if(!d.auto)return;
+    if(dayOff(i)<0||dayOff(i)>AUTO_MAX){d.k=3;d.s=3;return}
+    const kk=autoLvl(i,x=>x.k),ss=autoLvl(i,x=>x.s);
+    d.k=kk.l;d.s=ss.l;
+    const H=[];for(let h=6;h<=17;h++){const o=obs(i,h);if(o)H.push(o)}
+    if(!H.length)return;
+    const mx=f=>{const v=H.map(f).filter(x=>x!=null);return v.length?Math.max(...v):null};
+    const ws=mx(o=>o.ws),wg=mx(o=>o.wg),wh=mx(o=>o.wh),pp=mx(o=>o.pp),rn=H.reduce((s,o)=>s+(o.rain||0),0);
+    d.vento=ws!=null?`até ${ws.toFixed(0)} nós (rajadas ${wg!=null?wg.toFixed(0):'–'})`:'–';
+    d.ondas=wh!=null?`até ${wh.toFixed(1)} m`:'–';
+    d.chuva=`${pp!=null?'chance até '+pp+'%, ':''}${volTxt(rn)}`;
+    const ts=tsHours(i);
+    const jan=r=>!r.b?'sem dados':r.b.l==2?'sem janela segura':`melhor janela ${r.b.txt}${r.b.l==1?' (com cautela)':''}`;
+    d.txt=`⚙️ Avaliação automática pelos dados ao vivo (o Capitão ainda não atualizou). Caiaque: ${jan(kk)}. Surfe: ${jan(ss)}.${ts.length?` ⛈️ Trovoada prevista por volta das ${pad(ts[0])}h: fique em terra.`:''} Na dúvida, não saia.`;
+  });
+}
+
+/* ---------- PATCH 6 · loadLive: recalcular depois de carregar ----------
+   LOCALIZAR:   S.cptecOk=cp.status=='fulfilled'&&cp.value>0;
+   SUBSTITUIR:  S.cptecOk=cp.status=='fulfilled'&&cp.value>0;autoDays();
+*/
+
+/* ---------- PATCH 7 · avalBox: aviso quando o semáforo é automático ----------
+   LOCALIZAR (no último return da função avalBox):
+   Cinza é "sem avaliação", nunca "tá seguro". Só valem os dados ao vivo; na dúvida, não sai.
+   SUBSTITUIR:
+   O semáforo de Caiaque e Surfe está em <b>modo automático</b> (vento, ondas, chuva e trovoada ao vivo). Cinza é "sem avaliação", nunca "tá seguro". Na dúvida, não sai.
+*/
+
+/* ---------- PATCH 8 · atualizar-cache.mjs (e rodar o workflow cache-clima) ----------
+   LOCALIZAR:   cloud_cover';
+   SUBSTITUIR:  cloud_cover,weather_code';
+   (sem isso o cache não traz weather_code; a trovoada só entra via consulta direta)
+*/
+
+
+---
+
+/* ONDE: index.html, dentro de function kayakV(o,tide)
+   BUSQUE (Cmd+F) esta linha: */
+  if(o.rain>=1){up(1);r.push(`chuva ${o.rain.toFixed(1)} mm/h`)}
+
+/* COLE logo DEPOIS dela (nova linha, antes do "if(tide&&...") */
+  if(o.wc!=null&&o.wc>=95){up(2);r.push('trovoada prevista')}
+  else if(o.pp!=null&&o.pp>60){up(1);r.push(`chance de chuva ${o.pp}%`)}
+
+/* Resultado esperado: o trecho final do kayakV fica assim:
+
+  if(o.rain>=1){up(1);r.push(`chuva ${o.rain.toFixed(1)} mm/h`)}
+  if(o.wc!=null&&o.wc>=95){up(2);r.push('trovoada prevista')}
+  else if(o.pp!=null&&o.pp>60){up(1);r.push(`chance de chuva ${o.pp}%`)}
+  if(tide&&tide.state=='vazante'&&...){...}
+  return{l,r,warn};
+*/
+
+
+
+---
+
+/* ===== PASSO 1: cole este bloco logo ANTES de "function guiaLocal(){" ===== */
+let BOLETIM=null;
+function bolFmt(iso,add){
+  const [y,m,d]=iso.split('-').map(Number),t=new Date(Date.UTC(y,m-1,d+(add||0)));
+  return String(t.getUTCDate()).padStart(2,'0')+'/'+String(t.getUTCMonth()+1).padStart(2,'0');
+}
+function bolIdade(){return BOLETIM?Math.floor((Date.now()-new Date(BOLETIM+'T12:00:00-03:00'))/864e5):null}
+function bolProx(){return BOLETIM?bolFmt(BOLETIM,7):null}
+function bolRef(){
+  if(!BOLETIM)return 'data do boletim indisponível';
+  return 'boletim de '+bolFmt(BOLETIM,0)+(bolIdade()>9?' (desatualizado)':'');
+}
+function bolProxTxt(){return BOLETIM?'o próximo sai em '+bolProx():''}
+function bolDe(){return BOLETIM?'boletim da CETESB de '+bolFmt(BOLETIM,0):'boletim da CETESB (data indisponível)'}
+function setBoletim(v){
+  BOLETIM=/^\d{4}-\d{2}-\d{2}$/.test(v||'')?v:null;
+  document.querySelectorAll('.bolrod').forEach(e=>e.textContent=bolRef());
+}
+function balCardSantos(){
+  const l=CETESB['Santos']||[],t=l.length,n=l.filter(x=>x[1]!=0).length;
+  const [c,e,s]=!t?['g','⚪','Santos sem dados']:n==t?['r','🔴','Santos impróprio']:n==0?['g','🟢','Santos próprio']:['y','🟡','Santos: '+n+' de '+t+' pontos impróprios'];
+  return `<div class="card ${c}"><h3><span aria-hidden="true">🧪</span> Balneabilidade</h3><div class="big"><span aria-hidden="true">${e}</span> ${s}</div><div class="mut">CETESB · ${bolRef()}${BOLETIM?' · próximo '+bolProx():''}</div></div>`;
+}
+
+/* ===== PASSO 2: localizar e substituir (um por vez, com Cmd+F) ===== */
+
+/* 2.1 Rodapé (HTML puro, fora de template) */
+LOCALIZAR:   CETESB (boletim 12/11)
+SUBSTITUIR:  CETESB (<span class="bolrod">data do boletim indisponível</span>)
+
+/* 2.2 Card do Resumão (a linha inteira; se aparecer 2 vezes, troque nas duas) */
+LOCALIZAR:   <div class="card r"><h3><span aria-hidden="true">🧪</span> Balneabilidade</h3><div class="big"><span aria-hidden="true">🔴</span> Santos impróprio</div><div class="mut">CETESB 12/11 · próximo boletim 19/11</div></div>
+SUBSTITUIR:  ${balCardSantos()}
+
+/* 2.3 Nota da aba "Como tá a praia hoje?" (também tira "Guarujá e Praia Grande não consultados", que o dados.json já cobre) */
+LOCALIZAR:   Guarujá e Praia Grande não consultados. Próximo boletim: quinta (12/11).
+SUBSTITUIR:  Fonte: CETESB, ${bolRef()}${BOLETIM?' (próximo em '+bolProx()+')':''}.
+
+/* 2.4 Guia local */
+LOCALIZAR:   a balneabilidade vem do boletim da CETESB de 12/11;
+SUBSTITUIR:  a balneabilidade vem do ${bolDe()};
+
+/* 2.5 Meu Dia, linha da praia (strings com aspas simples, por isso a concatenação) */
+LOCALIZAR:   Água própria para banho (CETESB, boletim de 12/11).'
+SUBSTITUIR:  Água própria para banho (CETESB, '+bolRef()+').'
+
+LOCALIZAR:   Água imprópria para banho (CETESB, boletim de 12/11). Evite
+SUBSTITUIR:  Água imprópria para banho (CETESB, '+bolRef()+'). Evite
+
+/* 2.6 Detalhe da praia */
+LOCALIZAR:   (CETESB, boletim de 12/11; o próximo sai em 19/11)
+SUBSTITUIR:  (CETESB, ${bolRef()}${BOLETIM?'; '+bolProxTxt():''})
+
+/* 2.7 Nota final do guia de praias */
+LOCALIZAR:   Fonte: CETESB, boletim de 12/11 (próximo em 19/11).
+SUBSTITUIR:  Fonte: CETESB, ${bolRef()}${BOLETIM?' (próximo em '+bolProx()+')':''}.
+
+/* ===== PASSO 3: ligar ao carregamento do dados.json ===== */
+/* Em loadDados, ache a linha que atribui "CUR_EM=" (Cmd+F: CUR_EM=).
+   Logo depois dela, acrescente (troque "j" pelo nome da variável do JSON nessa linha):
+     setBoletim(j.boletim_cetesb);
+   No ramo de erro/arquivo inválido (onde CUR_BAD=true), acrescente:
+     setBoletim(null);
+*/
+
+
+
+
+
+----------------------------
+
+
+
+
+
+
+
+
+
+/* ================================================================
+   PASSO 1. COLE este bloco logo ABAIXO da linha:
+   let AVAL={st:'carregando'},CUR_EM=BACKUP_AVAL, ... ;
+   (e ACIMA de function dadosOk)
+   ================================================================ */
+/* ---- Boletim da CETESB (vem do dados.json; começa com o da cópia embutida) ---- */
+let BOLETIM='2026-11-12';
+function setBoletim(d){
+  BOLETIM=(typeof d=='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&!isNaN(Date.parse(d)))?d:null;
+  const e=document.getElementById('bol-rod');
+  if(e)e.textContent=BOLETIM?'boletim '+bolFmt(BOLETIM):'data do boletim indisponível';
+}
+function bolFmt(iso){const p=iso.split('-');return p[2]+'/'+p[1]}
+function bolProx(){
+  if(!BOLETIM)return null;
+  const t=new Date(Date.parse(BOLETIM+'T12:00:00Z')+7*864e5);
+  return String(t.getUTCDate()).padStart(2,'0')+'/'+String(t.getUTCMonth()+1).padStart(2,'0');
+}
+function bolOld(){return !!BOLETIM&&(Date.now()-Date.parse(BOLETIM+'T12:00:00-03:00'))>9*864e5}
+function bolRef(){return BOLETIM?'boletim de '+bolFmt(BOLETIM):'data do boletim indisponível'}
+function bolPar(){return BOLETIM?'CETESB, boletim de '+bolFmt(BOLETIM)+'; o próximo sai em '+bolProx()+(bolOld()?' (desatualizado)':''):'CETESB, data do boletim indisponível'}
+function bolFonte(){return BOLETIM?'CETESB, boletim de '+bolFmt(BOLETIM)+' (próximo em '+bolProx()+')'+(bolOld()?' (desatualizado)':''):'CETESB (data do boletim indisponível)'}
+function bolCet(){return BOLETIM?'boletim da CETESB de '+bolFmt(BOLETIM):'boletim da CETESB (data indisponível)'}
+function bolNota(){return BOLETIM?'Boletim de '+bolFmt(BOLETIM)+'; próximo previsto para '+bolProx()+(bolOld()?' (desatualizado: confira no site da CETESB)':''):'Data do boletim indisponível'}
+function cardBalneSantos(){
+  const l=CETESB['Santos']||[],n=l.length,im=l.filter(p=>p[1]==2).length,pr=l.filter(p=>p[1]==0).length;
+  const mut=BOLETIM?'CETESB '+bolFmt(BOLETIM)+' · próximo boletim '+bolProx()+(bolOld()?' (desatualizado)':''):'CETESB: data do boletim indisponível';
+  let c,big;
+  if(!n){c='';big='<span aria-hidden="true">⚪</span> Santos sem dados'}
+  else if(im==n){c='r';big='<span aria-hidden="true">🔴</span> Santos impróprio'}
+  else if(pr==n){c='g';big='<span aria-hidden="true">🟢</span> Santos próprio'}
+  else{c='y';big='<span aria-hidden="true">🟡</span> Santos: '+im+' de '+n+' pontos impróprios'}
+  return '<div class="card '+c+'"><h3><span aria-hidden="true">🧪</span> Balneabilidade</h3><div class="big">'+big+'</div><div class="mut">'+mut+'</div></div>';
+}
+setBoletim(BOLETIM);
+
+
+/* ================================================================
+   PASSO 2. TROCAS (Cmd+Option+F no VS Code; use "Substituir tudo"
+   quando o trecho aparecer mais de uma vez)
+   ================================================================ */
+
+/* 2a) RODAPÉ (HTML puro, não é template) */
+BUSCAR:    CETESB (boletim 12/11)
+SUBSTITUIR: CETESB (<span id="bol-rod">boletim 12/11</span>)
+
+/* 2b) CARD DO RESUMÃO (apareceu 2 vezes na sua colagem: troque todas) */
+BUSCAR:
+<div class="card r"><h3><span aria-hidden="true">🧪</span> Balneabilidade</h3><div class="big"><span aria-hidden="true">🔴</span> Santos impróprio</div><div class="mut">CETESB 12/11 · próximo boletim 19/11</div></div>
+SUBSTITUIR:
+${cardBalneSantos()}
+
+/* 2c) NOTA DA ABA "Como tá a praia hoje?"
+   (a frase "Guarujá e Praia Grande não consultados" está ERRADA: o dados.json já traz as duas) */
+BUSCAR:    Guarujá e Praia Grande não consultados. Próximo boletim: quinta (12/11).
+SUBSTITUIR: ${bolNota()}.
+
+/* 2d) GUIA LOCAL (dentro de template) */
+BUSCAR:    a balneabilidade vem do boletim da CETESB de 12/11;
+SUBSTITUIR: a balneabilidade vem do ${bolCet()};
+
+/* 2e) MEU DIA: linha da praia (aqui é string com aspas simples, NÃO template) */
+BUSCAR (a linha inteira que começa com "const praia="):
+const praia=!P.m?'<span aria-hidden="true">🏙️</span> Este bairro não tem praia.':bn?(bn[1]==0?'<span aria-hidden="true">🟢</span> Água própria para banho (CETESB, boletim de 12/11).':'<span aria-hidden="true">🔴</span> Água imprópria para banho (CETESB, boletim de 12/11). Evite entrar e engolir água.'):'<span aria-hidden="true">⚪</span> Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
+SUBSTITUIR:
+const praia=!P.m?'<span aria-hidden="true">🏙️</span> Este bairro não tem praia.':bn?(bn[1]==0?'<span aria-hidden="true">🟢</span> Água própria para banho ('+bolPar()+').':'<span aria-hidden="true">🔴</span> Água imprópria para banho ('+bolPar()+'). Evite entrar e engolir água.'):'<span aria-hidden="true">⚪</span> Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
+
+/* 2f) DETALHE DA PRAIA (template) */
+BUSCAR:    (CETESB, boletim de 12/11; o próximo sai em 19/11)
+SUBSTITUIR: (${bolPar()})
+
+/* 2g) NOTA FINAL (template) */
+BUSCAR:    Fonte: CETESB, boletim de 12/11 (próximo em 19/11).
+SUBSTITUIR: Fonte: ${bolFonte()}.
+
+
+/* ================================================================
+   PASSO 3. NO loadDados, troque ESTA linha:
+   ================================================================ */
+BUSCAR:
+if(dadosOk(j)){DAYS=j.dias;extDays();CETESB=j.cetesb;BEACHES=mkBeaches();S.pb='';S.open=null;CUR_EM=j.avaliado_em;CUR_FONTE='dados.json'}
+SUBSTITUIR:
+if(dadosOk(j)){DAYS=j.dias;extDays();CETESB=j.cetesb;BEACHES=mkBeaches();S.pb='';S.open=null;CUR_EM=j.avaliado_em;CUR_FONTE='dados.json';setBoletim(j.boletim_cetesb)}
+
