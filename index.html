@@ -371,7 +371,7 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
 <div class="row"><a class="btn fb-btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener"><span class="fb-ic" aria-hidden="true">💬</span><b>Chega mais:</b><em>sua opinião vale ouro!</em></a><a class="btn" href="mailto:climabaixada@gmail.com" style="flex:1 1 100%;text-align:center"><span aria-hidden="true">✉️</span> climabaixada@gmail.com</a></div>
 <footer>
   <div class="selo"><img src="icon-512.png?v=5" onerror="this.onerror=null;this.src='canvas-asset:icon-512.png'" alt="Clima Baixada"><span>CLIMA <b>BAIXADA</b></span></div>
-  Ao vivo ou em cache de até cerca de 3 h: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (boletim 12/11) e avaliação manual do Capitão da Baixada (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), com data e hora da última atualização exibidas na própria aba (arquivo dados.json).<br>
+  Ao vivo ou em cache de até cerca de 3 h: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (<span class="bolrod">data do boletim indisponível</span>) e avaliação manual do Capitão da Baixada (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), com data e hora da última atualização exibidas na própria aba (arquivo dados.json).<br>
   Previsão de computador não é certeza e não vale mais que o seu bom senso nem que as orientações oficiais (Marinha, Defesa Civil, Bombeiros). Olha a arrebentação com seus olhos antes de entrar na água.
 </footer>
 </div>
@@ -494,7 +494,7 @@ function validade(em,drift){
   if(h<-0.5)return{st:'relogio',msg:'a data da avaliação está no futuro; confira o relógio do aparelho'};
   return{st:h>48?'vencida':h>24?'velha':'ok',h:Math.max(0,h),msg:h>48?'avaliação com mais de 48 h':''};
 }
-function greyIf(){
+ffunction greyIf(){
   if(!['vencida','indisp','relogio'].includes(AVAL.st))return;
   DAYS.forEach(d=>{
     d.auto=1;d.k=3;d.s=3;
@@ -989,7 +989,7 @@ function resumo(){
    <div class="card ${COL[D.k]}"><h3><span aria-hidden="true">🛶</span> Caiaque (manual)</h3><div class="big">${EMO[D.k]} ${LBL[D.k]}</div><div class="mut"><span aria-hidden="true">⏰</span> Melhor hora pra cair na água hoje: ${wtxt(kw)}</div></div>
    <div class="card ${COL[D.s]}"><h3><span aria-hidden="true">🏄</span> Surfe (manual)</h3><div class="big">${EMO[D.s]} ${['FAVORÁVEL','ALERTA','NÃO SURFE','SEM AVALIAÇÃO'][D.s]}</div><div class="mut"><span aria-hidden="true">⏰</span> Melhor hora pra cair na água hoje: ${wtxt(sw)}</div></div>
    <div class="card y"><h3><span aria-hidden="true">🎣</span> Pesca</h3><div class="big"><span aria-hidden="true">🟡</span> De terra</div><div class="mut">Veja a aba Pesca para as viradas de maré.</div></div>
-   <div class="card r"><h3><span aria-hidden="true">🧪</span> Balneabilidade</h3><div class="big"><span aria-hidden="true">🔴</span> Santos impróprio</div><div class="mut">CETESB 12/11 · próximo boletim 19/11</div></div>
+   ${balCardSantos()}
    <div class="card y"><h3><span aria-hidden="true">⚓</span> Tráfego</h3><div class="big"><span aria-hidden="true">🟡</span> Atenção</div><div class="mut">Mais manobras ±2 h das viradas de maré. Fique fora do canal.</div></div>
   </div>
   ${cptecNote(di)}<div class="note">⏰ <b>Melhor hora</b> é o maior bloco de horas seguidas com mar tranquilo entre 5h e 17h, calculado com vento, onda e chuva ao vivo. O Capitão da Baixada olha mais fontes e pode chegar a outra conclusão. Se as duas não baterem, vai pela mais cuidadosa.</div>
@@ -1092,7 +1092,7 @@ function aguaOld(){
   return `<div class="card r"><h3>🧪 Balneabilidade · CETESB (boletim de 05/11; coletas 19/10–01/11)</h3>
    <div class="row">${btn('all','Todas')}${btn('Santos','Santos')}${btn('São Vicente','São Vicente')}${btn('ok','🟢 Próprias')}${btn('bad','🔴 Impróprias')}</div>
    <div class="t"><table><tr><th>Cidade</th><th>Praia</th><th>Status</th></tr>${rows}</table></div>
-   ${how('🟢 própria: pode entrar na água. 🔴 imprópria: não entre nem engula água, e evite surfe e esportes com contato com a água. Depois de chuva forte, evite entrar mesmo em praia própria. Prefira praias verdes.')}<div class="note">Guarujá e Praia Grande não consultados. Próximo boletim: quinta (12/11). Chuva e ressaca recentes tendem a piorar o resultado. Veja em <a style="color:var(--acc)" href="https://cetesb.sp.gov.br/praias" target="_blank" rel="noopener">cetesb.sp.gov.br/praias</a>.</div></div>`;
+   ${how('🟢 própria: pode entrar na água. 🔴 imprópria: não entre nem engula água, e evite surfe e esportes com contato com a água. Depois de chuva forte, evite entrar mesmo em praia própria. Prefira praias verdes.')}<div class="note">Fonte: CETESB, ${bolRef()}${BOLETIM?' (próximo em '+bolProx()+')':''. Chuva e ressaca recentes tendem a piorar o resultado. Veja em <a style="color:var(--acc)" href="https://cetesb.sp.gov.br/praias" target="_blank" rel="noopener">cetesb.sp.gov.br/praias</a>.</div></div>`;
 }
 function calc(){
   return `<div class="card"><h3>🧮 Calculadora de segurança</h3>
@@ -1152,9 +1152,31 @@ const GUIA={
   'Confirme o endereço do Píer de Pesca no mapa antes de colocar no GPS.'
  ]}
 };
+let BOLETIM=null;
+function bolFmt(iso,add){
+  const [y,m,d]=iso.split('-').map(Number),t=new Date(Date.UTC(y,m-1,d+(add||0)));
+  return String(t.getUTCDate()).padStart(2,'0')+'/'+String(t.getUTCMonth()+1).padStart(2,'0');
+}
+function bolIdade(){return BOLETIM?Math.floor((Date.now()-new Date(BOLETIM+'T12:00:00-03:00'))/864e5):null}
+function bolProx(){return BOLETIM?bolFmt(BOLETIM,7):null}
+function bolRef(){
+  if(!BOLETIM)return 'data do boletim indisponível';
+  return 'boletim de '+bolFmt(BOLETIM,0)+(bolIdade()>9?' (desatualizado)':'');
+}
+function bolProxTxt(){return BOLETIM?'o próximo sai em '+bolProx():''}
+function bolDe(){return BOLETIM?'boletim da CETESB de '+bolFmt(BOLETIM,0):'boletim da CETESB (data indisponível)'}
+function setBoletim(v){
+  BOLETIM=/^\d{4}-\d{2}-\d{2}$/.test(v||'')?v:null;
+  document.querySelectorAll('.bolrod').forEach(e=>e.textContent=bolRef());
+}
+function balCardSantos(){
+  const l=CETESB['Santos']||[],t=l.length,n=l.filter(x=>x[1]!=0).length;
+  const [c,e,s]=!t?['g','⚪','Santos sem dados']:n==t?['r','🔴','Santos impróprio']:n==0?['g','🟢','Santos próprio']:['y','🟡','Santos: '+n+' de '+t+' pontos impróprios'];
+  return `<div class="card ${c}"><h3><span aria-hidden="true">🧪</span> Balneabilidade</h3><div class="big"><span aria-hidden="true">${e}</span> ${s}</div><div class="mut">CETESB · ${bolRef()}${BOLETIM?' · próximo '+bolProx():''}</div></div>`;
+}
 function guiaLocal(){
   const g=GUIA[S.city];if(!g)return '';
-  return `<div class="card y"><h3><span aria-hidden="true">📍</span> Guia local · ${S.city}</h3><div class="t"><table><tr><th>Atividade</th><th>Ponto / acesso</th><th>Nível</th></tr>${g.r.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}</table></div><ul style="margin-top:8px">${g.a.map(x=>`<li>${x}</li>`).join('')}</ul>${how('Use o guia para escolher o ponto e o semáforo por hora para escolher o horário. Colete salva-vidas, apito e sinalização visual são obrigatórios no caiaque.')}<div class="note">As regras de vento e ondas são calibradas com referência na Baía de Santos. A maré é aproximada (tábua de Santos) e a balneabilidade vem do boletim da CETESB de 12/11; onde não houver ponto correspondente aparece como <b>sem dados</b>. Confira o boletim vigente antes de entrar na água.</div></div>`;
+  return `<div class="card y"><h3><span aria-hidden="true">📍</span> Guia local · ${S.city}</h3><div class="t"><table><tr><th>Atividade</th><th>Ponto / acesso</th><th>Nível</th></tr>${g.r.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}</table></div><ul style="margin-top:8px">${g.a.map(x=>`<li>${x}</li>`).join('')}</ul>${how('Use o guia para escolher o ponto e o semáforo por hora para escolher o horário. Colete salva-vidas, apito e sinalização visual são obrigatórios no caiaque.')}<div class="note">As regras de vento e ondas são calibradas com referência na Baía de Santos. A maré é aproximada (tábua de Santos) e a balneabilidade vem do ${bolDe()}; onde não houver ponto correspondente aparece como <b>sem dados</b>. Confira o boletim vigente antes de entrar na água.</div></div>`;
 }
 const SEA=f=>()=>!cur().m?nosea():localWarn()+f();
 function period(di,a,b,ic,nm){
@@ -1179,7 +1201,7 @@ function meudia(){
   const di=S.day,P=cur(),bn=(CETESB[P.city]||[]).find(x=>x[0].startsWith(P.n));
   let wmax=0,has=false;
   for(let h=6;h<=17;h++){const o=obs(di,h);if(o&&o.wh!=null){has=true;wmax=Math.max(wmax,o.wh)}}
-  const praia=!P.m?'<span aria-hidden="true">🏙️</span> Este bairro não tem praia.':bn?(bn[1]==0?'<span aria-hidden="true">🟢</span> Água própria para banho (CETESB, boletim de 12/11).':'<span aria-hidden="true">🔴</span> Água imprópria para banho (CETESB, boletim de 12/11). Evite entrar e engolir água.'):'<span aria-hidden="true">⚪</span> Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
+  const praia=!P.m?'<span aria-hidden="true">🏙️</span> Este bairro não tem praia.':bn?(bn[1]==0?'<span aria-hidden="true">🟢</span> Água própria para banho (CETESB, '+bolRef()+').':'<span aria-hidden="true">🔴</span> Água imprópria para banho (CETESB, '+bolRef()+'). Evite entrar e engolir água.'):'<span aria-hidden="true">⚪</span> Sem boletim da CETESB consultado para esta praia. Veja em cetesb.sp.gov.br/praias.';
   const mar=!P.m?'':has?(wmax>1.5?`<span aria-hidden="true">🌊</span> Mar bravo: ondas até ${wmax.toFixed(1)} m. Banho só na rasa e pertinho do salva-vidas.`:wmax>1?`<span aria-hidden="true">🌊</span> Mar mexidinho: ondas até ${wmax.toFixed(1)} m. Criança e idoso só na beirinha.`:`<span aria-hidden="true">🌊</span> Mar de boa: ondas até ${wmax.toFixed(1)} m.`):'<span aria-hidden="true">🌊</span> Sem dados de ondas agora.';
   return `${S.ten?tenDays():''}<div class="card" id="meudia-card"><h2 class="oneline"><span aria-hidden="true">🌤️</span> Meu Dia · ${DAYS[di].lbl} · ${P.n}, ${P.city}</h2>${confBox(di)}${conf(di).n==3?tendencia(di):people(di)}</div>
   ${conf(di).n==3?'':`<div class="grid per">${period(di,6,12,'🌅','Manhã')}${period(di,12,15,'🍽️','Almoço')}${period(di,15,18,'☀️','Tarde')}${period(di,18,22,'🌙','Noite')}</div>`}
@@ -1488,7 +1510,7 @@ function beachDetail(b){
     if(s.wh!=null)mar=`${s.wh<0.5?'Calmo, com ondas baixas':s.wh<1?'Pouco agitado':s.wh<1.5?'Mexido':'Agitado'} · ondas de cerca de ${s.wh.toFixed(1)} m`;
   }
   return `<div class="cid" style="margin-top:10px"><div><b>Condição atual:</b> ${ok?'Liberada para banho':'Banho não recomendado'}</div>
-  <div><b>Balneabilidade:</b> ${ok?'Própria':'Imprópria'} (CETESB, boletim de 12/11; o próximo sai em 19/11)</div>
+  <div><b>Balneabilidade:</b> ${ok?'Própria':'Imprópria'} (CETESB, ${bolRef()}${BOLETIM?'; '+bolProxTxt():''})</div>
   <div><b>Temperatura da água:</b> ${tw}</div><div><b>Condição do mar:</b> ${mar}</div>
   <div>💡 Mesmo em praia própria, entre perto do posto de salva-vidas e confira a bandeira do dia. Chuva forte recente pode piorar a qualidade da água.</div></div>
   <div class="mut">Temperatura e ondas são estimativas de modelo (Open-Meteo), não medições no local.</div>`;
@@ -1513,7 +1535,7 @@ function praia(){
   <div class="locsel" style="margin:10px 0"><div class="pick"><label><span aria-hidden="true">📍</span> Município ▾</label><select id="p_city"><option value="">Todos os municípios</option>${Object.keys(CETESB).map(c=>`<option ${c==S.pc?'selected':''}>${c}</option>`).join('')}</select></div><div class="pick"><label><span aria-hidden="true">🏖️</span> Praia ▾</label><select id="p_beach"><option value="">Todas as praias</option>${BEACHES.filter(b=>!S.pc||b.c==S.pc).map(b=>`<option value="${b.id}" ${String(b.id)==S.pb?'selected':''}>${b.n}${S.pc?'':' ('+b.c+')'}</option>`).join('')}</select></div></div>
   <div class="row">${b('all','Todas')}${b('ok','Próprias para banho')}${b('perto','Próximas a mim')}</div>
   ${S.pmsg?`<div class="note">${S.pmsg}</div>`:''}
-  <div class="note">Fonte: CETESB, boletim de 12/11 (próximo em 19/11). Pontos classificados como "Sist. boa" no boletim (ex.: Iporanga, em Guarujá) e Cubatão não estão listados. Chuva e ressaca recentes podem piorar o resultado.</div></div>
+  <div class="note">Fonte: CETESB, ${bolRef()}${BOLETIM?' (próximo em '+bolProx()+')':''}. Pontos classificados como "Sist. boa" no boletim (ex.: Iporanga, em Guarujá) e Cubatão não estão listados. Chuva e ressaca recentes podem piorar o resultado.</div></div>
   <div id="plist">${praiaList()}</div>
   ${how('🟢 própria: pode entrar na água, com cuidado. 🔴 imprópria: não entra nem engole água. Toca no cartão da praia pra ver a temperatura da água e a condição do mar. Depois de chuva forte, evita entrar mesmo em praia própria.')}
   <div class="note">Veja o boletim oficial em <a style="color:var(--acc)" href="https://cetesb.sp.gov.br/praias" target="_blank" rel="noopener">cetesb.sp.gov.br/praias</a>.</div>`;
