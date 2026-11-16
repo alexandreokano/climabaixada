@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "avaliado_em": "2026-11-16T16:05:00-03:00",
+  "avaliado_em": "2026-11-16T17:58:26-03:00",
   "boletim_cetesb": "2026-11-12",
   "dias": [
     {
@@ -8,9 +8,9 @@
       "lbl": "Seg 16",
       "k": 2,
       "s": 1,
-      "vento": "SSW até 9 nós (rajadas até 21 nós)",
+      "vento": "SSW até 9 nós (rajadas até 24 nós)",
       "ondas": "até 0.8 m · 10 s",
-      "chuva": "5.5 mm (até 100%)",
+      "chuva": "4.7 mm (até 100%)",
       "txt": "Não navegue: vento/rajadas acima do limite do caiaque; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
@@ -18,9 +18,9 @@
       "lbl": "Ter 17",
       "k": 1,
       "s": 1,
-      "vento": "SE até 8 nós (rajadas até 18 nós)",
+      "vento": "ESE até 8 nós (rajadas até 19 nós)",
       "ondas": "até 1.0 m · 7 s",
-      "chuva": "3.8 mm (até 78%)",
+      "chuva": "5.3 mm (até 78%)",
       "txt": "Atenção: vento moderado ou rajadas; ondas perto de 1,0 m; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
@@ -28,7 +28,7 @@
       "lbl": "Qua 18",
       "k": 1,
       "s": 1,
-      "vento": "SSE até 7 nós (rajadas até 13 nós)",
+      "vento": "SSE até 7 nós (rajadas até 15 nós)",
       "ondas": "até 0.9 m · 13 s",
       "chuva": "6.7 mm (até 59%)",
       "txt": "Atenção: ondas perto de 1,0 m; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
@@ -38,7 +38,7 @@
       "lbl": "Qui 19",
       "k": 1,
       "s": 1,
-      "vento": "SSE até 8 nós (rajadas até 17 nós)",
+      "vento": "SSE até 8 nós (rajadas até 15 nós)",
       "ondas": "até 0.8 m · 8 s",
       "chuva": "1.2 mm (até 73%)",
       "txt": "Atenção: vento moderado ou rajadas; ondas perto de 1,0 m; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
@@ -48,9 +48,9 @@
       "lbl": "Sex 20",
       "k": 2,
       "s": 2,
-      "vento": "S até 9 nós (rajadas até 16 nós)",
+      "vento": "SSW até 9 nós (rajadas até 16 nós)",
       "ondas": "até 0.6 m · 8 s",
-      "chuva": "14.8 mm (até 91%)",
+      "chuva": "14.8 mm (até 91%), com trovoadas",
       "txt": "Não navegue: vento moderado ou rajadas; risco de trovoadas ou chuva forte. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     }
   ],
