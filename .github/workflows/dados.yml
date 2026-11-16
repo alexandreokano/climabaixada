@@ -1,0 +1,40 @@
+name: Atualizar dados.json
+
+on:
+  schedule:
+    - cron: '0 9,21 * * *'   # 06h e 18h de Brasília (UTC-3)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dados-json
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Gerar dados.json
+        run: node gerar-dados.mjs
+
+      - name: Publicar se mudou
+        run: |
+          if git diff --quiet -- dados.json; then
+            echo "Sem mudanças."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dados.json
+          git commit -m "Atualiza dados.json (automático)"
+          git pull --rebase
+          git push
