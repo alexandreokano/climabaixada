@@ -524,7 +524,7 @@ function validade(em,drift){
   if(h<-0.5)return{st:'relogio',msg:'a data da avaliação está no futuro; confira o relógio do aparelho'};
   return{st:h>48?'vencida':h>24?'velha':'ok',h:Math.max(0,h),msg:h>48?'avaliação com mais de 48 h':''};
 }
-ffunction greyIf(){
+function greyIf(){
   if(!['vencida','indisp','relogio'].includes(AVAL.st))return;
   DAYS.forEach(d=>{
     d.auto=1;d.k=3;d.s=3;
