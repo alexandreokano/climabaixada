@@ -134,4 +134,3 @@ for (const [nome, j] of jobs) {
 
 console.log(`Cache: ${ok} gravados, ${falhas} falhas, ${jobs.size} no total. Modelos: ${MODELS.join('+')}${soPadrao ? ` (${soPadrao} arquivos só com modelo padrão)` : ''}.`);
 if (!ok) process.exit(1);
-</parameter>
