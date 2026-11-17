@@ -1,6 +1,18 @@
 {
-  "atualizado_em": "16/11/2026, 18:40",
+  "atualizado_em": "17/11/2026, 03:45",
   "itens": [
+    {
+      "fonte": "Diário do Peixe",
+      "titulo": "Robinho Jr marca duas vezes, Ananias é titular e Seleção Sub-20 goleia o Peru",
+      "url": "https://www.diariodopeixe.com.br/noticias/robinho-jr-marca-duas-vezes-ananias-e-titular-e-selecao-sub-20-goleia-o-peru/",
+      "data": "16/11/2026"
+    },
+    {
+      "fonte": "Diário do Peixe",
+      "titulo": "Rony se reapresenta no Santos após falecimento do pai e é novidade no treino",
+      "url": "https://www.diariodopeixe.com.br/noticias/rony-se-reapresenta-no-santos-apos-falecimento-do-pai-e-e-novidade-no-treino/",
+      "data": "16/11/2026"
+    },
     {
       "fonte": "Diário do Peixe",
       "titulo": "Santos vence o Audax-RJ na estreia da Copa M2 Sub-16",
@@ -26,15 +38,9 @@
       "data": "16/11/2026"
     },
     {
-      "fonte": "Diário do Peixe",
-      "titulo": "Santos divulga a programação para jogos contra Coritiba e Grêmio",
-      "url": "https://www.diariodopeixe.com.br/noticias/santos-divulga-a-programacao-para-jogos-contra-coritiba-e-gremio/",
-      "data": "16/11/2026"
-    },
-    {
-      "fonte": "Diário do Peixe",
-      "titulo": "Goleiro do Santos desembarca no Catar com a Seleção para disputa da Copa do Mundo Sub-17",
-      "url": "https://www.diariodopeixe.com.br/noticias/goleiro-do-santos-desembarca-no-catar-com-a-selecao-para-disputa-da-copa-do-mundo-sub-17/",
+      "fonte": "Santos FC (YouTube)",
+      "titulo": "SANTOS FC RETORNA AOS TREINOS NESTA SEGUNDA-FEIRA",
+      "url": "https://www.youtube.com/watch?v=XH2KXyuJOPY",
       "data": "16/11/2026"
     },
     {
@@ -47,12 +53,6 @@
       "fonte": "Santos FC (YouTube)",
       "titulo": "SANTOS 2 x 0 MIRASSOL | SEMI FINAL - IDA | GOLS | PAULISTA SUB-14 (15/11/26)",
       "url": "https://www.youtube.com/watch?v=I8AU5AAj_Mg",
-      "data": "15/11/2026"
-    },
-    {
-      "fonte": "Santos FC (YouTube)",
-      "titulo": "🔴 AO VIVO COM IMAGENS: SANTOS x MIRASSOL | SEMI FINAL - IDA | PAULISTA SUB-14 (15/11/26)",
-      "url": "https://www.youtube.com/watch?v=xTLFKmf3kIU",
       "data": "15/11/2026"
     },
     {
@@ -75,6 +75,12 @@
     },
     {
       "fonte": "Diário do Peixe (YouTube)",
+      "titulo": "ELEIÇÕES DO SANTOS - DIÁRIO ENTREVISTA MAURÍCIO MARUCA",
+      "url": "https://www.youtube.com/watch?v=4f18YRARs7U",
+      "data": "16/11/2026"
+    },
+    {
+      "fonte": "Diário do Peixe (YouTube)",
       "titulo": "Santos viaja para Curitiba - Happy Hour ao vivo",
       "url": "https://www.youtube.com/watch?v=JuoSEZPZQ4k",
       "data": "16/11/2026"
@@ -83,12 +89,6 @@
       "fonte": "Diário do Peixe (YouTube)",
       "titulo": "Santos em semana de duelo contra o Coxa - Happy Hour ao vivo",
       "url": "https://www.youtube.com/watch?v=lc04h-N1kIo",
-      "data": "16/11/2026"
-    },
-    {
-      "fonte": "Diário do Peixe (YouTube)",
-      "titulo": "SANTOS E NEYMAR NA BUSCA POR PATROCINADORES - CAFÉ COM ANITA",
-      "url": "https://www.youtube.com/watch?v=XbG3eG7vxDw",
       "data": "16/11/2026"
     }
   ]
