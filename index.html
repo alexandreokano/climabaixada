@@ -1122,7 +1122,7 @@ function aguaOld(){
   return `<div class="card r"><h3>🧪 Balneabilidade · CETESB (boletim de 05/11; coletas 19/10–01/11)</h3>
    <div class="row">${btn('all','Todas')}${btn('Santos','Santos')}${btn('São Vicente','São Vicente')}${btn('ok','🟢 Próprias')}${btn('bad','🔴 Impróprias')}</div>
    <div class="t"><table><tr><th>Cidade</th><th>Praia</th><th>Status</th></tr>${rows}</table></div>
-   ${how('🟢 própria: pode entrar na água. 🔴 imprópria: não entre nem engula água, e evite surfe e esportes com contato com a água. Depois de chuva forte, evite entrar mesmo em praia própria. Prefira praias verdes.')}<div class="note">Fonte: CETESB, ${bolRef()}${BOLETIM?' (próximo em '+bolProx()+')':''. Chuva e ressaca recentes tendem a piorar o resultado. Veja em <a style="color:var(--acc)" href="https://cetesb.sp.gov.br/praias" target="_blank" rel="noopener">cetesb.sp.gov.br/praias</a>.</div></div>`;
+   ${how('🟢 própria: pode entrar na água. 🔴 imprópria: não entre nem engula água, e evite surfe e esportes com contato com a água. Depois de chuva forte, evite entrar mesmo em praia própria. Prefira praias verdes.')}<div class="note">Fonte: CETESB, ${bolRef()}${BOLETIM?' (próximo em '+bolProx()+')':''}. Chuva e ressaca recentes tendem a piorar o resultado. Veja em <a style="color:var(--acc)" href="https://cetesb.sp.gov.br/praias" target="_blank" rel="noopener">cetesb.sp.gov.br/praias</a>.</div></div>`;
 }
 function calc(){
   return `<div class="card"><h3>🧮 Calculadora de segurança</h3>
