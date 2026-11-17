@@ -483,8 +483,8 @@ let AVAL={st:'carregando'},CUR_EM=BACKUP_AVAL,CUR_FONTE='cópia embutida',CUR_DR
 let BOLETIM='2026-11-12';
 function setBoletim(d){
   BOLETIM=(typeof d=='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&!isNaN(Date.parse(d)))?d:null;
-  const e=document.getElementById('bol-rod');
-  if(e)e.textContent=BOLETIM?'boletim '+bolFmt(BOLETIM):'data do boletim indisponível';
+  const t=BOLETIM?'boletim '+bolFmt(BOLETIM):'data do boletim indisponível';
+  document.querySelectorAll('#bol-rod,.bolrod').forEach(e=>{e.textContent=t});
 }
 function bolFmt(iso){const p=iso.split('-');return p[2]+'/'+p[1]}
 function bolProx(){
@@ -1182,23 +1182,6 @@ const GUIA={
   'Confirme o endereço do Píer de Pesca no mapa antes de colocar no GPS.'
  ]}
 };
-let BOLETIM=null;
-function bolFmt(iso,add){
-  const [y,m,d]=iso.split('-').map(Number),t=new Date(Date.UTC(y,m-1,d+(add||0)));
-  return String(t.getUTCDate()).padStart(2,'0')+'/'+String(t.getUTCMonth()+1).padStart(2,'0');
-}
-function bolIdade(){return BOLETIM?Math.floor((Date.now()-new Date(BOLETIM+'T12:00:00-03:00'))/864e5):null}
-function bolProx(){return BOLETIM?bolFmt(BOLETIM,7):null}
-function bolRef(){
-  if(!BOLETIM)return 'data do boletim indisponível';
-  return 'boletim de '+bolFmt(BOLETIM,0)+(bolIdade()>9?' (desatualizado)':'');
-}
-function bolProxTxt(){return BOLETIM?'o próximo sai em '+bolProx():''}
-function bolDe(){return BOLETIM?'boletim da CETESB de '+bolFmt(BOLETIM,0):'boletim da CETESB (data indisponível)'}
-function setBoletim(v){
-  BOLETIM=/^\d{4}-\d{2}-\d{2}$/.test(v||'')?v:null;
-  document.querySelectorAll('.bolrod').forEach(e=>e.textContent=bolRef());
-}
 function balCardSantos(){
   const l=CETESB['Santos']||[],t=l.length,n=l.filter(x=>x[1]!=0).length;
   const [c,e,s]=!t?['g','⚪','Santos sem dados']:n==t?['r','🔴','Santos impróprio']:n==0?['g','🟢','Santos próprio']:['y','🟡','Santos: '+n+' de '+t+' pontos impróprios'];
@@ -1206,7 +1189,7 @@ function balCardSantos(){
 }
 function guiaLocal(){
   const g=GUIA[S.city];if(!g)return '';
-  return `<div class="card y"><h3><span aria-hidden="true">📍</span> Guia local · ${S.city}</h3><div class="t"><table><tr><th>Atividade</th><th>Ponto / acesso</th><th>Nível</th></tr>${g.r.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}</table></div><ul style="margin-top:8px">${g.a.map(x=>`<li>${x}</li>`).join('')}</ul>${how('Use o guia para escolher o ponto e o semáforo por hora para escolher o horário. Colete salva-vidas, apito e sinalização visual são obrigatórios no caiaque.')}<div class="note">As regras de vento e ondas são calibradas com referência na Baía de Santos. A maré é aproximada (tábua de Santos) e a balneabilidade vem do ${bolDe()}; onde não houver ponto correspondente aparece como <b>sem dados</b>. Confira o boletim vigente antes de entrar na água.</div></div>`;
+  return `<div class="card y"><h3><span aria-hidden="true">📍</span> Guia local · ${S.city}</h3><div class="t"><table><tr><th>Atividade</th><th>Ponto / acesso</th><th>Nível</th></tr>${g.r.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}</table></div><ul style="margin-top:8px">${g.a.map(x=>`<li>${x}</li>`).join('')}</ul>${how('Use o guia para escolher o ponto e o semáforo por hora para escolher o horário. Colete salva-vidas, apito e sinalização visual são obrigatórios no caiaque.')}<div class="note">As regras de vento e ondas são calibradas com referência na Baía de Santos. A maré é aproximada (tábua de Santos) e a balneabilidade vem do ${bolCet()}; onde não houver ponto correspondente aparece como <b>sem dados</b>. Confira o boletim vigente antes de entrar na água.</div></div>`;
 }
 const SEA=f=>()=>!cur().m?nosea():localWarn()+f();
 function period(di,a,b,ic,nm){
@@ -1540,7 +1523,7 @@ function beachDetail(b){
     if(s.wh!=null)mar=`${s.wh<0.5?'Calmo, com ondas baixas':s.wh<1?'Pouco agitado':s.wh<1.5?'Mexido':'Agitado'} · ondas de cerca de ${s.wh.toFixed(1)} m`;
   }
   return `<div class="cid" style="margin-top:10px"><div><b>Condição atual:</b> ${ok?'Liberada para banho':'Banho não recomendado'}</div>
-  <div><b>Balneabilidade:</b> ${ok?'Própria':'Imprópria'} (CETESB, ${bolRef()}${BOLETIM?'; '+bolProxTxt():''})</div>
+  <div><b>Balneabilidade:</b> ${ok?'Própria':'Imprópria'} (CETESB, ${bolRef()}${BOLETIM?'; '+bolProx():''})</div>
   <div><b>Temperatura da água:</b> ${tw}</div><div><b>Condição do mar:</b> ${mar}</div>
   <div>💡 Mesmo em praia própria, entre perto do posto de salva-vidas e confira a bandeira do dia. Chuva forte recente pode piorar a qualidade da água.</div></div>
   <div class="mut">Temperatura e ondas são estimativas de modelo (Open-Meteo), não medições no local.</div>`;
