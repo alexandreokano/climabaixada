@@ -371,7 +371,7 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
 <div class="row"><a class="btn fb-btn" href="https://forms.gle/L9q4K5s2wbevJDE27" target="_blank" rel="noopener"><span class="fb-ic" aria-hidden="true">💬</span><b>Chega mais:</b><em>sua opinião vale ouro!</em></a><a class="btn" href="mailto:climabaixada@gmail.com" style="flex:1 1 100%;text-align:center"><span aria-hidden="true">✉️</span> climabaixada@gmail.com</a></div>
 <footer>
   <div class="selo"><img src="icon-512.png?v=5" onerror="this.onerror=null;this.src='canvas-asset:icon-512.png'" alt="Clima Baixada"><span>CLIMA <b>BAIXADA</b></span></div>
-  Ao vivo ou em cache de até cerca de 3 h: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, só 3 dias, 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (<span class="bolrod">data do boletim indisponível</span>) e avaliação manual do Capitão da Baixada (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), com data e hora da última atualização exibidas na própria aba (arquivo dados.json).<br>
+  Ao vivo ou em cache de até cerca de 3 h: Open-Meteo (Forecast + Marine) e CPTEC/INPE (ondas e vento, 3 dias, via cptec.json atualizado a cada 3 h), 3 horários por dia, mesmo ponto para Santos e São Vicente; vento convertido de m/s para nós). Modelos globais de baixa resolução podem divergir da baía. Fixos: tábua da Marinha, CETESB (<span class="bolrod">data do boletim indisponível</span>) e avaliação manual do Capitão da Baixada (Surfnerd, SurfReport, Waves.com.br, Foreca, DHN/Marinha, Unisanta), com data e hora da última atualização exibidas na própria aba (arquivo dados.json).<br>
   Previsão de computador não é certeza e não vale mais que o seu bom senso nem que as orientações oficiais (Marinha, Defesa Civil, Bombeiros). Olha a arrebentação com seus olhos antes de entrar na água.
 </footer>
 </div>
@@ -676,31 +676,26 @@ setStatus('⏳ dando uma olhada no mar…');
   setStatus((n>=(P.m?2:1)?`🟢 ${S.fromCache?'dados das':'ao vivo ·'} ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · sem dados ao vivo (semáforo cinza'));setTimeout(maybeAlert,800);
   render();
 }
-const CPTEC_ID=4748;
 async function loadCptec(){
-  S.cptec={};let ok=0;
-  await Promise.all([0,1,2].map(async d=>{
-    try{
-      const c=new AbortController();const to=setTimeout(()=>c.abort(),9000);
-      const r=await fetch(`https://servicos.cptec.inpe.br/XML/cidade/${CPTEC_ID}/dia/${d}/ondas.xml`,{signal:c.signal});clearTimeout(to);
-      if(!r.ok)return;
-      const x=new DOMParser().parseFromString(await r.text(),'text/xml');
-      ['manha','tarde','noite'].forEach(p=>{
-        const e=x.querySelector(p);if(!e)return;
-        const g=k=>e.querySelector(k)?.textContent?.trim();
-        const m=(g('dia')||'').match(/(\d{2})-(\d{2})-(\d{4}) (\d{2})h/);if(!m)return;
-        const loc=new Date(Date.UTC(+m[3],+m[2]-1,+m[1],+m[4])-3*3600000);
-        const date=loc.toISOString().slice(0,10),h=loc.getUTCHours();
-        const wh=parseFloat(g('altura')),wv=parseFloat(g('vento'));
-        if(isNaN(wh))return;
-        S.cptec[date]=S.cptec[date]||[];
-        if(S.cptec[date].some(q=>q.h==h))return;
-        S.cptec[date].push({h,wh,ws:isNaN(wv)?null:wv*1.944,wvd:g('vento_dir')});
-        ok++;
-      });
-    }catch(e){}
-  }));
-  return ok;
+  S.cptec={};S.cptecInfo=null;
+  try{
+    const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);
+    const r=await fetch('cptec.json?v='+Math.floor(Date.now()/600000),{signal:c.signal});clearTimeout(to);
+    if(!r.ok)return 0;
+    const j=await r.json(),t=Date.parse(j&&j.gerado_em),age=Date.now()-t;
+    /* dado com mais de 6 h (ou hora no futuro) é descartado: melhor sem segunda opinião do que com opinião velha */
+    if(!j||!Array.isArray(j.itens)||isNaN(t)||age>6*3600000||age<-600000)return 0;
+    let ok=0;
+    j.itens.forEach(x=>{
+      if(!x||!/^\d{4}-\d{2}-\d{2}$/.test(x.date)||!Number.isInteger(x.h)||x.h<0||x.h>23||typeof x.wh!='number'||!isFinite(x.wh))return;
+      const a=S.cptec[x.date]=S.cptec[x.date]||[];
+      if(a.some(q=>q.h==x.h))return;
+      a.push({h:x.h,wh:x.wh,ws:typeof x.ws=='number'?x.ws:null,wvd:String(x.wvd||'')});
+      ok++;
+    });
+    S.cptecInfo=ok?{t,atual:j.atualizacao_cptec||null,parcial:!!j.parcial}:null;
+    return ok;
+  }catch(e){return 0}
 }
 const obs=(di,h)=>S.live[`${DAYS[di].date}T${pad(h)}:00`]||null;
 const WNM={'❔':'sem previsão','🌧️':'chuva','🌦️':'chuva possível','☀️':'sol','🌤️':'sol com poucas nuvens','⛅':'parcialmente nublado','☁️':'nublado'};
@@ -1026,11 +1021,11 @@ function peopleOld(di){
 function cptecNote(di){
   if(S.city!='Santos')return '';
   const c=((S.cptec&&S.cptec[DAYS[di].date])||[]).slice().sort((a,b)=>a.h-b.h);
-  if(!c.length)return `<div class="note"><span aria-hidden="true">🔍</span> CPTEC/INPE: ${S.cptecOk===undefined?'carregando…':S.cptecOk?'sem dados para este dia (cobre só 10 a 12/11).':'indisponível agora (bloqueio do navegador ou serviço fora do ar). Usando só o Open-Meteo.'}</div>`;
+  if(!c.length)return `<div class="note"><span aria-hidden="true">🔍</span> CPTEC/INPE: ${S.cptecOk===undefined?'carregando…':S.cptecOk?'sem dados para este dia (cobre só os 3 primeiros dias).':'sem dado recente (cptec.json ausente ou com mais de 6 h). Usando só o Open-Meteo.'}</div>`;
   let div=false;
   const rows=c.map(r=>{const o=obs(di,r.h);if(o&&o.wh!=null&&Math.abs(o.wh-r.wh)>=0.3)div=true;
     return `<tr><td>${pad(r.h)}h</td><td>${r.wh.toFixed(1)} m · ${r.ws!=null?r.ws.toFixed(0):'–'} nós ${r.wvd||''}</td><td>${o&&o.wh!=null?o.wh.toFixed(1)+' m · '+(o.ws!=null?o.ws.toFixed(0):'–')+' nós '+(o.wd!=null?dirName(o.wd):''):'sem dado'}</td></tr>`}).join('');
-  return `<div class="card ${div?'y':'g'}"><h3><span aria-hidden="true">🔍</span> Segunda opinião: CPTEC × Open-Meteo</h3><div class="t"><table><tr><th>Hora</th><th>CPTEC (onda · vento)</th><th>Open-Meteo</th></tr>${rows}</table></div>${how(div?'As fontes divergem na altura da onda (30 cm ou mais). Na dúvida, vale a leitura mais conservadora e a conferência da arrebentação a olho antes de sair.':'As duas fontes estão próximas. Isso aumenta a confiança, mas não elimina o risco: o CPTEC não traz rajada, período da onda nem chuva.')}</div>`;
+  return `<div class="card ${div?'y':'g'}"><h3><span aria-hidden="true">🔍</span> Segunda opinião: CPTEC × Open-Meteo</h3><div class="t"><table><tr><th>Hora</th><th>CPTEC (onda · vento)</th><th>Open-Meteo</th></tr>${rows}</table></div>${how(div?'As fontes divergem na altura da onda (30 cm ou mais). Na dúvida, vale a leitura mais conservadora e a conferência da arrebentação a olho antes de sair.':'As duas fontes estão próximas. Isso aumenta a confiança, mas não elimina o risco: o CPTEC não traz rajada, período da onda nem chuva.')}</div>`;${S.cptecInfo?`<div class="mut">CPTEC atualizado em ${S.cptecInfo.atual?S.cptecInfo.atual.split('-').reverse().join('/'):'data não informada'}; arquivo gerado às ${new Date(S.cptecInfo.t).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'})}${S.cptecInfo.parcial?' (parcial: algum dia falhou)':''}.</div>`:''}
 }
 function resumo(){
   const di=S.day,D=DAYS[di],kw=bestRun(di,x=>x.k),sw=bestRun(di,x=>x.s);
@@ -1163,9 +1158,9 @@ function calc(){
 function calcRun(){
   const g=id=>+$(id).value;
   const o={ws:g('i_ws'),wg:g('i_wg'),wd:g('i_wd'),wh:g('i_wh'),wp:g('i_wp'),rain:0};
-  const k=kayakV(o,{state:$('i_ts').value}),s=surfV(o);
-  $('calcout').innerHTML=`<div class="grid"><div class="card ${COL[k.l]}"><h3>🛶 Caiaque</h3><div class="big">${EMO[k.l]} ${LBL[k.l]}</div><ul>${k.r.map(x=>`<li>${x}</li>`).join('')||'<li>dentro dos limites</li>'}</ul></div>
-  <div class="card ${COL[s.l]}"><h3>🏄 Surfe (iniciante)</h3><div class="big">${EMO[s.l]} ${['FAVORÁVEL','ALERTA','EVITE'][s.l]}</div><ul>${s.r.map(x=>`<li>${x}</li>`).join('')||'<li>dentro dos limites</li>'}</ul></div></div>`
+  const k=kayakV(o,{state:$('i_ts').value}),s=surfV(o),kl=k.l??3,sl=s.l??3;
+  $('calcout').innerHTML=`<div class="grid"><div class="card ${COL[kl]}"><h3>🛶 Caiaque</h3><div class="big">${EMO[kl]} ${LBL[kl]}</div><ul>${k.r.map(x=>`<li>${x}</li>`).join('')||'<li>dentro dos limites</li>'}</ul></div>
+  <div class="card ${COL[sl]}"><h3>🏄 Surfe (iniciante)</h3><div class="big">${EMO[sl]} ${['FAVORÁVEL','ALERTA','EVITE','SEM AVALIAÇÃO'][sl]}</div><ul>${s.r.map(x=>`<li>${x}</li>`).join('')||'<li>dentro dos limites</li>'}</ul></div></div>`
   +(k.warn?`<div class="warn">⚠️ <b>Aviso grave:</b> vazante + vento sul &gt;12 nós. O choque da correnteza saindo do estuário com a ondulação cria ondas perigosas na Fortaleza da Barra e Deck do Pescador.</div>`:'');
 }
 function checklist(){
