@@ -1410,8 +1410,8 @@ function transmissaoHTML(g){
   const t=Array.isArray(g.transmissao)?g.transmissao.filter(x=>x&&typeof x.url=='string'&&x.url.startsWith('https://')):[];
   if(!t.length)return '<div class="note"><span aria-hidden="true">📺</span> Transmissão ainda não confirmada para este jogo.</div>';
 return `<div class="row">${t.map(x=>`<a class="btn lk yt-btn" href="${escH(x.url)}" target="_blank" rel="noopener" aria-label="Assistir ao jogo no YouTube">
-  <span class="yt-logo"><img src="youtube-logo.png" alt="YouTube"></span>
-  <span class="yt-frase">Bora vê o Peixe jogááá!<br>E num quero que ninguém me <span class="pert">pert</span><span class="youtube">Tube</span>!</span>
+  <span class="yt-logo"><img src="youtube-logo.png" alt="YouTube" style="height:36px;width:auto;max-width:100%"></span>
+  <span class="yt-frase">Bora vê o Peixe jogááá!<br>E num quero que ninguém me <span class="pert">pert</span><img src="tube.png" alt="Tube" style="height:1.4em;width:auto;vertical-align:-.3em">!</span>
 </a>`).join('')}</div>`;
 }
 /* ============ NAVEGAÇÃO ============ */
