@@ -1,0 +1,80 @@
+{
+  "gerado_em": "2026-11-18T11:48:40.954Z",
+  "fonte": "CPTEC/INPE (servicos.cptec.inpe.br), cidade 4748 (Santos)",
+  "atualizacao_cptec": "2026-11-17",
+  "parcial": false,
+  "itens": [
+    {
+      "date": "2026-11-17",
+      "h": 9,
+      "wh": 0.7,
+      "ws": 5.2,
+      "wvd": "SSW",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-17",
+      "h": 15,
+      "wh": 0.7,
+      "ws": 7.2,
+      "wvd": "ESE",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-17",
+      "h": 18,
+      "wh": 0.7,
+      "ws": 8,
+      "wvd": "E",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-18",
+      "h": 9,
+      "wh": 0.7,
+      "ws": 3.7,
+      "wvd": "S",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-18",
+      "h": 15,
+      "wh": 0.7,
+      "ws": 6.8,
+      "wvd": "E",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-18",
+      "h": 18,
+      "wh": 0.7,
+      "ws": 3.3,
+      "wvd": "SE",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-19",
+      "h": 9,
+      "wh": 0.6,
+      "ws": 2.1,
+      "wvd": "S",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-19",
+      "h": 15,
+      "wh": 0.5,
+      "ws": 7.4,
+      "wvd": "SE",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-19",
+      "h": 18,
+      "wh": 0.5,
+      "ws": 5.8,
+      "wvd": "E",
+      "agit": "Fraco"
+    }
+  ]
+}
