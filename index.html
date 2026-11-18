@@ -1418,7 +1418,7 @@ return `<div class="row">${t.map(x=>`<a class="btn lk yt-btn" href="${escH(x.url
 /* ============ NAVEGAÇÃO ============ */
 const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Rolê no Mar'],['jogo','⚽ Jogo do Santos']];
 const TICON={meudia:'☀️☁️🌧️',esportes:'<span class="tesp3" aria-hidden="true"><img src="surf.png" alt=""><img src="caiaque.png" alt=""><img src="peixe.png" alt=""></span>',noticias:'📰'};
-function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}><span class="ic" aria-hidden="true">${SIMG[s[0]]?[Image blocked: No description]:s[1].split(' ')[0]}:</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
+function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}><span class="ic" aria-hidden="true">${SIMG[s[0]]?`<img class="sic" src="${SIMG[s[0]]}" alt="">`:s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
 const SUBS=[['resumo','📋 Resumão'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Navio na Área'],['praia','🏖️ Como tá a praia hoje?']];
 const SIMG={surfe:'surf.png',caiaque:'caiaque.png',pesca:'peixe.png'};
 const FISH='<svg class="fish" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
