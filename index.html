@@ -123,6 +123,8 @@ body.light .info{background:#f1f7fc}
 body.light .warn{background:#ffe5e1;color:#6b1a10}
 .note{background:#2b2a14;border:1px solid var(--y);color:#f4e9a6;border-radius:10px;padding:10px;font-size:.85rem;margin:8px 0}
 body.light .note{background:#fff7d6;color:#5b4b00}
+/* logo do Lance! dentro da nota: menor e alinhado ao texto (google.png não é afetado) */
+.note img[src*="lance"]{height:.95em;width:auto;vertical-align:-.15em}
 label{display:block;font-size:.82rem;color:var(--mut)}
 input,select{width:100%;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg1);color:var(--txt);font:inherit}
 body.light input,body.light select{background:#fff}
@@ -198,7 +200,9 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 .jhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .jhead h2{flex:1 1 auto;min-width:0;margin:0;line-height:1.3}
 .jimg{flex:0 0 auto;height:112px;width:auto;margin:0;border-radius:0;background:transparent;padding:0;filter:drop-shadow(0 0 2px rgba(255,255,255,.95)) drop-shadow(0 0 5px rgba(255,255,255,.55))}
-@media (max-width:380px){.jimg{height:96px}}.jhead h2 .jsub{display:block;white-space:nowrap;overflow:hidden}.jhead h2{min-width:0}
+@media (max-width:380px){.jimg{height:96px}}
+.jhead h2 .jsub{display:block;white-space:nowrap;overflow:hidden}
+.jhead h2{min-width:0}
 @media (max-width:699px){.jhead h2 .jsub{font-size:3.9vw}}
 .games{clear:both;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
 .games button{width:100%;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px 10px;white-space:normal;text-align:center;line-height:1.35;font-size:.95rem}
@@ -210,6 +214,8 @@ body.light .kw-caiaque{color:#0f766e}body.light .kw-surfe{color:#c2410c}body.lig
 .vsbig .esc{height:64px;max-width:80px}
 #jogo-res{scroll-margin-top:16px}
 .row .lk{flex:1 1 calc(50% - 6px);min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;line-height:1.25}
+/* logo (ge.webp etc.) dentro dos botões de link: tamanho do texto, alinhado */
+.btn.lk img{height:1.2em;width:auto;vertical-align:-.25em;margin:0 .3em;display:inline-block}
 #noticias-sec{scroll-margin-top:12px}
 #noticias-sec h2{display:flex;align-items:center;gap:10px}
 #noticias-sec h2 .esc{height:40px;max-width:52px;flex:0 0 auto}
@@ -312,6 +318,7 @@ body.light .mi{background:rgba(255,255,255,.6)}
 .totop svg{width:26px;height:26px;flex:0 0 auto;display:block}
 img.esc[src^="coritiba"]{transform:translateY(-6%) scale(1.26);transform-origin:center}
 img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
+/* botão do YouTube (regras duplicadas unificadas) */
 .yt-btn{
   display:flex;
   flex-direction:column;
@@ -323,23 +330,24 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
 .yt-logo{
   display:block;
   background:#fff;
-  border-radius:8px;
-  padding:6px 10px;
+  border-radius:10px;
+  padding:8px 12px;
+  margin:0 auto 8px;
 }
 .yt-logo img{
   display:block;
   width:180px;
   height:auto;
+  margin:auto;
 }
 .yt-frase{
   display:block;
+  text-align:center;
+  font-size:.9em;
   line-height:1.3;
 }
 .yt-frase .pert{color:#ffd166}
 .yt-frase .youtube{color:#ffffff}
-.yt-logo{display:block;background:#fff;border-radius:10px;padding:8px 12px;margin:0 auto 8px}
-.yt-logo img{display:block;width:180px;height:auto;margin:auto}
-.yt-frase{display:block;text-align:center;font-size:.9em;line-height:1.3}
 </style>
 <!-- Analítica leve (GoatCounter): código do site climabaixada -->
 <script data-goatcounter="https://climabaixada.goatcounter.com/count"
@@ -1501,12 +1509,12 @@ function jogo(){
   }
  return `<div class="card"><div class="jhead"><h2>⚽ Jogo do Santos<span class="jsub">${tituloTempo(est)}</span></h2><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""></div>
   <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}" aria-pressed="${g.date==j.date}"><span class="vs">${par(j).map(n=>esc(n)).join('<i>x</i>')}</span><b>${par(j).join(' x ')}</b><span>${j.lbl}</span></button>`).join('')}</div>
-  <div class="note" style="background:#f6efc4;color:#4a3d00">Toca num jogo pra ver o tempo no estádio onde ele será disputado. Datas e horários conforme <img src="lance.webp" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3MISq3UUbtJSwuMHnUJWC8lKydU.webp?Expires=1795040375&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=ShG1T1jB9U~Hy8dqQDMCYQdhQLxy4y22oKSm3KgNeY8IdpcN0rlv0raFK0Nj9zIymtmOLYAxTnlNqOHTFY4sVg9lXzTRK70Whl0MS3u0uN90I0jJ9KFgr-QXg52HjfvcRWCexIDkmhVWzmUv-kFztegbXXGYi~B1MEwHTylAsGF6lSNpTfcFkXWdyVj~mwZoHiBatFQ7Ri3VQ~jtfNnBf3juhCbQUa7pzJ3YgDfCJKgB41LWUwB49a2dstZ8ydaERxRJnpoGsGgUeKhQ8gugmihVwD3493fwf7mCFZ4FSVlTLwemvMdoFqh8pxmeIlynT87cCKoh0qc4S4YbSlbZCw__'" alt="Lance!" style="height:.95em;width:auto;vertical-align:-.15em"> e <img src="google.png" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3MINtQF5XHpheqigoOMCaCRm5YD.png?Expires=1795040323&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=S4gkxlAAB~w6xxqSv4wcl0d3amhAnF9ABD6gTkVIHhtJRwsVwlAGfUaWtxysTMCQaRyBzRr-0Cqurn9Ujj1SlLnu5bhoGlcfMB1osbo-davTZ4bmnBhshy~afMmSrPa~XlxmICYL8BIJG2uw9dupThFM4ACmTQe9q9agin9BMvbWPmpxapF~m-gqXqM3nA6ZRRaDqCmfm1YkGYAxRS84lKyaPUlOjDuXXbXi4qd~h2ta-n6-6mafG9SttTf5MKHJpJP-iBglSg3QkMybqwWO1U2z46S7kr9MIbXruzH-7IICXfB8anThWD7ucAoe8jfgP5udeshonJ75chZGTnjUrA__'" alt="Google" style="height:1.1em;width:auto;vertical-align:-.2em"> em 10/11: confira sempre o local e o horário nos links abaixo.</div>
+  <div class="note" style="background:#d3dce6;color:#1b2a3a">Toca num jogo pra ver o tempo no estádio onde ele será disputado. Datas e horários conforme <img src="lance.webp" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3MISq3UUbtJSwuMHnUJWC8lKydU.webp?Expires=1795040375&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=ShG1T1jB9U~Hy8dqQDMCYQdhQLxy4y22oKSm3KgNeY8IdpcN0rlv0raFK0Nj9zIymtmOLYAxTnlNqOHTFY4sVg9lXzTRK70Whl0MS3u0uN90I0jJ9KFgr-QXg52HjfvcRWCexIDkmhVWzmUv-kFztegbXXGYi~B1MEwHTylAsGF6lSNpTfcFkXWdyVj~mwZoHiBatFQ7Ri3VQ~jtfNnBf3juhCbQUa7pzJ3YgDfCJKgB41LWUwB49a2dstZ8ydaERxRJnpoGsGgUeKhQ8gugmihVwD3493fwf7mCFZ4FSVlTLwemvMdoFqh8pxmeIlynT87cCKoh0qc4S4YbSlbZCw__'" alt="Lance!" style="height:.95em;width:auto;vertical-align:-.15em"> e <img src="google.png" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3MINtQF5XHpheqigoOMCaCRm5YD.png?Expires=1795040323&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=S4gkxlAAB~w6xxqSv4wcl0d3amhAnF9ABD6gTkVIHhtJRwsVwlAGfUaWtxysTMCQaRyBzRr-0Cqurn9Ujj1SlLnu5bhoGlcfMB1osbo-davTZ4bmnBhshy~afMmSrPa~XlxmICYL8BIJG2uw9dupThFM4ACmTQe9q9agin9BMvbWPmpxapF~m-gqXqM3nA6ZRRaDqCmfm1YkGYAxRS84lKyaPUlOjDuXXbXi4qd~h2ta-n6-6mafG9SttTf5MKHJpJP-iBglSg3QkMybqwWO1U2z46S7kr9MIbXruzH-7IICXfB8anThWD7ucAoe8jfgP5udeshonJ75chZGTnjUrA__'" alt="Google" style="height:1.1em;width:auto;vertical-align:-.2em"> em 10/11: confira sempre o local e o horário nos links abaixo.</div>
   ${g.local_confirmado===false?`<div class="warn"><span aria-hidden="true">⚠️</span> Local de ${g.opp?'Santos x '+g.opp:'este jogo'} ainda não confirmado: estou usando ${est.nome}. Confira antes de sair.</div>`:''}
   <div class="row">
-    <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Peixe no <img src="ge.webp" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3MINCQNcJDBPOqcShjYWZkJaPaq.webp?Expires=1795037593&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=Gmf2sPabN~LxiH665mESnVkB1vcQet05~zbRgzfwpfIT0e-RsAr43PA2zPCayu5WqFDhjO1JXY2NEsQ~mthteEy3Pcg11bLtrcJBmAHvD-5jkdLRgLhL9lgjR8SJ6J0t5pvSCdMFox~BFeqyE75kgrSqdG5F-GPvxlXngEfQQHrXDISavsTfWlV~euff8FJuLySxzsRTCcvRvSuh0cYLm6Wn6OlmZv3GQQLFSRUomRyca5q7mUJn~MRHPFvD02QljqttrLDxNrCgib~GSJwjprHfarfb~4THj9b-iShKfxBfKwJ6DqqIVZXZfUMtG~Fkdq09P-Mqyi6tmlZsRdeAXQ__'" alt="ge" style="height:1.2em;width:auto;vertical-align:-.25em;margin-left:.25em"></a>
+    <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener"><span class="bi">📰 Peixe <span class="nw">no <img src="ge.webp" onerror="this.onerror=null;this.replaceWith('ge')" alt="ge"></span></span></a>" target="_blank" rel="noopener">📰 Peixe no <img src="ge.webp" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3MINCQNcJDBPOqcShjYWZkJaPaq.webp?Expires=1795037593&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=Gmf2sPabN~LxiH665mESnVkB1vcQet05~zbRgzfwpfIT0e-RsAr43PA2zPCayu5WqFDhjO1JXY2NEsQ~mthteEy3Pcg11bLtrcJBmAHvD-5jkdLRgLhL9lgjR8SJ6J0t5pvSCdMFox~BFeqyE75kgrSqdG5F-GPvxlXngEfQQHrXDISavsTfWlV~euff8FJuLySxzsRTCcvRvSuh0cYLm6Wn6OlmZv3GQQLFSRUomRyca5q7mUJn~MRHPFvD02QljqttrLDxNrCgib~GSJwjprHfarfb~4THj9b-iShKfxBfKwJ6DqqIVZXZfUMtG~Fkdq09P-Mqyi6tmlZsRdeAXQ__'" alt="ge" style="height:1.2em;width:auto;vertical-align:-.25em;margin-left:.25em"></a>
     <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
-    <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener">🔎 Peixe no <img src="google.png" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3MINtQF5XHpheqigoOMCaCRm5YD.png?Expires=1795037935&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=fQL4hTreTGof7~OHQ5WKIFw2AJ-WoO~P0pWBDbODPI-dWrE4orhWyD4zG10C8XM2GuljrObNqiL5PCQjR7Ax1Rlg5ZK6f~1p9DVNASKCeg52PvlU3lxoOhOu~3dpxXLCBfpOt6GELgmonpBsX1L5TPLBJcdjK4IWessYxr6hOYANNfBDQcB80DH~YlBePOSXUVkiLLaQNFHyy9O1JRUPqMgPu52cJAsoRobPVFE~QjyzizGQNZxwciMzkj2c7EN57LbjzplJZK2hisXjFUlaeQ2H9R-H33GPicJi2fHnLG5xvFWCV6Mrx1NKzhh-ewif0PIzEoOHKYLmHCkyVVqr5Q__'" alt="Google" style="height:1.2em;width:auto;vertical-align:-.25em;margin-left:.25em"></a>
+    <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener"><span class="bi">🔎 Peixe <span class="nw">no <img src="google.png" onerror="this.onerror=null;this.src='https://d31zra5bs5df64.cloudfront.net/prod/3FC52beXn05SbPZlQopdSHQztue/chat/3LpUKXvhWt6JD51UNQCxCtvH6j9/3MINtQF5XHpheqigoOMCaCRm5YD.png?Expires=1795040323&Key-Pair-Id=K2FT0I8VPJSP5H&Signature=S4gkxlAAB~w6xxqSv4wcl0d3amhAnF9ABD6gTkVIHhtJRwsVwlAGfUaWtxysTMCQaRyBzRr-0Cqurn9Ujj1SlLnu5bhoGlcfMB1osbo-davTZ4bmnBhshy~afMmSrPa~XlxmICYL8BIJG2uw9dupThFM4ACmTQe9q9agin9BMvbWPmpxapF~m-gqXqM3nA6ZRRaDqCmfm1YkGYAxRS84lKyaPUlOjDuXXbXi4qd~h2ta-n6-6mafG9SttTf5MKHJpJP-iBglSg3QkMybqwWO1U2z46S7kr9MIbXruzH-7IICXfB8anThWD7ucAoe8jfgP5udeshonJ75chZGTnjUrA__'" alt="Google"></span></span></a>
     <button id="goNews" class="lk"><span aria-hidden="true">📰</span> Últimas notícias do Peixe</button>
     ${transmissaoHTML(g)} 
   </div>
