@@ -1560,7 +1560,7 @@ function praiaList(){
   let L=BEACHES.filter(b=>(!S.pc||b.c==S.pc)&&(!S.pb||String(b.id)==S.pb));
   if(S.pf=='ok')L=L.filter(b=>b.st==0);
   if(S.pf=='perto'&&S.pos)L=L.map(b=>({...b,km:b.la==null?null:dist(S.pos[0],S.pos[1],b.la,b.lo)})).sort((a,b)=>(a.km??1e9)-(b.km??1e9));
-  if(!L.length)return '<div class="note" style="background:#f6efc4;color:#4a3d00">Nenhuma praia encontrada com esse filtro.</div>';
+  if(!L.length)return '<div class="note" style="background:#f0efeb;color:#2b2b2a">Nenhuma praia encontrada com esse filtro.</div>';
   return L.map(b=>{
     const ok=b.st==0,open=S.open==String(b.id);
     return `<div class="card ${ok?'g':'r'}"><button data-pb="${b.id}" style="width:100%;text-align:left;background:none;border:0;color:inherit;padding:0">
