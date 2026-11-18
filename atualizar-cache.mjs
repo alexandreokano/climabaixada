@@ -43,6 +43,9 @@ for (const list of Object.values(PLACES)) {
   }
 }
 add('forecast16', VB.la, VB.lo, null, 16);
+// Estádios de jogos fora de casa (mesma chave de 3 casas do painel)
+const ESTADIOS = [[-23.600, -46.722], [-25.421, -49.259]];
+for (const [la, lo] of ESTADIOS) add('forecast16', la, lo, null, 16);
 
 async function get(url) {
   for (let i = 1; i <= 3; i++) {
