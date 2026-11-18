@@ -642,15 +642,24 @@ function dataUrl(kind,la,lo){
 async function getData(kind,la,lo,live,kmh){
   try{
     const e=await getJ(dataUrl(kind,la,lo)),t=Date.parse(e.gerado_em),age=Date.now()-t;
-    if(e.dados&&e.dados.hourly&&!isNaN(t)&&age<=DATA.maxAge&&age>=-600000){
+    if(e.dados&&e.dados.hourly&&Array.isArray(e.dados.hourly.time)&&!isNaN(t)&&age<=DATA.maxAge&&age>=-600000){
       const d=e.dados;
       if(kmh&&d.hourly.wind_gusts_10m)d.hourly.wind_gusts_10m=d.hourly.wind_gusts_10m.map(v=>v==null?v:Math.round(v*1.852*10)/10);
       d.__gen=t;return d;
     }
   }catch(x){}
-  return getJ(live);
+  const j=await getJ(live);
+                if(!j||!j.hourly||!Array.isArray(j.hourly.time))throw new Error('resposta inválida');
+                return j;
 }
 function setStatus(t){const i=t.indexOf(' ');$('status').innerHTML='<span aria-hidden="true">'+t.slice(0,i)+'</span>'+t.slice(i)}
+function useGood(P){
+  const g=S.good;
+  if(!g||g.k!=P.la+','+P.lo||Date.now()-g.ts>6*3600000)return false;
+  S.live=g.live;S.stamp=g.stamp;S.stale=true;
+  setStatus('🟠 sem sinal · dados antigos de '+g.stamp+' (desatualizado)');
+  return true;
+}
 async function loadLive(){
 setStatus('⏳ dando uma olhada no mar…');
   const P=cur(),F='https://api.open-meteo.com/v1/forecast?latitude='+P.la+'&longitude='+P.lo+'&hourly=wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,temperature_2m,apparent_temperature,precipitation_probability,cloud_cover,weather_code&wind_speed_unit=kn&timezone=America%2FSao_Paulo&forecast_days=10';
@@ -659,11 +668,12 @@ setStatus('⏳ dando uma olhada no mar…');
   const tk=S.tk=(S.tk||0)+1;
   const [f,m,cp]=await Promise.allSettled([getData('forecast',P.la,P.lo,F),P.m?getData('marine',P.la,P.lo,M):Promise.reject(0),P.city=='Santos'?loadCptec():Promise.resolve(0)]);
   if(tk!=S.tk)return;
+  if(f.status!='fulfilled'&&m.status!='fulfilled'&&useGood(P)){render();return}
   if(f.status=='fulfilled'){const h=f.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),ws:h.wind_speed_10m[i],wg:h.wind_gusts_10m[i],wd:h.wind_direction_10m[i],rain:h.precipitation[i],tp:h.temperature_2m[i],ap:h.apparent_temperature[i],pp:h.precipitation_probability[i],cc:h.cloud_cover?h.cloud_cover[i]:null,wc:h.weather_code?h.weather_code[i]:null}});n++}
   if(m.status=='fulfilled'){const h=m.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),wh:h.wave_height[i],wp:h.wave_period[i],wdir:h.wave_direction[i]}});n++}
   const gen=[f,m].filter(x=>x.status=='fulfilled'&&x.value.__gen).map(x=>x.value.__gen);S.fromCache=gen.length>0;S.live=L;S.stamp=new Date(gen.length?Math.min(...gen):Date.now()).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
-  S.cptecOk=cp.status=='fulfilled'&&cp.value>0;autoDays();
-  setStatus((n>=(P.m?2:1)?`🟢 ${S.fromCache?'dados das':'ao vivo ·'} ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · usando os dados guardados'));setTimeout(maybeAlert,800);
+  S.cptecOk=cp.status=='fulfilled'&&cp.value>0;S.stale=false;if(n)S.good={k:P.la+','+P.lo,live:L,stamp:S.stamp,ts:Date.now()};autoDays();
+  setStatus((n>=(P.m?2:1)?`🟢 ${S.fromCache?'dados das':'ao vivo ·'} ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · sem dados ao vivo (semáforo cinza'));setTimeout(maybeAlert,800);
   render();
 }
 const CPTEC_ID=4748;
@@ -705,45 +715,58 @@ function dayIcon0(di){
 }
 
 /* ============ REGRAS DO CAPITÃO ============ */
+/*SEMAFORO-INI*/
+/* Mudou uma regra? Atualize semaforo.test.mjs e registre a mudança no CHANGELOG. */
+const REGRAS=Object.freeze({
+  ventoAmarelo:10,ventoVermelho:15,rajadaVermelho:20,      /* nós */
+  ondaIniciante:0.8,ondaMax:1.0,                           /* m */
+  periodoCurto:6,chuvaCaiaque:1,                           /* s, mm/h */
+  canalVento:12,canalDirMin:112,canalDirMax:248,           /* efeito canal: vazante + vento sul */
+  surfOndaGrande:1.5,surfOndaLimite:1.0,surfOndaPouca:0.3,
+  surfVentoVermelho:18,surfVentoOnshoreVermelho:15,surfChuva:2,
+  terralDe:292,terralAte:68
+});
+const num=v=>typeof v=='number'&&isFinite(v)?v:null;
 function kayakV(o,tide){
-  const r=[];let l=0,warn=false;const up=x=>{l=Math.max(l,x)};
-  if(!o||(o.ws==null&&o.wh==null))return{l:null,r:['sem dados'],warn};
-  if(o.ws!=null){
-    if(o.ws>=15){up(2);r.push(`vento ${o.ws.toFixed(0)} nós (≥15)`)}
-    else if(o.ws>10){up(1);r.push(`vento ${o.ws.toFixed(0)} nós (11–14)`)}
-    if(o.wg>20){up(2);r.push(`rajada ${o.wg.toFixed(0)} nós (>20)`)}
+  const R=REGRAS,r=[];let l=0,warn=false;const up=x=>{l=Math.max(l,x)};
+  const ws=num(o&&o.ws),wg=num(o&&o.wg),wd=num(o&&o.wd),wh=num(o&&o.wh),wp=num(o&&o.wp),rain=num(o&&o.rain);
+  if(ws==null&&wh==null)return{l:null,r:['sem dados'],warn};
+  if(ws==null||wh==null){up(1);r.push('dado incompleto (falta '+(ws==null?'vento':'onda')+')')}
+  if(ws!=null){
+    if(ws>=R.ventoVermelho){up(2);r.push(`vento ${ws.toFixed(0)} nós (≥${R.ventoVermelho})`)}
+    else if(ws>R.ventoAmarelo){up(1);r.push(`vento ${ws.toFixed(0)} nós (11–14)`)}
   }
-  if(o.wh!=null){
-    if(o.wh>1.0){up(2);r.push(`ondas ${o.wh.toFixed(1)} m (>1,0)`)}
-    else if(o.wh>0.8){up(1);r.push(`ondas ${o.wh.toFixed(1)} m (iniciante)`)}
+  if(wg!=null&&wg>R.rajadaVermelho){up(2);r.push(`rajada ${wg.toFixed(0)} nós (>${R.rajadaVermelho})`)}
+  if(wh!=null){
+    if(wh>R.ondaMax){up(2);r.push(`ondas ${wh.toFixed(1)} m (>${R.ondaMax.toFixed(1)})`)}
+    else if(wh>R.ondaIniciante){up(1);r.push(`ondas ${wh.toFixed(1)} m (iniciante)`)}
   }
-  if(o.wp!=null&&o.wp<6&&o.ws>10){up(1);r.push(`período ${o.wp.toFixed(0)} s: mar quadrado`)}
-  if(o.rain>=1){up(1);r.push(`chuva ${o.rain.toFixed(1)} mm/h`)}
-  if(o.wc!=null&&o.wc>=95){up(2);r.push('trovoada prevista')}
-  else if(o.pp!=null&&o.pp>60){up(1);r.push(`chance de chuva ${o.pp}%`)}v
-  if(tide&&tide.state=='vazante'&&o.wd>=112&&o.wd<=248&&o.ws>12){up(2);warn=true;r.push('vazante + vento sul >12 nós')}
+  if(wp!=null&&ws!=null&&wp<R.periodoCurto&&ws>R.ventoAmarelo){up(1);r.push(`período ${wp.toFixed(0)} s: mar quadrado`)}
+  if(rain!=null&&rain>=R.chuvaCaiaque){up(1);r.push(`chuva ${rain.toFixed(1)} mm/h`)}
+  if(tide&&tide.state=='vazante'&&wd!=null&&wd>=R.canalDirMin&&wd<=R.canalDirMax&&ws!=null&&ws>R.canalVento){up(2);warn=true;r.push('vazante + vento sul >12 nós')}
   return{l,r,warn};
 }
 function surfV(o){
-  if(!o||(o.ws==null&&o.wh==null))return{l:null,r:['sem dados']};
-  let l=0;const r=[],up=x=>{l=Math.max(l,x)};
-  if(o.wh!=null){
-    if(o.wh>1.5){up(2);r.push(`ondas ${o.wh.toFixed(1)} m: grandes p/ iniciante`)}
-    else if(o.wh>1.0){up(1);r.push(`ondas ${o.wh.toFixed(1)} m: no limite`)}
-    else if(o.wh<0.3){up(1);r.push('quase sem ondas')}
+  const R=REGRAS,r=[];let l=0;const up=x=>{l=Math.max(l,x)};
+  const ws=num(o&&o.ws),wd=num(o&&o.wd),wh=num(o&&o.wh),wp=num(o&&o.wp),rain=num(o&&o.rain);
+  if(ws==null&&wh==null)return{l:null,r:['sem dados']};
+  if(ws==null||wh==null){up(1);r.push('dado incompleto (falta '+(ws==null?'vento':'onda')+')')}
+  if(wh!=null){
+    if(wh>R.surfOndaGrande){up(2);r.push(`ondas ${wh.toFixed(1)} m: grandes p/ iniciante`)}
+    else if(wh>R.surfOndaLimite){up(1);r.push(`ondas ${wh.toFixed(1)} m: no limite`)}
+    else if(wh<R.surfOndaPouca){up(1);r.push('quase sem ondas')}
   }
-  if(o.ws!=null){
-    const terral=o.wd>=292||o.wd<=68;
-    if(o.ws>=18){up(2);r.push(`vento ${o.ws.toFixed(0)} nós`)}
-    else if(o.ws>=15&&!terral){up(2);r.push(`vento ${o.ws.toFixed(0)} nós onshore`)}
-    else if(o.ws>10&&!terral){up(1);r.push(`vento ${o.ws.toFixed(0)} nós`)}
+  if(ws!=null){
+    const terral=wd!=null&&(wd>=R.terralDe||wd<=R.terralAte); /* direção ausente NÃO é terral */
+    if(ws>=R.surfVentoVermelho){up(2);r.push(`vento ${ws.toFixed(0)} nós`)}
+    else if(ws>=R.surfVentoOnshoreVermelho&&!terral){up(2);r.push(`vento ${ws.toFixed(0)} nós onshore`)}
+    else if(ws>R.ventoAmarelo&&!terral){up(1);r.push(`vento ${ws.toFixed(0)} nós`)}
   }
-  if(o.wp!=null&&o.wp<6){up(1);r.push(`período ${o.wp.toFixed(0)} s: mar picado`)}
-  if(o.rain>=2){up(1);r.push('chuva')}
-  if(o.wc!=null&&o.wc>=95){up(2);r.push('trovoada prevista')}
-  else if(o.pp!=null&&o.pp>60){up(1);r.push(`chance de chuva ${o.pp}%`)}
+  if(wp!=null&&wp<R.periodoCurto){up(1);r.push(`período ${wp.toFixed(0)} s: mar picado`)}
+  if(rain!=null&&rain>=R.surfChuva){up(1);r.push('chuva')}
   return{l,r};
 }
+/*SEMAFORO-FIM*/
 function hourInfo(di,h){
   const o=obs(di,h),ms=msAt(di,h+0.5),t=tideAt(ms);
   const sea=cur().m,nm={l:null,r:['sem mar neste bairro']};
