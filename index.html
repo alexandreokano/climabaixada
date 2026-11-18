@@ -65,12 +65,20 @@ nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 #tabs button{min-height:112px;min-width:0;overflow:hidden}
 #tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;line-height:1.2;font-size:1.05rem;font-weight:700;text-align:center;white-space:normal}
 #tabs button>span:first-child{font-size:1.6rem;line-height:1.1}
+/* títulos das abas em uma única linha (a fonte encolhe com a largura da tela) */
+#tabs button>span:last-child{display:block;max-width:100%;white-space:nowrap;font-size:min(1.05rem,3.4vw)}
 .fish{width:.45em;height:.625em}
-.tesp{height:44px;width:auto;display:block;margin-bottom:8px}
-@media (min-width:700px){.tesp{height:52px;margin-bottom:10px}}
+/* ícone da aba Rolê no Mar: surf + caiaque + peixe */
+.tesp3{display:flex;align-items:flex-end;justify-content:center;width:100%;height:44px;margin-bottom:8px}
+.tesp3 img{height:100%;width:auto;min-width:0;max-width:34%;object-fit:contain;display:block}
+.tesp3 img+img{margin-left:-6px}
+@media (min-width:700px){.tesp3{height:52px;margin-bottom:10px}}
+/* imagens das subabas Surf, Caiaque e Pesca */
+.subtabs .sic{height:40px;width:auto;max-width:100%;object-fit:contain;display:block;margin:0 auto}
+@media (min-width:700px){.subtabs .sic{height:46px}}
 .tjog{height:26px}
 @media (max-width:699px){#tabs button>span:first-child{font-size:1.15rem}.tjog{height:44px}}
-@media (min-width:700px){#tabs button{font-size:1.25rem;min-height:120px}#tabs button>span:first-child{font-size:3.2rem}}
+@media (min-width:700px){#tabs button{font-size:1.25rem;min-height:120px}#tabs button>span:first-child{font-size:3.2rem}#tabs button>span:last-child{font-size:min(1.25rem,3vw)}}
 .badge{font-size:.78rem;padding:5px 10px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
 .card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:14px;border-top:4px solid var(--acc)}
 .card.g{border-top-color:var(--g)}.card.y{border-top-color:var(--y)}.card.r{border-top-color:var(--r)}.card.n{border-top-color:#94a3b8}
@@ -1409,12 +1417,13 @@ return `<div class="row">${t.map(x=>`<a class="btn lk yt-btn" href="${escH(x.url
 }
 /* ============ NAVEGAÇÃO ============ */
 const TABS=[['meudia','🌤️ Meu Dia'],['esportes','🌊 Rolê no Mar'],['jogo','⚽ Jogo do Santos']];
-const TICON={meudia:'☀️☁️🌧️',esportes:'<img src="surf-caiaque-pesca.png" alt="" class="tesp">',noticias:'📰'};
-function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}><span class="ic" aria-hidden="true">${s[1].split(' ')[0]}</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
+const TICON={meudia:'☀️☁️🌧️',esportes:'<span class="tesp3" aria-hidden="true"><img src="surf.png" alt=""><img src="caiaque.png" alt=""><img src="peixe.png" alt=""></span>',noticias:'📰'};
+function subtabs(){return `<div class="subtabs">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}><span class="ic" aria-hidden="true">${SIMG[s[0]]?[Image blocked: No description]:s[1].split(' ')[0]}:</span><span>${s[1].slice(s[1].indexOf(' ')+1)}</span></button>`).join('')}</div>`}
 const SUBS=[['resumo','📋 Resumão'],['surfe','🏄 Surf'],['caiaque','🛶 Caiaque'],['pesca','🎣 Pesca'],['trafego','⚓ Navio na Área'],['praia','🏖️ Como tá a praia hoje?']];
+const SIMG={surfe:'surf.png',caiaque:'caiaque.png',pesca:'peixe.png'};
 const FISH='<svg class="fish" viewBox="0 0 24 34" style="display:block" aria-hidden="true"><g fill="#0b1b2b" stroke="#e8f1f8" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2C19 7 19 20 12 26C5 20 5 7 12 2Z"/><path d="M12 23L4 33L12 29L20 33Z"/><path d="M7 14L2 19L7 19Z"/><path d="M17 14L22 19L17 19Z"/></g><circle cx="12" cy="9" r="1.6" fill="#e8f1f8"/></svg>';
 const KICK='<svg width="32" height="24" viewBox="0 0 40 28" style="display:block" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="2.6" fill="currentColor"/><path d="M15 9L16 17"/><path d="M15 11L9 14M15 11L22 9"/><path d="M16 17L12 26"/><path d="M16 17L26 19L30 14"/></g><circle cx="35" cy="10" r="3.4" fill="#fff" stroke="currentColor" stroke-width="1.8"/></svg>';
-TICON.jogo='<img src="edu-silhueta.png" onerror="this.onerror=null;this.src=\'canvas-asset:edu-silhueta.png\'" alt="" class="tjog" style="width:auto;display:block;border-radius:5px;background:#fff;padding:1px">';
+TICON.jogo='<img src="bola.png" onerror="this.onerror=null;this.src=\'canvas-asset:bola.png\'" alt="" class="tjog" style="width:auto;display:block;border-radius:5px;background:#fff">';
 /* ============ NOTÍCIAS (só das duas fontes autorizadas) ============ */
 const NEWS_SRC=[
  {n:'Diário do Peixe',site:'https://www.diariodopeixe.com.br/',feed:'https://www.diariodopeixe.com.br/feed/'},
