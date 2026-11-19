@@ -1,54 +1,30 @@
 {
-  "gerado_em": "2026-11-19T07:39:58.142Z",
+  "gerado_em": "2026-11-19T18:25:10.736Z",
   "fonte": "CPTEC/INPE (servicos.cptec.inpe.br), cidade 4748 (Santos)",
-  "atualizacao_cptec": "2026-11-18",
+  "atualizacao_cptec": "2026-11-19",
   "parcial": false,
   "itens": [
     {
-      "date": "2026-11-18",
+      "date": "2026-11-19",
       "h": 9,
-      "wh": 0.7,
-      "ws": 3.7,
+      "wh": 0.5,
+      "ws": 3.1,
       "wvd": "SSW",
       "agit": "Fraco"
     },
     {
-      "date": "2026-11-18",
-      "h": 15,
-      "wh": 0.7,
-      "ws": 4.7,
-      "wvd": "E",
-      "agit": "Fraco"
-    },
-    {
-      "date": "2026-11-18",
-      "h": 18,
-      "wh": 0.6,
-      "ws": 5.2,
-      "wvd": "E",
-      "agit": "Fraco"
-    },
-    {
-      "date": "2026-11-19",
-      "h": 9,
-      "wh": 0.5,
-      "ws": 4.1,
-      "wvd": "E",
-      "agit": "Fraco"
-    },
-    {
       "date": "2026-11-19",
       "h": 15,
       "wh": 0.5,
-      "ws": 5.1,
-      "wvd": "E",
+      "ws": 4.5,
+      "wvd": "SE",
       "agit": "Fraco"
     },
     {
       "date": "2026-11-19",
       "h": 18,
       "wh": 0.5,
-      "ws": 8.6,
+      "ws": 5.8,
       "wvd": "ENE",
       "agit": "Fraco"
     },
@@ -56,7 +32,7 @@
       "date": "2026-11-20",
       "h": 9,
       "wh": 0.4,
-      "ws": 6.6,
+      "ws": 8.9,
       "wvd": "SSW",
       "agit": "Fraco"
     },
@@ -64,7 +40,7 @@
       "date": "2026-11-20",
       "h": 15,
       "wh": 0.4,
-      "ws": 2.9,
+      "ws": 3.1,
       "wvd": "S",
       "agit": "Fraco"
     },
@@ -72,8 +48,32 @@
       "date": "2026-11-20",
       "h": 18,
       "wh": 0.4,
-      "ws": 2.9,
-      "wvd": "E",
+      "ws": 3.3,
+      "wvd": "W",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-21",
+      "h": 9,
+      "wh": 0.3,
+      "ws": 4.9,
+      "wvd": "SW",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-21",
+      "h": 15,
+      "wh": 0.4,
+      "ws": 4.7,
+      "wvd": "S",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-21",
+      "h": 18,
+      "wh": 0.4,
+      "ws": 1.9,
+      "wvd": "ENE",
       "agit": "Fraco"
     }
   ]
