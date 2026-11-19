@@ -1609,10 +1609,11 @@ function render(){
   /* sem calculadora */
   fitOne();
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
+}
 function topBtn(){return `<div class="totop"><button type="button" data-top="1" aria-label="Voltar ao topo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="var(--acc)"/><path d="M12 18V7M7 11.5L12 6.5l5 5" fill="none" stroke="#04202f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Volta pra riba</span></button></div>`}
 $('totop').innerHTML=topBtn();
 function fitOne(){
-document.querySelectorAll('.oneline,.jhead h2 .jsub').forEach(e=>{
+  document.querySelectorAll('.oneline,.jhead h2 .jsub').forEach(e=>{
     e.style.fontSize='';
     let fs=parseFloat(getComputedStyle(e).fontSize);
     while(e.scrollWidth>e.clientWidth+1&&fs>9){fs-=0.5;e.style.fontSize=fs+'px'}
