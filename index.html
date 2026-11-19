@@ -1606,7 +1606,6 @@ function render(){
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}>${ae(s[1])}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Esse dia já passou: a avaliação do Capitão ficou velha. Escolhe um dia de hoje pra frente.</div>':'';
   $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
-  /* sem calculadora */
   fitOne();
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
 }
