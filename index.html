@@ -1494,7 +1494,7 @@ function newsSec(){
   if(n===undefined)body='<div class="note"><span aria-hidden="true">⏳</span> Buscando manchetes…</div>';
   else if(!n.it.length)body='<div class="note">Não consegui carregar as manchetes aqui dentro do painel: os sites podem bloquear a leitura direta pelo navegador (CORS) ou não oferecer feed público. Nada foi inventado: use os botões para ler no site de origem.</div>';
   else body=`<div class="cid">${n.it.map(x=>`<div class="${newsRead().includes(x.u)?'nlida':''}"><a data-nu="${escH(x.u)}" style="color:var(--acc)" href="${escH(x.u)}" target="_blank" rel="noopener">${escH(x.t)}</a><div class="mut">${escH(x.f)}${x.d?' · '+escH(x.d):''}</div></div>`).join('')}</div><div class="mut">Manchetes copiadas dos sites de origem${n.upd?', atualizadas em '+escH(n.upd):''}. Toque para ler a matéria completa no site.</div>`;
-  return `<div class="card" id="noticias-sec"><h2>${esc('Santos')}<span>Últimas notícias do Peixe</span></h2>${body}<div class="row">${links}</div></div>`;
+  return `<div class="card" id="noticias-sec"><h2>${esc('Santos')}<span>Últimas notícias</span></h2>${body}<div class="row">${links}</div></div>`;
 }
 const jogoMs=j=>new Date(`${j.date}T${j.time}:00-03:00`).getTime();
 const jogoPassou=j=>!j||!j.date||!j.time||Date.now()>jogoMs(j)+9000000; // 2h30 depois do início
