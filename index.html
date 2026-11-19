@@ -346,9 +346,6 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
 .row .lk.ge-btn .ge-in img{display:block;flex:none;height:26px;width:auto;max-width:64px;min-width:0;object-fit:contain;margin:0;padding:0;border:0;background:none}
 .note,body.light .note{background:#d3dce6;border-color:#8aa0b5;color:#1b2a3a}
 .yt-logo img{width:110px}
-.row .lk:has(img[alt="ge"]){display:block;text-align:center;align-content:center;line-height:1.5}
-.row .lk:has(img[alt="ge"]) img{display:inline-block;height:1.2em;width:auto;vertical-align:-.25em;margin-left:.25em}
-
 </style>
 <!-- Analítica leve (GoatCounter): código do site climabaixada -->
 <script data-goatcounter="https://climabaixada.goatcounter.com/count"
@@ -1510,15 +1507,15 @@ function jogo(){
       }
     }
   }
- return `<div class="card"><div class="jhead"><h2>⚽ Jogo do Santos<span class="jsub">${tituloTempo(est)}</span></h2><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""></div>
+return `<div class="card"><div class="jhead"><h2>⚽ Jogo do Santos<span class="jsub">${tituloTempo(est)}</span></h2><img class="jimg" src="edu-silhueta.png" onerror="this.onerror=null;this.src='canvas-asset:edu-silhueta.png'" alt=""></div>
   <div class="mut" style="margin:0 0 8px"><span aria-hidden="true">👆</span> Toque num jogo para ver o tempo no estádio onde ele será disputado.</div>
-  <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>jogoPassou(j)?'':`<button data-g="${i}" class="${g.date==j.date&&g.time==j.time?'on':''}" aria-pressed="${g.date==j.date&&g.time==j.time}"><span class="vs">${par(j).map(n=>esc(n)).join('<i>x</i>')}</span><b>${par(j).join(' x ')}</b><span>${j.lbl}</span></button>`).join('')}</div>
+  <div class="games" id="jogos-sec">${JOGOS.map((j,i)=>j.date<todayStr?'':`<button data-g="${i}" class="${g.date==j.date?'on':''}" aria-pressed="${g.date==j.date}"><span class="vs">${par(j).map(n=>esc(n)).join('<i>x</i>')}</span><b>${par(j).join(' x ')}</b><span>${j.lbl}</span></button>`).join('')}</div>
   <div class="note">Datas e horários conforme <img src="lance.webp" onerror="this.onerror=null;this.replaceWith('Lance!')" alt="Lance!" style="height:.95em;width:auto;vertical-align:-.15em"> e <img src="google.png" onerror="this.onerror=null;this.replaceWith('Google')" alt="Google" style="height:1.1em;width:auto;vertical-align:-.2em">: confira sempre o local e o horário nos links abaixo.</div>
   ${g.local_confirmado===false?`<div class="warn"><span aria-hidden="true">⚠️</span> Local de ${g.opp?'Santos x '+g.opp:'este jogo'} ainda não confirmado: estou usando ${est.nome}. Confira antes de sair.</div>`:''}
   <div class="row">
-    <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener">📰 Peixe no <img src="ge.webp" onerror="this.onerror=null;this.replaceWith('ge')" alt="ge"></a>
+    <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener"><span class="mn"><img class="mas" src="mascote-santos.png" onerror="this.onerror=null;this.replaceWith('Peixe')" alt="Peixe"> no <img src="ge.webp" onerror="this.onerror=null;this.replaceWith('ge')" alt="ge"></span></a>
     <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site do Santos FC</a>
-    <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener">🔎 Peixe no <img src="google.png" onerror="this.onerror=null;this.replaceWith('Google')" alt="Google" style="height:1.2em;width:auto;vertical-align:-.25em;margin-left:.25em"></a>
+    <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener"><span class="mn"><img class="mas" src="mascote-santos.png" onerror="this.onerror=null;this.replaceWith('Peixe')" alt="Peixe"> no <img src="google.png" onerror="this.onerror=null;this.replaceWith('Google')" alt="Google"></span></a>
     <button id="goNews" class="lk"><span aria-hidden="true">📰</span> Últimas notícias do Peixe</button>
     ${transmissaoHTML(g)}
 </div>
