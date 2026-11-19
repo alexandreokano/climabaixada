@@ -364,6 +364,8 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
   object-position:center;
   flex:0 0 auto;
 }
+.row .mn .mt{min-width:0;text-align:left;line-height:1.15;white-space:normal}
+.row .mn .mas{flex:0 0 auto}
 </style>
 <!-- Analítica leve (GoatCounter): código do site climabaixada -->
 <script data-goatcounter="https://climabaixada.goatcounter.com/count"
@@ -1532,9 +1534,9 @@ return `<div class="card"><div class="jhead"><h2>⚽ Jogo do Santos<span class="
   ${g.local_confirmado===false?`<div class="warn"><span aria-hidden="true">⚠️</span> Local de ${g.opp?'Santos x '+g.opp:'este jogo'} ainda não confirmado: estou usando ${est.nome}. Confira antes de sair.</div>`:''}
   <div class="row">
     <a class="btn lk" href="https://ge.globo.com/futebol/times/santos/" target="_blank" rel="noopener" aria-label="Peixe no ge, abre em nova aba"><span class="mn"><img class="mas" src="santos.png" onerror="this.onerror=null;this.replaceWith('Peixe')" alt=""><img class="ge-logo" src="ge.webp" onerror="this.onerror=null;this.replaceWith('ge')" alt=""></span></a>
-    <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener">🐟 Site Oficial</a>
+    <a class="btn lk" href="https://www.santosfc.com.br" target="_blank" rel="noopener" aria-label="Site Oficial do Santos, abre em nova aba"><span class="mn"><img class="mas" src="santos.png" onerror="this.onerror=null;this.remove()" alt=""><span class="mt">Site Oficial</span></span></a>
     <a class="btn lk" href="https://www.google.com/search?q=pr%C3%B3ximo+jogo+do+Santos" target="_blank" rel="noopener" aria-label="Peixe no Google, abre em nova aba"><span class="mn"><img class="mas" src="santos.png" onerror="this.onerror=null;this.replaceWith('Peixe')" alt=""><img class="google-logo" src="google.png" onerror="this.onerror=null;this.replaceWith('Google')" alt=""></span></a>
-    <button id="goNews" class="lk"><span aria-hidden="true">📰</span> Últimas notícias</button>
+    <button id="goNews" class="lk"><span class="mn"><img class="mas" src="santos.png" onerror="this.onerror=null;this.remove()" alt=""><span class="mt">Últimas notícias</span></span></button>
     ${transmissaoHTML(g)}
 </div>
   </div><div id="jogo-res">${res}</div>${newsSec()}`;
