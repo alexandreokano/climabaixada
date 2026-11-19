@@ -1478,7 +1478,7 @@ function newsSec(){
   return `<div class="card" id="noticias-sec"><h2>${esc('Santos')}<span>Últimas notícias do Peixe</span></h2>${body}<div class="row">${links}</div></div>`;
 }
 const jogoMs=j=>new Date(`${j.date}T${j.time}:00-03:00`).getTime();
-const jogoPassou=j=>!j||!j.date||!j.time||Date.now()>jogoMs(j)+9000000; /* 2h30 depois do início
+const jogoPassou=j=>!j||!j.date||!j.time||Date.now()>jogoMs(j)+9000000; // 2h30 depois do início
 function jogo(){
   const g=(S.game&&!jogoPassou(S.game)?S.game:JOGOS.find(j=>!jogoPassou(j)))||{},f=(x,d)=>x==null?'–':x.toFixed(d||0);
   const est=estadioDe(g),vbe=S.vb?S.vb[est.nome]:S.vb;
