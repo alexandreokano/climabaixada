@@ -1476,6 +1476,8 @@ function newsSec(){
   else body=`<div class="cid">${n.it.map(x=>`<div class="${newsRead().includes(x.u)?'nlida':''}"><a data-nu="${escH(x.u)}" style="color:var(--acc)" href="${escH(x.u)}" target="_blank" rel="noopener">${escH(x.t)}</a><div class="mut">${escH(x.f)}${x.d?' · '+escH(x.d):''}</div></div>`).join('')}</div><div class="mut">Manchetes copiadas dos sites de origem${n.upd?', atualizadas em '+escH(n.upd):''}. Toque para ler a matéria completa no site.</div>`;
   return `<div class="card" id="noticias-sec"><h2>${esc('Santos')}<span>Últimas notícias do Peixe</span></h2>${body}<div class="row">${links}</div></div>`;
 }
+const jogoMs=j=>new Date(`${j.date}T${j.time}:00-03:00`).getTime();
+const jogoPassou=j=>!j||!j.date||!j.time||Date.now()>jogoMs(j)+9000000; /* 2h30 depois do início
 function jogo(){
   const g=S.game||JOGOS.find(j=>j.date>=todayStr)||{},f=(x,d)=>x==null?'–':x.toFixed(d||0);
   const est=estadioDe(g),vbe=S.vb?S.vb[est.nome]:S.vb;
