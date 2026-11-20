@@ -1,7 +1,7 @@
 {
   "versao": 1,
-  "avaliado_em": "2026-11-19T14:50:37-03:00",
-  "boletim_cetesb": "2026-11-12",
+  "avaliado_em": "2026-11-19T22:57:35-03:00",
+  "boletim_cetesb": "2026-11-19",
   "dias": [
     {
       "date": "2026-11-19",
@@ -10,7 +10,7 @@
       "s": 1,
       "vento": "SSE até 7 nós (rajadas até 12 nós)",
       "ondas": "até 0.8 m · 7 s",
-      "chuva": "1.5 mm (até 88%)",
+      "chuva": "1.8 mm (até 100%)",
       "txt": "Atenção: pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
@@ -18,30 +18,30 @@
       "lbl": "Sex 20",
       "k": 1,
       "s": 1,
-      "vento": "SSW até 8 nós (rajadas até 18 nós)",
-      "ondas": "até 0.6 m · 8 s",
-      "chuva": "3.1 mm (até 80%)",
+      "vento": "SSW até 8 nós (rajadas até 19 nós)",
+      "ondas": "até 0.6 m · 9 s",
+      "chuva": "1.4 mm (até 69%)",
       "txt": "Atenção: vento moderado ou rajadas; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-11-21",
       "lbl": "Sáb 21",
-      "k": 1,
-      "s": 1,
-      "vento": "SSE até 8 nós (rajadas até 14 nós)",
+      "k": 2,
+      "s": 0,
+      "vento": "SE até 7 nós (rajadas até 22 nós)",
       "ondas": "até 0.6 m · 9 s",
-      "chuva": "2.8 mm (até 51%)",
-      "txt": "Atenção: pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
+      "chuva": "1.2 mm (até 55%)",
+      "txt": "Não navegue: vento/rajadas acima do limite do caiaque. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-11-22",
       "lbl": "Dom 22",
-      "k": 1,
-      "s": 1,
-      "vento": "SSE até 10 nós (rajadas até 17 nós)",
+      "k": 2,
+      "s": 2,
+      "vento": "SSE até 9 nós (rajadas até 18 nós)",
       "ondas": "até 0.6 m · 9 s",
-      "chuva": "3.6 mm (até 96%)",
-      "txt": "Atenção: vento moderado ou rajadas; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
+      "chuva": "16.3 mm (até 98%), com trovoadas",
+      "txt": "Não navegue: vento moderado ou rajadas; risco de trovoadas ou chuva forte. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-11-23",
@@ -49,8 +49,8 @@
       "k": 2,
       "s": 1,
       "vento": "SSW até 9 nós (rajadas até 28 nós)",
-      "ondas": "até 0.7 m · 8 s",
-      "chuva": "4.1 mm (até 97%)",
+      "ondas": "até 0.6 m · 8 s",
+      "chuva": "8.3 mm (até 97%)",
       "txt": "Não navegue: vento/rajadas acima do limite do caiaque; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     }
   ],
@@ -114,7 +114,7 @@
     "Guarujá": [
       [
         "Pitangueiras - Av. Puglisi",
-        2
+        0
       ],
       [
         "Pitangueiras - R. Silvia Valadão",
@@ -134,7 +134,7 @@
       ],
       [
         "Enseada - Estrada de Pernambuco",
-        2
+        0
       ],
       [
         "Enseada - Av. Atlântica",
@@ -340,7 +340,7 @@
       ],
       [
         "Centro",
-        2
+        0
       ],
       [
         "Prainha",
