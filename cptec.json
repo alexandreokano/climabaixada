@@ -1,79 +1,79 @@
 {
-  "gerado_em": "2026-11-20T11:55:37.155Z",
+  "gerado_em": "2026-11-20T20:33:53.415Z",
   "fonte": "CPTEC/INPE (servicos.cptec.inpe.br), cidade 4748 (Santos)",
-  "atualizacao_cptec": "2026-11-19",
+  "atualizacao_cptec": "2026-11-20",
   "parcial": false,
   "itens": [
     {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "h": 9,
-      "wh": 0.5,
-      "ws": 3.1,
-      "wvd": "SSW",
+      "wh": 0.4,
+      "ws": 7.2,
+      "wvd": "SW",
       "agit": "Fraco"
     },
     {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "h": 15,
-      "wh": 0.5,
+      "wh": 0.4,
       "ws": 4.5,
       "wvd": "SE",
       "agit": "Fraco"
     },
     {
-      "date": "2026-11-19",
+      "date": "2026-11-20",
       "h": 18,
-      "wh": 0.5,
-      "ws": 5.8,
+      "wh": 0.4,
+      "ws": 0.4,
+      "wvd": "N",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-21",
+      "h": 9,
+      "wh": 0.4,
+      "ws": 2.3,
+      "wvd": "NNE",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-21",
+      "h": 15,
+      "wh": 0.4,
+      "ws": 4.9,
+      "wvd": "SSE",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-21",
+      "h": 18,
+      "wh": 0.4,
+      "ws": 6.4,
       "wvd": "ENE",
       "agit": "Fraco"
     },
     {
-      "date": "2026-11-20",
+      "date": "2026-11-22",
       "h": 9,
       "wh": 0.4,
-      "ws": 8.9,
+      "ws": 2.3,
+      "wvd": "S",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-22",
+      "h": 15,
+      "wh": 0.3,
+      "ws": 4.3,
       "wvd": "SSW",
       "agit": "Fraco"
     },
     {
-      "date": "2026-11-20",
-      "h": 15,
-      "wh": 0.4,
-      "ws": 3.1,
-      "wvd": "S",
-      "agit": "Fraco"
-    },
-    {
-      "date": "2026-11-20",
+      "date": "2026-11-22",
       "h": 18,
-      "wh": 0.4,
-      "ws": 3.3,
-      "wvd": "W",
-      "agit": "Fraco"
-    },
-    {
-      "date": "2026-11-21",
-      "h": 9,
       "wh": 0.3,
-      "ws": 4.9,
-      "wvd": "SW",
-      "agit": "Fraco"
-    },
-    {
-      "date": "2026-11-21",
-      "h": 15,
-      "wh": 0.4,
-      "ws": 4.7,
-      "wvd": "S",
-      "agit": "Fraco"
-    },
-    {
-      "date": "2026-11-21",
-      "h": 18,
-      "wh": 0.4,
-      "ws": 1.9,
-      "wvd": "ENE",
+      "ws": 6.2,
+      "wvd": "NNE",
       "agit": "Fraco"
     }
   ]
