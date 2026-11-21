@@ -373,18 +373,19 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
 .slogan{white-space:nowrap;font-size:clamp(.68rem,3.1vw,.85rem);letter-spacing:.05em}
 /* 3) Campos Cidade e Bairro com fonte menor (mostra "Aparecida" inteira) */
 select{font-size:clamp(.8rem,4.2vw,1rem);text-overflow:ellipsis}
-/* Barra de botões do topo: sempre em uma linha */
-#hdr{flex:0 0 100% !important;width:100%;flex-wrap:nowrap !important;gap:4px !important;justify-content:space-between}
-#hdr button,#hdr .badge{flex:0 0 auto !important;min-height:40px !important;padding:0 8px !important;font-size:clamp(11px,3.3vw,15px) !important;white-space:nowrap}
-#hdr .badge{flex:1 1 0 !important;min-width:0 !important;overflow:hidden;text-overflow:ellipsis;justify-content:flex-start}
-#hdr #fsm,#hdr #fsp,#hdr #reload,#hdr #theme{min-width:34px;padding:0 6px !important}
-#hdr #reload svg{width:20px;height:20px}
-/* Um pouco mais de ar acima e abaixo da barra de botões */
-/* Um pouco mais de ar acima e abaixo da barra de botões */
-#hdr{margin:8px 0 12px !important;gap:10px 8px !important;flex-wrap:wrap !important}
-#hdr #status{flex:1 1 100% !important;width:100% !important;max-width:none !important;display:flex !important;justify-content:center;align-items:center;white-space:nowrap !important;overflow:visible !important;text-overflow:clip !important}
+/* Dados + Cidade + Bairro na mesma linha */
+#top3{display:grid;grid-template-columns:minmax(0,25fr) minmax(0,33fr) minmax(0,42fr);gap:8px;align-items:end;margin-bottom:10px}
+#top3 #loc{display:contents}
+#top3>div{min-width:0}
+#top3 label{display:block;margin:0 0 4px;font-size:clamp(.55rem,2.8vw,.7rem);line-height:1.2;font-weight:600;letter-spacing:.02em;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#top3 select,#stbox .badge{height:44px;min-height:44px;margin:0;border:1px solid var(--bd);border-radius:10px;box-sizing:border-box;font-size:clamp(.75rem,3.6vw,1rem);line-height:1.2}
+#top3 select{padding:0 6px;text-overflow:ellipsis}
+#stbox .badge{display:flex;align-items:center;justify-content:center;width:100%;padding:0 4px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Barra de botões: uma linha só, sem conflito */
+#hdr{flex:0 0 100% !important;width:100%;flex-wrap:nowrap !important;gap:8px !important;margin:8px 0 12px !important;justify-content:space-between}
+#hdr button{flex:0 0 auto !important;min-width:44px !important;min-height:44px !important;padding:0 8px !important;font-size:clamp(11px,3.3vw,15px) !important;white-space:nowrap}
 #hdr #help{flex:1 1 auto !important;min-width:0 !important}
-#hdr #fsm,#hdr #fsp,#hdr #reload,#hdr #theme{flex:0 0 auto !important;min-width:44px !important;min-height:44px !important}
+#hdr #reload svg{width:20px;height:20px}
 </style>
 <!-- Analítica leve (GoatCounter): código do site climabaixada -->
 <script data-goatcounter="https://climabaixada.goatcounter.com/count"
@@ -414,11 +415,18 @@ select{font-size:clamp(.8rem,4.2vw,1rem);text-overflow:ellipsis}
 </header>
 <div class="sub cidades">Santos · São Vicente · Guarujá · Praia Grande<br>Bertioga · Cubatão · Itanhaém · Mongaguá · Peruíbe</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-    <span class="badge" id="status" aria-live="polite" aria-atomic="true"><span aria-hidden="true">⏳</span> dando uma olhada no mar…</span>
     <button id="help"><span aria-hidden="true">❓</span> Me ajuda aí</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema" aria-label="Tema claro" aria-pressed="false"><span aria-hidden="true">🌓</span></button>
   </div>
 </header>
-<div id="loc" class="locsel"></div>
+<div id="top3">
+  <div id="stbox"><label><span aria-hidden="true">📡</span> Dados</label></div>
+<div id="top3">
+  <div id="stbox"><label><span aria-hidden="true">📡</span> Dados</label></div>
+  <div id="top3">
+  <div id="stbox"><label><span aria-hidden="true">📡</span> Dados</label><span class="badge" id="status" aria-live="polite" aria-atomic="true"><span aria-hidden="true">⏳</span> dando uma olhada no mar…</span></div>
+  <div id="loc" class="locsel"></div>
+</div>
+</div>
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
 <nav id="days"></nav>
 <main id="view" tabindex="-1"></main>
@@ -733,7 +741,7 @@ setStatus('⏳ dando uma olhada no mar…');
   if(m.status=='fulfilled'){const h=m.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),wh:h.wave_height[i],wp:h.wave_period[i],wdir:h.wave_direction[i]}});n++}
   const gen=[f,m].filter(x=>x.status=='fulfilled'&&x.value.__gen).map(x=>x.value.__gen);S.fromCache=gen.length>0;S.live=L;S.stamp=new Date(gen.length?Math.min(...gen):Date.now()).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
   S.cptecOk=cp.status=='fulfilled'&&cp.value>0;S.stale=false;if(n)S.good={k:P.la+','+P.lo,live:L,stamp:S.stamp,ts:Date.now()};autoDays();
-  setStatus((n>=(P.m?2:1)?`🟢 ${S.fromCache?'dados das':'ao vivo ·'} ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · sem dados ao vivo (semáforo cinza'));setTimeout(maybeAlert,800);
+  setStatus((n>=(P.m?2:1)?`🟢 ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · sem dados ao vivo (semáforo cinza'));setTimeout(maybeAlert,800);
   render();
 }
 async function loadCptec(){
