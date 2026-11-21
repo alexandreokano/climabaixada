@@ -373,6 +373,12 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
 .slogan{white-space:nowrap;font-size:clamp(.68rem,3.1vw,.85rem);letter-spacing:.05em}
 /* 3) Campos Cidade e Bairro com fonte menor (mostra "Aparecida" inteira) */
 select{font-size:clamp(.8rem,4.2vw,1rem);text-overflow:ellipsis}
+/* Barra de botões do topo: sempre em uma linha */
+#hdr{flex:0 0 100% !important;width:100%;flex-wrap:nowrap !important;gap:4px !important;justify-content:space-between}
+#hdr button,#hdr .badge{flex:0 0 auto !important;min-height:40px !important;padding:0 8px !important;font-size:clamp(11px,3.3vw,15px) !important;white-space:nowrap}
+#hdr .badge{flex:1 1 0 !important;min-width:0 !important;overflow:hidden;text-overflow:ellipsis;justify-content:flex-start}
+#hdr #fsm,#hdr #fsp,#hdr #reload,#hdr #theme{min-width:34px;padding:0 6px !important}
+#hdr #reload svg{width:20px;height:20px}
 </style>
 <!-- Analítica leve (GoatCounter): código do site climabaixada -->
 <script data-goatcounter="https://climabaixada.goatcounter.com/count"
