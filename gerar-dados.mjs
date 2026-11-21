@@ -7,7 +7,7 @@ const UA = 'Mozilla/5.0 (compatible; ClimaBaixadaBot/1.0; +https://climabaixada.
 const W = { la: -23.99, lo: -46.30 };   // vento/chuva: baía de Santos
 const M = { la: -24.05, lo: -46.27 };   // ondas: ponto no mar
 const FM = ['ecmwf_ifs025', 'gfs_seamless'];
-const MM = ['ecmwf_wam025', 'ncep_gfswave025'];
+const MM = ['meteofrance_wave', 'ncep_gfswave025'];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const TENTATIVAS = 5;
@@ -83,7 +83,12 @@ const FIELDS_F = ['wind_speed_10m', 'wind_gusts_10m', 'wind_direction_10m', 'pre
 const FIELDS_M = ['wave_height', 'wave_period'];
 const fc = await modelos(fcUrl(FM.join(',')), FM, FIELDS_F, 'wind_speed_10m');
 await sleep(1000);
-const mr = await modelos(mrUrl(MM.join(',')), MM, FIELDS_M, 'wave_height');
+let mr = await modelos(mrUrl(MM.join(',')), MM, FIELDS_M, 'wave_height');
+if (!mr.length) {
+  console.warn('::warning::Ondas: nenhum modelo respondeu; tentando só o GFS.');
+  await sleep(1000);
+  mr = await modelos(mrUrl('ncep_gfswave025'), ['ncep_gfswave025'], FIELDS_M, 'wave_height');
+}
 if (!fc.length || !mr.length) {
   console.error(`::error::Dados incompletos (vento/chuva: ${fc.length}/${FM.length} modelos; ondas: ${mr.length}/${MM.length}). dados.json anterior mantido.`);
   process.exit(1);
@@ -177,6 +182,6 @@ let antigo = {};
 try { antigo = JSON.parse(await readFile(OUT, 'utf8')); } catch {}
 
 const avaliado_em = new Date().toLocaleString('sv-SE', { timeZone: TZ }).replace(' ', 'T') + '-03:00';
-const novo = { ...antigo, versao: antigo.versao || 1, avaliado_em, fonte: parcial ? 'open-meteo (modelos parciais)' : 'open-meteo (ECMWF + GFS, mais conservador)', dias };
+const novo = { ...antigo, versao: antigo.versao || 1, avaliado_em, fonte: parcial ? 'open-meteo (modelos parciais)' : 'open-meteo (vento: ECMWF + GFS; ondas: Météo-France + GFS; vale o pior caso)', dias };
 await writeFile(OUT, JSON.stringify(novo, null, 2) + '\n');
 console.log(`Gravado ${OUT}: ${dias.length} dias. CETESB mantida do boletim ${antigo.boletim_cetesb || '(nenhum)'}.`);
