@@ -376,6 +376,7 @@ select{font-size:clamp(.8rem,4.2vw,1rem);text-overflow:ellipsis}
 /* Dados + Cidade + Bairro na mesma linha */
 #top3{display:grid;grid-template-columns:minmax(0,25fr) minmax(0,33fr) minmax(0,42fr);gap:8px;align-items:end;margin-bottom:10px}
 #top3 #loc{display:contents}
+#top3>div{min-width:0}
 #top3 label{display:block;margin:0 0 4px;font-size:clamp(.55rem,2.8vw,.7rem);line-height:1.2;font-weight:600;letter-spacing:.02em;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #top3 select,#stbox .badge{height:44px;min-height:44px;margin:0;border:1px solid var(--bd);border-radius:10px;box-sizing:border-box;font-size:clamp(.75rem,3.6vw,1rem);line-height:1.2}
 #top3 select{padding:0 6px;text-overflow:ellipsis}
@@ -421,7 +422,10 @@ select{font-size:clamp(.8rem,4.2vw,1rem);text-overflow:ellipsis}
   <div id="stbox"><label><span aria-hidden="true">📡</span> Dados</label></div>
 <div id="top3">
   <div id="stbox"><label><span aria-hidden="true">📡</span> Dados</label></div>
+  <div id="top3">
+  <div id="stbox"><label><span aria-hidden="true">📡</span> Dados</label><span class="badge" id="status" aria-live="polite" aria-atomic="true"><span aria-hidden="true">⏳</span> dando uma olhada no mar…</span></div>
   <div id="loc" class="locsel"></div>
+</div>
 </div>
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
 <nav id="days"></nav>
