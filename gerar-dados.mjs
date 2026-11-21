@@ -10,19 +10,29 @@ const FM = ['ecmwf_ifs025', 'gfs_seamless'];
 const MM = ['ecmwf_wam025', 'ncep_gfswave025'];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+const TENTATIVAS = 5;
 async function get(url) {
-  for (let i = 1; i <= 3; i++) {
+  let ultimo = new Error('sem resposta');
+  for (let i = 1; i <= TENTATIVAS; i++) {
     const c = new AbortController();
-    const t = setTimeout(() => c.abort(), 20000);
+    const t = setTimeout(() => c.abort(), 30000);
     try {
       const r = await fetch(url, { signal: c.signal, headers: { 'user-agent': UA } });
       if (r.ok) return await r.json();
-      if (r.status !== 429 && r.status < 500) throw new Error('HTTP ' + r.status);
-    } catch (e) { if (i === 3) throw e; }
-    finally { clearTimeout(t); }
-    await sleep(2000 * i);
+      const erro = new Error('HTTP ' + r.status);
+      if (r.status !== 429 && r.status < 500) { erro.fatal = true; throw erro; }
+      ultimo = erro;
+    } catch (e) {
+      if (e.fatal) throw e;
+      ultimo = e;
+    } finally { clearTimeout(t); }
+    if (i < TENTATIVAS) {
+      const pausa = 3000 * 2 ** (i - 1);
+      console.warn(`tentativa ${i}/${TENTATIVAS} falhou (${ultimo.cause?.code || ultimo.message}); nova tentativa em ${pausa / 1000}s`);
+      await sleep(pausa);
+    }
   }
-  throw new Error('sem resposta');
+  throw ultimo;
 }
 
 const tzq = encodeURIComponent(TZ);
