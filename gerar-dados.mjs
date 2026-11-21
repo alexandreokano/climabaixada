@@ -21,13 +21,15 @@ async function get(url) {
       if (r.ok) return await r.json();
       const erro = new Error('HTTP ' + r.status);
       if (r.status !== 429 && r.status < 500) { erro.fatal = true; throw erro; }
+      const ra = Number(r.headers.get('retry-after'));
+      if (ra > 0) erro.espera = ra * 1000;
       ultimo = erro;
     } catch (e) {
       if (e.fatal) throw e;
       ultimo = e;
     } finally { clearTimeout(t); }
     if (i < TENTATIVAS) {
-      const pausa = 3000 * 2 ** (i - 1);
+      const pausa = Math.min(60000, Math.max(3000 * 2 ** (i - 1), ultimo.espera || 0));
       console.warn(`tentativa ${i}/${TENTATIVAS} falhou (${ultimo.cause?.code || ultimo.message}); nova tentativa em ${pausa / 1000}s`);
       await sleep(pausa);
     }
@@ -55,23 +57,33 @@ const max = a => (a.length ? Math.max(...a) : null);
 const mean = a => (a.length ? a.reduce((s, v) => s + v, 0) / a.length : null);
 const sum = a => a.reduce((s, v) => s + v, 0);
 
-async function modelos(urls, fields, tratar) {
+// Uma chamada traz vários modelos; os campos chegam com o modelo no fim (ex.: wind_speed_10m_ecmwf_ifs025)
+async function modelos(url, nomes, fields, principal) {
   const res = [];
-  for (const u of urls) {
-    try {
-      const j = await get(u);
-      res.push(byDay(j.hourly, fields));
-      console.log('OK  ' + u.split('models=')[1].split('&')[0]);
-    } catch (e) { console.warn('::warning::' + u.split('models=')[1].split('&')[0] + ': ' + e.message + (e.cause ? ' (' + (e.cause.code || e.cause.message) + ')' : '')); }
-    await sleep(300);
+  try {
+    const j = await get(url);
+    const h = j.hourly || {};
+    for (const m of nomes) {
+      const sub = { time: h.time };
+      for (const f of fields) sub[f] = h[`${f}_${m}`] ?? (nomes.length === 1 ? h[f] : undefined);
+      if (!(sub[principal] || []).some(v => typeof v === 'number')) {
+        console.warn(`::warning::${m}: sem dados na resposta`);
+        continue;
+      }
+      res.push(byDay(sub, fields));
+      console.log('OK  ' + m);
+    }
+  } catch (e) {
+    console.warn('::warning::' + nomes.join('+') + ': ' + e.message + (e.cause ? ' (' + (e.cause.code || e.cause.message) + ')' : ''));
   }
   return res;
 }
 
 const FIELDS_F = ['wind_speed_10m', 'wind_gusts_10m', 'wind_direction_10m', 'precipitation', 'precipitation_probability', 'weather_code'];
 const FIELDS_M = ['wave_height', 'wave_period'];
-const fc = await modelos(FM.map(fcUrl), FIELDS_F);
-const mr = await modelos(MM.map(mrUrl), FIELDS_M);
+const fc = await modelos(fcUrl(FM.join(',')), FM, FIELDS_F, 'wind_speed_10m');
+await sleep(1000);
+const mr = await modelos(mrUrl(MM.join(',')), MM, FIELDS_M, 'wave_height');
 if (!fc.length || !mr.length) {
   console.error(`::error::Dados incompletos (vento/chuva: ${fc.length}/${FM.length} modelos; ondas: ${mr.length}/${MM.length}). dados.json anterior mantido.`);
   process.exit(1);
