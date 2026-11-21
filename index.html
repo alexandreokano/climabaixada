@@ -1040,7 +1040,8 @@ function people(di){
   const night=pst(di,17,21),t0=Math.round(all.tmin),t1=Math.round(all.tmax);
   const fr=[`sensação de até ${Math.round(all.amax)}°C às ${pad(all.ah)}h`];
   if(night&&all.tmax-night.tmin>=3)fr.push(`esfria à noite (até ${Math.round(night.tmin)}°C)`);
-  const rn=all.rm>=0.3?`<span aria-hidden="true">☔</span> Chuva entre ${pad(all.r0)}h e ${pad(all.r1)}h (cerca de ${volTxt(all.rm)}, chance de até ${all.pm}%).`:all.pm>=40?`<span aria-hidden="true">🌥️</span> Ameaça de chuva (chance de até ${all.pm}%), mas só ${volTxt(all.rm)} previstos.`:'<span aria-hidden="true">😎</span> Sem chuva relevante.';
+  const quando=(all.r0!=null&&all.r1!=null)?`Chuva entre ${pad(all.r0)}h e ${pad(all.r1)}h`:'Chuva fraca e espalhada ao longo do dia';
+  const rn=all.rm>=0.3?`<span aria-hidden="true">☔</span> ${quando} (cerca de ${volTxt(all.rm)}, chance de até ${all.pm}%).`:all.pm>=40?`<span aria-hidden="true">🌥️</span> Ameaça de chuva (chance de até ${all.pm}%), mas só ${volTxt(all.rm)} previstos.`:'<span aria-hidden="true">😎</span> Sem chuva relevante.';
   const ic=all.rm>=0.3?'🌦️':all.tmax>=29?'☀️':'🙂';
   const gm=all.gm,cg=Math.max(pst(di,6,9)?.gm??0,pst(di,17,19)?.gm??0);
   const wt=(gm>=45?'<span aria-hidden="true">💨</span> Ventania':gm>=30?'<span aria-hidden="true">💨</span> Venta bastante':gm>=20?'<span aria-hidden="true">🍃</span> Brisa firme':'<span aria-hidden="true">🍃</span> Vento fraco')+`: rajadas até ${gm.toFixed(0)} km/h${cg>=30?` (${cg.toFixed(0)} km/h de manhã cedo e fim de tarde). Cuidado com guarda-chuva e chapéu.`:'.'}`;
