@@ -373,18 +373,17 @@ img.esc[src^="gremio"]{transform:scale(1.0);transform-origin:center}
 .slogan{white-space:nowrap;font-size:clamp(.68rem,3.1vw,.85rem);letter-spacing:.05em}
 /* 3) Campos Cidade e Bairro com fonte menor (mostra "Aparecida" inteira) */
 select{font-size:clamp(.8rem,4.2vw,1rem);text-overflow:ellipsis}
-/* Barra de botões do topo: sempre em uma linha */
-#hdr{flex:0 0 100% !important;width:100%;flex-wrap:nowrap !important;gap:4px !important;justify-content:space-between}
-#hdr button,#hdr .badge{flex:0 0 auto !important;min-height:40px !important;padding:0 8px !important;font-size:clamp(11px,3.3vw,15px) !important;white-space:nowrap}
-#hdr .badge{flex:1 1 0 !important;min-width:0 !important;overflow:hidden;text-overflow:ellipsis;justify-content:flex-start}
-#hdr #fsm,#hdr #fsp,#hdr #reload,#hdr #theme{min-width:34px;padding:0 6px !important}
-#hdr #reload svg{width:20px;height:20px}
-/* Um pouco mais de ar acima e abaixo da barra de botões */
-/* Um pouco mais de ar acima e abaixo da barra de botões */
-#hdr{margin:8px 0 12px !important;gap:10px 8px !important;flex-wrap:wrap !important}
-#hdr #status{flex:1 1 100% !important;width:100% !important;max-width:none !important;display:flex !important;justify-content:center;align-items:center;white-space:nowrap !important;overflow:visible !important;text-overflow:clip !important}
+/* Dados + Cidade + Bairro na mesma linha */
+#top3{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr) minmax(0,1.1fr);gap:8px;align-items:end;margin-bottom:10px}
+#top3 #loc{display:contents}
+#top3 label{white-space:nowrap}
+#top3 select{font-size:clamp(.7rem,3.4vw,1rem);padding:8px 6px;text-overflow:ellipsis}
+#stbox .badge{display:flex;align-items:center;justify-content:center;text-align:center;width:100%;min-height:44px;padding:4px 6px;border-radius:12px;white-space:normal;line-height:1.15;font-size:clamp(.62rem,3vw,.8rem)}
+/* Barra de botões: uma linha só, sem conflito */
+#hdr{flex:0 0 100% !important;width:100%;flex-wrap:nowrap !important;gap:8px !important;margin:8px 0 12px !important;justify-content:space-between}
+#hdr button{flex:0 0 auto !important;min-width:44px !important;min-height:44px !important;padding:0 8px !important;font-size:clamp(11px,3.3vw,15px) !important;white-space:nowrap}
 #hdr #help{flex:1 1 auto !important;min-width:0 !important}
-#hdr #fsm,#hdr #fsp,#hdr #reload,#hdr #theme{flex:0 0 auto !important;min-width:44px !important;min-height:44px !important}
+#hdr #reload svg{width:20px;height:20px}
 </style>
 <!-- Analítica leve (GoatCounter): código do site climabaixada -->
 <script data-goatcounter="https://climabaixada.goatcounter.com/count"
@@ -414,11 +413,13 @@ select{font-size:clamp(.8rem,4.2vw,1rem);text-overflow:ellipsis}
 </header>
 <div class="sub cidades">Santos · São Vicente · Guarujá · Praia Grande<br>Bertioga · Cubatão · Itanhaém · Mongaguá · Peruíbe</div>
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-    <span class="badge" id="status" aria-live="polite" aria-atomic="true"><span aria-hidden="true">⏳</span> dando uma olhada no mar…</span>
     <button id="help"><span aria-hidden="true">❓</span> Me ajuda aí</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema" aria-label="Tema claro" aria-pressed="false"><span aria-hidden="true">🌓</span></button>
   </div>
 </header>
-<div id="loc" class="locsel"></div>
+<div id="top3">
+  <div id="stbox"><label><span aria-hidden="true">📡</span> Dados</label><span class="badge" id="status" aria-live="polite" aria-atomic="true"><span aria-hidden="true">⏳</span> dando uma olhada no mar…</span></div>
+  <div id="loc" class="locsel"></div>
+</div>
 <div class="tabwrap"><nav id="tabs"></nav><div id="pop"></div></div>
 <nav id="days"></nav>
 <main id="view" tabindex="-1"></main>
