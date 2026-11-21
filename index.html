@@ -759,12 +759,13 @@ const REGRAS=Object.freeze({
   canalVento:12,canalDirMin:112,canalDirMax:248,           /* efeito canal: vazante + vento sul */
   surfOndaGrande:1.5,surfOndaLimite:1.0,surfOndaPouca:0.3,
   surfVentoVermelho:18,surfVentoOnshoreVermelho:15,surfChuva:2,
-  terralDe:292,terralAte:68
+  terralDe:292,terralAte:68,
+  trovoadaCodigo:95,probChuva:60                           /* weather_code >= 95 = trovoada; % de chance de chuva */
 });
 const num=v=>typeof v=='number'&&isFinite(v)?v:null;
 function kayakV(o,tide){
   const R=REGRAS,r=[];let l=0,warn=false;const up=x=>{l=Math.max(l,x)};
-  const ws=num(o&&o.ws),wg=num(o&&o.wg),wd=num(o&&o.wd),wh=num(o&&o.wh),wp=num(o&&o.wp),rain=num(o&&o.rain);
+  const ws=num(o&&o.ws),wg=num(o&&o.wg),wd=num(o&&o.wd),wh=num(o&&o.wh),wp=num(o&&o.wp),rain=num(o&&o.rain),wc=num(o&&o.wc),pp=num(o&&o.pp),tsNext=!!(o&&o.tsNext);
   if(ws==null&&wh==null)return{l:null,r:['sem dados'],warn};
   if(ws==null||wh==null){up(1);r.push('dado incompleto (falta '+(ws==null?'vento':'onda')+')')}
   if(ws!=null){
@@ -778,12 +779,15 @@ function kayakV(o,tide){
   }
   if(wp!=null&&ws!=null&&wp<R.periodoCurto&&ws>R.ventoAmarelo){up(1);r.push(`período ${wp.toFixed(0)} s: mar quadrado`)}
   if(rain!=null&&rain>=R.chuvaCaiaque){up(1);r.push(`chuva ${rain.toFixed(1)} mm/h`)}
+  if(wc!=null&&wc>=R.trovoadaCodigo){up(2);r.push('trovoada prevista')}
+  else if(tsNext){up(1);r.push('trovoada prevista na próxima hora')}
+  if(pp!=null&&pp>=R.probChuva){up(1);r.push(`chance de chuva ${pp.toFixed(0)}%`)}
   if(tide&&tide.state=='vazante'&&wd!=null&&wd>=R.canalDirMin&&wd<=R.canalDirMax&&ws!=null&&ws>R.canalVento){up(2);warn=true;r.push('vazante + vento sul >12 nós')}
   return{l,r,warn};
 }
 function surfV(o){
   const R=REGRAS,r=[];let l=0;const up=x=>{l=Math.max(l,x)};
-  const ws=num(o&&o.ws),wd=num(o&&o.wd),wh=num(o&&o.wh),wp=num(o&&o.wp),rain=num(o&&o.rain);
+  const ws=num(o&&o.ws),wd=num(o&&o.wd),wh=num(o&&o.wh),wp=num(o&&o.wp),rain=num(o&&o.rain),wc=num(o&&o.wc),pp=num(o&&o.pp),tsNext=!!(o&&o.tsNext);
   if(ws==null&&wh==null)return{l:null,r:['sem dados']};
   if(ws==null||wh==null){up(1);r.push('dado incompleto (falta '+(ws==null?'vento':'onda')+')')}
   if(wh!=null){
@@ -799,13 +803,18 @@ function surfV(o){
   }
   if(wp!=null&&wp<R.periodoCurto){up(1);r.push(`período ${wp.toFixed(0)} s: mar picado`)}
   if(rain!=null&&rain>=R.surfChuva){up(1);r.push('chuva')}
+  if(wc!=null&&wc>=R.trovoadaCodigo){up(2);r.push('trovoada prevista')}
+  else if(tsNext){up(1);r.push('trovoada prevista na próxima hora')}
+  if(pp!=null&&pp>=R.probChuva){up(1);r.push(`chance de chuva ${pp.toFixed(0)}%`)}
   return{l,r};
 }
 /*SEMAFORO-FIM*/
 function hourInfo(di,h){
   const o=obs(di,h),ms=msAt(di,h+0.5),t=tideAt(ms);
   const sea=cur().m,nm={l:null,r:['sem mar neste bairro']};
-  return{o,t,w:inWin(ms),k:sea?kayakV(o,tv(t)):nm,s:sea?surfV(o):nm};
+  const nx=h<23?obs(di,h+1):null;
+  const oo=o?{...o,tsNext:!!(nx&&num(nx.wc)!=null&&nx.wc>=REGRAS.trovoadaCodigo)}:o;
+  return{o,t,w:inWin(ms),k:sea?kayakV(oo,tv(t)):nm,s:sea?surfV(oo):nm};
 }
 function bestRun(di,fn){
   const lv=[];for(let h=5;h<=17;h++)lv.push(fn(hourInfo(di,h)).l);

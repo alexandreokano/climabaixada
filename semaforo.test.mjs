@@ -81,3 +81,26 @@ test('surfe: sem dados = null; incompleto nunca é verde', () => {
   assert.ok(s({ wh: null }).l >= 1);
   assert.ok(s({ ws: null }).l >= 1);
 });
+
+// ---------- Trovoada e chance de chuva ----------
+test('caiaque: trovoada (código >= 95) = vermelho', () => {
+  assert.equal(k({ wc: 94 }).l, 0);
+  assert.equal(k({ wc: 95 }).l, 2);
+  assert.equal(k({ wc: 99 }).l, 2);
+  assert.equal(k({ wc: 80 }).l, 0);
+});
+test('caiaque: trovoada na próxima hora = amarelo', () => assert.equal(k({ tsNext: true }).l, 1));
+test('caiaque: chance de chuva >= 60% = amarelo', () => {
+  assert.equal(k({ pp: 59 }).l, 0);
+  assert.equal(k({ pp: 60 }).l, 1);
+});
+test('surfe: trovoada = vermelho; próxima hora e chance >= 60% = amarelo', () => {
+  assert.equal(s({ wh: 0.6, wc: 95 }).l, 2);
+  assert.equal(s({ wh: 0.6, tsNext: true }).l, 1);
+  assert.equal(s({ wh: 0.6, pp: 59 }).l, 0);
+  assert.equal(s({ wh: 0.6, pp: 60 }).l, 1);
+});
+test('wc/pp ausentes não mudam nada (regressão)', () => {
+  assert.equal(k({ wc: null, pp: null }).l, 0);
+  assert.equal(s({ wh: 0.6, wc: undefined, pp: null }).l, 0);
+});
