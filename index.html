@@ -417,6 +417,11 @@ const TZ='-03:00';
 
 /* ---- MARÉS: vêm do arquivo mares.json (formato {"2026-11-16":[["01:59","B",0.36],...]}) ---- */
 let TIDES=[],LAST_TIDE=0;
+let MARES_RAW=null,TM=null;
+import('./mare-tendencia.mjs').then(m=>{TM=m;render()}).catch(()=>{});
+const cons=s=>TM?TM.tratarComoVazante(s):true;   /* sem módulo = conservador */
+function estadoMare(ms){return(TM&&MARES_RAW)?TM.tendenciaMare(MARES_RAW,new Date(ms)).estado:'indefinida'}
+const tv=t=>t&&{...t,state:cons(t.state)?'vazante':t.state};
 function mkTides(j){
   const out=[];
   if(!j||typeof j!='object')return out;
@@ -437,8 +442,8 @@ async function loadMares(){
     const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);
     const r=await fetch('mares.json',{cache:'no-cache',signal:c.signal});clearTimeout(to);
     if(!r.ok)return;
-    const t=mkTides(await r.json());
-    if(t.length>1){TIDES=t;LAST_TIDE=t[t.length-1].ms;render()}
+    const j=await r.json(),t=mkTides(j);
+    if(t.length>1){TIDES=t;MARES_RAW=j;LAST_TIDE=t[t.length-1].ms;render()}
   }catch(e){}
 }
 let DAYS=[
@@ -506,7 +511,7 @@ function tideAt(ms){
   const i=TIDES.findIndex(e=>e.ms>ms); if(i<=0)return null;
   const a=TIDES[i-1],b=TIDES[i],ha=a.h??(a.t=='A'?1.25:0.2),hb=b.h??(b.t=='A'?1.25:0.2);
   const t=(ms-a.ms)/(b.ms-a.ms);
-  return {lvl:ha+(hb-ha)*(1-Math.cos(Math.PI*t))/2,state:a.t=='A'?'vazante':'enchente',approx:a.h==null||b.h==null};
+  return {lvl:ha+(hb-ha)*(1-Math.cos(Math.PI*t))/2,state:estadoMare(ms),approx:a.h==null||b.h==null};
 }
 const dayTides=di=>TIDES.filter(e=>new Date(e.ms).toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'})==DAYS[di].date);
 const inWin=ms=>ms>LAST_TIDE+2*3600000?null:TIDES.some(e=>Math.abs(e.ms-ms)<=2*3600000);
@@ -800,7 +805,7 @@ function surfV(o){
 function hourInfo(di,h){
   const o=obs(di,h),ms=msAt(di,h+0.5),t=tideAt(ms);
   const sea=cur().m,nm={l:null,r:['sem mar neste bairro']};
-  return{o,t,w:inWin(ms),k:sea?kayakV(o,t):nm,s:sea?surfV(o):nm};
+  return{o,t,w:inWin(ms),k:sea?kayakV(o,tv(t)):nm,s:sea?surfV(o):nm};
 }
 function bestRun(di,fn){
   const lv=[];for(let h=5;h<=17;h++)lv.push(fn(hourInfo(di,h)).l);
