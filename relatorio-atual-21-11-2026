@@ -1,0 +1,156 @@
+Relatório de análise e continuidade — Clima Baixada
+
+Data de referência dos arquivos: 21/11/2026.
+Objetivo: registrar o estado conhecido do projeto, os pontos de atenção e as instruções para que outro modelo de IA possa continuar o trabalho em um novo chat sem presumir detalhes que não foram confirmados.
+
+1. Escopo e limites desta análise
+
+O material da conversa identifica 50 arquivos enviados nesta solicitação, incluindo código, dados JSON, documentos e imagens. O conteúdo disponível para análise direta, porém, não apresenta integralmente todos esses arquivos. Este relatório avalia os trechos efetivamente fornecidos — entre eles atualizarnoticias.mjs, validarmares.mjs, dados.json, cptec.json, sw.js e o changelog — e usa o inventário apenas para identificar arquivos que existem, não para presumir o que há dentro deles.
+
+Há dois registros chamados 23745_45950.json, ambos com respostas do Open-Meteo, mas com conteúdos diferentes: um contém dados marinhos e outro contém dados atmosféricos. Como o nome aparece duplicado, é importante confirmar se são arquivos distintos em diretórios diferentes ou se houve colisão de nomes no envio.
+
+O trecho apresentado de sw.js está truncado e mistura partes que aparentam pertencer a arquivos ou scripts diferentes. Portanto, não é seguro tratá-lo como uma cópia íntegra do service worker nem propor alterações nele com base somente nesse trecho.
+
+2. Visão geral do projeto
+
+O Clima Baixada é um painel/app voltado à Baixada Santista, com informações meteorológicas e marítimas e recursos ligados a atividades no mar. O inventário indica que o projeto também possui conteúdo de previsão, tábua de marés, qualidade da água, notícias, partidas de futebol, transmissões, imagens e elementos de identidade visual.
+
+Entre os arquivos identificados no inventário estão index.html, jogos.json, mares.json, dados.json, noticias.json, scripts de atualização, imagens de praias e atividades, escudos de clubes e logotipos de canais. A existência desses arquivos não confirma, por si só, que todos estejam atualizados, funcionando ou referenciados corretamente pela versão publicada do app.
+
+A preferência de trabalho já estabelecida para esse projeto é fazer mudanças cirúrgicas: alterar apenas o comportamento solicitado e preservar o restante. Para mudanças em index.html, entregar o trecho exato a localizar e substituir, com instrução clara de onde aplicá-lo, sem reconstruir o arquivo a partir de partes incompletas.
+
+3. Análise de atualizarnoticias.mjs
+
+O script busca notícias de quatro fontes: o site Diário do Peixe e feeds do YouTube do Santos FC, De Olho no Peixe e Diário do Peixe. Para o site, tenta primeiro o RSS e, se não obtiver itens válidos, tenta extrair links da página HTML. Para cada fonte, limita a quantidade de itens guardados e valida o domínio das URLs.
+
+Comportamentos positivos
+
+O script usa AbortController para limitar cada requisição a 15 segundos e informa falhas por fonte sem interromper imediatamente todas as demais buscas. Também mantém as notícias antigas de uma fonte quando a coleta nova falha, desde que as URLs antigas passem pela validação. Se todas as fontes falharem, encerra com erro e não grava um arquivo vazio. A comparação de conteúdo ignora a alteração de atualizado_em, pois compara somente a lista de itens.
+
+A validação de URL exige HTTPS e compara o host com o domínio-base da fonte. No caso dos feeds do YouTube, isso permite links do domínio youtube.com. O Diário do Peixe ainda tem uma regra específica para rejeitar caminhos de colunas.
+
+Pontos técnicos para revisar
+
+A função fromHtml() remove parâmetros de consulta e fragmentos das URLs antes de guardá-las. Isso ajuda a evitar duplicatas por parâmetros de rastreamento, mas pode causar problemas se uma notícia depender de uma query string para ser acessada. As URLs também não são normalizadas quanto a barra final, por isso dois links equivalentes com e sem / ainda podem ser tratados como diferentes.
+
+A extração HTML considera o texto visível entre as tags do link. Isso funciona para manchetes simples, mas pode incluir texto auxiliar se o link contiver outros elementos, ou perder informação quando o conteúdo da âncora não estiver estruturado como esperado. A extração usa expressões regulares, que são práticas para páginas simples, mas menos robustas do que um parser HTML.
+
+A função decode() converte entidades numéricas com String.fromCodePoint(). Uma entidade numérica inválida ou fora do intervalo Unicode pode lançar exceção. Como buscar() captura erros na tentativa da fonte, isso não deve derrubar o processo inteiro, mas pode fazer a fonte ser considerada falha e levar ao uso das notícias antigas.
+
+A leitura de RSS/Atom é intencionalmente simples. Antes de alterar essa parte, convém testar as respostas atuais dos feeds, sobretudo o Atom do YouTube, confirmando que o primeiro link extraído de cada <entry> é o link público do vídeo. A regra atual procura o primeiro atributo href em uma tag <link>.
+
+O salvamento não atualiza atualizado_em se a lista de itens permanecer idêntica, porque o script encerra com “Sem mudanças.” Isso é coerente se o campo indicar a última alteração do conteúdo; não é coerente se a intenção for indicar a última execução bem-sucedida. A semântica desejada desse campo deve ser confirmada antes de mudar o comportamento.
+
+4. Análise de validarmares.mjs
+
+O validador lê mares.json ou o caminho passado como argumento, confere se o arquivo é JSON válido, examina os eventos e verifica se as datas são contínuas. Também procura datas repetidas no texto bruto, avisa sobre quantidades incomuns de eventos, verifica a ordem temporal, a alternância entre preamar e baixa-mar e a distância entre eventos. Por fim, alerta ou falha se a tábua estiver vencida ou próxima do fim.
+
+Pontos fortes
+
+O script detecta chaves de data duplicadas no texto bruto — algo que JSON.parse() normalmente não denuncia — e rejeita eventos malformados, horas inválidas e alturas fora do intervalo configurado. Também distingue avisos de erros e finaliza com código de saída diferente de zero quando encontra erros.
+
+Os avisos sobre eventos consecutivos do mesmo tipo são explicitamente conservadores: o próprio script informa para não corrigir manualmente quando a origem da sequência é a DHN. Isso é importante para que uma automação ou um modelo não “conserte” dados oficiais apenas para fazer a sequência parecer regular.
+
+Riscos e melhorias possíveis
+
+A validação de data usa a expressão regular do formato e Date.parse(). Dependendo do mecanismo JavaScript, datas impossíveis como um dia excedente em determinado mês podem ser normalizadas em vez de rejeitadas. Para uma validação rigorosa, seria melhor decompor ano, mês e dia e confirmar que a data reconstruída continua idêntica à original.
+
+A busca por datas duplicadas usa uma expressão regular aplicada ao arquivo inteiro. Se outras partes do JSON também contiverem strings no formato AAAA-MM-DD, elas podem ser confundidas com chaves de data. Isso pode gerar falsos positivos quando o formato do arquivo mudar. Uma solução mais precisa exigiria detectar as chaves da raiz com um parser que preserve duplicatas, ou usar uma rotina de varredura do JSON bruto que compreenda a estrutura.
+
+A continuidade das datas é calculada sobre todas as chaves ordenadas, mesmo que algumas tenham sido consideradas inválidas. O comportamento é defensável como diagnóstico, mas os avisos resultantes podem ficar menos claros se o arquivo incluir uma data inválida.
+
+Recomendação: antes de alterar o validador, comparar seu comportamento com mares.json, mares2027.json e mares2027limpo.json, que constam no inventário, e preservar as regras conservadoras relacionadas aos dados da DHN.
+
+5. Análise dos dados meteorológicos
+
+dados.json
+
+O arquivo apresentado contém:
+
+versão 1;
+avaliação registrada em 2026-11-21T11:12:39-03:00;
+cinco dias de previsão, de 21 a 25 de novembro de 2026;
+avaliações para caiaque (k) e surfe iniciante (s);
+vento, ondas, chuva e texto explicativo por dia;
+dados da CETESB para várias praias e municípios;
+fonte declarada como open-meteo (modelos parciais).
+O próprio arquivo informa que apenas parte dos modelos respondeu. Isso torna relevante o aviso de menor conservadorismo incluído nos textos. O dia 22 está marcado como “Não navegue” por risco de trovoadas ou chuva forte; os dias 23 e 24 estão como “Atenção”; o dia 25 está como “Não navegue”, com indicação de vento/rajadas acima do limite de caiaque e risco de trovoadas ou chuva forte.
+
+A previsão cobre somente cinco dias, embora o processo descrito no trecho de geração de dados indique um horizonte maior. Isso não é necessariamente um erro: pode resultar de uma execução, de dados descartados por incompletude ou de uma configuração diferente. É preciso comparar o arquivo com o script de geração realmente usado e com os logs da execução antes de concluir a causa.
+
+A parte da CETESB contém valores numéricos por praia. Não há, no trecho fornecido, a definição do significado de cada código numérico nem o boletim de origem completo. Não se deve reinterpretar esses valores sem conferir o código que os consome e os dados oficiais correspondentes.
+
+Arquivos Open-Meteo com nome repetido
+
+Os dois conteúdos atribuídos a 23745_45950.json têm estruturas diferentes. Um é de dados marinhos, com altura e período das ondas e temperatura da superfície do mar. O outro é de previsão atmosférica, com vento, rajadas, precipitação, probabilidade de chuva, temperatura, nebulosidade e código meteorológico.
+
+Ambos têm coordenadas próximas à região atendida pelo app e data de geração em 21/11/2026, mas não usam exatamente as mesmas coordenadas. Isso pode ser intencional, pois as APIs e os pontos de referência podem diferir. Antes de diagnosticar qualquer divergência, é necessário mapear como atualizarcache.mjs e os consumidores do cache nomeiam, salvam e leem esses arquivos.
+
+O arquivo atmosférico contém dados para um período maior que o intervalo exibido em dados.json. Isso não significa automaticamente que o painel deva apresentar todos esses dias: o código de agregação, os modelos disponíveis, o filtro horário e as regras de descarte determinam o resultado final.
+
+6. Análise de cptec.json
+
+O arquivo contém previsão atribuída ao CPTEC/INPE para Santos, identificada como cidade 4748. Indica atualização CPTEC em 20/11/2026, parcial: false, e itens de previsão em horários de 9h, 15h e 18h para os dias 20, 21 e 22 de novembro.
+
+O JSON apresenta altura de onda (wh), velocidade do vento (ws), direção (wvd) e agitação (agit). O conteúdo fornecido não inclui o script consumidor nem a rotina que atualiza esse arquivo, portanto não é possível verificar, apenas por este material, se os campos são interpretados e exibidos corretamente no index.html.
+
+Uma particularidade que merece verificação, sem concluir de antemão que seja erro, é a variação de ws para o item de 18h de 20/11: o valor registrado é 0.4, enquanto os itens próximos têm velocidades maiores. Deve-se conferir a resposta original do CPTEC e a conversão aplicada pelo atualizador para determinar se esse número está correto e na unidade esperada.
+
+7. dados.json versus entradas horárias
+
+O script de geração parcialmente visível no material agrupa horários entre 06h e 17h, calcula indicadores por dia e aplica regras para caiaque e surfe iniciante. A avaliação parece usar o pior caso entre os modelos disponíveis para algumas variáveis, e cria avisos quando há divergência ou quando apenas parte dos modelos respondeu.
+
+O dados.json confirma a situação de modelos parciais. Ao investigar resultados inesperados, comparar sempre o dado em três níveis: resposta horária de origem, agregação feita pelo script e valor final gravado no JSON. Não corrigir manualmente o JSON sem identificar em qual etapa surgiu a divergência, pois uma execução posterior pode sobrescrever a correção.
+
+Há também uma ressalva de segurança operacional: mensagens como “avaliação menos conservadora” devem ser entendidas no contexto do próprio sistema de avaliação e da disponibilidade dos modelos; não devem ser apresentadas como garantia de segurança para navegação. Para decisões reais no mar, o app deve incentivar a consulta às condições observadas e às fontes oficiais pertinentes.
+
+8. sw.js e confiabilidade dos arquivos de código
+
+O trecho do sw.js começa com uma rotina plausível de service worker, usando o nome de cache clima-v16, mas logo aparece cortado no meio de uma expressão e seguido por código de requisições, modelos meteorológicos e gravação de dados.json. Esse restante aparenta pertencer a um script de geração de dados, e não ao service worker.
+
+Não editar nem substituir o sw.js com base no trecho enviado. Deve-se abrir a cópia íntegra do repositório, confirmar a estrutura completa, identificar onde terminam as funções do service worker e conferir o histórico Git. O fragmento indica risco de contaminação na cópia ou na extração do arquivo, não prova que a versão real publicada esteja quebrada.
+
+9. Estado registrado no changelog de 21/11/2026
+
+O changelog informa que os testes das regras do semáforo passaram: 31 aprovados e 0 falhas. Também registra que o workflow de atualização de dados.json foi executado manualmente com sucesso e que dois builds/deployments do Pages foram concluídos.
+
+O mesmo documento registra como preparada, ainda não publicada uma mudança no script de geração de dados: aumentar de três para cinco tentativas, com timeout de 30 segundos e pausas de 3, 6, 12 e 24 segundos; erros HTTP 4xx, exceto 429, não seriam repetidos. O motivo anotado foi um CONNECT_TIMEOUT em modelos de vento/chuva. Antes de considerar essa mudança publicada, conferir o arquivo real gerardados.mjs, o workflow e o histórico de commits.
+
+O changelog também recomenda alterações de horário nos workflows de dados e notícias, mas registra que elas não tinham confirmação de implementação. Portanto, os novos horários não devem ser tratados como estado atual sem conferência dos arquivos .yml.
+
+Há uma correção sugerida para index.html — onst para const, “têm” para “tem” e “lám baixo” para “lá embaixo” — cuja aplicação também não estava confirmada. É preciso inspecionar o arquivo atual antes de assumir que ainda existe ou que já foi corrigida.
+
+10. Contexto de interface conhecido na conversa
+
+Há histórico anterior indicando uma falha causada por const VIEWS={meudia,jogo,esportes}; quando jogo não estava definido. O usuário encontrou uma cópia de segurança com a função jogo() e foi orientado a restaurá-la antes de const VIEWS=.... O histórico também indicou que a função deveria incluir transmissaoHTML(g) junto aos links, se essa função estiver disponível no arquivo.
+
+Outro ajuste em discussão era fazer o clique no jogo Grêmio x Santos rolar até as notícias do Santos, mantendo o comportamento de rolagem para os demais jogos. A proposta discutida usava j.opp==='Grêmio' e #noticias-sec h2, mas não houve confirmação de que foi aplicada nem de que o seletor existe na versão atual. O novo modelo deve verificar o código real antes de retomar esse ajuste.
+
+Também houve trabalho sobre um botão relacionado ao YouTube: logo em fundo branco, com uma frase informal abaixo, no mesmo elemento clicável. O arquivo youtubelogo.png consta no inventário. Não se deve presumir que o botão, o caminho da imagem ou o CSS estejam atualmente aplicados sem inspecionar index.html.
+
+11. Riscos prioritários e sequência recomendada
+
+A prioridade inicial é estabelecer o estado real do repositório, sem editar. Conferir o branch e os commits atuais, abrir os arquivos integrais que aparecem truncados ou cuja publicação está incerta e comparar gerardados.mjs, os workflows, index.html, sw.js e os JSONs com o changelog.
+
+Depois, verificar a integridade dos dados: validar mares.json com o script correspondente; comparar datas e eventos com os arquivos de 2027; conferir os dados de notícias e suas URLs; e confrontar dados.json e cptec.json com as respostas de origem e seus atualizadores.
+
+Em seguida, executar os testes existentes, incluindo semaforotest.mjs, e só então propor alterações. O changelog registra 31 testes aprovados, mas esse resultado é o estado anotado para uma execução anterior, não uma garantia de que os testes atuais ainda passam.
+
+Ao fazer qualquer mudança, delimitar primeiro o objetivo, identificar o trecho mínimo envolvido, apresentar claramente o que substituir pelo quê, explicar o local de aplicação e preservar o restante. Após a alteração, revisar o diff e executar o teste ou validação diretamente relacionado. Não mudar simultaneamente lógica de avaliação, interface, frequência dos workflows e formato dos dados sem autorização explícita.
+
+12. Prompt de continuidade para um novo chat
+
+O texto abaixo pode ser copiado para iniciar outro chat:
+
+Estou continuando o projeto Clima Baixada. Analise primeiro os arquivos atuais do repositório e use o relatório de continuidade a seguir como contexto, mas confirme tudo no conteúdo real antes de concluir que uma mudança foi publicada ou ainda é necessária.
+
+O projeto é um app/painel da Baixada Santista com dados meteorológicos e marítimos, marés, CETESB, notícias, jogos e transmissões. Prefiro alterações cirúrgicas: mude somente o que eu pedir e preserve funcionalidades, conteúdo, estilos e comportamentos não relacionados. Para index.html, informe exatamente o trecho a localizar e o trecho que deve substituí-lo; não reconstrua o arquivo a partir de partes incompletas.
+
+Estado registrado em 21/11/2026: dados.json contém previsão de 21 a 25/11/2026, usa open-meteo (modelos parciais) e mantém também os dados da CETESB. cptec.json contém dados CPTEC/INPE para Santos, com atualização indicada em 20/11/2026 e previsões até 22/11/2026. O changelog registra 31 testes do semáforo aprovados e workflows de atualização/deploy concluídos. Uma alteração de retentativas em gerardados.mjs e ajustes nos horários dos workflows aparecem como preparados ou recomendados, sem confirmação de publicação.
+
+Atenção: os dois anexos chamados 23745_45950.json têm estruturas diferentes — um de dados marinhos, outro atmosférico. Confirme os diretórios e nomes reais antes de sugerir mudanças. O trecho de sw.js anteriormente disponível estava truncado e misturava conteúdo que parecia pertencer ao gerador de dados; não use esse trecho como fonte suficiente para editar o service worker. O validador validarmares.mjs detecta chaves repetidas no texto bruto, valida eventos e continuidade das datas; preserve a orientação de não corrigir manualmente sequências oficiais da DHN só para forçar alternância.
+
+Há contexto anterior de uma falha em index.html causada por const VIEWS={meudia,jogo,esportes}; quando jogo não estava definido. Foi encontrada uma cópia de segurança com a função jogo(), mas confirme o arquivo atual antes de retomar esse assunto. Também foi discutida uma rolagem especial ao selecionar Grêmio x Santos, para ir às notícias; a implementação proposta não foi confirmada. Há ainda um botão do YouTube com logo em fundo branco e frase abaixo; confirme o HTML e CSS atuais antes de alterar.
+
+Comece identificando quais arquivos e versões estão realmente presentes, o que está confirmado e o que continua pendente. Não invente conteúdo de arquivos não inspecionados. Se uma informação necessária não estiver nos arquivos ou neste contexto, diga claramente que ela não foi confirmada. Para qualquer modificação, explique o impacto, mostre o trecho exato a substituir e valide o resultado com os testes pertinentes.
+Conclusão: o material descreve uma base de projeto com rotinas de atualização, validação de marés, avaliação de condições para atividades no mar, dados do CPTEC, notícias e recursos de interface. Os principais cuidados para a continuidade são distinguir estado confirmado de recomendações antigas, verificar a cópia íntegra dos arquivos antes de editá-los e manter a abordagem de mudanças pequenas e testáveis.
