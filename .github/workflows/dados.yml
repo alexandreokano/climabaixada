@@ -2,8 +2,8 @@ name: Atualizar dados.json
 
 on:
   schedule:
-    - cron: '23 9,21 * * *'   # 06h23 e 18h23 de Brasília (UTC-3)
-    - cron: '47 11 * * *'     # reserva: 08h47 de Brasília
+    - cron: '23 0,9,12,15,18,21 * * *'   # 21h23, 06h23, 09h23, 12h23, 15h23 e 18h23 de Brasília (UTC-3)
+    - cron: '47 11 * * *'                # reserva: 08h47 de Brasília
   workflow_dispatch:
 
 permissions:
