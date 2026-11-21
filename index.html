@@ -1024,15 +1024,25 @@ function momTab(b,k){
 function momBox(di){
   if(!document.getElementById('mom-css')){
     const s=document.createElement('style');s.id='mom-css';
-    s.textContent=`.msub{display:block;font-size:.72rem;font-weight:500;font-style:italic;opacity:.85;margin-top:2px}
-.mtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 8px}
-.mt{min-height:56px;padding:4px 2px;border-radius:12px;border:3px solid #8aa;background:rgba(255,255,255,.06);color:#fff;font:inherit;font-size:.74rem;line-height:1.2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer}
-.mt span:first-child{font-size:1.3rem}
+    s.textContent=`.mom .mh{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:0 0 4px}
+.mom .mh svg{flex:0 0 52px;width:52px;height:52px;background:none;display:block}
+.mom .mh .mtt{flex:1;min-width:0;text-align:center}
+.mom .mh b{display:block;font-size:1.05rem;line-height:1.2;white-space:nowrap}
+.msub{display:block;font-size:.68rem;font-weight:500;font-style:normal;opacity:.85;margin-top:2px;line-height:1.25;text-wrap:balance}
+.mtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:8px 0}
+.mt{min-height:60px;padding:5px 2px;border-radius:12px;border:3px solid #8aa;background:rgba(255,255,255,.06);color:inherit;font:inherit;font-size:.7rem;line-height:1.2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;min-width:0;overflow:hidden}
+.mt span{max-width:100%;white-space:nowrap}
+.mt span:first-child{font-size:1.2rem;line-height:1}
+.mt span:nth-child(3){font-size:.64rem}
 .mt.g{border-color:#3ddc84}.mt.y{border-color:#ffc83d}.mt.r{border-color:#ff5a5a}
 .mt[aria-selected=true]{background:rgba(255,255,255,.24);font-weight:700}
-.mp{padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.25);font-size:1.05rem;line-height:1.4}
+.mp{padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.25);font-size:.95rem;line-height:1.4}
 .mp[hidden]{display:none}
-.mnote{font-size:.72rem;opacity:.8;margin:8px 2px 0;text-align:center}`;
+.mp .mgrid{display:block}
+.mp .mi{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-size:inherit}
+.mp .mi .ic{flex:0 0 auto}
+.mnote{font-size:.68rem;opacity:.75;margin:8px 2px 0;text-align:center}
+.mkiss{font-size:.8rem;opacity:.9;margin:6px 2px 0;text-align:center;line-height:1.3}`;
     document.head.appendChild(s);
   }
   const a=pst(di,6,21),n=pst(di,17,21);
@@ -1041,12 +1051,16 @@ function momBox(di){
   const jn=L=>L.length<2?(L[0]||''):L.slice(0,-1).join(', ')+' e '+L[L.length-1];
   const qd=L=>L.length===4?'o dia todo':jn(L.map(o=>o.l));
   const perH=h=>h<12?'de manhã':h<15?'na hora do almoço':h<19?'à tarde':'no fim do dia';
-  const head=`<div class="mh"><img src="caicara.png" alt="" aria-hidden="true" style="flex:0 0 78px;width:78px;height:62px;object-fit:contain"><div style="text-align:center"><b>Conselho caiçara!</b><span class="msub">A sabedoria do mar, do vento e da chuva</span></div><img src="caicara-canoa.png" alt="" aria-hidden="true" style="flex:0 0 78px;width:78px;height:62px;object-fit:contain"></div>`;
+
+  // ---------- figuras SVG embutidas (fundo transparente) ----------
+  const FIG1='<svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false"><ellipse cx="30" cy="22" rx="19" ry="4.5" fill="#e8c46a" stroke="#8a5a1c" stroke-width="1.5"/><path d="M18 21c0-9 6-13 12-13s12 4 12 13z" fill="#f2d584" stroke="#8a5a1c" stroke-width="1.5"/><rect x="18" y="19" width="24" height="3" fill="#c0392b"/><circle cx="30" cy="30" r="7" fill="#e0a370" stroke="#6b3e1d" stroke-width="1.2"/><circle cx="27.5" cy="29" r="1" fill="#3a2410"/><circle cx="32.5" cy="29" r="1" fill="#3a2410"/><path d="M27 33c1.5 1.6 4.5 1.6 6 0" fill="none" stroke="#3a2410" stroke-width="1.2" stroke-linecap="round"/><path d="M19 56c0-12 4-19 11-19s11 7 11 19z" fill="#2f80c9" stroke="#1b4f80" stroke-width="1.3"/><path d="M38 44L58 10" stroke="#6b3e1d" stroke-width="2" stroke-linecap="round"/><path d="M58 10c3 8 2 16-1 24" fill="none" stroke="#555" stroke-width=".9"/><circle cx="56.5" cy="35" r="1.6" fill="#e0533d"/></svg>';
+  const FIG2='<svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false"><circle cx="44" cy="22" r="9" fill="#ffb347"/><path d="M44 8v-3M44 39v-3M30 22h-3M61 22h-3M34 12l-2-2M54 32l2 2M54 12l2-2M34 32l-2 2" stroke="#ffb347" stroke-width="2" stroke-linecap="round"/><path d="M6 44c10 0 14 8 26 8s16-8 26-8l-5 9c-4 5-12 6-21 6s-17-1-21-6z" fill="#8a5a1c" stroke="#5a3510" stroke-width="1.3" stroke-linejoin="round"/><path d="M4 56c5-3 9 3 14 0s9 3 14 0 9 3 14 0 9 3 14 0" fill="none" stroke="#4aa3df" stroke-width="2" stroke-linecap="round"/></svg>';
+  const head=`<div class="mh">${FIG1}<div class="mtt"><b>Conselho caiçara!</b><span class="msub">A sabedoria do mar, do vento e da chuva</span></div>${FIG2}</div>`;
   if(!a){
     return `<div class="mom">${head}<div class="mbody">Sem previsão ao vivo agora, mas na dúvida leve um guarda-chuva e uma blusinha! 😉</div></div>`;
   }
 
-  // ---------- 🚶 quem se desloca (mesmos textos de antes) ----------
+  // ---------- 🚶 quem se desloca ----------
   const x=[];
   const cl=o=>o.p.rm>=5?3:o.p.rm>=1?2:o.p.rm>=0.3?1:0;
   const top=Math.max(0,...PS.map(cl));
