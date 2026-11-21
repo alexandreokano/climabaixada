@@ -1,38 +1,14 @@
 {
-  "gerado_em": "2026-11-21T11:26:34.747Z",
+  "gerado_em": "2026-11-21T19:06:05.097Z",
   "fonte": "CPTEC/INPE (servicos.cptec.inpe.br), cidade 4748 (Santos)",
-  "atualizacao_cptec": "2026-11-20",
+  "atualizacao_cptec": "2026-11-21",
   "parcial": false,
   "itens": [
-    {
-      "date": "2026-11-20",
-      "h": 9,
-      "wh": 0.4,
-      "ws": 7.2,
-      "wvd": "SW",
-      "agit": "Fraco"
-    },
-    {
-      "date": "2026-11-20",
-      "h": 15,
-      "wh": 0.4,
-      "ws": 4.5,
-      "wvd": "SE",
-      "agit": "Fraco"
-    },
-    {
-      "date": "2026-11-20",
-      "h": 18,
-      "wh": 0.4,
-      "ws": 0.4,
-      "wvd": "N",
-      "agit": "Fraco"
-    },
     {
       "date": "2026-11-21",
       "h": 9,
       "wh": 0.4,
-      "ws": 2.3,
+      "ws": 5.8,
       "wvd": "NNE",
       "agit": "Fraco"
     },
@@ -40,15 +16,15 @@
       "date": "2026-11-21",
       "h": 15,
       "wh": 0.4,
-      "ws": 4.9,
-      "wvd": "SSE",
+      "ws": 4.7,
+      "wvd": "ESE",
       "agit": "Fraco"
     },
     {
       "date": "2026-11-21",
       "h": 18,
       "wh": 0.4,
-      "ws": 6.4,
+      "ws": 7,
       "wvd": "ENE",
       "agit": "Fraco"
     },
@@ -56,16 +32,16 @@
       "date": "2026-11-22",
       "h": 9,
       "wh": 0.4,
-      "ws": 2.3,
-      "wvd": "S",
+      "ws": 4.7,
+      "wvd": "SSE",
       "agit": "Fraco"
     },
     {
       "date": "2026-11-22",
       "h": 15,
       "wh": 0.3,
-      "ws": 4.3,
-      "wvd": "SSW",
+      "ws": 1.7,
+      "wvd": "SW",
       "agit": "Fraco"
     },
     {
@@ -73,7 +49,31 @@
       "h": 18,
       "wh": 0.3,
       "ws": 6.2,
-      "wvd": "NNE",
+      "wvd": "ESE",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-23",
+      "h": 9,
+      "wh": 0.3,
+      "ws": 7.8,
+      "wvd": "SW",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-23",
+      "h": 15,
+      "wh": 0.3,
+      "ws": 3.7,
+      "wvd": "SW",
+      "agit": "Fraco"
+    },
+    {
+      "date": "2026-11-23",
+      "h": 18,
+      "wh": 0.3,
+      "ws": 1.7,
+      "wvd": "SW",
       "agit": "Fraco"
     }
   ]
