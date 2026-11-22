@@ -1113,7 +1113,7 @@ function tripBox(k){
   if(a<5||b>18)L.push('🌑 Parte desse horário cai no escuro (antes das 5h ou depois das 18h). Volta com luz do dia.');
   if(sea&&I.some(q=>q.x.k.warn))L.push('⚠️ <b>Efeito canal:</b> vazante com vento sul acima de 12 nós no seu horário. Fica longe da Fortaleza da Barra e do Deck do Pescador.');
   if(sea&&I.some(q=>q.x.w))L.push('⚓ Parte do horário cai numa janela provável de manobras de navio. Fica longe do canal.');
-  return head+form+`<div class="card ${COL[l]}" style="margin:8px 0 0"><div class="big">${EMO[l]} ${lab[l]} · ${per}</div><div class="cid">${L.map(x=>`<div>${x}</div>`).join('')}<div><b>${rec}</b></div></div>${best?`<div class="mut">Melhor janela do dia: ${EMO[best.l]} ${best.txt}${best.l==1?' (com cautela)':''}</div>`:''}</div><div class="mut" style="margin-top:6px">Cálculo automático com vento, ondas, chuva e maré ao vivo. Previsão não é certeza: na dúvida, não sai.</div></div>`;
+  return head+form+`<div class="card ${COL[l]}" style="margin:8px 0 0"><div class="big">${EMO[l]} ${lab[l]} · ${per}</div><div class="cid">${L.map(x=>`<div>${x}</div>`).join('')}<div><b>${rec}</b></div></div>${best?`<div class="mut">Melhor janela ${DAYS[di].date==todayStr?'no restante de hoje':'do dia'}: ${EMO[best.l]} ${best.txt}${best.l==1?' (com cautela)':''}</div>`:''}</div><div class="mut" style="margin-top:6px">Cálculo automático com vento, ondas, chuva e maré ao vivo. Previsão não é certeza: na dúvida, não sai.</div></div>`;
 }
 function caiaque(){
   const di=S.day;
