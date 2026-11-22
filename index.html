@@ -683,7 +683,7 @@ function tendencia(di){
   let hp=false;for(let h=6;h<=21;h++){const o=obs(di,h);if(o&&o.pp!=null)hp=true}
   const wet=a.rm>=2||(hp&&a.pm>=60&&a.rm>=0.3);
   const tr=wet?'☔ Tendência de dia chuvoso':(a.rm>=0.3||(hp&&a.pm>=30))?'🌦️ Chuva possível':'😎 Tendência de tempo firme';
-  const rn=a.rm>=0.3?`volume previsto de cerca de ${volTxt(a.rm)} no dia${hp?` e chance de até ${a.pm}%`:''}`:hp&&a.pm>=40?`ameaça de chuva (chance de até ${a.pm}%), mas com volume previsto de ${volTxt(a.rm)}`:'chuva improvável';
+  const rn=a.rm>=0.3?`volume previsto de cerca de ${volTxt(a.rm)} no dia${hp?` e ${probTxt(a.pm)} (até ${a.pm}%)`:''}`:hp&&a.pm>=40?`ameaça de chuva (chance de até ${a.pm}%), mas com volume previsto de ${volTxt(a.rm)}`:'chuva improvável';
   return `<div class="cid"><div><b><span aria-hidden="true">${tr.slice(0,tr.indexOf(' '))}</span>${tr.slice(tr.indexOf(' '))}.</b> Temperatura em torno de ${Math.round(a.tmin)} a ${Math.round(a.tmax)}°C; ${rn}.</div></div><div class="mut">Para datas distantes mostramos só a tendência do dia, sem horários, períodos nem vento. Os detalhes aparecem conforme a data se aproxima. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div>`;
 }
 extDays();
