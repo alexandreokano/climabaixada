@@ -998,7 +998,7 @@ function chuvaCaicara(mm, prob, trov, ini, fim) {
   }
   let p = '';
   if (prob != null) {
-    const w = prob >= 80 ? 'muito provável' : prob >= 50 ? 'provável' : prob >= 30 ? 'possível' : 'pouco provável';
+    const w = prob >= 80 ? 'pode contar que vem' : prob >= 50 ? 'tá armando chuva' : prob >= 30 ? 'pode ser que caia' : 'duvido que caia';
     p = ` ${w.charAt(0).toUpperCase() + w.slice(1)} (${Math.round(prob)}%).`;
   }
   if (n < 1)  return `🌦️ Só uma garoinha de leve${quando} (${qtd}). Nada que assuste.${p}`;
