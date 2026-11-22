@@ -830,7 +830,7 @@ function surfV(o){
   if(pp!=null&&pp>=R.probChuva){up(1);r.push(`chance de chuva ${pp.toFixed(0)}%`)}
   return{l,r};
 }
-  /* Janela de horário nunca é mais otimista que o veredito do dia. nivel: 0 🟢 1 🟡 2 🔴 3 ⚪ */
+/* Janela de horário nunca é mais otimista que o veredito do dia. nivel: 0 🟢 1 🟡 2 🔴 3 ⚪ */
 function limitaJanela(nivel,w){
   if(!w)return null;
   if(nivel===2)return{...w,l:2};
