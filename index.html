@@ -888,21 +888,6 @@ function chart(o){
   if(isToday)li.push('<span class="lg"><i class="ln" style="border-top:3px dashed var(--y)"></i>Agora</span>');
   return `<div class="cc"><h4>${o.title} <small>${o.unit}</small></h4><div class="sw">${s}</div><div class="leg">${li.join('')}</div>${how(o.how)}</div>`;
 }
-function chartOld(title,unit,ser,ymax,lines,di,empty){
-  const X=h=>PL+h/24*(W-PL-PR),Y=v=>PT+(1-Math.min(v,ymax)/ymax)*(H-PT-PB);
-  let s=`<svg class="chart" viewBox="0 0 ${W} ${H}">`;
-  for(let i=0;i<=4;i++){const v=ymax*i/4;s+=`<line x1="${PL}" x2="${W-PR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${PL-4}" y="${Y(v)+3}" text-anchor="end">${v.toFixed(ymax<5?1:0)}</text>`}
-  for(let h=0;h<=24;h+=3)s+=`<text x="${X(h)}" y="${H-6}" text-anchor="middle">${pad(h)}h</text>`;
-  lines.forEach(l=>{s+=`<line x1="${PL}" x2="${W-PR}" y1="${Y(l.y)}" y2="${Y(l.y)}" stroke="${l.c}" stroke-dasharray="4 3" opacity=".8"/>`});
-  ser.forEach(se=>{
-    let d='',pen=false;se.pts.forEach(([h,v])=>{if(v==null){pen=false;return}d+=(pen?'L':'M')+X(h).toFixed(1)+','+Y(v).toFixed(1);pen=true});
-    if(d)s+=`<path d="${d}" fill="none" stroke="${se.c}" stroke-width="2.4" ${se.dash?'stroke-dasharray="5 3"':''}/>`;
-  });
-  if(empty)s+=`<text x="${W/2}" y="${H/2}" text-anchor="middle">sem dados ao vivo para este dia</text>`;
-  if(DAYS[di].date==todayStr){const nh=nowH();s+=`<line x1="${X(nh)}" x2="${X(nh)}" y1="${PT}" y2="${H-PB}" stroke="var(--y)" stroke-dasharray="3"/><text x="${X(nh)+3}" y="${PT+8}" style="fill:var(--y)">agora</text>`}
-  s+=`<line class="xh" x1="0" x2="0" y1="${PT}" y2="${H-PB}" stroke="var(--acc)" opacity="0"/></svg>`;
-  return `<div class="cc"><h4>${title} <small>${unit}</small></h4>${s}</div>`;
-}
 function moonIdx(di){const d=(msAt(di,12)-Date.UTC(2000,0,6,18,14))/86400000;let p=(d/29.530588853)%1;if(p<0)p+=1;return Math.round(p*8)%8}
 const moonE=di=>['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'][moonIdx(di)];
 const moonN=di=>['nova','crescente','quarto crescente','crescente gibosa','cheia','minguante gibosa','quarto minguante','minguante'][moonIdx(di)];
