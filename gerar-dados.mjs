@@ -81,7 +81,14 @@ async function modelos(url, nomes, fields, principal) {
 
 const FIELDS_F = ['wind_speed_10m', 'wind_gusts_10m', 'wind_direction_10m', 'precipitation', 'precipitation_probability', 'weather_code'];
 const FIELDS_M = ['wave_height', 'wave_period'];
-const fc = await modelos(fcUrl(FM.join(',')), FM, FIELDS_F, 'wind_speed_10m');
+let fc = await modelos(fcUrl(FM.join(',')), FM, FIELDS_F, 'wind_speed_10m');
+let ventoPadrao = false;
+if (!fc.length) {
+  console.warn('::warning::Vento/chuva: nenhum dos 2 modelos respondeu; tentando o modelo padrão (best_match).');
+  await sleep(1000);
+  fc = await modelos(fcUrl('best_match'), ['best_match'], FIELDS_F, 'wind_speed_10m');
+  ventoPadrao = fc.length > 0;
+}
 await sleep(1000);
 let mr = await modelos(mrUrl(MM.join(',')), MM, FIELDS_M, 'wave_height');
 if (!mr.length) {
@@ -182,6 +189,19 @@ let antigo = {};
 try { antigo = JSON.parse(await readFile(OUT, 'utf8')); } catch {}
 
 const avaliado_em = new Date().toLocaleString('sv-SE', { timeZone: TZ }).replace(' ', 'T') + '-03:00';
-const novo = { ...antigo, versao: antigo.versao || 1, avaliado_em, fonte: parcial ? 'open-meteo (modelos parciais)' : 'open-meteo (vento: ECMWF + GFS; ondas: Météo-France + GFS; vale o pior caso)', dias };
+const modeloUnico = fc.length === 1 || mr.length === 1;
+const fonte = ventoPadrao
+  ? 'open-meteo (vento/chuva: só o modelo padrão best_match; ondas: ' + mr.length + ' de ' + MM.length + ' modelos)'
+  : parcial ? 'open-meteo (modelos parciais)' : 'open-meteo (vento: ECMWF + GFS; ondas: Météo-France + GFS; vale o pior caso)';
+const novo = {
+  ...antigo,
+  versao: antigo.versao || 1,
+  avaliado_em,
+  fonte,
+  modelo_unico: modeloUnico,
+  vento_modelo_padrao: ventoPadrao,
+  modelos: { vento: fc.length, ondas: mr.length },
+  dias
+};
 await writeFile(OUT, JSON.stringify(novo, null, 2) + '\n');
 console.log(`Gravado ${OUT}: ${dias.length} dias. CETESB mantida do boletim ${antigo.boletim_cetesb || '(nenhum)'}.`);
