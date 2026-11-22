@@ -25,6 +25,7 @@ jobs:
           node-version: 20
 
       - name: Gerar dados.json
+        continue-on-error: true
         run: node gerar-dados.mjs
 
       - name: Atualizar CETESB
@@ -43,3 +44,5 @@ jobs:
             sleep 5
           done
           exit 1
+</parameter>
+</invoke>
