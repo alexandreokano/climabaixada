@@ -1077,7 +1077,7 @@ function resumo(){
   const di=S.day,D=DAYS[di],kw=bestRun(di,x=>x.k),sw=bestRun(di,x=>x.s);
   const wtxt=w=>!w?'sem dados ao vivo':w.l==2?'<span aria-hidden="true">🔴</span> nenhum horário seguro hoje':`${EMO[w.l]} ${w.txt}${w.l==1?' (com cautela)':''}`;
   return `<div class="card ${COL[D.k]}"><h2><span aria-hidden="true">🏄🛶🎣⚓</span> Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão da Baixada</h3><div>${fmt(di)}</div>
-  <div class="mut" style="margin-top:6px">Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}</div></div>
+  <div class="mut" style="margin-top:6px"><b>Números do Capitão:</b> Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}<br>Se o texto e os números não baterem, vale o mais cuidadoso.</div></div>
   ${subtabs()}
   <div class="grid five">
    <div class="card ${COL[D.k]}"><h3><span aria-hidden="true">🛶</span> Caiaque (manual)</h3><div class="big">${EMO[D.k]} ${LBL[D.k]}</div><div class="mut"><span aria-hidden="true">⏰</span> Melhor hora pra cair na água hoje: ${wtxt(kw)}</div></div>
