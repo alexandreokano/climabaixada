@@ -1,5 +1,11 @@
 # Changelog · Clima Baixada
 
+## 2026-11-22
+- Melhor janela: dia 🔴 não mostra mais horário de janela (limitaJanela).
+- Melhor janela: só considera horas que ainda não passaram (bestRun + melhorJanela).
+- Motivo: às 20h34, com dia 🔴, o painel mostrava "🔴 05h–11h", que parecia uma recomendação.
+- Teste novo em semaforo.test.mjs (32 casos).
+- 
 026-11-22 · Janela de horário nunca mais otimista que o veredito
 Motivo: o "Melhor hora" podia mostrar 🟢 ou 🟡 num dia com veredito 🔴. Segurança primeiro: a janela é derivada do veredito e nunca pode ser mais otimista que ele.
 
