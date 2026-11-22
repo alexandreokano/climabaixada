@@ -1636,13 +1636,6 @@ document.addEventListener('click',e=>{
   else if(b.id=='theme'){const on=document.body.classList.toggle('light');b.setAttribute('aria-pressed',on?'true':'false')}
   else if(b.id=='fsm')setFs(FS-2);
   else if(b.id=='fsp')setFs(FS+2);
-  else if(b.id=='fillh'){
-    const h=Math.floor(S.hover??8),o=obs(S.day,h),t=tideAt(msAt(S.day,h+.5));
-    if(o&&o.ws!=null){$('i_ws').value=Math.round(o.ws);$('i_wg').value=Math.round(o.wg??0);$('i_wh').value=(o.wh??0).toFixed(1);$('i_wp').value=Math.round(o.wp??0);
-      $('i_wd').value=(Math.round((o.wd??0)/45)%8)*45}
-    if(t)$('i_ts').value=t.state;
-    calcRun();
-  }
   else if(b.id=='chkreset'){S.chk={};render()}
   else if(b.id=='oriChg'){S.ori={city:S.city,pl:S.pl};sv();render()}
   else if(b.id=='oriOk'){S.ori=null;S.oriGps=false;S.gmsg='';sv();render()}
