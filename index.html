@@ -845,8 +845,10 @@ function hourInfo(di,h){
   const oo=o?{...o,tsNext:!!(nx&&num(nx.wc)!=null&&nx.wc>=REGRAS.trovoadaCodigo)}:o;
   return{o,t,w:inWin(ms),k:sea?kayakV(oo,tv(t)):nm,s:sea?surfV(oo):nm};
 }
-function bestRun(di,fn){
-  const lv=[];for(let h=5;h<=17;h++)lv.push(fn(hourInfo(di,h)).l);
+function bestRun(di,fn,de){
+  const h0=Math.max(5,Number.isInteger(de)?de:5);
+  if(h0>17)return{txt:'nenhuma janela segura',l:2};
+  const lv=[];for(let h=h0;h<=17;h++)lv.push(fn(hourInfo(di,h)).l);
   if(lv.every(x=>x==null))return null;
   for(const mx of[0,1]){
     let best=null,st=null;
@@ -855,11 +857,11 @@ function bestRun(di,fn){
       if(ok&&st==null)st=i;
       if(!ok&&st!=null){if(i-st>=2&&(!best||i-st>best[1]-best[0]))best=[st,i];st=null}
     }
-    if(best)return{txt:`${pad(best[0]+5)}h–${pad(best[1]+5)}h`,l:mx};
+    if(best)return{txt:`${pad(best[0]+h0)}h–${pad(best[1]+h0)}h`,l:mx};
   }
   return{txt:'nenhuma janela segura',l:2};
 }
-
+  
 /* ============ GRÁFICOS ============ */
 const W=720,H=280,PL=62,PR=74,PT=34,PB=46;
 function niceStep(mx){for(const s of[.1,.2,.5,1,2,5,10,20]){if(mx/s<=6)return s}return 50}
