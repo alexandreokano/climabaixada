@@ -720,7 +720,6 @@ function useGood(P){
   const g=S.good;
   if(!g||g.k!=P.la+','+P.lo||Date.now()-g.ts>6*3600000)return false;
   S.live=g.live;S.stamp=g.stamp;S.stale=true;
-  setStatus('🟠 sem sinal · sem dados ao vivo (semáforo cinza)');
   return true;
 }
 async function loadLive(){
