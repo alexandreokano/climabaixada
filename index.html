@@ -987,6 +987,7 @@ function esporteTxt(di){
 }
 const fmt=di=>hl(String(DAYS[di].txt)+(DAYS[di].k==3?'':esporteTxt(di)+pescaTxt(di)));
 const volTxt=m=>m<=0?'0 mm':m<0.1?'menos de 0,1 mm':m.toFixed(1).replace('.',',')+' mm';
+const probTxt=p=>p>=80?'pode contar que vem':p>=50?'tá armando chuva':p>=30?'pode ser que caia':'duvido que caia';
 function chuvaCaicara(mm, prob, trov, ini, fim) {
   const h = x => String(x).padStart(2, '0') + 'h';
   const n = mm || 0;
