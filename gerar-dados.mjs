@@ -191,7 +191,7 @@ const dias = datas.map(date => {
   return {
     date, lbl, k, s,
     vento: vento == null ? 'sem dados' : `${dir != null ? compass(dir) + ' ' : ''}até ${r0(vento)} nós${raj != null ? ' (rajadas até ' + r0(raj) + ' nós)' : ''}`,
-    ondas: onda == null ? 'sem dados' : `até ${onda.toFixed(1)} m${per != null ? ' · ' + r0(per) + ' s' : ''}`,
+    ondas: onda == null ? 'sem dados' : `até ${onda.toFixed(1).replace('.', ',')} m${per != null ? ' · ' + r0(per) + ' s' : ''}`,
     chuva: chuvaCaicara(precip ?? 0, prob, trov),
     txt: `${veredito}${motivos.length ? ': ' + [...new Set(motivos)].join('; ') : ''}. ${extra.join(' ')}`
   };
