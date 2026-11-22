@@ -830,6 +830,13 @@ function surfV(o){
   if(pp!=null&&pp>=R.probChuva){up(1);r.push(`chance de chuva ${pp.toFixed(0)}%`)}
   return{l,r};
 }
+/* Janela de horário nunca é mais otimista que o veredito do dia. nivel: 0 🟢 1 🟡 2 🔴 3 ⚪ */
+function limitaJanela(nivel,w){
+  if(!w)return null;
+  if(nivel===2)return{...w,l:2};
+  if(!Number.isInteger(nivel)||nivel<0||nivel>2)return null; /* ⚪ ou inválido: sem janela */
+  return nivel>w.l?{...w,l:nivel}:w;
+}
 /*SEMAFORO-FIM*/
 function hourInfo(di,h){
   const o=obs(di,h),ms=msAt(di,h+0.5),t=tideAt(ms);
