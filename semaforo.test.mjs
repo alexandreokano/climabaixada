@@ -125,3 +125,7 @@ test('janela: ⚪, veredito inválido ou sem janela = sem janela; não altera o 
   limitaJanela(2, w);
   assert.equal(w.l, 0);
 });
+test('janela: dia 🔴 nunca mostra horário de janela (regressão 22/11)', () => {
+  assert.equal(limitaJanela(2, jan(0)).txt, 'nenhuma janela segura');
+  assert.equal(limitaJanela(2, jan(1)).txt, 'nenhuma janela segura');
+});
