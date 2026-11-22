@@ -1098,7 +1098,7 @@ function tripBox(k){
   const tds=dayTides(di).filter(e=>e.ms>=msAt(di,a)&&e.ms<=msAt(di,b)).map(e=>(e.t=='A'?'⬆️ alta ':'⬇️ baixa ')+hm(e.ms));
   const sts=[...new Set(I.map(q=>q.x.t&&q.x.t.state).filter(Boolean))];
   const rec=l==0?'Pode ir nesse horário. Mesmo assim, confere a arrebentação a olho antes de entrar.':l==1?(sea?'Dá pra ir com cautela, bem pertinho da praia (você é iniciante). Se o tempo piorar, volta.':'Dá pra ir com cautela, em frente ao salva-vidas. Se piorar, sai da água.'):'Não vá nesse horário. Veja a melhor janela do dia aqui embaixo.';
-  const best=bestRun(di,fn);
+  const best=limitaJanela(sea?DAYS[di].k:DAYS[di].s,bestRun(di,fn));
   const L=[];
   L.push(`💨 Vento até ${ws!=null?ws.toFixed(0):'–'} nós (rajada ${wg!=null?wg.toFixed(0):'–'}) · 🌊 ondas até ${wh!=null?wh.toFixed(1):'–'} m · 🌧 ${rn>=0.3?volTxt(rn):'sem chuva prevista'}`);
   L.push(`🌙 Maré: ${sts.join(' e ')||'sem dados'}${tds.length?' · '+tds.join(', '):''}`);
