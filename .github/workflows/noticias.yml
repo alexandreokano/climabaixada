@@ -3,6 +3,7 @@ name: Atualizar noticias.json
 on:
   schedule:
     - cron: '7,37 * * * *'   # a cada 30 min, fora do horário cheio (UTC)
+    - cron: '22,52 * * * *'   # reserva
   workflow_dispatch:
 
 permissions:
