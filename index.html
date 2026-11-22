@@ -579,13 +579,14 @@ function dadosOk(j){
   return j.dias.every(d=>d&&/^\d{4}-\d{2}-\d{2}$/.test(d.date)&&typeof d.lbl=='string'&&k(d.k)&&k(d.s)&&typeof d.txt=='string'&&typeof d.vento=='string'&&typeof d.ondas=='string'&&typeof d.chuva=='string')
    &&Object.keys(j.cetesb).every(c=>PLACES[c]&&Array.isArray(j.cetesb[c])&&j.cetesb[c].every(p=>Array.isArray(p)&&typeof p[0]=='string'&&k(p[1])));
 }
+const H_DESATUALIZADO=6; /* horas até aparecer o selo "desatualizado" */
 function validade(em,drift){
   const t=Date.parse(em);
   if(isNaN(t))return{st:'indisp',msg:'avaliação sem data válida'};
   if(drift!=null&&Math.abs(drift)>1800000)return{st:'relogio',msg:'o relógio do aparelho difere do servidor em mais de 30 min; validade não calculada'};
   const h=(Date.now()-t)/3600000;
   if(h<-0.5)return{st:'relogio',msg:'a data da avaliação está no futuro; confira o relógio do aparelho'};
-  return{st:h>48?'vencida':h>24?'velha':'ok',h:Math.max(0,h),msg:h>48?'avaliação com mais de 48 h':''};
+  return{st:h>48?'vencida':h>H_DESATUALIZADO?'velha':'ok',h:Math.max(0,h),msg:h>48?'avaliação com mais de 48 h':''};
 }
 function greyIf(){
   if(!['vencida','indisp','relogio'].includes(AVAL.st))return;
