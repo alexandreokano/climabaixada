@@ -1068,7 +1068,7 @@ function cptecNote(di){
   return `<div class="card ${div?'y':'g'}"><h3><span aria-hidden="true">🔍</span> Segunda opinião: CPTEC × Open-Meteo</h3><div class="t"><table><tr><th>Hora</th><th>CPTEC (onda · vento)</th><th>Open-Meteo</th></tr>${rows}</table></div>${how(div?'As fontes divergem na altura da onda (30 cm ou mais). Na dúvida, vale a leitura mais conservadora e a conferência da arrebentação a olho antes de sair.':'As duas fontes estão próximas. Isso aumenta a confiança, mas não elimina o risco: o CPTEC não traz rajada, período da onda nem chuva.')}${S.cptecInfo?`<div class="mut">CPTEC atualizado em ${S.cptecInfo.atual?S.cptecInfo.atual.split('-').reverse().join('/'):'data não informada'}; arquivo gerado às ${new Date(S.cptecInfo.t).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'})}${S.cptecInfo.parcial?' (parcial: algum dia falhou)':''}.</div>`:''}</div>`;
 }
 function resumo(){
-  const di=S.day,D=DAYS[di],kw=limitaJanela(D.k,bestRun(di,x=>x.k)),sw=limitaJanela(D.s,bestRun(di,x=>x.s));
+  const di=S.day,D=DAYS[di],kw=melhorJanela(di,x=>x.k,D.k),sw=limitaJanela(D.s,bestRun(di,x=>x.s));
   const wtxt=w=>!w?'sem dados ao vivo':w.l==2?'<span aria-hidden="true">🔴</span> nenhum horário seguro hoje':`${EMO[w.l]} ${w.txt}${w.l==1?' (com cautela)':''}`;
   return `<div class="card ${COL[D.k]}"><h2><span aria-hidden="true">🏄🛶🎣⚓</span> Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão da Baixada</h3><div>${fmt(di)}</div>
   <div class="mut" style="margin-top:6px"><b>Números do Capitão:</b> Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}<br>Se o texto e os números não baterem, vale o mais cuidadoso.</div></div>
