@@ -1,5 +1,29 @@
 # Changelog · Clima Baixada
 
+026-11-22 · Janela de horário nunca mais otimista que o veredito
+Motivo: o "Melhor hora" podia mostrar 🟢 ou 🟡 num dia com veredito 🔴. Segurança primeiro: a janela é derivada do veredito e nunca pode ser mais otimista que ele.
+
+Mudanças (index.html):
+
+Nova função limitaJanela(nivel, janela), dentro do bloco SEMAFORO-INI/SEMAFORO-FIM. Dia 🔴 devolve janela 🔴. Dia ⚪ ou inválido devolve null (sem janela). Nunca melhora um nível pior.
+resumo(): kw e sw passam por limitaJanela com D.k e D.s.
+tripBox: best passa por limitaJanela (caiaque usa .k, surfe usa .s).
+autoLvl não foi alterada de propósito. Ela gera o veredito automático a partir do bestRun, então é a origem e não um derivado.
+Testes: 3 casos novos em semaforo.test.mjs (janela com dia 🔴, nunca mais otimista, ⚪/inválido/sem janela). Total: 23 passando, 0 falhas.
+
+Conferido na tela (22/11, 19:54, celular): dia 🔴 mostra "nenhum horário seguro hoje" em Caiaque e Surfe.
+
+Ainda não coberto:
+
+❓ Sem teste automático da ligação entre limitaJanela e resumo()/tripBox, que ficam na interface.
+❓ Casos 🟡 e 🟢 não conferidos na tela.
+🔎 Dia ⚪ mostra "sem dados ao vivo" no resumo(). É conservador, mas o texto é impreciso. Possível melhoria futura: "sem avaliação".
+Como desfazer: voltar ao index-backup.html.
+
+--------------
+
+
+
 Formato: o que mudou, quando e se foi confirmado.
 
 ## [21/11/2026]
