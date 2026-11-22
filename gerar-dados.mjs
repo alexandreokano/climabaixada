@@ -111,6 +111,20 @@ const PTS = ['N', 'NNE', 'NE', 'ENE', 'L', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW',
 const compass = deg => PTS[Math.round(((deg % 360) + 360) % 360 / 22.5) % 16];
 const r0 = v => Math.round(v);
 
+const probTxt = p => p >= 80 ? 'muito provável' : p >= 50 ? 'provável' : p >= 30 ? 'possível' : 'pouco provável';
+function chuvaCaicara(mm, prob, trov) {
+  const v = mm.toFixed(1).replace('.', ',') + ' mm';
+  const p = prob != null ? ` (${probTxt(prob)}, ${r0(prob)}%)` : '';
+  let f;
+  if (mm < 0.3) f = 'sem chuva relevante' + (prob != null ? ` (chance de até ${r0(prob)}%)` : '');
+  else {
+    const nome = mm < 1 ? 'garoinha de leve' : mm < 5 ? 'chuvisqueiro de vez em quando' : mm < 15 ? 'pancada de chuva' : mm < 30 ? 'chuvarada forte' : 'toró brabo';
+    f = `${nome}, cerca de ${v}${p}`;
+  }
+  if (trov) f += '. Risco de raios: fora da água e longe do mar';
+  return f;
+}
+
 function dirMedia(arr) {
   const v = arr.flatMap(m => nums(m, 'wind_direction_10m'));
   if (!v.length) return null;
@@ -143,7 +157,7 @@ const dias = datas.map(date => {
   }
   if (onda != null) {
     if (onda > 1.0) { k = 2; motivos.push('ondas acima de 1,0 m'); }
-    else if (onda >= 0.8) { k = Math.max(k, 1); motivos.push(`ondas de até ${onda.toFixed(1).replace('.', ',')} m (limite do caiaque: 1,0 m)`);}
+    else if (onda >= 0.8) { k = Math.max(k, 1); motivos.push('ondas perto de 1,0 m'); }
   }
   if (per != null && per < 6 && vento >= 8) { k = Math.max(k, 1); motivos.push('mar curto e batido'); }
   if (trov || (precip != null && precip >= 10)) { k = 2; motivos.push('risco de trovoadas ou chuva forte'); }
@@ -177,8 +191,8 @@ const dias = datas.map(date => {
   return {
     date, lbl, k, s,
     vento: vento == null ? 'sem dados' : `${dir != null ? compass(dir) + ' ' : ''}até ${r0(vento)} nós${raj != null ? ' (rajadas até ' + r0(raj) + ' nós)' : ''}`,
-    ondas: onda == null ? 'sem dados' : `até ${onda.toFixed(1).replace('.', ',')} m${per != null ? ' · ' + r0(per) + ' s' : ''}`,
-    chuva: `${(precip ?? 0).toFixed(1)} mm${prob != null ? ' (até ' + r0(prob) + '%)' : ''}${trov ? ', com trovoadas' : ''}`,
+    ondas: onda == null ? 'sem dados' : `até ${onda.toFixed(1)} m${per != null ? ' · ' + r0(per) + ' s' : ''}`,
+    chuva: chuvaCaicara(precip ?? 0, prob, trov),
     txt: `${veredito}${motivos.length ? ': ' + [...new Set(motivos)].join('; ') : ''}. ${extra.join(' ')}`
   };
 }).filter(Boolean);
