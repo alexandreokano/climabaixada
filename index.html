@@ -1158,27 +1158,6 @@ function pesca(){
   <div class="mut" style="margin-top:6px">A janela é manha da região, não garantia de peixe.</div>${how('O peixe costuma beliscar mais na virada da maré, quando a água mexe. Pega a janela da tabela que cair em hora 🟢 do mar. Indo de caiaque, volta antes do vento da tarde.')}<div class="mut"> Com ondas altas, pesque de terra e fique longe das pedras molhadas.</div></div>
   <div class="card"><h3><span aria-hidden="true">🐟</span> Espécies prováveis</h3><div class="t"><table><tr><th>Peixe</th><th>Onde / quando</th></tr>${SPECIES.map(s=>`<tr><td>${s[0]}</td><td>${s[1]}</td></tr>`).join('')}</table></div></div>`;
 }
-function calc(){
-  return `<div class="card"><h3>🧮 Calculadora de segurança</h3>
-  <div class="form">
-   <div><label>Vento (nós)</label><input id="i_ws" type="number" step="1" value="8"></div>
-   <div><label>Rajada (nós)</label><input id="i_wg" type="number" step="1" value="12"></div>
-   <div><label>Direção (de onde sopra)</label><select id="i_wd"><option value="0">N</option><option value="45">NE</option><option value="90">L</option><option value="135">SE</option><option value="180">S</option><option value="225">SO</option><option value="270">O</option><option value="315">NO</option></select></div>
-   <div><label>Onda (m)</label><input id="i_wh" type="number" step="0.1" value="0.8"></div>
-   <div><label>Período (s)</label><input id="i_wp" type="number" step="1" value="8"></div>
-   <div><label>Maré</label><select id="i_ts"><option value="enchente">Enchente</option><option value="vazante">Vazante</option></select></div>
-  </div>
-  <button id="fillh">⬇️ Preencher com a hora selecionada no gráfico</button>
-  <div id="calcout" style="margin-top:12px"></div></div>`;
-}
-function calcRun(){
-  const g=id=>+$(id).value;
-  const o={ws:g('i_ws'),wg:g('i_wg'),wd:g('i_wd'),wh:g('i_wh'),wp:g('i_wp'),rain:0};
-  const k=kayakV(o,{state:$('i_ts').value}),s=surfV(o),kl=k.l??3,sl=s.l??3;
-  $('calcout').innerHTML=`<div class="grid"><div class="card ${COL[kl]}"><h3>🛶 Caiaque</h3><div class="big">${EMO[kl]} ${LBL[kl]}</div><ul>${k.r.map(x=>`<li>${x}</li>`).join('')||'<li>dentro dos limites</li>'}</ul></div>
-  <div class="card ${COL[sl]}"><h3>🏄 Surfe (iniciante)</h3><div class="big">${EMO[sl]} ${['FAVORÁVEL','ALERTA','EVITE','SEM AVALIAÇÃO'][sl]}</div><ul>${s.r.map(x=>`<li>${x}</li>`).join('')||'<li>dentro dos limites</li>'}</ul></div></div>`
-  +(k.warn?`<div class="warn">⚠️ <b>Aviso grave:</b> vazante + vento sul &gt;12 nós. O choque da correnteza saindo do estuário com a ondulação cria ondas perigosas na Fortaleza da Barra e Deck do Pescador.</div>`:'');
-}
 function checklist(){
   const done=CHECK.filter((c,i)=>S.chk[i]).length;
   return `<div class="card chk"><h3><span aria-hidden="true">✅</span> Checklist de segurança <small class="mut">(${done}/${CHECK.length}; não fica salvo ao fechar)</small></h3>${CHECK.map((c,i)=>`<label><input type="checkbox" data-i="${i}" ${S.chk[i]?'checked':''}> ${c}</label>`).join('')}<button id="chkreset" style="margin-top:8px">Limpar</button></div>`;
