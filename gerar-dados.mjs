@@ -111,7 +111,7 @@ const PTS = ['N', 'NNE', 'NE', 'ENE', 'L', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW',
 const compass = deg => PTS[Math.round(((deg % 360) + 360) % 360 / 22.5) % 16];
 const r0 = v => Math.round(v);
 
-const probTxt = p => p >= 80 ? 'muito provável' : p >= 50 ? 'provável' : p >= 30 ? 'possível' : 'pouco provável';
+const probTxt = p => p >= 80 ? 'pode contar que vem' : p >= 50 ? 'tá armando chuva' : p >= 30 ? 'pode ser que caia' : 'duvido que caia';
 function chuvaCaicara(mm, prob, trov) {
   const v = mm.toFixed(1).replace('.', ',') + ' mm';
   const p = prob != null ? ` (${probTxt(prob)}, ${r0(prob)}%)` : '';
