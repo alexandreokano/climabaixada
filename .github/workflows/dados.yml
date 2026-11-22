@@ -44,5 +44,4 @@ jobs:
             sleep 5
           done
           exit 1
-</parameter>
-</invoke>
+
