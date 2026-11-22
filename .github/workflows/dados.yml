@@ -33,13 +33,13 @@ jobs:
 
       - name: Publicar se mudou
         run: |
-          if git diff --quiet -- dados.json; then
-            echo "Sem mudanças."
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add dados.json
+          if git diff --cached --quiet; then echo "Sem mudanças."; exit 0; fi
           git commit -m "Atualiza dados.json (automático)"
-          git pull --rebase
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && git push && exit 0
+            sleep 5
+          done
+          exit 1
