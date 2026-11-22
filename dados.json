@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "avaliado_em": "2026-11-22T09:20:35-03:00",
+  "avaliado_em": "2026-11-22T09:49:49-03:00",
   "boletim_cetesb": "2026-11-19",
   "dias": [
     {
@@ -352,5 +352,11 @@
       ]
     ]
   },
-  "fonte": "open-meteo (vento: ECMWF + GFS; ondas: Météo-France + GFS; vale o pior caso)"
+  "fonte": "open-meteo (vento: ECMWF + GFS; ondas: Météo-France + GFS; vale o pior caso)",
+  "modelo_unico": false,
+  "vento_modelo_padrao": false,
+  "modelos": {
+    "vento": 2,
+    "ondas": 2
+  }
 }
