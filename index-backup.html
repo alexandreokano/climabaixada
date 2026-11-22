@@ -417,7 +417,6 @@ select{font-size:clamp(.8rem,4.2vw,1rem);text-overflow:ellipsis}
   <div id="hdr" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <button id="help"><span aria-hidden="true">❓</span> Me ajuda aí</button><button id="fsm" title="Diminuir letra" aria-label="Diminuir letra">A−</button><button id="fsp" title="Aumentar letra" aria-label="Aumentar letra">A+</button><button id="reload" title="Atualizar" aria-label="Atualizar" style="background:#0b2a4a"><svg width="22" height="22" viewBox="0 0 100 100" style="display:block" aria-hidden="true"><g fill="#fff"><path id="rfa" d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z"/><path d="M24,38C28,26 40,19 53,20C62,21 69,25 74,29L83,22L83,51L54,51L63,43C58,36 48,31 40,33C33,34 28,36 24,38Z" transform="rotate(180 50 50)"/></g></svg></button><button id="theme" title="Tema" aria-label="Tema claro" aria-pressed="false"><span aria-hidden="true">🌓</span></button>
   </div>
-</header>
 <div id="top3">
   <div id="stbox"><label><span aria-hidden="true">📡</span> Dados de:</label><span class="badge" id="status" aria-live="polite" aria-atomic="true"><span aria-hidden="true">⏳</span> dando uma olhada no mar…</span></div>
   <div id="loc" class="locsel"></div>
@@ -721,7 +720,6 @@ function useGood(P){
   const g=S.good;
   if(!g||g.k!=P.la+','+P.lo||Date.now()-g.ts>6*3600000)return false;
   S.live=g.live;S.stamp=g.stamp;S.stale=true;
-  setStatus('🟠 sem sinal · dados antigos de '+g.stamp+' (desatualizado)');
   return true;
 }
 async function loadLive(){
@@ -737,7 +735,7 @@ setStatus('⏳ dando uma olhada no mar…');
   if(m.status=='fulfilled'){const h=m.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),wh:h.wave_height[i],wp:h.wave_period[i],wdir:h.wave_direction[i]}});n++}
   const gen=[f,m].filter(x=>x.status=='fulfilled'&&x.value.__gen).map(x=>x.value.__gen);S.fromCache=gen.length>0;S.live=L;S.stamp=new Date(gen.length?Math.min(...gen):Date.now()).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
   S.cptecOk=cp.status=='fulfilled'&&cp.value>0;S.stale=false;if(n)S.good={k:P.la+','+P.lo,live:L,stamp:S.stamp,ts:Date.now()};autoDays();
-  setStatus((n>=(P.m?2:1)?`🟢 ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · sem dados ao vivo (semáforo cinza'));setTimeout(maybeAlert,800);
+  setStatus((n>=(P.m?2:1)?`🟢 ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · sem dados ao vivo (semáforo cinza)'));setTimeout(maybeAlert,800);
   render();
 }
 async function loadCptec(){
@@ -987,6 +985,7 @@ function esporteTxt(di){
 }
 const fmt=di=>hl(String(DAYS[di].txt)+(DAYS[di].k==3?'':esporteTxt(di)+pescaTxt(di)));
 const volTxt=m=>m<=0?'0 mm':m<0.1?'menos de 0,1 mm':m.toFixed(1).replace('.',',')+' mm';
+const probTxt=p=>p>=80?'pode contar que vem':p>=50?'tá armando chuva':p>=30?'pode ser que caia':'duvido que caia';
 function chuvaCaicara(mm, prob, trov, ini, fim) {
   const h = x => String(x).padStart(2, '0') + 'h';
   const n = mm || 0;
