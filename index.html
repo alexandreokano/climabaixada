@@ -637,7 +637,7 @@ function avalBox(){
   const f=a.em?new Date(a.em).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'–';
   const rs=(S.tab=='esportes'&&(S.sub||'surfe')=='resumo'&&cur().m)?`<div style="margin-top:10px">ℹ️ <b>Logo abaixo tem o Resumão do Mar.</b> Mas se quiser mais detalhes sobre as condições para <b>🏄 Surf</b>, <b>🛶 Caiaque</b>, <b>🎣 Pesca</b>, <b>⚓ Navio na Área</b> e <b>🏖️ Como tá a praia hoje?</b> (balneabilidade), toca na aba lá embaixo, depois da Avaliação do Capitão da Baixada.</div>`:'';
   const fresco=a.h<6?'fresquinho, saído da rede agorinha':a.h<16?'ainda no ponto, que nem peixe do dia':'já correu uma maré, mas ainda serve';
-  if(a.st=='ok')return `<div class="note"><span aria-hidden="true">🕒</span> O Capitão da Baixada deu o papo em ${f}: ${fresco} (faz ${Math.floor(a.h)} h).${rs}</div>`;
+  if(a.st=='ok')return `<div class="note"><span aria-hidden="true">🕒</span> O Capitão da Baixada deu o papo em ${f}: ${fresco} (${a.h<1?'faz menos de 1 h':'faz '+Math.floor(a.h)+' h'}).${rs}</div>`;
   if(a.st=='velha')return `<div class="warn"><span aria-hidden="true">⏳</span> <b>DESATUALIZADO:</b> o Capitão avaliou em ${f}, faz ${Math.floor(a.h)} h (mais de ${H_DESATUALIZADO} h). Não confie só nisso: confira o mar a olho e os dados ao vivo. Toque em 🔄 para tentar de novo.</div>`;
   return `<div class="warn"><span aria-hidden="true">⚪</span> <b>Sem papo do Capitão da Baixada por enquanto</b> (${a.msg}). O semáforo de Caiaque e Surfe está em <b>modo automático</b> (vento, ondas, chuva e trovoada ao vivo). Cinza é "sem avaliação", nunca "tá seguro". Na dúvida, não sai.${rs}</div>`;
 }
