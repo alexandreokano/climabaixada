@@ -833,7 +833,7 @@ function surfV(o){
 /* Janela de horário nunca é mais otimista que o veredito do dia. nivel: 0 🟢 1 🟡 2 🔴 3 ⚪ */
 function limitaJanela(nivel,w){
   if(!w)return null;
-  if(nivel===2)return{...w,l:2};
+  if(nivel===2)return{txt:'nenhuma janela segura',l:2};
   if(!Number.isInteger(nivel)||nivel<0||nivel>2)return null; /* ⚪ ou inválido: sem janela */
   return nivel>w.l?{...w,l:nivel}:w;
 }
