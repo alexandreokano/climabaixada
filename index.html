@@ -736,7 +736,7 @@ setStatus('⏳ dando uma olhada no mar…');
   if(m.status=='fulfilled'){const h=m.value.hourly;h.time.forEach((t,i)=>{L[t]={...(L[t]||{}),wh:h.wave_height[i],wp:h.wave_period[i],wdir:h.wave_direction[i]}});n++}
   const gen=[f,m].filter(x=>x.status=='fulfilled'&&x.value.__gen).map(x=>x.value.__gen);S.fromCache=gen.length>0;S.live=L;S.stamp=new Date(gen.length?Math.min(...gen):Date.now()).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'});
   S.cptecOk=cp.status=='fulfilled'&&cp.value>0;S.stale=false;if(n)S.good={k:P.la+','+P.lo,live:L,stamp:S.stamp,ts:Date.now()};autoDays();
-  setStatus((n>=(P.m?2:1)?`🟢 ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · sem dados ao vivo (semáforo cinza'));setTimeout(maybeAlert,800);
+  setStatus((n>=(P.m?2:1)?`🟢 ${S.stamp}`:n==1?`🟡 chegou só um pedaço · ${S.stamp}`:'🟠 sem sinal · sem dados ao vivo (semáforo cinza)'));setTimeout(maybeAlert,800);
   render();
 }
 async function loadCptec(){
