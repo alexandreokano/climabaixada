@@ -1025,22 +1025,6 @@ function people(di){
   const wt=(gm>=45?'<span aria-hidden="true">💨</span> Ventania':gm>=30?'<span aria-hidden="true">💨</span> Venta bastante':gm>=20?'<span aria-hidden="true">🍃</span> Brisa firme':'<span aria-hidden="true">🍃</span> Vento fraco')+`: rajadas até ${gm.toFixed(0)} km/h${cg>=30?` (${cg.toFixed(0)} km/h de manhã cedo e fim de tarde). Cuidado com guarda-chuva e chapéu.`:'.'}`;
   return `<div class="cid"><div><b><span aria-hidden="true">${ic}</span> Dia ${tl(all.tmax)}: ${t0}–${t1}°C</b>, ${fr.join('; ')}.<br>${rn}<br>${wt.replace(/^([^:]+):/,'<b>$1:</b>')}</div></div><div class="mut">Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}. Previsão de modelo, não certeza.</div>`;
 }
-function peopleOld(di){
-  const D=DAYS[di],H=[];
-  for(let h=6;h<=21;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push({...o,h})}
-  if(!H.length)return `<div class="cid"><div><span aria-hidden="true">🌡️</span> Temperatura: sem previsão ao vivo para este dia.</div><div><span aria-hidden="true">☔</span> Chuva: ${D.chuva}</div><div><span aria-hidden="true">💨</span> Vento: ${D.vento}</div></div>`;
-  const mx=f=>Math.max(...H.map(f)),tmax=mx(x=>x.tp),tmin=Math.min(...H.map(x=>x.tp)),
-   hot=H.reduce((b,x)=>(x.ap??x.tp)>(b.ap??b.tp)?x:b,H[0]),amax=hot.ap??hot.tp,
-   pm=Math.round(mx(x=>x.pp||0)),rm=H.reduce((s,x)=>s+(x.rain||0),0),rh=H.filter(x=>x.rain>=0.3),
-   gm=mx(x=>x.wg||0)*1.852,cg=Math.max(0,...H.filter(x=>x.h<=9||(x.h>=17&&x.h<=19)).map(x=>x.wg||0))*1.852;
-  const tl=tmax>=33?['🥵','Calor forte']:tmax>=29?['☀️','Quente']:tmax>=22?['🙂','Agradável']:tmax>=18?['🧥','Fresco']:['🥶','Frio'],rainy=pm>=60||rm>=2,temp=(rainy&&tmax<33?'🌦️':tl[0])+' '+tl[1]+(rainy?', com chuva':''),feel=amax-tmax>=3?` A sensação pode chegar a ${amax.toFixed(0)}°C às ${pad(hot.h)}h.`:'',vest=rainy?(tmax>=29?'Roupa leve e guarda-chuva.':'Roupa leve, um casaquinho e guarda-chuva.'):tmax>=29?'Roupa leve, protetor solar e garrafa de água.':tmax>=22?'Roupa leve; um casaquinho para a noite.':'Leve um casaco.';
-      const temp0=amax>=32?'🥵 Calor forte':amax>=28?'☀️ Quente':amax>=22?'🙂 Agradável':amax>=18?'🧥 Fresco':'🥶 Frio';
-  const vest0=amax>=28?'Roupa leve, protetor solar e garrafa de água.':amax>=22?'Roupa leve; leve um casaquinho para a noite.':'Leve um casaco.';
-  const rt=(pm>=60||rm>=2)?`☔ Leve guarda-chuva: a chance de chuva chega a ${pm}%${(()=>{const b=H.reduce((a,x)=>(x.pp||0)>(a.pp||0)?x:a,H[0]);return ' por volta das '+pad(b.h)+'h'})()}${rm>=0.3?`, com cerca de ${rm.toFixed(1)} mm previstos no dia`:', mas a previsão é de pouca água (garoa ou chuva fraca)'}${rh.length?` (entre ${pad(rh[0].h)}h e ${pad(rh[rh.length-1].h)}h)`:''}.`
-   :pm>=30?`🌂 Pode chover: chance de até ${pm}%. Um guarda-chuva pequeno na bolsa ajuda.`:`😎 Sem guarda-chuva: chance de chuva baixa (até ${pm}%).`;
-  const wt=(gm>=45?'💨 Ventania':gm>=30?'💨 Venta bastante':gm>=20?'🍃 Brisa firme':'🍃 Vento fraco')+`: rajadas até ${gm.toFixed(0)} km/h no dia. No ponto de ônibus (6h–9h e 17h–19h) chegam a cerca de ${cg.toFixed(0)} km/h${cg>=30?': sensação mais fresca, cuidado com guarda-chuva e chapéu.':'.'}`;
-  return `<div class="cid"><div><b>${temp}:</b> mín ${tmin.toFixed(0)}°C · máx ${tmax.toFixed(0)}°C.${feel} ${vest}</div><div><b>${rt}</b></div><div><b>${wt}</b></div></div><div class="mut">Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}. Previsão de modelo, não certeza. Período considerado: 6h às 21h.</div>`;
-}
 function cptecNote(di){
   if(S.city!='Santos')return '';
   const c=((S.cptec&&S.cptec[DAYS[di].date])||[]).slice().sort((a,b)=>a.h-b.h);
