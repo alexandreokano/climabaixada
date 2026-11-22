@@ -143,7 +143,7 @@ const dias = datas.map(date => {
   }
   if (onda != null) {
     if (onda > 1.0) { k = 2; motivos.push('ondas acima de 1,0 m'); }
-    else if (onda >= 0.8) { k = Math.max(k, 1); motivos.push('ondas perto de 1,0 m'); }
+    else if (onda >= 0.8) { k = Math.max(k, 1); motivos.push(`ondas de até ${onda.toFixed(1).replace('.', ',')} m (limite do caiaque: 1,0 m)`);}
   }
   if (per != null && per < 6 && vento >= 8) { k = Math.max(k, 1); motivos.push('mar curto e batido'); }
   if (trov || (precip != null && precip >= 10)) { k = 2; motivos.push('risco de trovoadas ou chuva forte'); }
@@ -177,7 +177,7 @@ const dias = datas.map(date => {
   return {
     date, lbl, k, s,
     vento: vento == null ? 'sem dados' : `${dir != null ? compass(dir) + ' ' : ''}até ${r0(vento)} nós${raj != null ? ' (rajadas até ' + r0(raj) + ' nós)' : ''}`,
-    ondas: onda == null ? 'sem dados' : `até ${onda.toFixed(1)} m${per != null ? ' · ' + r0(per) + ' s' : ''}`,
+    ondas: onda == null ? 'sem dados' : `até ${onda.toFixed(1).replace('.', ',')} m${per != null ? ' · ' + r0(per) + ' s' : ''}`,
     chuva: `${(precip ?? 0).toFixed(1)} mm${prob != null ? ' (até ' + r0(prob) + '%)' : ''}${trov ? ', com trovoadas' : ''}`,
     txt: `${veredito}${motivos.length ? ': ' + [...new Set(motivos)].join('; ') : ''}. ${extra.join(' ')}`
   };
