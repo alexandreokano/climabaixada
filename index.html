@@ -966,14 +966,6 @@ function charts(di){
     bands:[{from:0,to:.8,c:'#2ecc71',t:'Verde: até 0,8 m'},{from:.8,to:1,c:'#f1c40f',t:'Amarelo: 0,8 a 1,0 m (cautela, iniciante)'},{from:1,to:999,c:'#e74c3c',t:'Vermelho: acima de 1,0 m'}],
     how:'Acima de 1,0 m a baía fica perigosa para caiaque de lazer. Os pontos laranja são a segunda opinião do CPTEC: se estiverem longe da linha, as fontes divergem e vale a mais conservadora.'});
 }
-function chartsOld(di){
-  const d=dayChartData(di);
-  const mx=Math.max(25,...d.gust.map(p=>p[1]||0))+2;
-  const mw=Math.max(1.6,...d.wave.map(p=>p[1]||0))+0.2;
-  return chart('🌊 Maré (Marinha)','m · * altura esquemática quando a tábua não informa',[{pts:d.tide,c:'#38bdf8'}],1.6,[],di,false)
-   +chart('💨 Vento e rajadas','nós · limites: 10 / 15 / rajada 20',[{pts:d.wind,c:'#2ecc71'},{pts:d.gust,c:'#f1c40f',dash:1}],mx,[{y:10,c:'#2ecc71'},{y:15,c:'#e74c3c'},{y:20,c:'#e74c3c'}],di,!d.any)
-   +chart('🌊 Altura de ondas','m · limite 1,0 m',[{pts:d.wave,c:'#a78bfa'}],mw,[{y:1,c:'#e74c3c'}],di,!d.any);
-}
 
 /* ============ TELAS ============ */
 const how=t=>`<div class="how"><b>💡 Para decidir:</b> ${t}</div>`;
