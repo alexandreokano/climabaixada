@@ -157,7 +157,7 @@ const dias = datas.map(date => {
   }
   if (onda != null) {
     if (onda > 1.0) { k = 2; motivos.push('ondas acima de 1,0 m'); }
-    else if (onda >= 0.8) { k = Math.max(k, 1); motivos.push('ondas perto de 1,0 m'); }
+    else if (onda >= 0.8) { k = Math.max(k, 1); motivos.push('ondas de até ' + onda.toFixed(1).replace('.', ',') + ' m, perto do limite de 1,0 m'); }
   }
   if (per != null && per < 6 && vento >= 8) { k = Math.max(k, 1); motivos.push('mar curto e batido'); }
   if (trov || (precip != null && precip >= 10)) { k = 2; motivos.push('risco de trovoadas ou chuva forte'); }
