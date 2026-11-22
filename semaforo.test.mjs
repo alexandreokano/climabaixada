@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 const html = readFileSync(process.env.HTML || 'index.html', 'utf8');
 const m = html.match(/\/\*SEMAFORO-INI\*\/([\s\S]*?)\/\*SEMAFORO-FIM\*\//);
 assert.ok(m, 'Marcadores SEMAFORO-INI/FIM não encontrados no index.html');
-const { kayakV, surfV, REGRAS } = new Function(m[1] + ';return {kayakV,surfV,REGRAS}')();
+const { kayakV, surfV, REGRAS, limitaJanela } = new Function(m[1] + ';return {kayakV,surfV,REGRAS,limitaJanela}')();
 
 const base = { ws: 6, wg: 9, wd: 0, wh: 0.5, wp: 8, rain: 0 };
 const k = (o, tide) => kayakV({ ...base, ...o }, tide);
@@ -103,4 +103,25 @@ test('surfe: trovoada = vermelho; próxima hora e chance >= 60% = amarelo', () =
 test('wc/pp ausentes não mudam nada (regressão)', () => {
   assert.equal(k({ wc: null, pp: null }).l, 0);
   assert.equal(s({ wh: 0.6, wc: undefined, pp: null }).l, 0);
+});
+
+// ---------- Janela de horário x veredito do dia ----------
+const jan = (l) => ({ l, txt: '08h às 10h' });
+test('janela: dia 🔴 nunca mostra janela 🟢 ou 🟡', () => {
+  assert.equal(limitaJanela(2, jan(0)).l, 2);
+  assert.equal(limitaJanela(2, jan(1)).l, 2);
+});
+test('janela: nunca é mais otimista que o veredito, e não melhora o que já é pior', () => {
+  assert.equal(limitaJanela(1, jan(0)).l, 1);
+  assert.equal(limitaJanela(0, jan(0)).l, 0);
+  assert.equal(limitaJanela(0, jan(1)).l, 1);
+  assert.equal(limitaJanela(1, jan(2)).l, 2);
+});
+test('janela: ⚪, veredito inválido ou sem janela = sem janela; não altera o original', () => {
+  assert.equal(limitaJanela(3, jan(0)), null);
+  assert.equal(limitaJanela(undefined, jan(0)), null);
+  assert.equal(limitaJanela(0, null), null);
+  const w = jan(0);
+  limitaJanela(2, w);
+  assert.equal(w.l, 0);
 });
