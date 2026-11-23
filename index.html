@@ -861,12 +861,7 @@ function bestRun(di,fn,de){
   }
   return{txt:'nenhuma janela segura',l:2};
 }
-/* Fonte única da "melhor janela": só horas que ainda não passaram e nunca mais otimista que o veredito do dia */
-function melhorJanela(di,fn,nivel){
-  const de=DAYS[di].date==todayStr?Math.ceil(nowH()):5;
-  return limitaJanela(nivel,bestRun(di,fn,de));
-}
-
+  
 /* ============ GRÁFICOS ============ */
 const W=720,H=280,PL=62,PR=74,PT=34,PB=46;
 function niceStep(mx){for(const s of[.1,.2,.5,1,2,5,10,20]){if(mx/s<=6)return s}return 50}
