@@ -833,7 +833,7 @@ function surfV(o){
 /* Janela de horário nunca é mais otimista que o veredito do dia. nivel: 0 🟢 1 🟡 2 🔴 3 ⚪ */
 function limitaJanela(nivel,w){
   if(!w)return null;
-  if(nivel===2)return{...w,l:2};
+  if(nivel===2)return{txt:'nenhuma janela segura',l:2};
   if(!Number.isInteger(nivel)||nivel<0||nivel>2)return null; /* ⚪ ou inválido: sem janela */
   return nivel>w.l?{...w,l:nivel}:w;
 }
@@ -845,8 +845,10 @@ function hourInfo(di,h){
   const oo=o?{...o,tsNext:!!(nx&&num(nx.wc)!=null&&nx.wc>=REGRAS.trovoadaCodigo)}:o;
   return{o,t,w:inWin(ms),k:sea?kayakV(oo,tv(t)):nm,s:sea?surfV(oo):nm};
 }
-function bestRun(di,fn){
-  const lv=[];for(let h=5;h<=17;h++)lv.push(fn(hourInfo(di,h)).l);
+function bestRun(di,fn,de){
+  const h0=Math.max(5,Number.isInteger(de)?de:5);
+  if(h0>17)return{txt:'nenhuma janela segura',l:2};
+  const lv=[];for(let h=h0;h<=17;h++)lv.push(fn(hourInfo(di,h)).l);
   if(lv.every(x=>x==null))return null;
   for(const mx of[0,1]){
     let best=null,st=null;
@@ -855,9 +857,14 @@ function bestRun(di,fn){
       if(ok&&st==null)st=i;
       if(!ok&&st!=null){if(i-st>=2&&(!best||i-st>best[1]-best[0]))best=[st,i];st=null}
     }
-    if(best)return{txt:`${pad(best[0]+5)}h–${pad(best[1]+5)}h`,l:mx};
+    if(best)return{txt:`${pad(best[0]+h0)}h–${pad(best[1]+h0)}h`,l:mx};
   }
   return{txt:'nenhuma janela segura',l:2};
+}
+/* Fonte única da "melhor janela": só horas que ainda não passaram e nunca mais otimista que o veredito do dia */
+function melhorJanela(di,fn,nivel){
+  const de=DAYS[di].date==todayStr?Math.ceil(nowH()):5;
+  return limitaJanela(nivel,bestRun(di,fn,de));
 }
 
 /* ============ GRÁFICOS ============ */
@@ -1061,7 +1068,7 @@ function cptecNote(di){
   return `<div class="card ${div?'y':'g'}"><h3><span aria-hidden="true">🔍</span> Segunda opinião: CPTEC × Open-Meteo</h3><div class="t"><table><tr><th>Hora</th><th>CPTEC (onda · vento)</th><th>Open-Meteo</th></tr>${rows}</table></div>${how(div?'As fontes divergem na altura da onda (30 cm ou mais). Na dúvida, vale a leitura mais conservadora e a conferência da arrebentação a olho antes de sair.':'As duas fontes estão próximas. Isso aumenta a confiança, mas não elimina o risco: o CPTEC não traz rajada, período da onda nem chuva.')}${S.cptecInfo?`<div class="mut">CPTEC atualizado em ${S.cptecInfo.atual?S.cptecInfo.atual.split('-').reverse().join('/'):'data não informada'}; arquivo gerado às ${new Date(S.cptecInfo.t).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'})}${S.cptecInfo.parcial?' (parcial: algum dia falhou)':''}.</div>`:''}</div>`;
 }
 function resumo(){
-  const di=S.day,D=DAYS[di],kw=limitaJanela(D.k,bestRun(di,x=>x.k)),sw=limitaJanela(D.s,bestRun(di,x=>x.s));
+  const di=S.day,D=DAYS[di],kw=melhorJanela(di,x=>x.k,D.k),sw=melhorJanela(di,x=>x.s,D.s);
   const wtxt=w=>!w?'sem dados ao vivo':w.l==2?'<span aria-hidden="true">🔴</span> nenhum horário seguro hoje':`${EMO[w.l]} ${w.txt}${w.l==1?' (com cautela)':''}`;
   return `<div class="card ${COL[D.k]}"><h2><span aria-hidden="true">🏄🛶🎣⚓</span> Esportes no Mar · ${D.lbl}</h2><h3>${EMO[D.k]} Avaliação do Capitão da Baixada</h3><div>${fmt(di)}</div>
   <div class="mut" style="margin-top:6px"><b>Números do Capitão:</b> Vento: ${D.vento} · Ondas: ${D.ondas} · Chuva: ${D.chuva}<br>Se o texto e os números não baterem, vale o mais cuidadoso.</div></div>
@@ -1098,7 +1105,7 @@ function tripBox(k){
   const tds=dayTides(di).filter(e=>e.ms>=msAt(di,a)&&e.ms<=msAt(di,b)).map(e=>(e.t=='A'?'⬆️ alta ':'⬇️ baixa ')+hm(e.ms));
   const sts=[...new Set(I.map(q=>q.x.t&&q.x.t.state).filter(Boolean))];
   const rec=l==0?'Pode ir nesse horário. Mesmo assim, confere a arrebentação a olho antes de entrar.':l==1?(sea?'Dá pra ir com cautela, bem pertinho da praia (você é iniciante). Se o tempo piorar, volta.':'Dá pra ir com cautela, em frente ao salva-vidas. Se piorar, sai da água.'):'Não vá nesse horário. Veja a melhor janela do dia aqui embaixo.';
-  const best=limitaJanela(sea?DAYS[di].k:DAYS[di].s,bestRun(di,fn));
+  const best=melhorJanela(di,fn,sea?DAYS[di].k:DAYS[di].s);
   const L=[];
   L.push(`💨 Vento até ${ws!=null?ws.toFixed(0):'–'} nós (rajada ${wg!=null?wg.toFixed(0):'–'}) · 🌊 ondas até ${wh!=null?wh.toFixed(1):'–'} m · 🌧 ${rn>=0.3?volTxt(rn):'sem chuva prevista'}`);
   L.push(`🌙 Maré: ${sts.join(' e ')||'sem dados'}${tds.length?' · '+tds.join(', '):''}`);
@@ -1106,7 +1113,7 @@ function tripBox(k){
   if(a<5||b>18)L.push('🌑 Parte desse horário cai no escuro (antes das 5h ou depois das 18h). Volta com luz do dia.');
   if(sea&&I.some(q=>q.x.k.warn))L.push('⚠️ <b>Efeito canal:</b> vazante com vento sul acima de 12 nós no seu horário. Fica longe da Fortaleza da Barra e do Deck do Pescador.');
   if(sea&&I.some(q=>q.x.w))L.push('⚓ Parte do horário cai numa janela provável de manobras de navio. Fica longe do canal.');
-  return head+form+`<div class="card ${COL[l]}" style="margin:8px 0 0"><div class="big">${EMO[l]} ${lab[l]} · ${per}</div><div class="cid">${L.map(x=>`<div>${x}</div>`).join('')}<div><b>${rec}</b></div></div>${best?`<div class="mut">Melhor janela do dia: ${EMO[best.l]} ${best.txt}${best.l==1?' (com cautela)':''}</div>`:''}</div><div class="mut" style="margin-top:6px">Cálculo automático com vento, ondas, chuva e maré ao vivo. Previsão não é certeza: na dúvida, não sai.</div></div>`;
+  return head+form+`<div class="card ${COL[l]}" style="margin:8px 0 0"><div class="big">${EMO[l]} ${lab[l]} · ${per}</div><div class="cid">${L.map(x=>`<div>${x}</div>`).join('')}<div><b>${rec}</b></div></div>${best?`<div class="mut">Melhor janela ${DAYS[di].date==todayStr?'no restante de hoje':'do dia'}: ${EMO[best.l]} ${best.txt}${best.l==1?' (com cautela)':''}</div>`:''}</div><div class="mut" style="margin-top:6px">Cálculo automático com vento, ondas, chuva e maré ao vivo. Previsão não é certeza: na dúvida, não sai.</div></div>`;
 }
 function caiaque(){
   const di=S.day;
