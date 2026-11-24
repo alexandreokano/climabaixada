@@ -1644,7 +1644,7 @@ document.addEventListener('click',e=>{
   else if(b.dataset.ten!=null){S.ten=!S.ten;render();if(S.ten)requestAnimationFrame(()=>{const s=$('dez-dias');if(s)s.scrollIntoView({behavior:'smooth',block:'start'})})}
   else if(b.dataset.td!=null){S.day=+b.dataset.td;S.hover=null;render();goTop('meudia-card')}
   else if(b.dataset.top!=null){window.scrollTo({top:0,behavior:'smooth'})}
-  else if(b.dataset.t){const t=b.dataset.t;S.menu=false;S.tab=t;if(t=='esportes')S.sub='resumo';S.hover=null;render();goTab(t=='jogo'?'view':'loc')}
+  else if(b.dataset.t){const t=b.dataset.t;S.menu=false;S.tab=t;if(t=='esportes')S.sub='resumo';S.hover=null;render();goTab(t=='jogo'?'view':'top3')}
   else if(b.dataset.s){S.sub=b.dataset.s;S.menu=false;S.hover=null;render();scrollSub()}
   else if(b.dataset.pf){S.pf=b.dataset.pf;if(S.pf=='perto'&&!S.pos)locate();render()}
   else if(b.dataset.pb!=null){S.open=S.open==b.dataset.pb?null:b.dataset.pb;if(S.open!=null)loadSea(BEACHES[+S.open]);render()}
