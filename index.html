@@ -1618,6 +1618,10 @@ function scrollSub(){
   const el=(S.sub=='pesca'&&document.querySelector('#days'))||document.querySelector('.subtabs');if(!el)return;
   window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-8),behavior:'auto'});
 }
+function goTab(id){
+  const ir=()=>{const el=$(id);if(!el)return;window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-6),behavior:'auto'})};
+  requestAnimationFrame(()=>{ir();setTimeout(ir,350)});
+}  
 function goTop(id){
   requestAnimationFrame(()=>{
     const el=$(id);if(!el)return;
