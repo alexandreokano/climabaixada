@@ -1058,6 +1058,11 @@ function pst(di,a,b){
   const rh=H.filter(x=>x.rain>=0.3),hot=H.reduce((m,x)=>(x.ap??x.tp)>(m.ap??m.tp)?x:m,H[0]);
   return{a,b,tmin:Math.min(...H.map(x=>x.tp)),tmax:Math.max(...H.map(x=>x.tp)),amax:hot.ap??hot.tp,ah:hot.h,pm:Math.round(Math.max(...H.map(x=>x.pp||0))),rm:H.reduce((s,x)=>s+(x.rain||0),0),r0:rh.length?rh[0].h:null,r1:rh.length?rh[rh.length-1].h+1:null,gm:Math.max(...H.map(x=>x.wg||0))*1.852};
 }
+/* Igual ao pst, mas hoje ignora horas que já passaram (inclui a hora atual). Outros dias: idêntico. */
+function pstR(di,a,b){
+  if(DAYS[di].date==todayStr)a=Math.max(a,Math.floor(nowH()));
+  return a>b?null:pst(di,a,b);
+}
 function momTab(b,k){
   const m=b.closest('.mom');if(!m)return;
   m.querySelectorAll('.mt').forEach(x=>x.setAttribute('aria-selected',String(x===b)));
@@ -1066,15 +1071,14 @@ function momTab(b,k){
 }
 function momBox(){return ''}
 function resumoDia(di){
-  const m=pst(di,6,11),a=pst(di,12,14),t=pst(di,15,18);
-  if(!m||!a||!t)return '';
-  const ch=s=>s.rm>=0.3,lv=s=>s.pm>=40&&s.rm<0.3;
-  const tm=m.tmax<18?'fria':m.tmax<=25?'amena':'quente';
-  const mc=ch(m)?', com chuva':lv(m)?', com ameaça de chuva':', sem chuva';
-  const pico=Math.max(a.tmax,a.amax);
-  const al=(pico-m.tmax>=2||a.tmax>=28)?`pode esquentar na hora do almoço (até ${Math.round(pico)}°C)`:`na hora do almoço a temperatura fica por volta de ${Math.round(a.tmax)}°C`;
-  const tc=ch(t)?`a chuva é esperada à tarde${t.r0!=null?` (entre ${pad(t.r0)}h e ${pad(t.r1)}h)`:''}`:lv(t)?'há ameaça de chuva à tarde, com pouca água':'não há chuva relevante prevista para a tarde';
-  return `<b>🗓️ O dia em resumo:</b> a manhã será ${tm}${mc}; ${al}; e ${tc}.`;
+  const m=pstR(di,6,11),a=pstR(di,12,14),t=pstR(di,15,17);
+  if(!m&&!a&&!t)return '';
+  const ch=s=>s.rm>=0.3,lv=s=>s.pm>=40&&s.rm<0.3,P=[];
+  if(m){const tm=m.tmax<18?'fria':m.tmax<=25?'amena':'quente';P.push(`a manhã será ${tm}${ch(m)?', com chuva':lv(m)?', com ameaça de chuva':', sem chuva'}`)}
+  if(a){const pico=Math.max(a.tmax,a.amax),base=m?m.tmax:a.tmax;P.push((pico-base>=2||a.tmax>=28)?`pode esquentar na hora do almoço (até ${Math.round(pico)}°C)`:`na hora do almoço a temperatura fica por volta de ${Math.round(a.tmax)}°C`)}
+  if(t)P.push(ch(t)?`a chuva é esperada à tarde${t.r0!=null?` (entre ${pad(t.r0)}h e ${pad(t.r1)}h)`:''}`:lv(t)?'há ameaça de chuva à tarde, com pouca água':'não há chuva relevante prevista para a tarde');
+  const j=P.length<2?P[0]:P.length==2?P[0]+' e '+P[1]:P.slice(0,-1).join('; ')+'; e '+P[P.length-1];
+  return `<b>🗓️ ${DAYS[di].date==todayStr?'O resto do dia em resumo':'O dia em resumo'}:</b> ${j}.`;
 }
 function people(di){
   const D=DAYS[di],all=pst(di,6,21);
@@ -1251,11 +1255,16 @@ function guiaLocal(){
 }
 const SEA=f=>()=>!cur().m?nosea():localWarn()+f();
 function period(di,a,b,ic,nm){
-  const H=[];for(let h=a;h<b;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push(o)}
-  if(!H.length)return `<div class="card"><h3><span aria-hidden="true">${ic}</span> ${nm}</h3><div class="mut">sem previsão ao vivo</div></div>`;
-  const tmin=Math.min(...H.map(x=>x.tp)),tmax=Math.max(...H.map(x=>x.tp)),pm=Math.round(Math.max(...H.map(x=>x.pp||0))),rm=H.reduce((s,x)=>s+(x.rain||0),0),g=Math.max(...H.map(x=>x.wg||0))*1.852;
-  const l=(rm>=2||(pm>=60&&rm>=0.3))?'r':pm>=30?'y':'g';
-  return `<div class="card ${l}"><h3><span aria-hidden="true">${ic}</span> ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">${rm<0.3?(pm>=40?`<span aria-hidden="true">🌥️</span> Cara de chuva<br><span aria-hidden="true">💧</span> só uns pingos, quase nada`:`<span aria-hidden="true">😎</span> Chuva improvável<br><span aria-hidden="true">💧</span> sem água prevista`):`<span aria-hidden="true">☔</span> ${pm}% de chance<br><span aria-hidden="true">💧</span> ${volTxt(rm)} previstos`}<br><span aria-hidden="true">💨</span> ${g.toFixed(0)} km/h</div></div>`;
+  const H=[];for(let h=a;h<b;h++){const o=obs(di,h);if(o)H.push(o)}
+  const I=periodoInfo(H,{'Manhã':'manha','Almoço':'almoco','Tarde':'tarde','Noite':'noite'}[nm]);
+  if(!I)return `<div class="card"><h3><span aria-hidden="true">${ic}</span> ${nm}</h3><div class="mut">sem previsão ao vivo</div></div>`;
+  const chuvaTxt=I.rm<0.3
+    ?(I.chuva=='fraca'?'<span aria-hidden="true">🌥️</span> Cara de chuva<br><span aria-hidden="true">💧</span> só uns pingos, quase nada'
+     :I.chuva=='semdado'?'<span aria-hidden="true">⚪</span> Sem chance de chuva informada<br><span aria-hidden="true">💧</span> sem água prevista'
+     :'<span aria-hidden="true">😎</span> Chuva improvável<br><span aria-hidden="true">💧</span> sem água prevista')
+    :`<span aria-hidden="true">☔</span> ${I.pm==null?'chance sem dado':I.pm+'% de chance'}<br><span aria-hidden="true">💧</span> ${volTxt(I.rm)} previstos`;
+  const vento=`<span aria-hidden="true">💨</span> ${I.gkmh==null?'sem dado':I.gkmh.toFixed(0)+' km/h'}`;
+  return `<div class="card ${COL[I.l]}"><h3><span aria-hidden="true">${ic}</span> ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${I.tmin.toFixed(0)}–${I.tmax.toFixed(0)}°C</div><div class="pl">${chuvaTxt}<br>${vento}</div><div class="pl" style="margin-top:6px">${I.dicas.map(ae).join('<br>')}</div></div>`;
 }
 function tenDays(){
   const L=DAYS.map((d,i)=>i).filter(i=>dayOff(i)>=0&&dayOff(i)<=9);
