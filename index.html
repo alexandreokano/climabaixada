@@ -868,7 +868,29 @@ function periodoInfo(H,nome){
   if(tmin<=P.BLUSA_C)dicas.push('🧥 Leve uma blusa');
   if(P.SOL.includes(nome)&&calor>=P.CALOR_C)dicas.push('🧴💧 Protetor e água: vai esquentar');
   return{l,chuva,rm,pm,gkmh,tmin,tmax,dicas};
-}  
+}
+/* Frases de chuva (tom caiçara). Só texto: nunca mais otimista que periodoInfo. Limites vêm de PERIODO. */
+const probTxt=p=>p>=80?'pode contar que vem':p>=50?'tá armando chuva':p>=30?'pode ser que caia':'duvido que caia';
+function chuvaCaicara(mm,prob,trov,ini,fim){
+  const P=PERIODO,f=v=>typeof v=='number'&&isFinite(v);
+  const n=f(mm)&&mm>0?mm:0,pr=f(prob)?prob:null;
+  const h=x=>String(x).padStart(2,'0')+'h';
+  const quando=f(ini)&&f(fim)?` entre ${h(ini)} e ${h(fim)}`:'';
+  const qtd=`~${n.toFixed(1).replace('.',',')} mm`;
+  const pt=pr==null?'':probTxt(pr);
+  const pTxt=pr==null?'':` ${pt.charAt(0).toUpperCase()+pt.slice(1)} (${Math.round(pr)}%).`;
+  if(trov)return `⚡ Risco de raios${quando}: fora da água e longe da praia. Não entre no mar.${n>=P.FRACA_MM?' Chuva de '+qtd+'.':''}`;
+  if(n<P.FRACA_MM){
+    if(pr!=null&&pr>=P.FRACA_PP)return `🌥️ Ameaça de chuva${quando}, mas com pouca água prevista.${pTxt}`;
+    return '';
+  }
+  const forte=n>=P.FORTE_MM||(pr!=null&&pr>=P.FORTE_PP&&n>=P.FORTE_PP_MM);
+  if(!forte)return `🌦️ Só uma garoinha${quando} (${qtd}). Guarda-chuva pequeno na bolsa.${pTxt}`;
+  if(n<5)return `🌧️ Vem chuva pra valer${quando} (${qtd}). Leva capa ou guarda-chuva.${pTxt}`;
+  if(n<15)return `☔ Vem pancada de chuva${quando} (${qtd}). Olha o céu e leva capa.${pTxt}`;
+  if(n<30)return `🌧️ Chuvarada forte${quando} (${qtd}). O mar pode ficar mexido.${pTxt}`;
+  return `⛈️ Toró brabo${quando} (${qtd}). Hoje a água fica pra outro dia.${pTxt}`;
+}
 /*SEMAFORO-FIM*/
 function hourInfo(di,h){
   const o=obs(di,h),ms=msAt(di,h+0.5),t=tideAt(ms);
