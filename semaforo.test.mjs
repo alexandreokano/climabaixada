@@ -129,3 +129,11 @@ test('janela: dia 🔴 nunca mostra horário de janela (regressão 22/11)', () =
   assert.equal(limitaJanela(2, jan(0)).txt, 'nenhuma janela segura');
   assert.equal(limitaJanela(2, jan(1)).txt, 'nenhuma janela segura');
 });
+test('caiaque: sem tábua de maré (tide null) + vento sul > 12 nós = vermelho com aviso', () => {
+  const r = k({ ws: 13, wd: 180 }, null);
+  assert.equal(r.l, 2);
+  assert.equal(r.warn, true);
+  assert.equal(k({ ws: 12, wd: 180 }, null).warn, false);
+  assert.equal(k({ ws: 13, wd: 0 }, null).warn, false);
+  assert.equal(k({ ws: 13, wd: 180 }, { state: 'enchente' }).warn, false);
+});
