@@ -9,6 +9,7 @@
 - O motivo exibido é "sem tábua de maré (tratado como vazante) + vento sul >12 nós".
 
 **Teste:** 1 caso novo em `semaforo.test.mjs`. Falhava antes (`1 !== 2`) e passa depois.
+ls | grep backup
 
 **Confirmado no Terminal (25/11):** 25 testes, 25 aprovados, 0 falhas.
 
