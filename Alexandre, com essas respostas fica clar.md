@@ -204,3 +204,57 @@ Nada foi alterado. Se você concordar, o primeiro pacote que proponho é o **ime
 2. O texto exato (Ctrl+F) de "perto de 1,0" no arquivo, para eu indicar exatamente onde trocar.
 
 **Posso preparar o passo a passo do pacote imediato?** Aguardo seu "autorizado".
+
+
+
+
+--------
+
+
+
+
+
+Alexandre, com os prints do celular dá para ser mais específico. 🔎 Tudo abaixo vem só das imagens, sem o CSS, então não proponho código ainda.
+
+## Prioridade 1: segurança e leitura
+
+| # | O que vejo nos prints | Ajuste | Princípio |
+|---|---|---|---|
+| 1 | O veredito do dia não aparece na primeira tela. Banner, título, slogan, cidades e campos ocupam cerca de 80% dela, e o primeiro card de conteúdo é "Confiança alta". | Compactar o topo (banner mais baixo, título e slogan menores). Colocar uma linha de veredito logo abaixo das abas, por exemplo "🟡 Chuva entre 13h e 15h, leve guarda-chuva". | Veredito em 3 segundos |
+| 2 | **Amarelo usado como destaque.** "Confiança alta", "Dia quente" e "Brisa firme" estão em amarelo, e a faixa lateral de "Confiança" é verde. Amarelo é o "alerta" do semáforo. | Reservar verde, amarelo e vermelho só para o semáforo. O destaque de texto passa para branco em negrito ou azul. | Segurança primeiro |
+| 3 | **Bordas coloridas dos cards sem legenda.** Manhã e Tarde têm borda amarela, Almoço tem borda vermelha, e nada diz o que cada cor significa. Cores como azul e verde em outros cards também parecem decorativas. | Cor de borda só para semáforo, e sempre com emoji e texto ("🔴 Chuva forte"). Cards neutros usam uma borda única. | Cor sempre com emoji e texto |
+| 4 | "E a praia?" mostra "Mar de boa" primeiro e "🔴 Água imprópria" depois. | Colocar a informação mais restritiva no topo. | Na dúvida, o mais conservador |
+| 5 | Formatação mista: "ondas até **0.7 m**", mas "**1,5 mm**" no resto. | Padronizar com vírgula (pt-BR). | Consistência |
+
+## Prioridade 2: harmonia e consistência
+
+| # | O que vejo | Ajuste |
+|---|---|---|
+| 6 | Os selects do planejador "Vai pra onde?" têm borda azul grossa, mas "Que horas você sai?" tem borda fina. | Todos os campos iguais. |
+| 7 | "Usar minha localização" ocupa uns 90% da largura, "Usar o local do topo" ocupa 100%, e "Desligar e apagar histórico" tem largura própria. | Todos os botões do card com a mesma largura (100%) e a mesma altura. |
+| 8 | A aba ativa tem borda laranja grossa que "vaza" da grade: o Meu Dia começa 8 px à esquerda da borda dos campos acima, e "10 dias" termina antes da borda direita. | Borda igual à das outras abas e anel por fora (proposta anterior). |
+| 9 | O campo Bairro corta o nome ("Ponta d…"). | Reduzir o espaço do campo "Dados de" e dar mais largura ao Bairro, ou permitir duas linhas. |
+| 10 | "🟢12:20" não tem espaço entre o emoji e a hora, e não diz o que é. | "🟢 Ao vivo 12:20". |
+| 11 | As caixas cinza-claras de nota ("Escolhe a cidade e o bairro…", "Previsão é de computador…") têm fundo claro, e isso puxa o olho mais que o conteúdo. A de "Escolhe a cidade…" também vem depois do formulário, quando deveria vir antes. | Fundo escuro discreto e texto menor. |
+| 12 | Cards dentro de cards (ícone dentro de "Quer o ícone…", "Vai pra onde?" dentro do card azul). | Usar um nível só. |
+
+## Prioridade 3: acabamento
+
+- O texto está bem grande em "Confiança" e "Dia quente" (4 linhas cada). Um corpo de texto menor, com os números em destaque, ajudaria a ver mais por tela.
+- O rodapé de fontes está longo e em cinza de baixo contraste. Dá para recolher em "Ver fontes" (toque ≥ 44 px).
+- O ícone de calendário do planejador mostra "July 17", que não corresponde à data real. Trocar por 📅 simples.
+
+## O que manter
+
+- Paleta escura, com boa leitura ao sol.
+- Barra de botões com alvos de toque grandes.
+- A frase "Previsão de modelo, não certeza" e a informação de fonte e hora.
+- O planejador "Vai pra onde?", que é um diferencial.
+
+## Como seguir
+
+Os itens 1, 2, 3, 4 e 5 mexem em texto e derivados. Pelas regras anti-gambiarra, o veredito e as frases devem sair da **mesma função**, e qualquer regra nova precisa de teste e CHANGELOG. Os itens 6 a 12 são só visual.
+
+Sugestão: um item por vez, começando pelo **2** (cores de destaque) e pelo **8** (bordas das abas, que já está no passo a passo). Para cada um, preciso do trecho real do arquivo (via Command+F), porque não vou propor troca de memória.
+
+Quais números você aprova?
