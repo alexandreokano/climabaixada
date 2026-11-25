@@ -1071,15 +1071,14 @@ function momTab(b,k){
 }
 function momBox(){return ''}
 function resumoDia(di){
-  const m=pst(di,6,11),a=pst(di,12,14),t=pst(di,15,18);
-  if(!m||!a||!t)return '';
-  const ch=s=>s.rm>=0.3,lv=s=>s.pm>=40&&s.rm<0.3;
-  const tm=m.tmax<18?'fria':m.tmax<=25?'amena':'quente';
-  const mc=ch(m)?', com chuva':lv(m)?', com ameaça de chuva':', sem chuva';
-  const pico=Math.max(a.tmax,a.amax);
-  const al=(pico-m.tmax>=2||a.tmax>=28)?`pode esquentar na hora do almoço (até ${Math.round(pico)}°C)`:`na hora do almoço a temperatura fica por volta de ${Math.round(a.tmax)}°C`;
-  const tc=ch(t)?`a chuva é esperada à tarde${t.r0!=null?` (entre ${pad(t.r0)}h e ${pad(t.r1)}h)`:''}`:lv(t)?'há ameaça de chuva à tarde, com pouca água':'não há chuva relevante prevista para a tarde';
-  return `<b>🗓️ O dia em resumo:</b> a manhã será ${tm}${mc}; ${al}; e ${tc}.`;
+  const m=pstR(di,6,11),a=pstR(di,12,14),t=pstR(di,15,17);
+  if(!m&&!a&&!t)return '';
+  const ch=s=>s.rm>=0.3,lv=s=>s.pm>=40&&s.rm<0.3,P=[];
+  if(m){const tm=m.tmax<18?'fria':m.tmax<=25?'amena':'quente';P.push(`a manhã será ${tm}${ch(m)?', com chuva':lv(m)?', com ameaça de chuva':', sem chuva'}`)}
+  if(a){const pico=Math.max(a.tmax,a.amax),base=m?m.tmax:a.tmax;P.push((pico-base>=2||a.tmax>=28)?`pode esquentar na hora do almoço (até ${Math.round(pico)}°C)`:`na hora do almoço a temperatura fica por volta de ${Math.round(a.tmax)}°C`)}
+  if(t)P.push(ch(t)?`a chuva é esperada à tarde${t.r0!=null?` (entre ${pad(t.r0)}h e ${pad(t.r1)}h)`:''}`:lv(t)?'há ameaça de chuva à tarde, com pouca água':'não há chuva relevante prevista para a tarde');
+  const j=P.length<2?P[0]:P.length==2?P[0]+' e '+P[1]:P.slice(0,-1).join('; ')+'; e '+P[P.length-1];
+  return `<b>🗓️ ${DAYS[di].date==todayStr?'O resto do dia em resumo':'O dia em resumo'}:</b> ${j}.`;
 }
 function people(di){
   const D=DAYS[di],all=pst(di,6,21);
