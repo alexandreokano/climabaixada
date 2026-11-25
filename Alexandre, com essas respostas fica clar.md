@@ -258,3 +258,14 @@ Os itens 1, 2, 3, 4 e 5 mexem em texto e derivados. Pelas regras anti-gambiarra,
 Sugestão: um item por vez, começando pelo **2** (cores de destaque) e pelo **8** (bordas das abas, que já está no passo a passo). Para cada um, preciso do trecho real do arquivo (via Command+F), porque não vou propor troca de memória.
 
 Quais números você aprova?
+
+
+----------
+
+
+
+| # | Mudança | Teste |
+| --- | --- | --- |
+| 1 | Cards de período: vermelho passa de 2 mm para 1 mm | ❓ sem cobertura confirmada |
+| 2 | Cards de período: amarelo passa de chance ≥30% para chance ≥40% ou chuva ≥0,3 mm | ❓ sem cobertura confirmada |
+| 3 | Novas dicas nos cards: rajada (45 km/h), blusa (23°C) e calor (30°C) | ❓ sem cobertura confirmada |
