@@ -1,5 +1,11 @@
 # Changelog · Clima Baixada
 
+## 2026-11-25 (regra de segurança)
+- Maré: `parada` (estofa, diferença menor que 10 cm) agora conta como vazante em `tratarComoVazante`.
+- Motivo: na estofa o aviso de efeito canal (vazante + vento sul acima de 12 nós) não disparava, e o semáforo ficava mais otimista que a regra.
+- Teste: novo caso em `mare-tendencia.test.mjs`.
+
+
 ## 2026-11-25 · Efeito canal sem tábua de maré
 
 **Motivo:** quando a maré era desconhecida, `tideAt` devolvia `null` e a regra do efeito canal era ignorada. Vento sul de 13 nós com maré ausente dava 🟡, e deveria dar 🔴.
