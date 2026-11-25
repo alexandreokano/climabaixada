@@ -804,7 +804,7 @@ function kayakV(o,tide){
   if(wc!=null&&wc>=R.trovoadaCodigo){up(2);r.push('trovoada prevista')}
   else if(tsNext){up(1);r.push('trovoada prevista na próxima hora')}
   if(pp!=null&&pp>=R.probChuva){up(1);r.push(`chance de chuva ${pp.toFixed(0)}%`)}
-  if(tide&&tide.state=='vazante'&&wd!=null&&wd>=R.canalDirMin&&wd<=R.canalDirMax&&ws!=null&&ws>R.canalVento){up(2);warn=true;r.push('vazante + vento sul >12 nós')}
+  if((!tide||tide.state=='vazante')&&wd!=null&&wd>=R.canalDirMin&&wd<=R.canalDirMax&&ws!=null&&ws>R.canalVento){up(2);warn=true;r.push(tide?'vazante + vento sul >12 nós':'sem tábua de maré (tratado como vazante) + vento sul >12 nós')}
   return{l,r,warn};
 }
 function surfV(o){
