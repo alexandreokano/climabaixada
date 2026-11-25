@@ -42,4 +42,4 @@ export function tendenciaMare(mares, agora = new Date(), limiar = LIMIAR_M) {
 }
 
 // Segurança primeiro: sem dado confiável, trate como vazante.
-export const tratarComoVazante = est => est === 'vazante' || est === 'indefinida';
+export const tratarComoVazante = est => est === 'vazante' || est === 'parada' || est === 'indefinida';
