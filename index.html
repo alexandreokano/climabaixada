@@ -1053,27 +1053,6 @@ function esporteTxt(di){
 }
 const fmt=di=>hl(String(DAYS[di].txt)+(DAYS[di].k==3?'':esporteTxt(di)+pescaTxt(di)));
 const volTxt=m=>m<=0?'0 mm':m<0.1?'menos de 0,1 mm':m.toFixed(1).replace('.',',')+' mm';
-const probTxt=p=>p>=80?'pode contar que vem':p>=50?'tá armando chuva':p>=30?'pode ser que caia':'duvido que caia';
-function chuvaCaicara(mm, prob, trov, ini, fim) {
-  const h = x => String(x).padStart(2, '0') + 'h';
-  const n = mm || 0;
-  if (!trov && n < 0.2) return '';
-  const quando = ini != null && fim != null ? ` entre ${h(ini)} e ${h(fim)}` : '';
-  const qtd = `~${n.toFixed(1).replace('.', ',')} mm`;
-  if (trov) {
-    return `⚡ Risco de raios${quando}: fora da água e longe da praia. Não entre no mar.${n >= 0.2 ? ' Chuva de ' + qtd + '.' : ''}`;
-  }
-  let p = '';
-  if (prob != null) {
-    const w = prob >= 80 ? 'pode contar que vem' : prob >= 50 ? 'tá armando chuva' : prob >= 30 ? 'pode ser que caia' : 'duvido que caia';
-    p = ` ${w.charAt(0).toUpperCase() + w.slice(1)} (${Math.round(prob)}%).`;
-  }
-  if (n < 1)  return `🌦️ Só uma garoinha de leve${quando} (${qtd}). Nada que assuste.${p}`;
-  if (n < 5)  return `🌧️ Chuvisqueiro de vez em quando${quando} (${qtd}). Leva a capa.${p}`;
-  if (n < 15) return `☔ Vem pancada de chuva${quando} (${qtd}). Olha o céu.${p}`;
-  if (n < 30) return `🌧️ Chuvarada forte${quando} (${qtd}). O mar vai ficar pesado.${p}`;
-  return `⛈️ Toró brabo${quando} (${qtd}). Hoje a água fica pra outro dia.${p}`;
-}
 function pst(di,a,b){
   const H=[];for(let h=a;h<=b;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push({...o,h})}
   if(!H.length)return null;
