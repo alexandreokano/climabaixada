@@ -1251,11 +1251,16 @@ function guiaLocal(){
 }
 const SEA=f=>()=>!cur().m?nosea():localWarn()+f();
 function period(di,a,b,ic,nm){
-  const H=[];for(let h=a;h<b;h++){const o=obs(di,h);if(o&&o.tp!=null)H.push(o)}
-  if(!H.length)return `<div class="card"><h3><span aria-hidden="true">${ic}</span> ${nm}</h3><div class="mut">sem previsão ao vivo</div></div>`;
-  const tmin=Math.min(...H.map(x=>x.tp)),tmax=Math.max(...H.map(x=>x.tp)),pm=Math.round(Math.max(...H.map(x=>x.pp||0))),rm=H.reduce((s,x)=>s+(x.rain||0),0),g=Math.max(...H.map(x=>x.wg||0))*1.852;
-  const l=(rm>=2||(pm>=60&&rm>=0.3))?'r':pm>=30?'y':'g';
-  return `<div class="card ${l}"><h3><span aria-hidden="true">${ic}</span> ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${tmin.toFixed(0)}–${tmax.toFixed(0)}°C</div><div class="pl">${rm<0.3?(pm>=40?`<span aria-hidden="true">🌥️</span> Cara de chuva<br><span aria-hidden="true">💧</span> só uns pingos, quase nada`:`<span aria-hidden="true">😎</span> Chuva improvável<br><span aria-hidden="true">💧</span> sem água prevista`):`<span aria-hidden="true">☔</span> ${pm}% de chance<br><span aria-hidden="true">💧</span> ${volTxt(rm)} previstos`}<br><span aria-hidden="true">💨</span> ${g.toFixed(0)} km/h</div></div>`;
+  const H=[];for(let h=a;h<b;h++){const o=obs(di,h);if(o)H.push(o)}
+  const I=periodoInfo(H,{'Manhã':'manha','Almoço':'almoco','Tarde':'tarde','Noite':'noite'}[nm]);
+  if(!I)return `<div class="card"><h3><span aria-hidden="true">${ic}</span> ${nm}</h3><div class="mut">sem previsão ao vivo</div></div>`;
+  const chuvaTxt=I.rm<0.3
+    ?(I.chuva=='fraca'?'<span aria-hidden="true">🌥️</span> Cara de chuva<br><span aria-hidden="true">💧</span> só uns pingos, quase nada'
+     :I.chuva=='semdado'?'<span aria-hidden="true">⚪</span> Sem chance de chuva informada<br><span aria-hidden="true">💧</span> sem água prevista'
+     :'<span aria-hidden="true">😎</span> Chuva improvável<br><span aria-hidden="true">💧</span> sem água prevista')
+    :`<span aria-hidden="true">☔</span> ${I.pm==null?'chance sem dado':I.pm+'% de chance'}<br><span aria-hidden="true">💧</span> ${volTxt(I.rm)} previstos`;
+  const vento=`<span aria-hidden="true">💨</span> ${I.gkmh==null?'sem dado':I.gkmh.toFixed(0)+' km/h'}`;
+  return `<div class="card ${COL[I.l]}"><h3><span aria-hidden="true">${ic}</span> ${nm}<small class="mut">${pad(a)}h–${pad(b)}h</small></h3><div class="big">${I.tmin.toFixed(0)}–${I.tmax.toFixed(0)}°C</div><div class="pl">${chuvaTxt}<br>${vento}</div><div class="pl" style="margin-top:6px">${I.dicas.map(ae).join('<br>')}</div></div>`;
 }
 function tenDays(){
   const L=DAYS.map((d,i)=>i).filter(i=>dayOff(i)>=0&&dayOff(i)<=9);
