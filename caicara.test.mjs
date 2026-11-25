@@ -42,7 +42,7 @@ test('0,3 mm = garoinha com guarda-chuva pequeno (limite do card amarelo)', () =
 test('0,99 mm ainda é garoinha; 1 mm já pede capa (limite do card vermelho)', () => {
   assert.ok(c(0.99, null, false).includes('garoinha'));
   const r = c(1, null, false);
-  assert.ok(r.includes('Chuvisqueiro'));
+  assert.ok(r.includes('chuva pra valer'));
   assert.ok(r.includes('capa'));
   assert.ok(!r.includes('garoinha'));
 });
@@ -55,7 +55,7 @@ test('chance >= 60% com >= 0,3 mm também é nível forte (igual ao card)', () =
 });
 
 test('faixas de volume: 5, 15 e 30 mm', () => {
-  assert.ok(c(4.99, null, false).includes('Chuvisqueiro'));
+  assert.ok(c(4.99, null, false).includes('chuva pra valer'));
   assert.ok(c(5, null, false).includes('pancada'));
   assert.ok(c(14.99, null, false).includes('pancada'));
   assert.ok(c(15, null, false).includes('Chuvarada'));
