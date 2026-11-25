@@ -1,3 +1,5 @@
+# Changelog · Clima Baixada
+
 ## 2026-11-25 · Efeito canal sem tábua de maré
 
 **Motivo:** quando a maré era desconhecida, `tideAt` devolvia `null` e a regra do efeito canal era ignorada. Vento sul de 13 nós com maré ausente dava 🟡, e deveria dar 🔴.
@@ -16,8 +18,6 @@
 
 **Como desfazer:** voltar ao `index-backup.html`.
 
-
-# Changelog · Clima Baixada
 
 ## 2026-11-22
 - Melhor janela: dia 🔴 não mostra mais horário de janela (limitaJanela).
