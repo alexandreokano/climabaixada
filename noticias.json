@@ -1,6 +1,12 @@
 {
-  "atualizado_em": "25/11/2026, 16:59",
+  "atualizado_em": "25/11/2026, 17:06",
   "itens": [
+    {
+      "fonte": "Diário do Peixe",
+      "titulo": "João Basso acredita ter sido ‘marcado’ e lamenta condução na saída do Santos",
+      "url": "https://www.diariodopeixe.com.br/noticias/joao-basso-acredita-ter-sido-marcado-e-lamenta-conducao-na-saida-do-santos/",
+      "data": "25/11/2026"
+    },
     {
       "fonte": "Diário do Peixe",
       "titulo": "Emily Bonifácio, irmã de destaque das Sereias, é convocada pela Seleção Brasileira Sub-17",
@@ -29,12 +35,6 @@
       "fonte": "Diário do Peixe",
       "titulo": "Cuca reforça preferência pela Vila e lamenta derrota do Santos diante de 43 mil torcedores",
       "url": "https://www.diariodopeixe.com.br/noticias/cuca-reforca-preferencia-pela-vila-e-lamenta-derrota-do-santos-diante-de-43-mil-torcedores/",
-      "data": "25/11/2026"
-    },
-    {
-      "fonte": "Diário do Peixe",
-      "titulo": "Sereinhas enfrentam o Sport no CERET na estreia da Copinha F",
-      "url": "https://www.diariodopeixe.com.br/noticias/sereinhas-enfrentam-o-sport-no-ceret-na-estreia-da-copinha-f/",
       "data": "25/11/2026"
     },
     {
@@ -75,6 +75,12 @@
     },
     {
       "fonte": "Diário do Peixe (YouTube)",
+      "titulo": "Santos inicia preparação contra o Vitória - Happy Hour ao vivo",
+      "url": "https://www.youtube.com/watch?v=6XaUdfUqdfY",
+      "data": "24/11/2026"
+    },
+    {
+      "fonte": "Diário do Peixe (YouTube)",
       "titulo": "Santista vai torcer para o Corinthians e o Palmeiras? - Café com Anita",
       "url": "https://www.youtube.com/watch?v=y6e3lInybKc",
       "data": "25/11/2026"
@@ -83,12 +89,6 @@
       "fonte": "Diário do Peixe (YouTube)",
       "titulo": "Boletim Diário do Peixe - 25/11/26 #boletimdiariodopeixe #futebol",
       "url": "https://www.youtube.com/shorts/ECikmnMkwRQ",
-      "data": "25/11/2026"
-    },
-    {
-      "fonte": "Diário do Peixe (YouTube)",
-      "titulo": "Santos perde para o Grêmio e se complica por Libertadores - Happy Hour ao vivo",
-      "url": "https://www.youtube.com/watch?v=rIgDGEob7g0",
       "data": "25/11/2026"
     }
   ]
