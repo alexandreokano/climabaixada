@@ -40,3 +40,11 @@ test('altura null nunca vira "parada"', () => {
 
 test('data inválida = indefinida', () =>
   assert.equal(q('lixo'), 'indefinida'));
+
+test('parada (estofa) conta como vazante: conservador', () => {
+  assert.ok(tratarComoVazante('parada'));
+  assert.ok(tratarComoVazante('vazante'));
+  assert.ok(tratarComoVazante('indefinida'));
+  assert.ok(!tratarComoVazante('enchente'));
+});
+
