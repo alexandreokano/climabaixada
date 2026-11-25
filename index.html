@@ -683,7 +683,7 @@ function tendencia(di){
   const wet=a.rm>=2||(hp&&a.pm>=60&&a.rm>=0.3);
   const tr=wet?'☔ Tendência de dia chuvoso':(a.rm>=0.3||(hp&&a.pm>=30))?'🌦️ Chuva possível':'😎 Tendência de tempo firme';
   const rn=ae(chuvaCaicara(a.rm,hp?a.pm:null,false)||'chuva improvável.');
-  return `<div class="cid"><div><b><span aria-hidden="true">${tr.slice(0,tr.indexOf(' '))}</span>${tr.slice(tr.indexOf(' '))}.</b> Temperatura em torno de ${Math.round(a.tmin)} a ${Math.round(a.tmax)}°C. ${rn}.</div></div><div class="mut">Para datas distantes mostramos só a tendência do dia, sem horários, períodos nem vento. Os detalhes aparecem conforme a data se aproxima. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div>`;
+  return `<div class="cid"><div><b><span aria-hidden="true">${tr.slice(0,tr.indexOf(' '))}</span>${tr.slice(tr.indexOf(' '))}.</b> Temperatura em torno de ${Math.round(a.tmin)} a ${Math.round(a.tmax)}°C. ${rn}</div></div><div class="mut">Para datas distantes mostramos só a tendência do dia, sem horários, períodos nem vento. Os detalhes aparecem conforme a data se aproxima. Fonte: Open-Meteo${S.stamp?`, atualizado às ${S.stamp}`:''}.</div>`;
 }
 extDays();
 
