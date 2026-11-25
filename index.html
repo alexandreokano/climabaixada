@@ -1058,6 +1058,11 @@ function pst(di,a,b){
   const rh=H.filter(x=>x.rain>=0.3),hot=H.reduce((m,x)=>(x.ap??x.tp)>(m.ap??m.tp)?x:m,H[0]);
   return{a,b,tmin:Math.min(...H.map(x=>x.tp)),tmax:Math.max(...H.map(x=>x.tp)),amax:hot.ap??hot.tp,ah:hot.h,pm:Math.round(Math.max(...H.map(x=>x.pp||0))),rm:H.reduce((s,x)=>s+(x.rain||0),0),r0:rh.length?rh[0].h:null,r1:rh.length?rh[rh.length-1].h+1:null,gm:Math.max(...H.map(x=>x.wg||0))*1.852};
 }
+/* Igual ao pst, mas hoje ignora horas que já passaram (inclui a hora atual). Outros dias: idêntico. */
+function pstR(di,a,b){
+  if(DAYS[di].date==todayStr)a=Math.max(a,Math.floor(nowH()));
+  return a>b?null:pst(di,a,b);
+}
 function momTab(b,k){
   const m=b.closest('.mom');if(!m)return;
   m.querySelectorAll('.mt').forEach(x=>x.setAttribute('aria-selected',String(x===b)));
