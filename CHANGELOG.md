@@ -11,9 +11,14 @@
 - Como `bestRun`, `strip`, `infoHTML` e `tripBox` leem `hourInfo`, todos passam a respeitar a trava.
 - O aviso de efeito canal (`warn`) é preservado.
 
-**Testes:** 5 casos novos de `limitaHora` em `semaforo.test.mjs`. Resultado: 30 de 30 passando.
+**Testes:**
+- 5 casos novos de `limitaHora` em `semaforo.test.mjs`.
+- Arquivo novo `hora-ligacao.test.mjs`, com 9 testes que cobrem a ligação real entre `hourInfo()` e o semáforo: controle sem veredito, dia manual 🔴, dia manual 🟡, `k` e `s` separados, dia ⚪, dias `auto` e `ext`, bairro sem mar e dia inexistente.
+- Resultado: 79 testes passando no total (`node --test`), 0 falhas.
 
-**Sem cobertura automática:** a chamada dentro de `hourInfo()` não tem teste, porque ela depende de `DAYS` e `obs`. Foi conferida só visualmente, em 26/11, com 🔴 em todas as horas de dia (05h–18h) no Surf.
+**Prova de regressão (26/11, 9h40):** gerei uma cópia do `index.html` sem as duas chamadas `limitaHora(D.k,k)` e `limitaHora(D.s,s)` e rodei `hora-ligacao.test.mjs` nela. Resultado: 6 passaram e 3 falharam (dia manual 🔴, dia manual 🟡 e vereditos separados de caiaque e surfe). Isso prova que os testes detectam a remoção da ligação. A cópia foi apagada e o `git status` ficou limpo.
+
+**Conferido também na tela (26/11):** 🔴 em todas as horas de dia (05h–18h) no Surf e no Caiaque.
 
 **Como desfazer:** voltar ao `index-backup.html`.
 
