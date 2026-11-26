@@ -112,8 +112,13 @@ Formato: o que mudou, quando e se foi confirmado.
 - ❓ A execução de 25/11 às 05:51 é anterior ao primeiro horário do cron (06h23). Sem explicação.
 - 🔎 Mitigação existente: o selo DESATUALIZADO após 6 h no painel. ❓ Não conferido na tela nesses dias.
 
-### Ainda não verificado
-- ❓ `noticias.yml`: troca de `0 */3 * * *` por `41 */3 * * *`.
+### Publicado e depois alterado (noticias.yml, confirmado em 26/11)
+- ✅ 21/11 09:44 (`bdba43b`): cron trocado de `0 */3 * * *` para `41 */3 * * *`, como recomendado.
+- ✅ 21/11 16:25 (`007cc84`): substituído por `7,37 * * * *` (a cada 30 min, fora da hora cheia). O commit anterior, `6131738` (16:20), já tinha removido o `41 */3`.
+- ✅ 22/11 09:13 (`98dcf42`): acrescentada a reserva `22,52 * * * *`. Hoje são 4 execuções por hora (minutos 7, 22, 37 e 52 UTC).
+- ✅ Execuções do `noticias.yml` vistas em 26/11: #71 (agendada, 09:54) e #72 (manual), ambas concluídas com sucesso. Só essas duas foram conferidas; as demais não.
+- 🔎 Nessa mesma tela não apareceu nenhuma execução agendada entre 09:54 e a manual, embora o cron preveja 4 por hora. O `schedule` do GitHub é "melhor esforço" e pula horários.
+
 ### Correção de código
 - No `index.html`, trecho da nota do Resumão: `onst` → `const`, "têm" → "tem", "lám baixo" → "lá embaixo". ❓ Confirmar no arquivo real se já foi corrigido.
 
