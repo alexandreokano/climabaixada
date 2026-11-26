@@ -16,11 +16,11 @@ changelog-26-11-etapa0
 - ✅ `periodo.test.mjs`: commit `ba18b6e` de 2026-11-25. A data dos cards de período neste CHANGELOG está correta.
 - ✅ `mares.json` (commit `d7d29ac`, 2026-11-25): publicado no site, com `2027-12-31` como último dia. Marés 2026 e 2027 conferidas por Alexandre.
 - ✅ `sw.js` local: versão `clima-v19`, rede primeiro (`cache: 'no-cache'`) e cache só como fallback offline.
+- ✅ sw.js publicado: clima-v19 (conferido em climabaixada.com.br/sw.js em 26/11/2026).
 
 **Observação:** o seletor de hora do Android (Saída/Volta) é nativo do sistema, não é bug do app.
 
 **Ainda não coberto:**
-- ❓ `sw.js` publicado: só o arquivo local foi conferido.
 - ❓ Ligação de `limitaHora` e `melhorJanela` com a tela: coberta por `hora-ligacao.test.mjs`, mas não conferida na tela em todos os casos (🟡 e 🟢).
 
 **Como desfazer:** voltar ao `index-backup.html`. Esta entrada é só documentação.
