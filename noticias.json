@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "26/11/2026, 09:13",
+  "atualizado_em": "26/11/2026, 09:54",
   "itens": [
     {
       "fonte": "Diário do Peixe",
@@ -39,6 +39,12 @@
     },
     {
       "fonte": "Santos FC (YouTube)",
+      "titulo": "SANTOS FC REALIZA EXAMES CARDIOLÓGICOS NO CT REI PELÉ",
+      "url": "https://www.youtube.com/watch?v=BgY9U0w46E4",
+      "data": "26/11/2026"
+    },
+    {
+      "fonte": "Santos FC (YouTube)",
       "titulo": "SANTOS 1 X 0 SPORT RECIFE | GOL | COPINHA FEMININA 2026",
       "url": "https://www.youtube.com/watch?v=JdPoJ8fFvxU",
       "data": "25/11/2026"
@@ -48,12 +54,6 @@
       "titulo": "VERÍSSIMO E LIRA TREINAM NO CT! ⚪⚫",
       "url": "https://www.youtube.com/shorts/fZ_3A6BHGdI",
       "data": "25/11/2026"
-    },
-    {
-      "fonte": "Santos FC (YouTube)",
-      "titulo": "CUCA | COLETIVA (23/11/26)",
-      "url": "https://www.youtube.com/watch?v=4eESWduJy3U",
-      "data": "23/11/2026"
     },
     {
       "fonte": "De Olho no Peixe (YouTube)",
@@ -75,21 +75,21 @@
     },
     {
       "fonte": "Diário do Peixe (YouTube)",
-      "titulo": "Santos inicia preparação contra o Vitória - Happy Hour ao vivo",
-      "url": "https://www.youtube.com/watch?v=6XaUdfUqdfY",
+      "titulo": "Santos prevê orçamento de R$ 622 milhões para 2027 - Café com Anita",
+      "url": "https://www.youtube.com/watch?v=w9lNnk3pfRs",
       "data": "26/11/2026"
     },
     {
       "fonte": "Diário do Peixe (YouTube)",
-      "titulo": "ELEIÇÕES DO SANTOS - DIÁRIO ENTREVISTA IVAN LUDUVICE",
-      "url": "https://www.youtube.com/watch?v=IFcswYF9LV8",
-      "data": "25/11/2026"
+      "titulo": "Boletim Diário do Peixe - 26/11/26",
+      "url": "https://www.youtube.com/shorts/zLSnXEw-hxA",
+      "data": "26/11/2026"
     },
     {
       "fonte": "Diário do Peixe (YouTube)",
-      "titulo": "Santos conhece tabela básica do Paulistão 2027 - Happy Hour ao vivo",
-      "url": "https://www.youtube.com/watch?v=ZHcOtt1SZLE",
-      "data": "25/11/2026"
+      "titulo": "Santos inicia preparação contra o Vitória - Happy Hour ao vivo",
+      "url": "https://www.youtube.com/watch?v=6XaUdfUqdfY",
+      "data": "26/11/2026"
     }
   ]
 }
