@@ -76,12 +76,6 @@
 **Como desfazer:** voltar ao `index-backup.html`.
 
 
---------------
-
-
-
-Formato: o que mudou, quando e se foi confirmado.
-
 ## [21/11/2026]
 
 ### Confirmado
