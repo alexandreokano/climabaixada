@@ -1,5 +1,7 @@
 # Changelog · Clima Baixada
 
+Formato: o que mudou, quando e se foi confirmado.
+
 ## 2026-11-26 · Hora a hora nunca mais otimista que o veredito do dia
 
 **Motivo:** o semáforo por hora (Surf e Caiaque) podia mostrar 🟢 ou 🟡 em dia com veredito manual do Capitão 🔴. A hora e o dia se contradiziam. Em 26/11, o surfe estava 🔴 no dia (`s: 2`), mas a hora de onda de 1,4 m aparecia 🟡 pela regra automática.
