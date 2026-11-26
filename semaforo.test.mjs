@@ -137,3 +137,35 @@ test('caiaque: sem tábua de maré (tide null) + vento sul > 12 nós = vermelho 
   assert.equal(k({ ws: 13, wd: 0 }, null).warn, false);
   assert.equal(k({ ws: 13, wd: 180 }, { state: 'enchente' }).warn, false);
 });
+
+// ---------- Hora x veredito do dia ----------
+const hora = (l) => ({ l, r: ['ondas 1.4 m: no limite'] });
+test('hora: dia 🔴 nunca mostra hora 🟢 ou 🟡', () => {
+  assert.equal(limitaHora(2, hora(0)).l, 2);
+  assert.equal(limitaHora(2, hora(1)).l, 2);
+  assert.equal(limitaHora(2, hora(2)).l, 2);
+});
+test('hora: dia 🟡 sobe hora 🟢 para 🟡 e nunca rebaixa', () => {
+  assert.equal(limitaHora(1, hora(0)).l, 1);
+  assert.equal(limitaHora(1, hora(1)).l, 1);
+  assert.equal(limitaHora(1, hora(2)).l, 2);
+});
+test('hora: dia 🟢 não muda nada', () => {
+  assert.equal(limitaHora(0, hora(0)).l, 0);
+  assert.equal(limitaHora(0, hora(1)).l, 1);
+});
+test('hora: dia ⚪ ou inválido não muda; hora sem dados continua sem dados', () => {
+  assert.equal(limitaHora(3, hora(0)).l, 0);
+  assert.equal(limitaHora(undefined, hora(0)).l, 0);
+  assert.equal(limitaHora(null, hora(0)).l, 0);
+  assert.equal(limitaHora(2, hora(null)).l, null);
+  assert.equal(limitaHora(2, null), null);
+});
+test('hora: explica o motivo e não altera o original', () => {
+  const h = hora(0);
+  const r = limitaHora(2, h);
+  assert.ok(r.r.some(x => x.includes('veredito do Capitão')));
+  assert.equal(h.l, 0);
+  assert.equal(h.r.length, 1);
+});
+
