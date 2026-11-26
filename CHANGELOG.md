@@ -54,7 +54,7 @@ Formato: o que mudou, quando e se foi confirmado.
 - Melhor janela: dia 🔴 não mostra mais horário de janela (limitaJanela).
 - Melhor janela: só considera horas que ainda não passaram (bestRun + melhorJanela).
 - Motivo: às 20h34, com dia 🔴, o painel mostrava "🔴 05h–11h", que parecia uma recomendação.
-- Teste novo em semaforo.test.mjs (32 casos).
+- Teste novo em semaforo.test.mjs (contagem de casos não reconferida).
   
 ## 2026-11-22 · Janela de horário nunca mais otimista que o veredito
 
