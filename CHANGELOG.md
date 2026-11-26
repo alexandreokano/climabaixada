@@ -1,6 +1,6 @@
 # Changelog · Clima Baixada
 
-## Formato: o que mudou, quando e se foi confirmado.
+Formato: o que mudou, quando e se foi confirmado.
 
 ## 2026-11-26 · Hora a hora nunca mais otimista que o veredito do dia
 
