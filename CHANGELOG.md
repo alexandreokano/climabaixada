@@ -4,6 +4,28 @@ Formato: o que mudou, quando e se foi confirmado.
 
 changelog-26-11-etapa0
 
+## 2026-11-26 · Fechamento da Etapa 0 (verificações)
+
+**Motivo:** encerrar as pendências de verificação antes de mexer em novas regras de segurança (`nivelDoDia`). Nenhuma regra mudou nesta entrada.
+
+**Conferido:**
+- ✅ `node --test`: 79 testes aprovados, 0 falhas (local).
+- ✅ `git status --short`: vazio (árvore limpa naquele momento).
+- ✅ `melhorJanela(`: 3 ocorrências no `index.html` (definição na linha 929; usos em `resumo()` na linha 1118, para `kw` e `sw`, e em `tripBox` na linha 1155).
+- ✅ Texto "lám baixo" (erro de digitação) corrigido: 0 ocorrências. "lá embaixo": 1.
+- ✅ `periodo.test.mjs`: commit `ba18b6e` de 2026-11-25. A data dos cards de período neste CHANGELOG está correta.
+- ✅ `mares.json` (commit `d7d29ac`, 2026-11-25): publicado no site, com `2027-12-31` como último dia. Marés 2026 e 2027 conferidas por Alexandre.
+- ✅ `sw.js` local: versão `clima-v19`, rede primeiro (`cache: 'no-cache'`) e cache só como fallback offline.
+
+**Observação:** o seletor de hora do Android (Saída/Volta) é nativo do sistema, não é bug do app.
+
+**Ainda não coberto:**
+- ❓ `sw.js` publicado: só o arquivo local foi conferido.
+- ❓ Ligação de `limitaHora` e `melhorJanela` com a tela: coberta por `hora-ligacao.test.mjs`, mas não conferida na tela em todos os casos (🟡 e 🟢).
+
+**Como desfazer:** voltar ao `index-backup.html`. Esta entrada é só documentação.
+
+
 ## 2026-11-26 · Hora a hora nunca mais otimista que o veredito do dia
 
 **Motivo:** o semáforo por hora (Surf e Caiaque) podia mostrar 🟢 ou 🟡 em dia com veredito manual do Capitão 🔴. A hora e o dia se contradiziam. Em 26/11, o surfe estava 🔴 no dia (`s: 2`), mas a hora de onda de 1,4 m aparecia 🟡 pela regra automática.
