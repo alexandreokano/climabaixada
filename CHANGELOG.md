@@ -1,5 +1,23 @@
 # Changelog · Clima Baixada
 
+## 2026-11-26 · Hora a hora nunca mais otimista que o veredito do dia
+
+**Motivo:** o semáforo por hora (Surf e Caiaque) podia mostrar 🟢 ou 🟡 em dia com veredito manual do Capitão 🔴. A hora e o dia se contradiziam. Em 26/11, o surfe estava 🔴 no dia (`s: 2`), mas a hora de onda de 1,4 m aparecia 🟡 pela regra automática.
+
+**Mudanças (`index.html`):**
+- Nova função `limitaHora(nivelDia, h)` dentro do bloco `SEMAFORO-INI/FIM`. Se o dia for pior que a hora, a hora sobe para o nível do dia e ganha o motivo "veredito do Capitão para o dia é pior que esta hora".
+- Hora sem dados continua sem dados. Veredito ⚪ ou inválido não altera nada.
+- `hourInfo()` aplica `limitaHora` a `k` (caiaque) e `s` (surfe) só quando o dia tem veredito manual (`!D.auto && !D.ext`). Dia automático nasce das próprias horas e não é limitado.
+- Como `bestRun`, `strip`, `infoHTML` e `tripBox` leem `hourInfo`, todos passam a respeitar a trava.
+- O aviso de efeito canal (`warn`) é preservado.
+
+**Testes:** 5 casos novos de `limitaHora` em `semaforo.test.mjs`. Resultado: 30 de 30 passando.
+
+**Sem cobertura automática:** a chamada dentro de `hourInfo()` não tem teste, porque ela depende de `DAYS` e `obs`. Foi conferida só visualmente, em 26/11, com 🔴 em todas as horas de dia (05h–18h) no Surf.
+
+**Como desfazer:** voltar ao `index-backup.html`.
+
+
 ## 2026-11-25 (regra de segurança)
 - Maré: `parada` (estofa, diferença menor que 10 cm) agora conta como vazante em `tratarComoVazante`.
 - Motivo: na estofa o aviso de efeito canal (vazante + vento sul acima de 12 nós) não disparava, e o semáforo ficava mais otimista que a regra.
