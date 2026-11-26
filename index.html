@@ -830,6 +830,14 @@ function surfV(o){
   if(pp!=null&&pp>=R.probChuva){up(1);r.push(`chance de chuva ${pp.toFixed(0)}%`)}
   return{l,r};
 }
+/* Hora nunca é mais otimista que o veredito do dia. nivelDia: 0 🟢 1 🟡 2 🔴 3 ⚪ */
+function limitaHora(nivelDia,h){
+  if(!h)return null;
+  if(h.l==null)return h; /* sem dados continua sem dados */
+  if(!Number.isInteger(nivelDia)||nivelDia<0||nivelDia>2)return h; /* ⚪ ou inválido: não mexe */
+  if(nivelDia<=h.l)return h;
+  return{...h,l:nivelDia,r:[...(h.r||[]),'veredito do Capitão para o dia é pior que esta hora']};
+}
 /* Janela de horário nunca é mais otimista que o veredito do dia. nivel: 0 🟢 1 🟡 2 🔴 3 ⚪ */
 function limitaJanela(nivel,w){
   if(!w)return null;
