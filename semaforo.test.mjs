@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 const html = readFileSync(process.env.HTML || 'index.html', 'utf8');
 const m = html.match(/\/\*SEMAFORO-INI\*\/([\s\S]*?)\/\*SEMAFORO-FIM\*\//);
 assert.ok(m, 'Marcadores SEMAFORO-INI/FIM não encontrados no index.html');
-const { kayakV, surfV, REGRAS, limitaJanela } = new Function(m[1] + ';return {kayakV,surfV,REGRAS,limitaJanela}')();
+const { kayakV, surfV, REGRAS, limitaJanela, limitaHora } = new Function(m[1] + ';return {kayakV,surfV,REGRAS,limitaJanela,limitaHora}')();
 
 const base = { ws: 6, wg: 9, wd: 0, wh: 0.5, wp: 8, rain: 0 };
 const k = (o, tide) => kayakV({ ...base, ...o }, tide);
