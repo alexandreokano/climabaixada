@@ -1,7 +1,7 @@
 {
   "versao": 1,
-  "avaliado_em": "2026-11-26T11:22:14-03:00",
-  "boletim_cetesb": "2026-11-19",
+  "avaliado_em": "2026-11-26T16:08:41-03:00",
+  "boletim_cetesb": "2026-11-26",
   "dias": [
     {
       "date": "2026-11-26",
@@ -20,7 +20,7 @@
       "s": 2,
       "vento": "L até 11 nós (rajadas até 23 nós)",
       "ondas": "até 2,0 m · 10 s",
-      "chuva": "chuvisqueiro de vez em quando, cerca de 1,8 mm (tá armando chuva, 67%)",
+      "chuva": "chuvisqueiro de vez em quando, cerca de 1,8 mm (pode contar que vem, 82%)",
       "txt": "Não navegue: vento/rajadas acima do limite do caiaque; ondas acima de 1,0 m; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
@@ -28,9 +28,9 @@
       "lbl": "Sáb 28",
       "k": 2,
       "s": 2,
-      "vento": "NNW até 5 nós (rajadas até 12 nós)",
+      "vento": "WSW até 5 nós (rajadas até 12 nós)",
       "ondas": "até 1,7 m · 10 s",
-      "chuva": "chuvarada forte, cerca de 22,0 mm (pode contar que vem, 98%)",
+      "chuva": "chuvarada forte, cerca de 22,0 mm (pode contar que vem, 90%)",
       "txt": "Não navegue: ondas acima de 1,0 m; risco de trovoadas ou chuva forte. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
@@ -39,8 +39,8 @@
       "k": 2,
       "s": 1,
       "vento": "ESE até 13 nós (rajadas até 20 nós)",
-      "ondas": "até 1,5 m · 8 s",
-      "chuva": "pancada de chuva, cerca de 6,2 mm (pode contar que vem, 98%)",
+      "ondas": "até 1,5 m · 7 s",
+      "chuva": "pancada de chuva, cerca de 6,2 mm (pode contar que vem, 100%)",
       "txt": "Não navegue: vento moderado ou rajadas; ondas acima de 1,0 m; pancadas de chuva. Vento sul acima de 12 nós: confira a maré; se estiver vazante, evite a Fortaleza da Barra e o Deck do Pescador. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
@@ -62,7 +62,7 @@
       ],
       [
         "Aparecida",
-        2
+        0
       ],
       [
         "Embaré",
@@ -74,7 +74,7 @@
       ],
       [
         "Gonzaga",
-        2
+        0
       ],
       [
         "Pompeia",
@@ -122,7 +122,7 @@
       ],
       [
         "Astúrias",
-        0
+        2
       ],
       [
         "Tombo",
@@ -180,7 +180,7 @@
       ],
       [
         "Ocian",
-        2
+        0
       ],
       [
         "Vila Mirim",
@@ -210,7 +210,7 @@
     "Bertioga": [
       [
         "Enseada - R. Rafael Costabili",
-        2
+        0
       ],
       [
         "Indaiá (Enseada)",
