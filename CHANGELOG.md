@@ -42,7 +42,7 @@ changelog-26-11-etapa0
 
 **Ainda não conferido:**
 - ❓ Se os testes falhavam antes da mudança (prova de regressão não feita).
-- ❓ A data exata da mudança. Confira com `git log --format='%ad %s' -- periodo.test.mjs` e corrija o título se for outra.
+- ✅ Data confirmada pelo `git log`: commit `ba18b6e`, 25/11/2026.
 
 **Como desfazer:** voltar ao `index-backup.html`.
 
@@ -122,7 +122,7 @@ changelog-26-11-etapa0
 - 🔎 Nessa mesma tela não apareceu nenhuma execução agendada entre 09:54 e a manual, embora o cron preveja 4 por hora. O `schedule` do GitHub é "melhor esforço" e pula horários.
 
 ### Correção de código
-- No `index.html`, trecho da nota do Resumão: `onst` → `const`, "têm" → "tem", "lám baixo" → "lá embaixo". ❓ Confirmar no arquivo real se já foi corrigido.
+- No `index.html`, trecho da nota do Resumão: `onst` → `const`, "têm" → "tem", "lám baixo" → "lá embaixo". ✅ Confirmado em 26/11: `grep -c "lám baixo"` deu 0 e `grep -c "lá embaixo"` deu 1.
 
 ### Conhecido
 - Os horários do `schedule` do GitHub Actions são "melhor esforço" e podem atrasar.
