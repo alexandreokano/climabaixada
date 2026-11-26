@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "25/11/2026, 23:46",
+  "atualizado_em": "26/11/2026, 07:53",
   "itens": [
     {
       "fonte": "Diário do Peixe",
@@ -75,6 +75,12 @@
     },
     {
       "fonte": "Diário do Peixe (YouTube)",
+      "titulo": "Santos inicia preparação contra o Vitória - Happy Hour ao vivo",
+      "url": "https://www.youtube.com/watch?v=6XaUdfUqdfY",
+      "data": "26/11/2026"
+    },
+    {
+      "fonte": "Diário do Peixe (YouTube)",
       "titulo": "ELEIÇÕES DO SANTOS - DIÁRIO ENTREVISTA IVAN LUDUVICE",
       "url": "https://www.youtube.com/watch?v=IFcswYF9LV8",
       "data": "25/11/2026"
@@ -84,12 +90,6 @@
       "titulo": "Santos conhece tabela básica do Paulistão 2027 - Happy Hour ao vivo",
       "url": "https://www.youtube.com/watch?v=ZHcOtt1SZLE",
       "data": "25/11/2026"
-    },
-    {
-      "fonte": "Diário do Peixe (YouTube)",
-      "titulo": "Santos inicia preparação contra o Vitória - Happy Hour ao vivo",
-      "url": "https://www.youtube.com/watch?v=6XaUdfUqdfY",
-      "data": "24/11/2026"
     }
   ]
 }
