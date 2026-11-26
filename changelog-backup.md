@@ -1,6 +1,6 @@
 # Changelog · Clima Baixada
 
-## Formato: o que mudou, quando e se foi confirmado.
+Formato: o que mudou, quando e se foi confirmado.
 
 ## 2026-11-26 · Hora a hora nunca mais otimista que o veredito do dia
 
@@ -21,6 +21,26 @@
 **Prova de regressão (26/11, 9h40):** gerei uma cópia do `index.html` sem as duas chamadas `limitaHora(D.k,k)` e `limitaHora(D.s,s)` e rodei `hora-ligacao.test.mjs` nela. Resultado: 6 passaram e 3 falharam (dia manual 🔴, dia manual 🟡 e vereditos separados de caiaque e surfe). Isso prova que os testes detectam a remoção da ligação. A cópia foi apagada e o `git status` ficou limpo.
 
 **Conferido também na tela (26/11):** 🔴 em todas as horas de dia (05h–18h) no Surf e no Caiaque.
+
+**Como desfazer:** voltar ao `index-backup.html`.
+
+
+## 2026-11-25 · Cards de período (Manhã, Almoço, Tarde, Noite): limites e dicas
+
+**Motivo:** os cards avisavam chuva tarde demais ou de menos. Segurança primeiro: na dúvida, o aviso sobe.
+
+**Mudanças (`index.html`, `periodoInfo`):**
+- Chuva forte (card vermelho): a partir de **1 mm** na soma das horas (antes, 2 mm).
+- Chuva fraca (card amarelo): chance **≥ 40%** ou chuva **≥ 0,3 mm** (antes, chance ≥ 30%).
+- Chance ≥ 60% com pelo menos 0,3 mm também é nível forte.
+- Sem chance de chuva informada = ⚪ (nunca verde).
+- Dicas novas: rajada ≥ 45 km/h (amarelo), blusa com mínima ≤ 23 °C, protetor solar só de dia com calor ≥ 30 °C (a sensação térmica vale mais que a temperatura).
+
+**Testes:** `periodo.test.mjs` com 13 casos, passando (parte dos 79 do `node --test`).
+
+**Ainda não conferido:**
+- ❓ Se os testes falhavam antes da mudança (prova de regressão não feita).
+- ❓ A data exata da mudança. Confira com `git log --format='%ad %s' -- periodo.test.mjs` e corrija o título se for outra.
 
 **Como desfazer:** voltar ao `index-backup.html`.
 
@@ -50,32 +70,29 @@
 **Como desfazer:** voltar ao `index-backup.html`.
 
 
-## 2026-11-22
-- Melhor janela: dia 🔴 não mostra mais horário de janela (limitaJanela).
-- Melhor janela: só considera horas que ainda não passaram (bestRun + melhorJanela).
-- Motivo: às 20h34, com dia 🔴, o painel mostrava "🔴 05h–11h", que parecia uma recomendação.
-- Teste novo em semaforo.test.mjs (contagem de casos não reconferida).
-  
 ## 2026-11-22 · Janela de horário nunca mais otimista que o veredito
 
-**Motivo:** o "Melhor hora" podia mostrar 🟢 ou 🟡 num dia com veredito 🔴. Segurança primeiro: a janela é derivada do veredito e nunca pode ser mais otimista que ele.
+**Motivo:** o "Melhor hora" podia mostrar 🟢 ou 🟡 num dia com veredito 🔴. Às 20h34, com dia 🔴, o painel mostrava "🔴 05h–11h", que parecia uma recomendação. Segurança primeiro: a janela é derivada do veredito e nunca pode ser mais otimista que ele.
 
 **Mudanças (`index.html`):**
 - Nova função `limitaJanela(nivel, janela)`, dentro do bloco `SEMAFORO-INI`/`SEMAFORO-FIM`. Dia 🔴 devolve janela 🔴. Dia ⚪ ou inválido devolve `null` (sem janela). Nunca melhora um nível pior.
+- `melhorJanela` (que usa `bestRun`) só considera horas que ainda não passaram.
 - `resumo()`: `kw` e `sw` passam por `limitaJanela` com `D.k` e `D.s`.
 - `tripBox`: `best` passa por `limitaJanela` (caiaque usa `.k`, surfe usa `.s`).
 - `autoLvl` **não foi alterada** de propósito. Ela gera o veredito automático a partir do `bestRun`, então é a origem e não um derivado.
 
-**Testes:** 3 casos novos em `semaforo.test.mjs` (janela com dia 🔴, nunca mais otimista, ⚪/inválido/sem janela). Total: 23 passando, 0 falhas.
+**Testes:** 3 casos novos de `limitaJanela` em `semaforo.test.mjs` (janela com dia 🔴, nunca mais otimista, ⚪/inválido/sem janela). Total lido no Terminal em 22/11: 23 passando, 0 falhas.
 
 **Conferido na tela (22/11, 19:54, celular):** dia 🔴 mostra "nenhum horário seguro hoje" em Caiaque e Surfe.
 
 **Ainda não coberto:**
 - ❓ Sem teste automático da ligação entre `limitaJanela` e `resumo()`/`tripBox`, que ficam na interface.
+- ❓ Sem teste que prove que `melhorJanela` ignora horas passadas.
 - ❓ Casos 🟡 e 🟢 não conferidos na tela.
 - 🔎 Dia ⚪ mostra "sem dados ao vivo" no `resumo()`. É conservador, mas o texto é impreciso. Possível melhoria futura: "sem avaliação".
 
 **Como desfazer:** voltar ao `index-backup.html`.
+
 
 
 ## [21/11/2026]
