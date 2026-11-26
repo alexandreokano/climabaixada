@@ -102,13 +102,18 @@ Formato: o que mudou, quando e se foi confirmado.
 - ✅ Workflow **Atualizar dados.json #20** rodou à mão, no `main`, com sucesso (18 s).
 - ✅ **pages build and deployment** #451 e #452 concluídos com sucesso depois dessa execução.
 
-### Preparado, ainda não publicado
-- `gerar-dados.mjs`: `get()` passa de 3 para **5 tentativas**, com limite de 30 s e pausas de 3, 6, 12 e 24 s. Erros 4xx (exceto 429) não são repetidos. Motivo: em 20/11 houve `CONNECT_TIMEOUT` nos modelos de vento/chuva (`ecmwf_ifs025`, `gfs_seamless`). O script recusou gravar dados incompletos e manteve o `dados.json` anterior, que é o comportamento correto.
+### Publicado (confirmado em 26/11)
+- ✅ `gerar-dados.mjs`: `get()` com **5 tentativas**, limite de 30 s e pausas de 3, 6, 12 e 24 s. Erros 4xx (exceto 429) não são repetidos. Entrou no commit `96aff79` (21/11, 10:52). Motivo: em 20/11 houve `CONNECT_TIMEOUT` nos modelos de vento/chuva (`ecmwf_ifs025`, `gfs_seamless`). O script recusou gravar dados incompletos e manteve o `dados.json` anterior, que é o comportamento correto.
+- ✅ `dados.yml`: o cron mudou duas vezes em 21/11. Às 09:36 (`446cc7f`) saiu da hora redonda para 06h23 e 18h23, com reserva às 08h47. Às 16:23 (`aad9c03`) passou a 6 horários por dia: 21h23, 06h23, 09h23, 12h23, 15h23 e 18h23 (Brasília), mais a reserva das 08h47. A hora redonda foi evitada porque o GitHub fica mais cheio nela.
+- ✅ Execuções #38 a #47 do workflow (23/11 a 26/11): todas concluídas com sucesso.
 
-### Recomendado, sem confirmação de que foi feito
-- `dados.yml`: trocar `0 9,21 * * *` por `23 9,21 * * *` (06h23 e 18h23 de Brasília), mais a reserva `47 11 * * *` (08h47). Evita a hora redonda, quando o GitHub fica mais cheio.
-- `noticias.yml`: trocar `0 */3 * * *` por `41 */3 * * *`.
+### Observado, sem causa confirmada
+- 🔎 Execuções agendadas atrasam ou são puladas. Na lista de 26/11: 24/11 das 07:05 às 18:33 (11 h 28 min sem rodar) e 25/11 das 05:51 às 16:26 (10 h 35 min). A reserva das 08h47 não aparece nas 10 execuções vistas.
+- ❓ A execução de 25/11 às 05:51 é anterior ao primeiro horário do cron (06h23). Sem explicação.
+- 🔎 Mitigação existente: o selo DESATUALIZADO após 6 h no painel. ❓ Não conferido na tela nesses dias.
 
+### Ainda não verificado
+- ❓ `noticias.yml`: troca de `0 */3 * * *` por `41 */3 * * *`.
 ### Correção de código
 - No `index.html`, trecho da nota do Resumão: `onst` → `const`, "têm" → "tem", "lám baixo" → "lá embaixo". ❓ Confirmar no arquivo real se já foi corrigido.
 
