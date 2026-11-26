@@ -25,6 +25,26 @@ Formato: o que mudou, quando e se foi confirmado.
 **Como desfazer:** voltar ao `index-backup.html`.
 
 
+## 2026-11-25 · Cards de período (Manhã, Almoço, Tarde, Noite): limites e dicas
+
+**Motivo:** os cards avisavam chuva tarde demais ou de menos. Segurança primeiro: na dúvida, o aviso sobe.
+
+**Mudanças (`index.html`, `periodoInfo`):**
+- Chuva forte (card vermelho): a partir de **1 mm** na soma das horas (antes, 2 mm).
+- Chuva fraca (card amarelo): chance **≥ 40%** ou chuva **≥ 0,3 mm** (antes, chance ≥ 30%).
+- Chance ≥ 60% com pelo menos 0,3 mm também é nível forte.
+- Sem chance de chuva informada = ⚪ (nunca verde).
+- Dicas novas: rajada ≥ 45 km/h (amarelo), blusa com mínima ≤ 23 °C, protetor solar só de dia com calor ≥ 30 °C (a sensação térmica vale mais que a temperatura).
+
+**Testes:** `periodo.test.mjs` com 13 casos, passando (parte dos 79 do `node --test`).
+
+**Ainda não conferido:**
+- ❓ Se os testes falhavam antes da mudança (prova de regressão não feita).
+- ❓ A data exata da mudança. Confira com `git log --format='%ad %s' -- periodo.test.mjs` e corrija o título se for outra.
+
+**Como desfazer:** voltar ao `index-backup.html`.
+
+
 ## 2026-11-25 (regra de segurança)
 - Maré: `parada` (estofa, diferença menor que 10 cm) agora conta como vazante em `tratarComoVazante`.
 - Motivo: na estofa o aviso de efeito canal (vazante + vento sul acima de 12 nós) não disparava, e o semáforo ficava mais otimista que a regra.
