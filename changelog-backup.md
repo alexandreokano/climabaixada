@@ -1,5 +1,7 @@
 # Changelog · Clima Baixada
 
+## Formato: o que mudou, quando e se foi confirmado.
+
 ## 2026-11-26 · Hora a hora nunca mais otimista que o veredito do dia
 
 **Motivo:** o semáforo por hora (Surf e Caiaque) podia mostrar 🟢 ou 🟡 em dia com veredito manual do Capitão 🔴. A hora e o dia se contradiziam. Em 26/11, o surfe estava 🔴 no dia (`s: 2`), mas a hora de onda de 1,4 m aparecia 🟡 pela regra automática.
@@ -38,7 +40,6 @@
 - O motivo exibido é "sem tábua de maré (tratado como vazante) + vento sul >12 nós".
 
 **Teste:** 1 caso novo em `semaforo.test.mjs`. Falhava antes (`1 !== 2`) e passa depois.
-ls | grep backup
 
 **Confirmado no Terminal (25/11):** 25 testes, 25 aprovados, 0 falhas.
 
@@ -53,33 +54,29 @@ ls | grep backup
 - Melhor janela: dia 🔴 não mostra mais horário de janela (limitaJanela).
 - Melhor janela: só considera horas que ainda não passaram (bestRun + melhorJanela).
 - Motivo: às 20h34, com dia 🔴, o painel mostrava "🔴 05h–11h", que parecia uma recomendação.
-- Teste novo em semaforo.test.mjs (32 casos).
-- 
-026-11-22 · Janela de horário nunca mais otimista que o veredito
-Motivo: o "Melhor hora" podia mostrar 🟢 ou 🟡 num dia com veredito 🔴. Segurança primeiro: a janela é derivada do veredito e nunca pode ser mais otimista que ele.
+- Teste novo em semaforo.test.mjs (contagem de casos não reconferida).
+  
+## 2026-11-22 · Janela de horário nunca mais otimista que o veredito
 
-Mudanças (index.html):
+**Motivo:** o "Melhor hora" podia mostrar 🟢 ou 🟡 num dia com veredito 🔴. Segurança primeiro: a janela é derivada do veredito e nunca pode ser mais otimista que ele.
 
-Nova função limitaJanela(nivel, janela), dentro do bloco SEMAFORO-INI/SEMAFORO-FIM. Dia 🔴 devolve janela 🔴. Dia ⚪ ou inválido devolve null (sem janela). Nunca melhora um nível pior.
-resumo(): kw e sw passam por limitaJanela com D.k e D.s.
-tripBox: best passa por limitaJanela (caiaque usa .k, surfe usa .s).
-autoLvl não foi alterada de propósito. Ela gera o veredito automático a partir do bestRun, então é a origem e não um derivado.
-Testes: 3 casos novos em semaforo.test.mjs (janela com dia 🔴, nunca mais otimista, ⚪/inválido/sem janela). Total: 23 passando, 0 falhas.
+**Mudanças (`index.html`):**
+- Nova função `limitaJanela(nivel, janela)`, dentro do bloco `SEMAFORO-INI`/`SEMAFORO-FIM`. Dia 🔴 devolve janela 🔴. Dia ⚪ ou inválido devolve `null` (sem janela). Nunca melhora um nível pior.
+- `resumo()`: `kw` e `sw` passam por `limitaJanela` com `D.k` e `D.s`.
+- `tripBox`: `best` passa por `limitaJanela` (caiaque usa `.k`, surfe usa `.s`).
+- `autoLvl` **não foi alterada** de propósito. Ela gera o veredito automático a partir do `bestRun`, então é a origem e não um derivado.
 
-Conferido na tela (22/11, 19:54, celular): dia 🔴 mostra "nenhum horário seguro hoje" em Caiaque e Surfe.
+**Testes:** 3 casos novos em `semaforo.test.mjs` (janela com dia 🔴, nunca mais otimista, ⚪/inválido/sem janela). Total: 23 passando, 0 falhas.
 
-Ainda não coberto:
+**Conferido na tela (22/11, 19:54, celular):** dia 🔴 mostra "nenhum horário seguro hoje" em Caiaque e Surfe.
 
-❓ Sem teste automático da ligação entre limitaJanela e resumo()/tripBox, que ficam na interface.
-❓ Casos 🟡 e 🟢 não conferidos na tela.
-🔎 Dia ⚪ mostra "sem dados ao vivo" no resumo(). É conservador, mas o texto é impreciso. Possível melhoria futura: "sem avaliação".
-Como desfazer: voltar ao index-backup.html.
+**Ainda não coberto:**
+- ❓ Sem teste automático da ligação entre `limitaJanela` e `resumo()`/`tripBox`, que ficam na interface.
+- ❓ Casos 🟡 e 🟢 não conferidos na tela.
+- 🔎 Dia ⚪ mostra "sem dados ao vivo" no `resumo()`. É conservador, mas o texto é impreciso. Possível melhoria futura: "sem avaliação".
 
---------------
+**Como desfazer:** voltar ao `index-backup.html`.
 
-
-
-Formato: o que mudou, quando e se foi confirmado.
 
 ## [21/11/2026]
 
