@@ -1,3 +1,34 @@
+# Changelog · Clima Baixada
+
+## 2026-11-26 · Hora a hora nunca mais otimista que o veredito do dia
+
+**Motivo:** o semáforo por hora (Surf e Caiaque) podia mostrar 🟢 ou 🟡 em dia com veredito manual do Capitão 🔴. A hora e o dia se contradiziam. Em 26/11, o surfe estava 🔴 no dia (`s: 2`), mas a hora de onda de 1,4 m aparecia 🟡 pela regra automática.
+
+**Mudanças (`index.html`):**
+- Nova função `limitaHora(nivelDia, h)` dentro do bloco `SEMAFORO-INI/FIM`. Se o dia for pior que a hora, a hora sobe para o nível do dia e ganha o motivo "veredito do Capitão para o dia é pior que esta hora".
+- Hora sem dados continua sem dados. Veredito ⚪ ou inválido não altera nada.
+- `hourInfo()` aplica `limitaHora` a `k` (caiaque) e `s` (surfe) só quando o dia tem veredito manual (`!D.auto && !D.ext`). Dia automático nasce das próprias horas e não é limitado.
+- Como `bestRun`, `strip`, `infoHTML` e `tripBox` leem `hourInfo`, todos passam a respeitar a trava.
+- O aviso de efeito canal (`warn`) é preservado.
+
+**Testes:**
+- 5 casos novos de `limitaHora` em `semaforo.test.mjs`.
+- Arquivo novo `hora-ligacao.test.mjs`, com 9 testes que cobrem a ligação real entre `hourInfo()` e o semáforo: controle sem veredito, dia manual 🔴, dia manual 🟡, `k` e `s` separados, dia ⚪, dias `auto` e `ext`, bairro sem mar e dia inexistente.
+- Resultado: 79 testes passando no total (`node --test`), 0 falhas.
+
+**Prova de regressão (26/11, 9h40):** gerei uma cópia do `index.html` sem as duas chamadas `limitaHora(D.k,k)` e `limitaHora(D.s,s)` e rodei `hora-ligacao.test.mjs` nela. Resultado: 6 passaram e 3 falharam (dia manual 🔴, dia manual 🟡 e vereditos separados de caiaque e surfe). Isso prova que os testes detectam a remoção da ligação. A cópia foi apagada e o `git status` ficou limpo.
+
+**Conferido também na tela (26/11):** 🔴 em todas as horas de dia (05h–18h) no Surf e no Caiaque.
+
+**Como desfazer:** voltar ao `index-backup.html`.
+
+
+## 2026-11-25 (regra de segurança)
+- Maré: `parada` (estofa, diferença menor que 10 cm) agora conta como vazante em `tratarComoVazante`.
+- Motivo: na estofa o aviso de efeito canal (vazante + vento sul acima de 12 nós) não disparava, e o semáforo ficava mais otimista que a regra.
+- Teste: novo caso em `mare-tendencia.test.mjs`.
+
+
 ## 2026-11-25 · Efeito canal sem tábua de maré
 
 **Motivo:** quando a maré era desconhecida, `tideAt` devolvia `null` e a regra do efeito canal era ignorada. Vento sul de 13 nós com maré ausente dava 🟡, e deveria dar 🔴.
@@ -7,6 +38,7 @@
 - O motivo exibido é "sem tábua de maré (tratado como vazante) + vento sul >12 nós".
 
 **Teste:** 1 caso novo em `semaforo.test.mjs`. Falhava antes (`1 !== 2`) e passa depois.
+ls | grep backup
 
 **Confirmado no Terminal (25/11):** 25 testes, 25 aprovados, 0 falhas.
 
@@ -16,8 +48,6 @@
 
 **Como desfazer:** voltar ao `index-backup.html`.
 
-
-# Changelog · Clima Baixada
 
 ## 2026-11-22
 - Melhor janela: dia 🔴 não mostra mais horário de janela (limitaJanela).
