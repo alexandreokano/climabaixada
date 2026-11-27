@@ -1,6 +1,18 @@
 {
-  "atualizado_em": "27/11/2026, 07:59",
+  "atualizado_em": "27/11/2026, 10:45",
   "itens": [
+    {
+      "fonte": "Diário do Peixe",
+      "titulo": "Santos projeta R$ 190 milhões em vendas e orçamento de R$ 622 mil em 2027",
+      "url": "https://www.diariodopeixe.com.br/noticias/santos-projeta-r-190-milhoes-em-vendas-e-orcamento-de-r-622-mil-em-2027/",
+      "data": "27/11/2026"
+    },
+    {
+      "fonte": "Diário do Peixe",
+      "titulo": "DIÁRIO DO PEIXE completa nove anos nesta sexta (27)",
+      "url": "https://www.diariodopeixe.com.br/noticias/diario-do-peixe-completa-nove-anos-nesta-sexta-27/",
+      "data": "27/11/2026"
+    },
     {
       "fonte": "Diário do Peixe",
       "titulo": "Ex-atacante Juary, símbolo dos Meninos da Vila do Santos, morre aos 67 anos",
@@ -23,18 +35,6 @@
       "fonte": "Diário do Peixe",
       "titulo": "FPF confirma data e horário de jogo das Sereias na Copa Paulista",
       "url": "https://www.diariodopeixe.com.br/noticias/fpf-confirma-data-e-horario-de-jogo-das-sereias-na-copa-paulista/",
-      "data": "26/11/2026"
-    },
-    {
-      "fonte": "Diário do Peixe",
-      "titulo": "Com reforma na Vila, Santos procura opções de estádio para atuar em 2027",
-      "url": "https://www.diariodopeixe.com.br/noticias/com-reforma-na-vila-santos-procura-opcoes-de-estadio-para-atuar-em-2027/",
-      "data": "26/11/2026"
-    },
-    {
-      "fonte": "Diário do Peixe",
-      "titulo": "Lucas Veríssimo e Barreal iniciam a transição no Santos",
-      "url": "https://www.diariodopeixe.com.br/noticias/lucas-verissimo-e-barreal-iniciam-a-transicao-no-santos/",
       "data": "26/11/2026"
     },
     {
@@ -75,21 +75,21 @@
     },
     {
       "fonte": "Diário do Peixe (YouTube)",
-      "titulo": "Santos, Sereias e base em decisão no fim de semana - Happy Hour ao vivo",
-      "url": "https://www.youtube.com/watch?v=QDfK747t_Ek",
+      "titulo": "Boletim Diário do Peixe - 27/11/26 #boletimdiariodopeixe",
+      "url": "https://www.youtube.com/shorts/NSFamKlZ0jg",
       "data": "27/11/2026"
     },
     {
       "fonte": "Diário do Peixe (YouTube)",
-      "titulo": "Santos encerra 2026 com vaga Libertadores?",
-      "url": "https://www.youtube.com/watch?v=UlW5MYdrPbs",
-      "data": "26/11/2026"
+      "titulo": "DIÁRIO DO PEIXE COMPLETA NOVE ANOS. SAIBA COMO COMEÇOU - CAFÉ COM ANITA",
+      "url": "https://www.youtube.com/watch?v=Wcqut2zppfw",
+      "data": "27/11/2026"
     },
     {
       "fonte": "Diário do Peixe (YouTube)",
-      "titulo": "Cortes do Diário - Ivan Luduvice planeja assumir a gestão do Pacaembu",
-      "url": "https://www.youtube.com/watch?v=teITfp9C3AM",
-      "data": "26/11/2026"
+      "titulo": "Santos, Sereias e base em decisão no fim de semana - Happy Hour ao vivo",
+      "url": "https://www.youtube.com/watch?v=QDfK747t_Ek",
+      "data": "27/11/2026"
     }
   ]
 }
