@@ -1,4 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
+import { avaliarDia } from './avaliar-dia.mjs';
 
 const OUT = process.env.OUT || 'dados.json';
 const DAYS = +process.env.DAYS || 5;
