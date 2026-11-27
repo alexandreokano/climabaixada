@@ -24,8 +24,9 @@ test('vento 11 nós: amarelo nos dois', () => {
   assert.deepEqual(ks(dia({ vento: 11, ventoMin: 11 })), [1, 1]);
 });
 
-test('vento exatamente 15 nós: amarelo (hoje; a hora já é vermelha)', () => {
-  assert.deepEqual(ks(dia({ vento: 15, ventoMin: 15 })), [1, 1]);
+test('vento: 14,9 nós é amarelo; 15 nós cravados já é vermelho (igual à hora)', () => {
+  assert.deepEqual(ks(dia({ vento: 14.9, ventoMin: 14.9 })), [1, 1]);
+  assert.deepEqual(ks(dia({ vento: 15, ventoMin: 15 })), [2, 2]);
 });
 
 test('vento 16 nós: vermelho nos dois', () => {
