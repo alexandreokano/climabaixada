@@ -152,7 +152,6 @@ const dias = datas.map(date => {
   const [dd, mm] = [date.slice(8, 10), date.slice(5, 7)];
   const lbl = NOMES[new Date(date + 'T12:00:00Z').getUTCDay()] + ' ' + dd;
   const veredito = ['Condições favoráveis', 'Atenção', 'Não navegue'][k];
-  const diverge = (onda != null && ondaMin != null && onda - ondaMin > 0.3) || (vento != null && ventoMin != null && vento - ventoMin > 4);
   const extra = [];
   if (sul && vento >= 12) extra.push('Vento sul acima de 12 nós: confira a maré; se estiver vazante, evite a Fortaleza da Barra e o Deck do Pescador.');
   if (diverge) extra.push('Os modelos divergem: adotei o mais conservador.');
