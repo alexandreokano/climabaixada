@@ -8,8 +8,8 @@ export function avaliarDia({ vento, raj, precip, prob, trov, onda, per, ondaMin,
   // ----- Caiaque
   let k = 0;
   if (vento != null) {
-    if (vento > 15 || (raj != null && raj > 20)) { k = 2; motivos.push('vento/rajadas acima do limite do caiaque'); }
-    else if (vento >= 11 || (raj != null && raj > 15)) { k = Math.max(k, 1); motivos.push('vento moderado ou rajadas'); }
+    if (vento >= 15 || (raj != null && raj > 20)) { k = 2; motivos.push('vento/rajadas acima do limite do caiaque'); }
+    else if (vento > 10 || (raj != null && raj > 15)) { k = Math.max(k, 1); motivos.push('vento moderado ou rajadas'); }
   }
   if (onda != null) {
     if (onda > 1.0) { k = 2; motivos.push('ondas acima de 1,0 m'); }
@@ -22,10 +22,10 @@ export function avaliarDia({ vento, raj, precip, prob, trov, onda, per, ondaMin,
   // ----- Surfe iniciante
   let s = 0;
   if (onda != null && onda < 0.4) { s = 1; }
-  if (onda != null && onda > 1.2) s = Math.max(s, 1);
-  if (onda != null && onda > 1.8) s = 2;
-  if (vento != null && vento > 15) s = 2;
-  else if (vento != null && vento >= 11) s = Math.max(s, 1);
+  if (onda != null && onda > 1.0) s = Math.max(s, 1);
+  if (onda != null && onda > 1.5) s = 2;
+  if (vento != null && vento >= 15) s = 2;
+  else if (vento != null && vento > 10) s = Math.max(s, 1);
   if (trov || (precip != null && precip >= 10)) s = 2;
   else if ((precip != null && precip >= 2) || (prob != null && prob >= 60)) s = Math.max(s, 1);
 
