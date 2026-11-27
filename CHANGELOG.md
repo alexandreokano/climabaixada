@@ -2,6 +2,29 @@
 
 Formato: o que mudou, quando e se foi confirmado.
 
+## 2026-11-27 · Regra do dia extraída do gerador (sem mudar números)
+
+**Motivo:** a regra do dia rodava solta no meio do `gerar-dados.mjs` e não tinha teste. Princípio: código testável.
+
+**Mudanças:**
+- Novo `avaliar-dia.mjs` com a função pura `avaliarDia`. O `gerar-dados.mjs` apenas a chama.
+- **Nenhum limite mudou.** Conferido com `diff` entre a saída antes e depois: só `avaliado_em` difere.
+
+**Testes:** novo `avaliar-dia.test.mjs` com 15 casos de travamento. Total: 99 aprovados, 0 falhas (`node --test`, 27/11, antes e depois da troca). Não houve caso que falhasse antes, porque não houve mudança de regra.
+
+**Conferido (27/11):**
+- ✅ `antes.json` gerado com o código antigo e `depois.json` com o código novo (4 modelos responderam nas duas rodadas). O `diff` mostrou só a linha `avaliado_em`. Vento, ondas, chuva, `k` e `s` dos 5 dias ficaram idênticos.
+- ✅ `node --check gerar-dados.mjs` sem erro.
+- ✅ `git status --short` vazio ao final.
+
+**Ainda não coberto:**
+- ❓ Limites do dia divergem do `REGRAS` do `index.html` (vento 10,0 a 10,9 nós, vento exato de 15 nós, onda do surfe de 1,0 a 1,2 m e de 1,5 a 1,8 m). Ficam para o 2c, com teste novo.
+- ❓ `avaliarDia` devolve 🟢 se todos os dados forem nulos. O gerador descarta esse dia antes de usá-lo; o teste de consistência dia × hora (2b) deve cobrir isso.
+- ❓ A frase "trovoadas ou chuva forte" aparece também só com chuva ≥ 10 mm. O nível 🔴 está certo, o texto será ajustado depois.
+
+**Como desfazer:** Revert dos commits do 2a.
+
+
 ## 2026-11-27 · Bola do dia: pior nível entre caiaque e surfe
 
 **Motivo:** nas abas Resumão, Pesca, Navio e Praia a bola do dia mostrava só o caiaque. Segurança primeiro: com duas atividades avaliadas, a bola não pode ser mais otimista que nenhuma delas.
@@ -132,7 +155,6 @@ Formato: o que mudou, quando e se foi confirmado.
 - 🔎 Dia ⚪ mostra "sem dados ao vivo" no `resumo()`. É conservador, mas o texto é impreciso. Possível melhoria futura: "sem avaliação".
 
 **Como desfazer:** voltar ao `index-backup.html`.
-
 
 
 ## [21/11/2026]
