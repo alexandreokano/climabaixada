@@ -15,8 +15,9 @@ test('dia calmo é verde para caiaque e surfe', () => {
   assert.deepEqual(r.motivos, []);
 });
 
-test('vento 10,5 nós: verde (hoje; a hora já é amarela)', () => {
-  assert.deepEqual(ks(dia({ vento: 10.5, ventoMin: 10.5 })), [0, 0]);
+test('vento: 10,0 nós é verde; acima de 10 já é amarelo (igual à hora)', () => {
+  assert.deepEqual(ks(dia({ vento: 10, ventoMin: 10 })), [0, 0]);
+  assert.deepEqual(ks(dia({ vento: 10.5, ventoMin: 10.5 })), [1, 1]);
 });
 
 test('vento 11 nós: amarelo nos dois', () => {
