@@ -2,6 +2,30 @@
 
 Formato: o que mudou, quando e se foi confirmado.
 
+## 2026-11-27 · Regra do dia alinhada à regra da hora (mais conservadora)
+
+**Motivo:** o veredito do dia (`avaliar-dia.mjs`) era mais otimista que o veredito por hora (`REGRAS` no `index.html`) em quatro faixas. Segurança primeiro: o dia nunca pode ser mais otimista que as suas horas.
+
+**Mudanças (`avaliar-dia.mjs`):**
+- Vento (caiaque e surfe): amarelo passa de `>= 11` para `> 10` nós. Vermelho passa de `> 15` para `>= 15` nós.
+- Onda do surfe: amarelo passa de `> 1,2` para `> 1,0` m. Vermelho passa de `> 1,8` para `> 1,5` m.
+- Efeito: um dia que antes saía 🟢 ou 🟡 pode sair 🟡 ou 🔴. Nenhum dia fica mais otimista.
+
+**Testes:**
+- 4 testes de `avaliar-dia.test.mjs` foram atualizados para os limites novos (10,0 nós verde e acima de 10 amarelo; 14,9 amarelo e 15 vermelho; onda 1,1 m amarela no surfe; acima de 1,5 m vermelha).
+- `consistencia-dia-hora.test.mjs` (6 casos) agora passa, o que prova que dia e hora concordam nas 4 faixas.
+- Total: 105 aprovados, 0 falhas (`node --test`, 27/11).
+
+**Conferido (27/11):** `gerar-dados.mjs` rodou com a regra nova e o `diff` contra o `dados.json` não mostrou nenhuma mudança em `k` ou `s` nos 5 dias. As outras diferenças vieram da previsão.
+
+**Ainda não coberto:**
+- 🔎 Com vento terral, o dia fica mais rígido que a hora no surfe (a hora não penaliza terral; o dia ignora a direção). É conservador e foi aceito.
+- ❓ Os nomes dos 4 testes "DIVERGÊNCIA" ainda descrevem o problema antigo, embora agora verifiquem a igualdade. Renomear fica para outro commit.
+- ❓ Dia e hora ainda têm cópias separadas dos limites. A fonte única fica para depois.
+
+**Como desfazer:** `git revert` do commit desta entrada.
+
+
 ## 2026-11-27 · Regra do dia extraída do gerador (sem mudar números)
 
 **Motivo:** a regra do dia rodava solta no meio do `gerar-dados.mjs` e não tinha teste. Princípio: código testável.
