@@ -899,6 +899,17 @@ function chuvaCaicara(mm,prob,trov,ini,fim){
   if(n<30)return `🌧️ Chuvarada forte${quando} (${qtd}). O mar pode ficar mexido.${pTxt}`;
   return `⛈️ Toró brabo${quando} (${qtd}). Hoje a água fica pra outro dia.${pTxt}`;
 }
+/* Bola do dia. 0 🟢 1 🟡 2 🔴 3 ⚪. Surf mostra o surfe, Caiaque mostra o caiaque; as demais abas mostram o PIOR dos dois. 🔴 vence ⚪; ⚪ nunca vira "seguro". */
+function nivelDoDia(d,sub){
+  if(!d)return 3;
+  const ok=v=>Number.isInteger(v)&&v>=0&&v<=2;
+  const k=d.k,s=d.s;
+  if(sub=='surfe')return ok(s)?s:3;
+  if(sub=='caiaque')return ok(k)?k:3;
+  if(k===2||s===2)return 2;
+  if(!ok(k)||!ok(s))return 3;
+  return Math.max(k,s);
+}
 /*SEMAFORO-FIM*/
 function hourInfo(di,h){
   const o=obs(di,h),ms=msAt(di,h+0.5),t=tideAt(ms);
