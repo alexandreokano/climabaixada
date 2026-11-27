@@ -2,7 +2,23 @@
 
 Formato: o que mudou, quando e se foi confirmado.
 
-changelog-26-11-etapa0
+## 2026-11-27 · Bola do dia: pior nível entre caiaque e surfe
+
+**Motivo:** nas abas Resumão, Pesca, Navio e Praia a bola do dia mostrava só o caiaque. Segurança primeiro: com duas atividades avaliadas, a bola não pode ser mais otimista que nenhuma delas.
+
+**Mudanças (`index.html`):**
+- Nova `nivelDoDia(d, sub)` no bloco `SEMAFORO-INI/FIM`. Surf mostra o surfe, Caiaque mostra o caiaque, as demais abas mostram o pior dos dois. 🔴 vence ⚪; ⚪ nunca vira "seguro".
+- `render()`: a bola do dia chama `nivelDoDia(d,S.sub)`.
+- `infoHTML`: o card da hora mostra só o ícone e a bola da aba (🏄 em Surf, 🛶 em Caiaque). As outras abas mostram os dois. Mudança só de exibição, não altera nenhuma regra de segurança.
+
+**Testes:** `nivel-dia.test.mjs`, 5 casos novos (regra e ligação com a tela). Total da suíte: 84 aprovados, 0 falhas (`node --test`, 27/11).
+
+**Conferido na tela (27/11):** o Console mostrou, para cada dia, os níveis de caiaque, surfe e de cada aba. No dia com caiaque 🔴 e surfe 🟡, Surf deu 🟡, Caiaque deu 🔴 e as demais abas deram 🔴. O card da hora mostra só 🏄 em Surf e só 🛶 em Caiaque.
+
+**Ainda não coberto:** a renderização da bola e do card da hora não tem teste automático (o teste cobre a regra e a ligação). Não foi conferido o caso com surfe pior que caiaque.
+
+**Como desfazer:** voltar ao `index-backup.html`.
+
 
 ## 2026-11-26 · Fechamento da Etapa 0 (verificações)
 
