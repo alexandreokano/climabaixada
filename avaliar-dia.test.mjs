@@ -43,8 +43,8 @@ test('onda 0,8 e 1,0 m: amarelo no caiaque, surfe verde', () => {
   assert.deepEqual(ks(dia({ onda: 1.0, ondaMin: 1.0 })), [1, 0]);
 });
 
-test('onda 1,1 m: caiaque vermelho, surfe verde (hoje; a hora do surfe já é amarela)', () => {
-  assert.deepEqual(ks(dia({ onda: 1.1, ondaMin: 1.1 })), [2, 0]);
+test('onda 1,1 m: caiaque vermelho, surfe amarelo (igual à hora)', () => {
+  assert.deepEqual(ks(dia({ onda: 1.1, ondaMin: 1.1 })), [2, 1]);
 });
 
 test('onda 1,6 e 1,8 m: surfe amarelo; 1,9 m: surfe vermelho (hoje; a hora fica vermelha acima de 1,5)', () => {
