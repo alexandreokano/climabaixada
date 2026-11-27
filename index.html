@@ -1014,7 +1014,8 @@ function infoHTML(di,h){
   if(x.w)t+='<span aria-hidden="true">⚓</span> possível movimento de navios · ';
   const cr=S.city!='Santos'?null:((S.cptec&&S.cptec[DAYS[di].date])||[]).find(r=>r.h==h);
   if(cr)t+=`CPTEC: ${cr.wh.toFixed(1)} m · ${cr.ws!=null?cr.ws.toFixed(0):'–'} nós · `;
-  t+=`🛶 ${x.k.l==null?'–':EMO[x.k.l]} · 🏄 ${x.s.l==null?'–':EMO[x.s.l]}`;
+  const kI=`🛶 ${x.k.l==null?'–':EMO[x.k.l]}`,sI=`🏄 ${x.s.l==null?'–':EMO[x.s.l]}`;
+  t+=S.sub=='surfe'?sI:S.sub=='caiaque'?kI:`${kI} · ${sI}`;
   if(x.k.warn)t+=`<div class="warn">⚠️ <b>Aviso sério, efeito canal:</b> vazante + vento sul &gt;12 nós. A correnteza saindo do estuário bate na ondulação e vira onda perigosa na Fortaleza da Barra e no Deck do Pescador.</div>`;
   return t;
 }
