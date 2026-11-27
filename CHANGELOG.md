@@ -11,14 +11,14 @@ Formato: o que mudou, quando e se foi confirmado.
 - `render()`: a bola do dia chama `nivelDoDia(d,S.sub)`.
 - `infoHTML`: o card da hora mostra só o ícone e a bola da aba (🏄 em Surf, 🛶 em Caiaque). As outras abas mostram os dois. Mudança só de exibição, não altera nenhuma regra de segurança.
 
-**Testes:** `nivel-dia.test.mjs`, 5 casos novos. O teste de ligação falhou antes da troca na tela e passa depois. Total da suíte: 84 aprovados, 0 falhas.
+**Testes:** `nivel-dia.test.mjs`, 5 casos novos (regra e ligação com a tela). Total da suíte: 84 aprovados, 0 falhas (`node --test`, 27/11).
 
-**Ainda não coberto:** o desenho da bola e o card da hora na tela (o teste cobre a regra e a ligação, não a renderização). Conferência visual só com um dia em que caiaque e surfe tenham níveis diferentes.
+**Conferido na tela (27/11):** o Console mostrou, para cada dia, os níveis de caiaque, surfe e de cada aba. No dia com caiaque 🔴 e surfe 🟡, Surf deu 🟡, Caiaque deu 🔴 e as demais abas deram 🔴. O card da hora mostra só 🏄 em Surf e só 🛶 em Caiaque.
+
+**Ainda não coberto:** a renderização da bola e do card da hora não tem teste automático (o teste cobre a regra e a ligação). Não foi conferido o caso com surfe pior que caiaque.
 
 **Como desfazer:** voltar ao `index-backup.html`.
 
-
-changelog-26-11-etapa0
 
 ## 2026-11-26 · Fechamento da Etapa 0 (verificações)
 
