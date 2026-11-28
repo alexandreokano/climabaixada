@@ -2,6 +2,21 @@
 
 Formato: o que mudou, quando e se foi confirmado.
 
+## 2026-11-28 · Texto da aba Navio na Área não sugere mais "remar nas horas verdes"
+
+**Motivo:** a dica dizia "Prefira remar nas horas verdes". Mas o verde dessa faixa só indica estar fora das janelas estimadas de manobras de navios. Em dia 🔴 (ondas de 1,98 m e 18 mm de chuva) havia quadradinhos verdes, e o texto podia sugerir uma hora boa para remar. Segurança primeiro.
+
+**Mudança (`index.html`, função `trafego`):** a frase passou a dizer: "Verde aqui só quer dizer menos navios, não que o mar está bom para remar. Confira o veredito do dia e, em qualquer hora, fique longe do canal."
+
+**Não mudou:** nenhuma regra, limite ou cor. É só texto.
+
+**Testes:** sem teste novo (não é regra de segurança). `node --test`: 119 aprovados, 0 falhas.
+
+**Ainda não coberto:** nenhum teste verifica este texto. Confirmado por `grep`: 0 resultados para a frase antiga e 1 para a nova.
+
+**Como desfazer:** `git revert` do commit desta entrada.
+
+
 ## 2026-11-28 · Motivo do 🔴 mostrado na tela (só exibição)
 
 **Motivo:** em dia 🔴 o usuário via o veredito sem saber o porquê. Segurança primeiro: mostrar a causa real, sem inventar e sem suavizar.
