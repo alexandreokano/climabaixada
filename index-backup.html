@@ -1652,6 +1652,21 @@ function praia(){
   ${how('🟢 própria: pode entrar na água, com cuidado. 🔴 imprópria: não entra nem engole água. Toca no cartão da praia pra ver a temperatura da água e a condição do mar. Depois de chuva forte, evita entrar mesmo em praia própria.')}
   <div class="note">Veja o boletim oficial em <a style="color:var(--acc)" href="https://cetesb.sp.gov.br/praias" target="_blank" rel="noopener">cetesb.sp.gov.br/praias</a>.</div>`;
 }
+/* Legenda da bola do dia (só exibe; o nível vem de nivelDoDia). 0 🟢 1 🟡 2 🔴 3 ⚪ */
+function legBola(){
+  if(S.tab!='esportes')return '';
+  const d=DAYS[S.day];if(!d)return '';
+  const l=nivelDoDia(d,S.sub);
+  const alvo=S.sub=='surfe'?'o surfe':S.sub=='caiaque'?'o caiaque':'o caiaque ou o surfe';
+  const N=['Favorável.','Alerta.','Não vá.','Sem avaliação.'];
+  const T=[
+    'Para quem está começando, nenhum limite de segurança foi passado. Mesmo assim, olhe o mar antes de entrar.',
+    'Para quem está começando, algum fator pede cautela (vento ou onda moderados, mar pequeno demais, ameaça de chuva). Só com muito cuidado e perto da praia.',
+    `Para quem está começando, ${alvo} passa de um limite de segurança: onda alta, vento ou rajada forte, chuva forte ou risco de raios.`,
+    'Não há avaliação válida para este dia. Cinza nunca quer dizer seguro.'
+  ];
+  return `<div class="note"><b>${EMO[l]} ${N[l]}</b> ${T[l]}</div>`;
+}
 function render(){
   const CT=Object.keys(PLACES);
   $('loc').innerHTML=`<div><label><span aria-hidden="true">📍</span> Cidade</label><select id="s_city">${CT.map(c=>`<option ${c==S.city?'selected':''}>${c}</option>`).join('')}</select></div><div><label><span aria-hidden="true">🏘️</span> Bairro</label><select id="s_pl">${PLACES[S.city].map((p,i)=>`<option value="${i}" ${i==S.pl?'selected':''} aria-label="${p[0]}, ${p[3]?'com praia':'sem praia'}">${p[3]?'🌊':'🏙️'} ${p[0]}</option>`).join('')}</select></div>`;
@@ -1664,7 +1679,7 @@ function render(){
   const TV=TABS.filter(t=>t[0]!='esportes'||cur().m);$('tabs').style.gridTemplateColumns='repeat('+TV.length+',minmax(0,1fr))';$('tabs').innerHTML=TV.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"${t[0]==S.tab?' aria-current="page"':''}><span aria-hidden="true" style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}>${ae(s[1])}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Esse dia já passou: a avaliação do Capitão ficou velha. Escolhe um dia de hoje pra frente.</div>':'';
-  $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
+  $('view').innerHTML=old+legBola()+avalBox()+VIEWS[S.tab]();
   fitOne();
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
 }
