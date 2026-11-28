@@ -910,6 +910,17 @@ function nivelDoDia(d,sub){
   if(!ok(k)||!ok(s))return 3;
   return Math.max(k,s);
 }
+/* Motivos do 🔴 do dia, por aba. Só devolve texto de atividade que está 🔴 (nível 2). Dia auto/ext (avaliação vencida) e campo inválido: lista vazia. */
+function motivosVermelhos(d,sub){
+  if(!d||d.auto||d.ext)return [];
+  const v=d.vermelhos;
+  if(!v||typeof v!='object'||Array.isArray(v))return [];
+  const lista=(x,nivel)=>nivel===2&&Array.isArray(x)?x.filter(t=>typeof t=='string'&&t.trim()):[];
+  const k=lista(v.k,d.k),s=lista(v.s,d.s);
+  if(sub=='surfe')return s;
+  if(sub=='caiaque')return k;
+  return [...new Set([...k,...s])];
+}
 /*SEMAFORO-FIM*/
 function hourInfo(di,h){
   const o=obs(di,h),ms=msAt(di,h+0.5),t=tideAt(ms);
