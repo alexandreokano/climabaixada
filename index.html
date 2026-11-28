@@ -1676,7 +1676,8 @@ function legBola(){
     `Para quem está começando, ${alvo} passa de um limite de segurança: onda alta, vento ou rajada forte, chuva forte ou risco de raios.`,
     'Não há avaliação válida para este dia. Cinza nunca quer dizer seguro.'
   ];
-  return `<div class="note"><b>${EMO[l]} ${N[l]}</b> ${T[l]}</div>`;
+  const mot=l===2?motivosVermelhos(d,S.sub):[];
+  return `<div class="note"><b>${EMO[l]} ${N[l]}</b> ${T[l]}${mot.length?`<br><b>Motivo${mot.length>1?'s':''} no dia:</b> ${mot.map(x=>escH(x)).join('; ')}.`:''}</div>`;
 }
 function render(){
   const CT=Object.keys(PLACES);
