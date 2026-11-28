@@ -1217,7 +1217,7 @@ function trafego(){
    ${strip(di,x=>({l:x.w==null?null:(x.w?1:0),r:[x.w?'janela provável de manobras':'fora das janelas']}),TLEG)}
    <div class="info" id="hinfo">Clique em um horário.</div>
    <div class="t"><table><tr><th>Virada de maré</th><th>Janela ±2 h</th></tr>${rows||'<tr><td colspan=2>sem dados</td></tr>'}</table></div>
-   ${how('A faixa amarela mostra quando há mais manobras (±2 h das viradas de maré). Prefira remar nas horas verdes, longe do canal.')}<div class="note">Estimativa baseada na tábua da Marinha, <b>não é a programação oficial de manobras</b>, que é do C3OT da Praticagem e não tem API pública. Para a situação real da barra, use o mapa de navios (AIS), as câmeras e o canal 16 VHF.</div></div>
+   ${how('A faixa amarela mostra quando há mais manobras (±2 h das viradas de maré). Verde aqui só quer dizer menos navios, não que o mar está bom para remar. Confira o veredito do dia e, em qualquer hora, fique longe do canal.')}<div class="note">Estimativa baseada na tábua da Marinha, <b>não é a programação oficial de manobras</b>, que é do C3OT da Praticagem e não tem API pública. Para a situação real da barra, use o mapa de navios (AIS), as câmeras e o canal 16 VHF.</div></div>
   <div class="card"><h3><span aria-hidden="true">🛡️</span> Regras para o caiaque</h3><ul>
    <li>Mantenha-se bem fora do canal de navegação e da boca da barra</li>
    <li>Navios geram marola forte e sucção: afaste-se do canal</li>
