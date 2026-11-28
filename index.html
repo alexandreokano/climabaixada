@@ -1679,7 +1679,7 @@ function render(){
   const TV=TABS.filter(t=>t[0]!='esportes'||cur().m);$('tabs').style.gridTemplateColumns='repeat('+TV.length+',minmax(0,1fr))';$('tabs').innerHTML=TV.map(t=>`<button data-t="${t[0]}" class="${t[0]==S.tab?'on':''}"${t[0]==S.tab?' aria-current="page"':''}><span aria-hidden="true" style="white-space:nowrap;letter-spacing:4px;display:inline-flex;align-items:center;justify-content:center;gap:8px">${TICON[t[0]]||t[1].split(' ')[0]}</span><span>${t[1].slice(t[1].indexOf(' ')+1)}</span></button>`).join('');
   $('pop').innerHTML=S.menu&&S.tab=='esportes'?`<div class="pop">${SUBS.map(s=>`<button data-s="${s[0]}" class="${s[0]==S.sub?'on':''}"${s[0]==S.sub?' aria-current="true"':''}>${ae(s[1])}</button>`).join('')}</div>`:'';
   const old=DAYS[S.day].date<todayStr?'<div class="note">Esse dia já passou: a avaliação do Capitão ficou velha. Escolhe um dia de hoje pra frente.</div>':'';
-  $('view').innerHTML=old+avalBox()+VIEWS[S.tab]();
+  $('view').innerHTML=old+legBola()+avalBox()+VIEWS[S.tab]();
   fitOne();
   if(S.hover!=null&&$('hinfo'))updateHover(S.hover);
 }
