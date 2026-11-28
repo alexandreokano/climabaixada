@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "avaliado_em": "2026-11-28T15:03:48-03:00",
+  "avaliado_em": "2026-11-28T16:09:40-03:00",
   "boletim_cetesb": "2026-11-26",
   "dias": [
     {
@@ -84,7 +84,7 @@
       "s": 2,
       "vermelhos": {
         "k": [
-          "rajadas de 21,4 nós (limite: 20)",
+          "rajadas de 22,2 nós (limite: 20)",
           "ondas de 1,1 m (limite: 1 m)",
           "trovoada prevista"
         ],
@@ -92,7 +92,7 @@
           "trovoada prevista"
         ]
       },
-      "vento": "N até 9 nós (rajadas até 21 nós)",
+      "vento": "N até 9 nós (rajadas até 22 nós)",
       "ondas": "até 1,1 m · 7 s",
       "chuva": "chuvisqueiro de vez em quando, cerca de 4,4 mm (pode contar que vem, 83%). Risco de raios: fora da água e longe do mar",
       "txt": "Não navegue: vento/rajadas acima do limite do caiaque; ondas acima de 1,0 m; risco de trovoadas ou chuva forte. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
