@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "avaliado_em": "2026-11-28T05:34:31-03:00",
+  "avaliado_em": "2026-11-28T10:00:31-03:00",
   "boletim_cetesb": "2026-11-26",
   "dias": [
     {
@@ -9,7 +9,7 @@
       "k": 2,
       "s": 2,
       "vento": "NNE até 5 nós (rajadas até 16 nós)",
-      "ondas": "até 2,2 m · 10 s",
+      "ondas": "até 2,0 m · 10 s",
       "chuva": "chuvarada forte, cerca de 28,6 mm (pode contar que vem, 100%)",
       "txt": "Não navegue: vento moderado ou rajadas; ondas acima de 1,0 m; risco de trovoadas ou chuva forte. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
@@ -19,7 +19,7 @@
       "k": 2,
       "s": 2,
       "vento": "L até 12 nós (rajadas até 19 nós)",
-      "ondas": "até 1,8 m · 7 s",
+      "ondas": "até 1,9 m · 7 s",
       "chuva": "pancada de chuva, cerca de 12,8 mm (pode contar que vem, 100%)",
       "txt": "Não navegue: vento moderado ou rajadas; ondas acima de 1,0 m; risco de trovoadas ou chuva forte. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
@@ -27,31 +27,31 @@
       "date": "2026-11-30",
       "lbl": "Seg 30",
       "k": 2,
-      "s": 1,
-      "vento": "L até 8 nós (rajadas até 19 nós)",
-      "ondas": "até 1,5 m · 8 s",
-      "chuva": "pancada de chuva, cerca de 8,7 mm (pode contar que vem, 100%)",
-      "txt": "Não navegue: vento moderado ou rajadas; ondas acima de 1,0 m; pancadas de chuva. Confirme a tábua de marés antes de sair."
+      "s": 2,
+      "vento": "ESE até 8 nós (rajadas até 19 nós)",
+      "ondas": "até 1,6 m · 9 s",
+      "chuva": "chuvarada forte, cerca de 18,4 mm (pode contar que vem, 100%). Risco de raios: fora da água e longe do mar",
+      "txt": "Não navegue: vento moderado ou rajadas; ondas acima de 1,0 m; risco de trovoadas ou chuva forte. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-12-01",
       "lbl": "Ter 01",
       "k": 2,
       "s": 1,
-      "vento": "L até 7 nós (rajadas até 20 nós)",
-      "ondas": "até 1,4 m · 8 s",
-      "chuva": "chuvisqueiro de vez em quando, cerca de 1,3 mm (pode contar que vem, 97%)",
-      "txt": "Não navegue: vento moderado ou rajadas; ondas acima de 1,0 m; pancadas de chuva. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
+      "vento": "ESE até 5 nós (rajadas até 20 nós)",
+      "ondas": "até 1,3 m · 9 s",
+      "chuva": "chuvisqueiro de vez em quando, cerca de 1,7 mm (pode contar que vem, 85%)",
+      "txt": "Não navegue: vento moderado ou rajadas; ondas acima de 1,0 m; pancadas de chuva. Confirme a tábua de marés antes de sair."
     },
     {
       "date": "2026-12-02",
       "lbl": "Qua 02",
       "k": 2,
       "s": 2,
-      "vento": "NNE até 8 nós (rajadas até 20 nós)",
+      "vento": "NNW até 8 nós (rajadas até 21 nós)",
       "ondas": "até 1,1 m · 7 s",
-      "chuva": "pancada de chuva, cerca de 10,8 mm (pode contar que vem, 81%)",
-      "txt": "Não navegue: vento moderado ou rajadas; ondas acima de 1,0 m; risco de trovoadas ou chuva forte. Confirme a tábua de marés antes de sair."
+      "chuva": "pancada de chuva, cerca de 10,8 mm (pode contar que vem, 91%)",
+      "txt": "Não navegue: vento/rajadas acima do limite do caiaque; ondas acima de 1,0 m; risco de trovoadas ou chuva forte. Os modelos divergem: adotei o mais conservador. Confirme a tábua de marés antes de sair."
     }
   ],
   "cetesb": {
