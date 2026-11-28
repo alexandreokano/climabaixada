@@ -47,3 +47,10 @@ test('itens que não são texto, ou são vazios, são descartados', () => {
   const d = dia({ vermelhos: { k: [OND, '', '   ', 5, null, {}, CHU], s: [] } });
   assert.deepEqual(motivosVermelhos(d, 'caiaque'), [OND, CHU]);
 });
+
+test('cola: a legenda da bola chama motivosVermelhos', () => {
+  const leg = html.match(/function legBola\(\)\{[\s\S]*?\n\}/);
+  assert.ok(leg, 'legBola não encontrada');
+  assert.ok(leg[0].includes('motivosVermelhos(d,S.sub)'), 'a legenda não chama motivosVermelhos');
+  assert.ok(leg[0].includes('l===2'), 'a legenda precisa checar que a bola é 🔴');
+});
