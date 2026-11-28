@@ -147,7 +147,7 @@ const dias = datas.map(date => {
   const ondaMin = O.length > 1 ? Math.min(...O.map(a => max(nums(a, 'wave_height')) ?? 0)) : onda;
   const ventoMin = F.length > 1 ? Math.min(...F.map(a => max(nums(a, 'wind_speed_10m')) ?? 0)) : vento;
   const dir = dirMedia(F);
-  const { k, s, motivos, vermelhos, sul, diverge } = avaliarDia({ vento, raj, precip, prob, trov, onda, per, ondaMin, ventoMin, dir });
+  const { k, s, motivos, sul, diverge } = avaliarDia({ vento, raj, precip, prob, trov, onda, per, ondaMin, ventoMin, dir });
 
   const [dd, mm] = [date.slice(8, 10), date.slice(5, 7)];
   const lbl = NOMES[new Date(date + 'T12:00:00Z').getUTCDay()] + ' ' + dd;
@@ -164,7 +164,7 @@ const dias = datas.map(date => {
   }
 
   return {
-    date, lbl, k, s,
+    date, lbl, k, s, vermelhos,
     vento: vento == null ? 'sem dados' : `${dir != null ? compass(dir) + ' ' : ''}até ${r0(vento)} nós${raj != null ? ' (rajadas até ' + r0(raj) + ' nós)' : ''}`,
     ondas: onda == null ? 'sem dados' : `até ${onda.toFixed(1).replace('.', ',')} m${per != null ? ' · ' + r0(per) + ' s' : ''}`,
     chuva: chuvaCaicara(precip ?? 0, prob, trov),
