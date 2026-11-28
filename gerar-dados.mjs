@@ -147,7 +147,7 @@ const dias = datas.map(date => {
   const ondaMin = O.length > 1 ? Math.min(...O.map(a => max(nums(a, 'wave_height')) ?? 0)) : onda;
   const ventoMin = F.length > 1 ? Math.min(...F.map(a => max(nums(a, 'wind_speed_10m')) ?? 0)) : vento;
   const dir = dirMedia(F);
-  const { k, s, motivos, sul, diverge } = avaliarDia({ vento, raj, precip, prob, trov, onda, per, ondaMin, ventoMin, dir });
+  const { k, s, motivos, vermelhos, sul, diverge } = avaliarDia({ vento, raj, precip, prob, trov, onda, per, ondaMin, ventoMin, dir });
 
   const [dd, mm] = [date.slice(8, 10), date.slice(5, 7)];
   const lbl = NOMES[new Date(date + 'T12:00:00Z').getUTCDay()] + ' ' + dd;
