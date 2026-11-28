@@ -2,6 +2,26 @@
 
 Formato: o que mudou, quando e se foi confirmado.
 
+## 2026-11-28 · Motivo do 🔴 mostrado na tela (só exibição)
+
+**Motivo:** em dia 🔴 o usuário via o veredito sem saber o porquê. Segurança primeiro: mostrar a causa real, sem inventar e sem suavizar.
+
+**Mudanças:**
+- `dados.json`: campo `vermelhos` (`{ "k": [...], "s": [...] }`) nos dias avaliados (5 dias na conferência).
+- `index.html`: função `motivosVermelhos(d, sub)`. Surf e Caiaque mostram só os próprios motivos; as demais abas juntam os dois sem repetir. Não mostra nada em dia que não seja 🔴, em dia `auto`/`ext` ou com dado inválido.
+- A legenda da bola do dia usa a mesma função (fonte única).
+- Nenhuma regra de segurança foi alterada: nenhum veredito mudou, só o texto que explica.
+
+**Testes:** `motivos-dia.test.mjs` (novo). Suíte completa: 119 de 119 passando.
+
+**Conferência na tela (28/11):** Surf, Caiaque, Resumão, Navio na Área e Praia no dia 01/12. O Surf 🟡 não herdou o motivo do Caiaque 🔴.
+
+**Limites e pendências:**
+- A exibição na tela foi conferida só a olho, sem teste automático.
+- Navio na Área mostra "ondas de 1,98 m" duas vezes (limites de 1 m e 1,5 m). É correto, mas pode parecer repetição.
+- O texto "Prefira remar nas horas verdes" (Navio na Área) ainda não foi revisado para dia 🔴.
+
+
 ## 2026-11-27 · Regra do dia alinhada à regra da hora (mais conservadora)
 
 **Motivo:** o veredito do dia (`avaliar-dia.mjs`) era mais otimista que o veredito por hora (`REGRAS` no `index.html`) em quatro faixas. Segurança primeiro: o dia nunca pode ser mais otimista que as suas horas.
